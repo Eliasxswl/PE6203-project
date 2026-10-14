@@ -1,6 +1,7 @@
 import asyncio
 import json
 import uuid
+import time
 
 from openai.types.chat import ChatCompletionToolParam, ChatCompletionMessageToolCall
 
@@ -156,16 +157,22 @@ class ChatModel:
             }
             for tool in tools
         ]
+        self.remote_tool_names = {
+            tool['name']: (tool.get('meta') or {}).get('benchmark_remote_name')
+            for tool in tools
+        }
 
         self.mcp_client = mcp_client
         self.messages = [{'role':'system', 'content':SINGLE_SERVER_INTERATION_SYSTEM_PROMPT.format(
             SET_TIME=str(offset_date(0)),
-            WORKSPACE_ROOT=str(model_config.workspace_dir()),
+            WORKSPACE_ROOT=model_config.workspace_dir().as_posix(),
             FILE_EXISTS=file_exists
         )
 }]
         self.max_round = max_round
         self.tool_server_map = tool_server_map
+        self.model_usage = []
+        self.elapsed_seconds = 0.0
 
     def init_extra_body(self):
         self.extra_body["enable_thinking"] = False
@@ -203,6 +210,7 @@ class ChatModel:
             raise e
 
     def run_with_server(self, query, fschat_flag=False):
+        started = time.perf_counter()
         self.messages.append({'role':'user', 'content':query})
         no_tool_count = 0
         final_text = []
@@ -218,6 +226,8 @@ class ChatModel:
                         "tools": self.tools,
                     }
                     response = self.complete_with_retry(**request_payload)
+                    if response.usage:
+                        self.model_usage.append(response.usage.model_dump())
                     if hasattr(response, "error"):
                         raise Exception(
                             f"Error in OpenAI response: {response.error['metadata']['raw']}"
@@ -276,6 +286,7 @@ class ChatModel:
                             tool_id = tool_call.id
                             tool_server_name = self.tool_server_map[tool_name]
                             tool_1mcp_name = f'{tool_server_name}_1mcp_{tool_name}'
+                            tool_1mcp_name = self.remote_tool_names.get(tool_name) or tool_1mcp_name
                             # if 'music-analysis' in tool_1mcp_name:
                             #     result = asyncio.run(call_tool_with_1mcp(tool_1mcp_name, tool_args, 'http://127.0.0.1:13050:mcp'))
                             # else:
@@ -307,6 +318,7 @@ class ChatModel:
             self.messages.append({"role": "assistant", "content": str(e)})
         if round_num >= self.max_round:
             exceeded_flag = True
+        self.elapsed_seconds = time.perf_counter() - started
         return "\n".join(final_text), self.messages, stop_flag, exceeded_flag
 
 

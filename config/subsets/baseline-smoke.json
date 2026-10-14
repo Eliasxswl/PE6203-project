@@ -1,0 +1,29 @@
+[
+  {
+    "idx": 9,
+    "question": "I need help reviewing yesterday’s application activity logs.  \n    First, find yesterday’s log file somewhere under my MCP directory (it should have “yesterday” in the filename), then read its contents so we can understand what’s inside.  \n    After that, please set up a structured plan of tasks for analyzing the log, summarizing key events, and preparing a short report for me.",
+    "servers": {
+      "@modelcontextprotocol/server-filesystem": [
+        "search_files",
+        "read_text_file"
+      ],
+      "@kazuph/mcp-taskmanager": [
+        "request_planning"
+      ]
+    },
+    "tool_calls": [
+      {
+        "tool_name": "search_files",
+        "parameters": {}
+      },
+      {
+        "tool_name": "read_text_file",
+        "parameters": {}
+      },
+      {
+        "tool_name": "request_planning",
+        "parameters": {}
+      }
+    ]
+  }
+]

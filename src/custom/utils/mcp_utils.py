@@ -561,6 +561,15 @@ async def run_1mcp_tool(tool_name, arguments) -> None:
             #     save_to_file(raw_text)     # 传入原始字符串
     return result
 
+def normalize_1mcp_tools(tools_result):
+    """Preserve source identities and the remote call route across 1mcp versions."""
+    for tool in tools_result.tools:
+        route = (tool.meta or {}).get('app.1mcp/route', {})
+        if route.get('server') and route.get('upstreamIdentity'):
+            tool.meta = dict(tool.meta or {}, benchmark_remote_name=(tool.meta or {}).get('benchmark_remote_name', tool.name))
+            tool.name = f"{route['server']}_1mcp_{route['upstreamIdentity']}"
+    return tools_result
+
 async def get_1mcp_status(mcp_server_url):
     async with streamablehttp_client(mcp_server_url) as (read_stream, write_stream, _):
         async with mcp.ClientSession(read_stream, write_stream) as session:
@@ -568,6 +577,9 @@ async def get_1mcp_status(mcp_server_url):
             await session.initialize()
             # 获取可用工具列表
             tools_result = await session.list_tools()
+            # New 1mcp releases expose hashed names and publish their source route.
+            # Keep benchmark identities stable while retaining the callable name.
+            normalize_1mcp_tools(tools_result)
             tool_names = [tool.name for tool in tools_result.tools]
             # print(f"Available tools: {', '.join(tool_names)}")
             print(f"Tools Number {len(tool_names)}")

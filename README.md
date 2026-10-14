@@ -45,7 +45,7 @@ Keep terminal 1 running; terminal 2 discovers tools without calling a model:
 
 ```text
 # Terminal 1, repository root
-node .runtime/node_modules/@1mcp/agent/build/index.js serve --host 127.0.0.1 --port 3050 --config config/local/smoke.json --config-dir config/local
+python scripts/start_mcp.py --stage smoke
 # Terminal 2, repository root
 python scripts/probe_mcp.py
 ```
@@ -59,6 +59,10 @@ For real task runs, subset selection, scoring commands, and result paths, follow
 - Judge: `src/custom/analysis/answer/evaluation.py`.
 - Protocol: `config/experiment.json` specifies 3 Agent runs and 5 judge attempts per trajectory.
 
-Persistent tool knowledge, adaptation strategies, repeat scheduling, state reset, and cost aggregation are pending. No real model-backed task or scoring results have been produced yet.
+API text/function checks and a task-9 pilot with 3 Agent trajectories and 15 judge attempts have completed on Windows. The pilot exposed routing and search failures; it is development evidence, not a valid strategy comparison. All three required tools passed separate direct checks. The default judge uses the Agent model.
+
+Outputs: `results/baseline/<stage>/<run-id>/answers/<task-id>.json` and sibling `scores/<task-id>.json`. Results stay local by default. See the setup guide for isolated task-9 preparation and execution.
+
+Persistent tool knowledge, the three adaptation strategies, repeat scheduling, general state reset, and full cost aggregation are pending.
 
 Offline tests: `python -m unittest discover -s tests -v`.

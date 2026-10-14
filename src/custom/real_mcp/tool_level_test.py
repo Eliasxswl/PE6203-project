@@ -15,6 +15,7 @@ from custom.utils.openai_llm import chat_with_openai
 from custom.utils.mcp_utils import *
 from custom.agents.SimpleOpenAIAgent import ChatModel
 from custom.utils import model_config
+from custom.utils.result_paths import run_directory
 
 
 def get_all_evolution_status(mutation_path):
@@ -87,6 +88,7 @@ def return_involved_tool_status(involved_server_and_tools, this_tool_status):
                     'name': tool.name,
                     'description': tool.description,
                     'inputSchema': tool.inputSchema,
+                    'meta': tool.meta,
                 }
                 involved_tool_status.append(tool_dict)
     return involved_tool_status
@@ -457,8 +459,10 @@ if __name__ == "__main__":
         "--step", default='1', choices=['1','2','3', '4']
     )
     parser.add_argument(
-        "--output_path", default='custom/data/test_cases/',
+        "--output_path", default=None, help='Run output directory; defaults to project results/baseline/<stage>/<run_id>',
     )
+    parser.add_argument('--stage', choices=['original', 'iter3', 'iter5'])
+    parser.add_argument('--run_id', default='run-1')
     parser.add_argument(
         "--model_name", default=os.environ.get('BIGMODEL_MODEL', '')
     )
@@ -492,6 +496,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if not args.model_name:
         parser.error('Set BIGMODEL_MODEL or pass --model_name.')
+    if args.step == '3':
+        if args.stage and args.stage != 'original':
+            parser.error('Step 3 requires the original stage.')
+        args.stage = 'original'
+    elif args.step == '4' and args.stage not in ('iter3', 'iter5'):
+        parser.error('For an evolved run, specify --stage iter3 or --stage iter5.')
     # assert args.mutation_type != ''
 
     # output_number = 0
@@ -506,7 +516,10 @@ if __name__ == "__main__":
     with open('custom/data/test_cases/server_description_map.json', 'r', encoding='utf-8') as file:
         server_description_map = json.load(file)
 
-    RESULT_OUTPUT = args.output_path + f'/{args.model_name}/'
+    if args.step in ('3', '4'):
+        RESULT_OUTPUT = str(run_directory(args.output_path, args.stage, args.run_id))
+    else:
+        RESULT_OUTPUT = (args.output_path or 'custom/data/test_cases/') + f'/{args.model_name}/'
     os.makedirs(RESULT_OUTPUT, exist_ok=True)
     if args.step == '1':
         print(f"\n{'=' * 60}")
@@ -574,13 +587,15 @@ if __name__ == "__main__":
             total_number = len(all_test_cases)
             bias_number = (total_number * args.part_idx)//args.part_num
             all_test_cases = all_test_cases[bias_number: bias_number + total_number//args.part_num]
-        os.makedirs(RESULT_OUTPUT+'/ANSWER/', exist_ok=True)
-        existing_ids = os.listdir(RESULT_OUTPUT+'/ANSWER/')
+        os.makedirs(RESULT_OUTPUT+'/answers/', exist_ok=True)
+        existing_ids = os.listdir(RESULT_OUTPUT+'/answers/')
         for testcase_idx, test_case in tqdm(enumerate(all_test_cases), total=len(all_test_cases), desc="测试用例进度", unit="case", colour='blue'):
             if 'idx' in test_case:
                 real_idx = test_case['idx']
             else:
                 raise KeyError
+            if f'{real_idx}.json' in existing_ids:
+                continue
             involved_servers = test_case['servers']
             involved_tools = return_involved_tool_status(involved_servers, tool_status)
             # if len(involved_tools) > 8:
@@ -611,13 +626,13 @@ if __name__ == "__main__":
             test_case['stop'] = stop_flag
             test_case['exceeded'] = exceeded_flag
             test_case['involved_tools'] = involved_tools
+            test_case['run_info'] = {'model':args.model_name, 'stage':args.stage, 'run_id':args.run_id, 'model_usage':openai_agent.model_usage, 'elapsed_seconds':openai_agent.elapsed_seconds}
 
-            with open(RESULT_OUTPUT + f'/ANSWER/{real_idx}.json', "w", encoding="utf-8") as f:
+            with open(RESULT_OUTPUT + f'/answers/{real_idx}.json', "w", encoding="utf-8") as f:
                 json.dump(test_case, f, ensure_ascii=False, indent=2)
     elif args.step == '4': # --mutation_path custom/data/mutation/HYBRID
-        RESULT_OUTPUT = args.mutation_path
-        os.makedirs(RESULT_OUTPUT+f'/ANSWER-{args.model_name}/', exist_ok=True)
-        existing_ids = os.listdir(RESULT_OUTPUT+f'/ANSWER-{args.model_name}/')
+        os.makedirs(RESULT_OUTPUT+'/answers/', exist_ok=True)
+        existing_ids = os.listdir(RESULT_OUTPUT+'/answers/')
         involved_tool_numbers = []
         with open(args.test_case_file, 'r', encoding='utf-8') as f:
             all_test_cases = json.load(f)
@@ -668,6 +683,7 @@ if __name__ == "__main__":
             test_case['stop'] = stop_flag
             test_case['exceeded'] = exceeded_flag
             test_case['involved_tools'] = involved_tools
+            test_case['run_info'] = {'model':args.model_name, 'stage':args.stage, 'run_id':args.run_id, 'model_usage':openai_agent.model_usage, 'elapsed_seconds':openai_agent.elapsed_seconds}
 
-            with open(RESULT_OUTPUT + f'/ANSWER-{args.model_name}/{real_idx}.json', "w", encoding="utf-8") as f:
+            with open(RESULT_OUTPUT + f'/answers/{real_idx}.json', "w", encoding="utf-8") as f:
                 json.dump(test_case, f, ensure_ascii=False, indent=2)

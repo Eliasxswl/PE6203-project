@@ -58,7 +58,7 @@ python scripts/check_model.py
 python scripts/check_model.py --tool-call
 ```
 
-Each command sends one model request and may incur API cost. The first checks text output; the second checks function calling. They have not been run with a real key in our setup work.
+Each command sends one model request and may incur API cost. The first checks text output; the second checks function calling. Both passed with `glm-4-flash-250414` during the local pilot (159 tokens combined).
 
 ## 3. Tasks and tool bundles
 
@@ -89,7 +89,7 @@ The generator resolves Windows `.cmd`/`.exe` launchers and macOS `bin` launchers
 With the virtual environment active, keep terminal 1 running:
 
 ```text
-node .runtime/node_modules/@1mcp/agent/build/index.js serve --host 127.0.0.1 --port 3050 --config config/local/smoke.json --config-dir config/local
+python scripts/start_mcp.py --stage smoke
 ```
 
 In terminal 2, also at the repository root with the environment active:
@@ -98,61 +98,73 @@ In terminal 2, also at the repository root with the environment active:
 python scripts/probe_mcp.py --url http://127.0.0.1:3050/mcp
 ```
 
-For other stages, replace `smoke.json` with `smoke-iter3.json` and port `3053`, or `smoke-iter5.json` and port `3055`. Match the probe URL to the port. Run stages sequentially when sharing the same config directory. Stop the server with Ctrl+C.
+For other stages, use `--stage smoke-iter3 --port 3053` or `--stage smoke-iter5 --port 3055`. Match the probe URL to the port. Run stages sequentially when sharing the same config directory. Stop the server with Ctrl+C. The launcher passes absolute paths; relative 1mcp config paths caused an empty server configuration locally.
 
 The smoke configurations contain only sequential-thinking. Windows checks discovered 1 tool in Early, 2 in Middle, and 3 in Late, and a real Early tool call succeeded. These checks do not call a model and do not validate a complete benchmark task. macOS has not been tested on a real Mac yet.
 
 ## 5. Run one baseline task
 
-Create `src/custom/data/test_cases/dev-subset.json` by selecting records from `test_cases.json`, retaining their IDs and server/tool metadata. Create `dev-selection.json` with the matching IDs for scoring:
+Task 9 is a small official task requiring filesystem search/read and task-manager planning. Its unchanged task record and selection IDs are in `config/subsets/baseline-smoke.json` and `baseline-smoke-selection.json`. This development subset does not establish coverage of the final assignment.
 
-```json
-{"samples": [{"idx": 42}]}
+Prepare a fresh run at the repository root after generating local configs:
+
+```text
+python scripts/prepare_baseline_smoke.py --run-id run-1
+python scripts/start_mcp.py --config config/local/baseline-run-1/mcp.json --port 3050
 ```
 
-The ID above is a format example; choose a task whose required servers have been verified. Keep only those servers in `config/local/original.json`. Stop the smoke service and restart terminal 1 using `--config config/local/original.json`.
+Keep that service running in terminal 1. The helper copies the official log into an isolated workspace, restricts filesystem access to that workspace, and sets a separate task-manager data file. Existing results are preserved. Use a new run ID for another independent trajectory.
 
-In terminal 2:
+Set the matching workspace in terminal 2 before running the Agent. On Windows PowerShell, from the repository root:
+
+```powershell
+$env:BENCH_WORKSPACE = (Resolve-Path results/baseline/original/run-1/workspace).Path
+```
+
+On macOS, from the repository root:
+
+```bash
+export BENCH_WORKSPACE="$PWD/results/baseline/original/run-1/workspace"
+```
+
+Then use the same command on both systems:
 
 ```text
 cd src
-python -m custom.real_mcp.tool_level_test --step 3 --test_case_file custom/data/test_cases/dev-subset.json --output_path custom/data/local_output --mcp_server_url http://127.0.0.1:3050/mcp
+python -m custom.real_mcp.tool_level_test --step 3 --stage original --run_id run-1 --test_case_file ../config/subsets/baseline-smoke.json --mcp_server_url http://127.0.0.1:3050/mcp
 ```
 
-The runner reads the model from `.env`; this command calls the model. Middle/Late use `--step 4` plus `--mutation_path` pointing to verified evolution metadata. Task IDs, metadata, and the running server stage must match. Do not infer the mutation path from the stage name alone.
+The model comes from `.env`. Existing answer files are skipped on resume. Use `run-2` and `run-3`, their respective prepared configs and workspaces, and fresh services for independent repeats. Resetting arbitrary benchmark servers still requires task-specific work.
+
+Other subsets must retain official task IDs and metadata and have their required servers verified. Middle/Late use `--step 4 --stage iter3` or `iter5`, plus `--mutation_path` pointing to verified evolution metadata. The mutation path is an input only; it no longer controls the result directory. The current runner exposes selected live tool metadata and does not yet implement the three adaptation strategies.
 
 ## 6. Score and locate results
 
-For an Early run using the output path above, answers and trajectories are written to:
+All baseline stages now use the same layout, relative to the repository root:
 
 ```text
-src/custom/data/local_output/glm-4-flash-250414/ANSWER/<task-id>.json
+results/baseline/original/run-1/answers/9.json
+results/baseline/original/run-1/scores/9.json
+results/baseline/original/run-1/workspace/
 ```
 
-From `src/`, with the matching tool server still running:
+Replace `original` and `run-1` with the selected stage and run ID. Optional `--output_path` sets the run directory directly (relative paths resolve from the command's working directory); `answers/` and `scores/` remain sibling directories. This replaces the upstream layout that nested results under model names or mutation metadata. Legacy `ANSWER` directories can still be scored explicitly.
+
+From `src/`, with the matching tool service running:
 
 ```text
-python -m custom.analysis.answer.evaluation --answer_path custom/data/local_output/glm-4-flash-250414/ANSWER --task_selection custom/data/test_cases/dev-selection.json --num_runs 5 --max-workers 1 --mcp_server_url http://127.0.0.1:3050/mcp
+python -m custom.analysis.answer.evaluation --answer_path ../results/baseline/original/run-1/answers --task_selection ../config/subsets/baseline-smoke-selection.json --num_runs 5 --max-workers 1 --mcp_server_url http://127.0.0.1:3050/mcp
 ```
 
-This calls the judge model. The scorer derives its output directory by replacing `ANSWER` with `EVAL`:
+A blank `BIGMODEL_JUDGE_MODEL` defaults to the Agent model. Scoring uses temperature 0 and five independent judge attempts. Each score file includes `eval_result.runs`, `eval_result.aggregate` with exact means and attempt counts, and the scoring policy. Some legacy summary fields are rounded; use aggregate means for analysis. Failed attempts are recorded without top-up, API requests do not automatically retry, and resume reuses completed five-attempt files. Agent answer files include model token usage and elapsed time; judge token/currency accounting remains pending.
 
-```text
-src/custom/data/local_output/glm-4-flash-250414/EVAL/<task-id>.json
-```
+The Windows development pilot produced three Agent trajectories and 15 successful judge responses for task 9. Run 1 failed due to a routing metadata bug that was then fixed. Runs 2 and 3 reached the search tool but used nonrecursive glob patterns and failed to find the nested log. Separate direct checks confirmed search with `**/*yesterday*`, log reading, and planning all work. The pilot must not be averaged into a formal three-repeat comparison because code changed between runs and tasks were not fulfilled. No additional model runs were added.
 
-Each file contains the saved task/trajectory plus `eval_result.runs` (five judge attempts), `eval_result.aggregate` (mean scores and success/attempt counts), and the scoring policy. Attempts that fail are recorded without extra top-up. The API-mode clients do not automatically retry requests. Resume reuses completed five-attempt files.
+The small judge also miscounted calls in some explanations. Repetition reduces random variation but cannot remove systematic scoring errors or self-evaluation bias. Keep the judge settings and rubric identical across strategies and inspect explanations against saved trajectories. These pilot scores require that manual audit before reporting.
 
-The upstream Middle/Late runner currently ignores `--output_path` for answers and writes under the supplied mutation directory:
+Local pilot outputs are under `results/baseline/original/run-{1,2,3}/`; `summary.json` records their debug status. Results and workspaces are ignored by Git by default. Publish selected sanitized experiment results explicitly when the group is ready.
 
-```text
-<mutation-path>/ANSWER-glm-4-flash-250414/<task-id>.json
-<mutation-path>/EVAL-glm-4-flash-250414/<task-id>.json
-```
-
-The second directory appears after scoring the first. Changing the model changes its directory name. Use separate output locations for independent experiments; strategy/stage/repeat isolation has not been implemented yet. No real model-backed task or score files have been produced in the current setup.
-
-For ECS, supply three matching stage evaluation directories to `custom/analysis/answer/evolutionary_volatility.py`. Cross-repeat aggregation and plotting remain to be integrated.
+For ECS, supply three matching stage score directories to `custom/analysis/answer/evolutionary_volatility.py`. Cross-repeat aggregation and plotting remain to be integrated.
 
 ## 7. Integration and current limits
 

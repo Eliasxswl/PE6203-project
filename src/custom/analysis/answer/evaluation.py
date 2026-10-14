@@ -18,6 +18,7 @@ from custom.utils.test_utils import load_all_json_files, format_tools_to_string,
 from custom.utils.mcp_utils import get_1mcp_status
 from custom.utils.openai_llm import chat_with_openai
 from custom.utils import model_config
+from custom.utils.result_paths import score_directory
 from custom.utils.test_utils import parse_string_to_json
 
 def extract_json_from_markdown(text):
@@ -409,8 +410,7 @@ if __name__ == "__main__":
     print(f'will be evaluated: {args.answer_path}')
 
     answer_path = args.answer_path
-    assert 'ANSWER' in answer_path
-    save_dir = answer_path.replace('ANSWER', 'EVAL')
+    save_dir = str(score_directory(answer_path))
     os.makedirs(save_dir, exist_ok=True)
 
     if not os.path.exists(answer_path):
@@ -432,7 +432,7 @@ if __name__ == "__main__":
     print(f"fliter case number: {len(cases)}")
     if args.mutation_answer_path != '':
         mutation_answer_path = args.mutation_answer_path
-        mutation_save_dir = mutation_answer_path.replace('ANSWER', 'EVAL')
+        mutation_save_dir = str(score_directory(mutation_answer_path))
         count_mutation_scores(cases, save_dir=save_dir, mutation_save_dir=mutation_save_dir)
     else:
         evaluate_list(
