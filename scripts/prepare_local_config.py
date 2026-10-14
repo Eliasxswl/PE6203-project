@@ -37,6 +37,20 @@ def main():
         data = rewrite(json.loads((root/f'servers/1mcp_config/{stage}/mcp.json').read_text(encoding='utf-8')))
         middle = rewrite(json.loads((root/'servers/1mcp_config/iter3/mcp.json').read_text(encoding='utf-8')))
         for name, config in data['mcpServers'].items():
+            # Resolve every archived npm launcher in its own stage, never npx's latest release.
+            if config.get('command') == 'npx':
+                package_root = root / 'servers' / f'{stage}_servers' / 'node_modules' / name
+                metadata = package_root / 'package.json'
+                if metadata.is_file():
+                    package = json.loads(metadata.read_text(encoding='utf-8'))
+                    bins = package.get('bin', {})
+                    binary = bins if isinstance(bins, str) else next(iter(bins.values()), None)
+                    if binary and (package_root / binary).is_file():
+                        original_args = config.get('args', [])
+                        package_index = next((i for i, value in enumerate(original_args) if not value.startswith('-')), None)
+                        if package_index is not None:
+                            config['command'] = shutil.which('node') or 'node'
+                            config['args'] = [(package_root / binary).as_posix()] + original_args[package_index + 1:]
             if stage == 'original' and config.get('command') == 'npx':
                 reference = middle['mcpServers'].get(name, {})
                 if reference.get('command') == 'node' and reference.get('args'):

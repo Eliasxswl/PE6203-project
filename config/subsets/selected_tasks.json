@@ -1,0 +1,37 @@
+{
+  "seed": 6203,
+  "candidate_order": "ascending_numeric",
+  "candidate_sha256": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
+  "samples": [
+    {
+      "idx": 107
+    },
+    {
+      "idx": 157
+    },
+    {
+      "idx": 58
+    },
+    {
+      "idx": 70
+    },
+    {
+      "idx": 289
+    },
+    {
+      "idx": 356
+    },
+    {
+      "idx": 358
+    },
+    {
+      "idx": 192
+    },
+    {
+      "idx": 278
+    },
+    {
+      "idx": 68
+    }
+  ]
+}

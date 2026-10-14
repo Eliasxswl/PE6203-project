@@ -1,10 +1,118 @@
 {
+  "selection_file": "config/subsets/selected_tasks.json",
+  "selection_seed": 6203,
+  "task_source": "src/custom/data/test_cases/test_cases.json",
+  "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+  "fixtures": "anotation_path",
+  "mode": "live",
   "agent_repeats": 3,
   "judge_attempts_per_trajectory": 5,
-  "agent_model": "glm-4-flash-250414",
+  "agent_model": "glm-4.7-flash",
+  "judge_model": "",
+  "agent_temperature": 0.2,
+  "judge_temperature": 0,
+  "agent_max_tokens": 8192,
+  "judge_max_tokens": 8192,
+  "round_policy": "early_tool_count_plus_one",
   "judge_failure_top_up": false,
   "automatic_api_retries": 0,
-  "stages": ["original", "iter3", "iter5"],
-  "strategies": ["no_update", "full_rewrite", "selective_patch"],
-  "status": "protocol_only_repeat_runner_and_workspace_reset_not_yet_implemented"
+  "stages": [
+    "original",
+    "iter3",
+    "iter5"
+  ],
+  "strategies": [
+    "no_update",
+    "full_rewrite"
+  ],
+  "strategy_plugins": [],
+  "runtime": {
+    "configs": {
+      "original": "config/local/original.json",
+      "iter3": "config/local/iter3.json",
+      "iter5": "config/local/iter5.json"
+    },
+    "policies": {
+      "12306-mcp": {
+        "kind": "stateless",
+        "reviewed": true,
+        "reason": "Source exposes read-only train/station queries and process-local caches."
+      },
+      "original_from_tina": {
+        "kind": "process_local",
+        "reviewed": true,
+        "reason": "Source implements a static catalog and simulated orders; no order HTTP request."
+      },
+      "@remotion/mcp": {
+        "kind": "stateless",
+        "reviewed": true,
+        "reason": "Source performs read-only remote documentation fetches."
+      },
+      "@opentofu/opentofu-mcp-server": {
+        "kind": "stateless",
+        "reviewed": true,
+        "reason": "Source performs registry/documentation reads."
+      },
+      "@driflyte/mcp-server": {
+        "kind": "stateless",
+        "reviewed": true,
+        "reason": "Source exposes remote topic listing and search reads."
+      },
+      "bazi-mcp": {
+        "kind": "process_local",
+        "reviewed": true,
+        "reason": "Source calculates Bazi data locally without persistent application state."
+      },
+      "mcp-trends-hub": {
+        "kind": "stateless",
+        "reviewed": true,
+        "reason": "Source fetches public news/RSS; mutable cache is process-local."
+      },
+      "mcp-server-commands": {
+        "kind": "workspace",
+        "reviewed": true,
+        "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory."
+      },
+      "mcp-shrimp-task-manager": {
+        "kind": "workspace",
+        "reviewed": true,
+        "reason": "DATA_DIR points to private task/memory/template state.",
+        "env_paths": {
+          "DATA_DIR": "workspace/shrimp-data"
+        }
+      },
+      "mcp-tasks": {
+        "kind": "workspace",
+        "reviewed": true,
+        "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+        "env_paths": {
+          "SOURCES_PATH": "workspace/tasks-sources.json",
+          "WORKSPACE_FOLDER_PATHS": "workspace"
+        }
+      },
+      "@aiuluna/knowledge-graph-mcp": {
+        "kind": "workspace",
+        "reviewed": true,
+        "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+        "env_paths": {
+          "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+        }
+      }
+    },
+    "connect_timeout": 5,
+    "read_timeout": 60,
+    "tool_timeout": 60,
+    "startup_timeout": 45,
+    "shutdown_timeout": 10,
+    "model_timeout": 180,
+    "metadata_verified": false,
+    "evolution_files": {
+      "original": [],
+      "iter3": [],
+      "iter5": []
+    },
+    "catalog_source": "live"
+  },
+  "agent_thinking": "enabled",
+  "judge_thinking": "disabled"
 }

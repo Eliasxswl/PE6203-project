@@ -52,17 +52,24 @@ python scripts/probe_mcp.py
 
 For real task runs, subset selection, scoring commands, and result paths, follow [the setup guide](docs/setup.md). Windows smoke checks passed; macOS still needs a teammate's real-machine check.
 
-## Integration and status
+## Experiment pipeline
 
-- Agent: `src/custom/agents/SimpleOpenAIAgent.py`.
-- Runner: `src/custom/real_mcp/tool_level_test.py`.
-- Judge: `src/custom/analysis/answer/evaluation.py`.
-- Protocol: `config/experiment.json` specifies 3 Agent runs and 5 judge attempts per trajectory.
+The ten-task ID list is frozen in `config/subsets/selected_tasks.json`. Start from the repository root:
 
-API text/function checks and a task-9 pilot with 3 Agent trajectories and 15 judge attempts have completed on Windows. The pilot exposed routing and search failures; it is development evidence, not a valid strategy comparison. All three required tools passed separate direct checks. The default judge uses the Agent model.
+```text
+python -m custom.experiment validate --config config/experiment.json --offline
+python -m custom.experiment run --config config/experiment.json --offline
+python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
+```
 
-Outputs: `results/baseline/<stage>/<run-id>/answers/<task-id>.json` and sibling `scores/<task-id>.json`. Results stay local by default. See the setup guide for isolated task-9 preparation and execution.
+Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence, not benchmark results. The live protocol compares `no_update` and `full_rewrite`: 10 tasks, 3 versions, 3 repeats, and 5 judge attempts per trajectory (180 trajectories / 900 planned judge attempts). After implementation review, explicit authorization, and verification of server isolation and current stage catalogs, omit `--offline` for model-backed execution.
 
-Persistent tool knowledge, the three adaptation strategies, repeat scheduling, general state reset, and full cost aggregation are pending.
+Live output: `results/<experiment-id>/{experiment.json,records.json}`. Use `run --resume <experiment-directory>` with the same configuration/mode to continue unstarted work, and `summarize --experiment <experiment-directory>` to aggregate it. Completed, failed, and ambiguous requests are not replayed.
 
-Offline tests: `python -m unittest discover -s tests -v`.
+Run `python -m custom.experiment check --config config/experiment.json` for separate connectivity evidence under the ignored runtime directory; it is not a strategy or formal result.
+
+The common pipeline supplies `no_update` and `full_rewrite`; Role 1 must register `selective_patch` through the adapter contract. Unsupported strategies fail validation. Unknown backends fail execution until their state isolation is reviewed and implemented. Windows spawn is tested offline; a real macOS check remains pending.
+
+See [docs/fixed-plan.md](docs/fixed-plan.md) for protocol, justified changes, and validation evidence; [docs/setup.md](docs/setup.md) covers detailed usage.
+
+Offline tests: `python -m unittest discover -s tests -v`. Commit or push only when explicitly instructed.

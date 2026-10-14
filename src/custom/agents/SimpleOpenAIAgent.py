@@ -125,16 +125,24 @@ class ChatModel:
         max_round=15,
         tool_server_map=None,
         file_exists='',
-        mcp_server_url='http://127.0.0.1:3050/mcp'
+        mcp_server_url='http://127.0.0.1:3050/mcp',
+        client=None,
+        workspace_root=None,
+        prompt_time=None,
+        tool_caller=None,
+        event_callback=None,
+        model_timeout=120,
+        thinking=None,
     ):
         self.model_name = model_name
         self.model_url = model_url
         self.temperature = temperature
         self.max_new_tokens = max_new_tokens
-        self.client = OpenAI(
+        self.client = client if client is not None else OpenAI(
             api_key=api_key or model_config.api_key(),
             base_url=model_url or model_config.base_url(),
             max_retries=0,
+            timeout=model_timeout,
         )
         self.url = mcp_server_url
         self.extra_body = {"enable_thinking": True}
@@ -144,6 +152,7 @@ class ChatModel:
             model=model_name,
             temperature=temperature,
             max_tokens=max_new_tokens,
+            **({'extra_body': {'thinking': {'type': thinking}}} if thinking else {}),
             # extra_body=self.extra_body,
         )
         self.tools = [
@@ -161,11 +170,13 @@ class ChatModel:
             tool['name']: (tool.get('meta') or {}).get('benchmark_remote_name')
             for tool in tools
         }
+        self.semantic_tool_names = {tool['name']: (tool.get('meta') or {}).get('benchmark_semantic_identity')
+                                    for tool in tools}
 
         self.mcp_client = mcp_client
         self.messages = [{'role':'system', 'content':SINGLE_SERVER_INTERATION_SYSTEM_PROMPT.format(
-            SET_TIME=str(offset_date(0)),
-            WORKSPACE_ROOT=model_config.workspace_dir().as_posix(),
+            SET_TIME=prompt_time or str(offset_date(0)),
+            WORKSPACE_ROOT=(workspace_root or model_config.workspace_dir()).as_posix(),
             FILE_EXISTS=file_exists
         )
 }]
@@ -173,6 +184,12 @@ class ChatModel:
         self.tool_server_map = tool_server_map
         self.model_usage = []
         self.elapsed_seconds = 0.0
+        self.tool_caller = tool_caller
+        self.event_callback = event_callback or (lambda *args: None)
+        self.raw_tool_trace = []
+        self.execution_error = None
+        self.stop_reason = None
+        self.request_count = 0
 
     def init_extra_body(self):
         self.extra_body["enable_thinking"] = False
@@ -186,7 +203,7 @@ class ChatModel:
             response = _chat_with_retry(message)
             return response
         except Exception as e:
-            logger.error(f"Chat completion failed: {e}")
+            logger.error("Chat completion failed (%s)", type(e).__name__)
             raise e
 
     def complete_with_retry(self, **args):
@@ -198,7 +215,7 @@ class ChatModel:
             response = _chat_with_retry(**args)
             return response
         except Exception as e:
-            logger.error(f"Chat completion failed: {e}")
+            logger.error("Chat completion failed (%s)", type(e).__name__)
             raise e
 
     def list_models(self):
@@ -218,14 +235,22 @@ class ChatModel:
         exceeded_flag = False
         round_num = 0
         try:
-            while not stop_flag and round_num <= self.max_round:
+            while not stop_flag and round_num < self.max_round:
                 raw_messages = self.messages
                 if not fschat_flag:
                     request_payload = {
                         "messages": raw_messages,
                         "tools": self.tools,
                     }
-                    response = self.complete_with_retry(**request_payload)
+                    self.event_callback('model_start', {'round': round_num, 'messages': self.messages})
+                    try:
+                        response = self.complete_with_retry(**request_payload)
+                    except Exception as error:
+                        from custom.experiment.results import safe_error
+                        self.execution_error = safe_error(error)
+                        self.event_callback('model_failed', self.execution_error)
+                        raise
+                    self.event_callback('model_completed', response.model_dump(exclude_none=True))
                     if response.usage:
                         self.model_usage.append(response.usage.model_dump())
                     if hasattr(response, "error"):
@@ -238,6 +263,7 @@ class ChatModel:
                     response_message = chat_with_fastchat(this_messages=self.messages, model_name=self.model_name, tools=self.tools)
 
                 round_num += 1
+                self.request_count = round_num
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -255,6 +281,7 @@ class ChatModel:
                 if content is not None and '[FINISH]' in content:
                     final_text.append(content)
                     stop_flag = True
+                    self.stop_reason = 'finish_marker'
                 elif (
                         content
                         and not response_message.tool_calls
@@ -264,6 +291,7 @@ class ChatModel:
                     if no_tool_count == 3:
                         final_text.append(content)
                         stop_flag = True
+                        self.stop_reason = 'three_text_responses'
                     else:
                         self.messages.append(
                             {
@@ -277,9 +305,14 @@ class ChatModel:
                         logger.warning(
                             "Received empty response from LLM without content or tool calls."
                         )
+                        self.stop_reason = 'empty_response'
                         break
                     no_tool_count = 0
                     for tool_call in tool_calls:
+                        protocol_error = None
+                        self.event_callback('tool_start', {'messages': self.messages,
+                            'tool_call_id': tool_call.id, 'name': tool_call.function.name,
+                            'arguments': tool_call.function.arguments})
                         try:
                             tool_name = tool_call.function.name
                             tool_args = json.loads(tool_call.function.arguments)
@@ -290,17 +323,34 @@ class ChatModel:
                             # if 'music-analysis' in tool_1mcp_name:
                             #     result = asyncio.run(call_tool_with_1mcp(tool_1mcp_name, tool_args, 'http://127.0.0.1:13050:mcp'))
                             # else:
-                            result = asyncio.run(call_tool_with_1mcp(tool_1mcp_name, tool_args, self.url))
+                            result = (self.tool_caller(tool_1mcp_name, tool_args) if self.tool_caller
+                                      else asyncio.run(call_tool_with_1mcp(tool_1mcp_name, tool_args, self.url)))
 
 
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
-                            tool_id = None
+                            tool_id = tool_call.id
                         except Exception as e:
-                            logger.error(f"Error calling tool {tool_name}: {e}")
+                            from custom.experiment.errors import ExecutionFailure
+                            if isinstance(e, ExecutionFailure):
+                                from custom.experiment.results import safe_error
+                                self.execution_error = safe_error(e)
+                                self.event_callback('tool_failed', self.execution_error)
+                                raise
+                            logger.error("Error calling tool %s (%s)", tool_name, type(e).__name__)
+                            protocol_error = getattr(e, 'raw_response', None)
                             result = f"Error: {str(e)}"
                             tool_id = tool_call.id
+                        self.raw_tool_trace.append({
+                            'tool_call_id': tool_call.id,
+                            'name': tool_call.function.name,
+                            'semantic_identity': self.semantic_tool_names.get(tool_call.function.name),
+                            'protocol_error': protocol_error,
+                            'arguments': tool_call.function.arguments,
+                            'response': result.model_dump(mode='json', exclude_none=True)
+                            if hasattr(result, 'model_dump') else str(result),
+                        })
                         if hasattr(result, 'content'):
                             result = str(result.content)[:500]+'...'
                         else:
@@ -312,12 +362,19 @@ class ChatModel:
                                 "content": result,
                             }
                         )
+                        self.event_callback('tool_completed', {'messages': self.messages,
+                                                               'raw_tool_trace': self.raw_tool_trace})
         except Exception as e:
-            logger.error(f"Error processing query '{query}': {e}")
+            logger.error("Task execution stopped (%s)", type(e).__name__)
             final_text.append(f"Error: {str(e)}")
             self.messages.append({"role": "assistant", "content": str(e)})
-        if round_num >= self.max_round:
+        if not stop_flag and round_num >= self.max_round:
             exceeded_flag = True
+            self.stop_reason = 'request_budget_exhausted'
+        if self.execution_error:
+            self.stop_reason = 'execution_failed'
+        elif self.stop_reason is None:
+            self.stop_reason = 'agent_error'
         self.elapsed_seconds = time.perf_counter() - started
         return "\n".join(final_text), self.messages, stop_flag, exceeded_flag
 

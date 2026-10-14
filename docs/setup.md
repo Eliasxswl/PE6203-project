@@ -41,13 +41,15 @@ Copy `.env.example` to `.env` once and fill in:
 ```ini
 BIGMODEL_API_KEY=your-key
 BIGMODEL_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
-BIGMODEL_MODEL=glm-4-flash-250414
+BIGMODEL_MODEL=glm-4.7-flash
 BIGMODEL_JUDGE_MODEL=
 BENCH_JUDGE_RUNS=5
 PYTHONUTF8=1
 ```
 
 The Python entry points load `.env` automatically. Existing environment variables override file values. Quotes around these values are optional. A blank judge model uses the agent model. Keep agent and judge settings fixed across compared strategies. `.env` is ignored by Git.
+
+The common experiment entry point takes models, temperatures, and limits from `config/experiment.json`; `.env` supplies credentials and the provider endpoint. The model environment variables above remain available to standalone diagnostics. Keep `BENCH_JUDGE_RUNS=5` for the reused judge formatter.
 
 The base URL above is BigModel's ordinary OpenAI-compatible API endpoint. See the [official interface documentation](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction).
 
@@ -58,7 +60,7 @@ python scripts/check_model.py
 python scripts/check_model.py --tool-call
 ```
 
-Each command sends one model request and may incur API cost. The first checks text output; the second checks function calling. Both passed with `glm-4-flash-250414` during the local pilot (159 tokens combined).
+Each command sends one model request. The first checks text output; the second checks function calling. Historical execution outputs have been cleared; run these checks only when a model-backed check is authorized.
 
 ## 3. Tasks and tool bundles
 
@@ -100,87 +102,64 @@ python scripts/probe_mcp.py --url http://127.0.0.1:3050/mcp
 
 For other stages, use `--stage smoke-iter3 --port 3053` or `--stage smoke-iter5 --port 3055`. Match the probe URL to the port. Run stages sequentially when sharing the same config directory. Stop the server with Ctrl+C. The launcher passes absolute paths; relative 1mcp config paths caused an empty server configuration locally.
 
-The smoke configurations contain only sequential-thinking. Windows checks discovered 1 tool in Early, 2 in Middle, and 3 in Late, and a real Early tool call succeeded. These checks do not call a model and do not validate a complete benchmark task. macOS has not been tested on a real Mac yet.
+The smoke configurations contain only sequential-thinking. Tool discovery does not call a model and does not validate a complete benchmark task. A real macOS runtime check is still required.
 
-## 5. Run one baseline task
+## 5. Freeze and validate the experiment
 
-Task 9 is a small official task requiring filesystem search/read and task-manager planning. Its unchanged task record and selection IDs are in `config/subsets/baseline-smoke.json` and `baseline-smoke-selection.json`. This development subset does not establish coverage of the final assignment.
-
-Prepare a fresh run at the repository root after generating local configs:
+The common entry point runs from the repository root without changing directories or setting PYTHONPATH. The current seed is 6203 and the ten IDs are already frozen in `config/subsets/selected_tasks.json`. The source remains the untouched official task dataset; reference answers and trajectories are excluded from Agent input.
 
 ```text
-python scripts/prepare_baseline_smoke.py --run-id run-1
-python scripts/start_mcp.py --config config/local/baseline-run-1/mcp.json --port 3050
+python -m custom.experiment validate --config config/experiment.json --offline
 ```
 
-Keep that service running in terminal 1. The helper copies the official log into an isolated workspace, restricts filesystem access to that workspace, and sets a separate task-manager data file. Existing results are preserved. Use a new run ID for another independent trajectory.
+Use `select --config config/experiment.json` only when the selection file does not exist. To intentionally adjust the subset before a new experiment, edit this same ID list; validation rejects duplicate, unknown, and noncandidate IDs. Selection never replaces failed tasks.
 
-Set the matching workspace in terminal 2 before running the Agent. On Windows PowerShell, from the repository root:
+`config/experiment.json` fixes three stages, three Agent repeats, five judge slots, models, temperatures, token limits, and timeout policy. GLM-4.7-Flash uses explicit thinking settings: Agent enabled, judge disabled; Agent output budget is 8192 tokens. These settings are identical across the two strategies. The two baseline strategies are `no_update` and `full_rewrite`; together they plan 180 trajectories and 900 judge attempts. The effective request cap is the upstream Early tool-count budget plus the historical extra request, frozen per task across stages. Completion and exhaustion are recorded separately.
 
-```powershell
-$env:BENCH_WORKSPACE = (Resolve-Path results/baseline/original/run-1/workspace).Path
-```
+All tools belonging to each task's required servers form the knowledge scope. One Early catalog is frozen for all strategies/repeats; each episode receives a copy. Current semantic descriptions and schemas are separate from changing callable routes. The Agent prompt, stop feedback, visible response truncation, and upstream judge rubric remain in use; complete raw responses are additionally saved.
 
-On macOS, from the repository root:
+The experiment uses actual frozen-stage `tools/list` catalogs (`runtime.catalog_source: live`) as the common environment. Each strategy decides whether to update its knowledge. Evolution overlays remain an explicit alternative requiring a verified mapping; they are not applied in this experiment because the available records do not align cleanly with the archived tool-addition order. No tool migration answer is supplied. The judge represents calls and catalog entries with server/tool identities so API aliases cannot confuse duplicate names.
 
-```bash
-export BENCH_WORKSPACE="$PWD/results/baseline/original/run-1/workspace"
-```
+## 6. Offline checks, execution, and recovery
 
-Then use the same command on both systems:
+Development runs use only fake models and tools:
 
 ```text
-cd src
-python -m custom.real_mcp.tool_level_test --step 3 --stage original --run_id run-1 --test_case_file ../config/subsets/baseline-smoke.json --mcp_server_url http://127.0.0.1:3050/mcp
-```
-
-The model comes from `.env`. Existing answer files are skipped on resume. Use `run-2` and `run-3`, their respective prepared configs and workspaces, and fresh services for independent repeats. Resetting arbitrary benchmark servers still requires task-specific work.
-
-Other subsets must retain official task IDs and metadata and have their required servers verified. Middle/Late use `--step 4 --stage iter3` or `iter5`, plus `--mutation_path` pointing to verified evolution metadata. The mutation path is an input only; it no longer controls the result directory. The current runner exposes selected live tool metadata and does not yet implement the three adaptation strategies.
-
-## 6. Score and locate results
-
-All baseline stages now use the same layout, relative to the repository root:
-
-```text
-results/baseline/original/run-1/answers/9.json
-results/baseline/original/run-1/scores/9.json
-results/baseline/original/run-1/workspace/
-```
-
-Replace `original` and `run-1` with the selected stage and run ID. Optional `--output_path` sets the run directory directly (relative paths resolve from the command's working directory); `answers/` and `scores/` remain sibling directories. This replaces the upstream layout that nested results under model names or mutation metadata. Legacy `ANSWER` directories can still be scored explicitly.
-
-From `src/`, with the matching tool service running:
-
-```text
-python -m custom.analysis.answer.evaluation --answer_path ../results/baseline/original/run-1/answers --task_selection ../config/subsets/baseline-smoke-selection.json --num_runs 5 --max-workers 1 --mcp_server_url http://127.0.0.1:3050/mcp
-```
-
-A blank `BIGMODEL_JUDGE_MODEL` defaults to the Agent model. Scoring uses temperature 0 and five independent judge attempts. Each score file includes `eval_result.runs`, `eval_result.aggregate` with exact means and attempt counts, and the scoring policy. Some legacy summary fields are rounded; use aggregate means for analysis. Failed attempts are recorded without top-up, API requests do not automatically retry, and resume reuses completed five-attempt files. Agent answer files include model token usage and elapsed time; judge token/currency accounting remains pending.
-
-The Windows development pilot produced three Agent trajectories and 15 successful judge responses for task 9. Run 1 failed due to a routing metadata bug that was then fixed. Runs 2 and 3 reached the search tool but used nonrecursive glob patterns and failed to find the nested log. Separate direct checks confirmed search with `**/*yesterday*`, log reading, and planning all work. The pilot must not be averaged into a formal three-repeat comparison because code changed between runs and tasks were not fulfilled. No additional model runs were added.
-
-The small judge also miscounted calls in some explanations. Repetition reduces random variation but cannot remove systematic scoring errors or self-evaluation bias. Keep the judge settings and rubric identical across strategies and inspect explanations against saved trajectories. These pilot scores require that manual audit before reporting.
-
-Local pilot outputs are under `results/baseline/original/run-{1,2,3}/`; `summary.json` records their debug status. Results and workspaces are ignored by Git by default. Publish selected sanitized experiment results explicitly when the group is ready.
-
-For ECS, supply three matching stage score directories to `custom/analysis/answer/evolutionary_volatility.py`. Cross-repeat aggregation and plotting remain to be integrated.
-
-## 7. Integration and current limits
-
-- `src/custom/agents/SimpleOpenAIAgent.py`: model/tool execution loop.
-- `src/custom/real_mcp/tool_level_test.py`: task loading and tool metadata.
-- `src/custom/analysis/answer/evaluation.py`: judge calls and result storage.
-- `src/custom/utils/model_config.py`: `.env` settings.
-
-The planned adaptation hook updates persistent tool knowledge before the Agent executes a task. The knowledge format, three strategies, and their common interface are not implemented. Automatic three-run scheduling, clean-state reset, update/model cost accounting, and final result aggregation are also pending.
-
-Protocol: three independent Agent runs per task/stage/strategy and five judge attempts per trajectory. That is 45 judge attempts per task/stage across three strategies, or 135 across all three stages, excluding the Agent's own model calls.
-
-Offline checks, from the repository root:
-
-```text
+python -m custom.experiment run --config config/experiment.json --offline
+python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
+python -m custom.experiment run --config config/experiment.json --offline --resume <offline-experiment-directory>
+python -m custom.experiment summarize --experiment <experiment-directory>
 python -m unittest discover -s tests -v
 ```
 
-Commit source, tests, configuration templates, and appropriate experiment outputs for reproducibility. Keep credentials, virtual environments, downloaded bundles, and generated node_modules out of Git. No additional generated documentation is maintained beyond the root README and this guide.
+Offline output is under `.runtime/experiments/offline-results/`, separate from formal model-backed results. The launcher prints the exact experiment directory. Serial execution is the default; optional spawn workers execute ordered strategy/repeat episodes with one model request per worker at a time. Resume preserves the original mode and worker count.
+
+After review and explicit authorization, omit `--offline` for live execution. First use `check --config config/experiment.json` to discover stage catalogs and test model tool calling and scoring JSON separately. If selecting `catalog_source: evolution_overlay`, supply ordered evolution files and verify their correspondence before setting `runtime.metadata_verified`; live catalogs do not pretend this mapping has been verified. Configure private MCP launchers in `config/local/`; downloading launchers are rejected until replaced by verified frozen entry points.
+
+Filesystem, task-manager, sequential-thinking, and time backends have explicit built-in isolation. Other backends require a source review and a recorded policy in `runtime.policies`. A reviewed workspace policy may declare `env_paths`, mapping state environment variables to paths relative to the private runtime. Read-only external services may use a reviewed stateless policy. Mutable remote services need a concrete isolation/reset implementation, not merely a reviewed flag. Unsupported backends produce recorded execution failures; no task is silently replaced.
+
+Formal output is shallow:
+
+```text
+results/<UTC-microseconds>_<sanitized-git-user-name>/
+    experiment.json
+    records.json
+```
+
+The manifest records public settings, source/code fingerprints, selected IDs, and planned identities. Records contain complete traces, knowledge snapshots/updates, model attempt statuses/available usage, exactly five judge slots per trajectory, failures, timings, and aggregates. Credentials and temporary runtime state are excluded from formal output.
+
+Execution failures skip scoring and do not stop unrelated runs. Agent mistakes in an operational environment remain scored. Judge failures consume slots without top-up; means use valid scores and include explicit coverage counts. ECS uses valid matched task/repeat records across the three stages and the upstream population standard deviation.
+
+Checkpoints are saved before requests and after completions. Completed/failed attempts are retained; an interrupted in-flight request becomes outcome unknown and is never automatically replayed. Remaining judge slots can resume from a completed Agent trajectory without rerunning tools. Code/config/data changes require a new experiment; detected changes during execution invalidate its scores. Restart creates fresh fixture copies and owned services while restoring the committed knowledge snapshot.
+
+Transport timeouts also have unknown request outcomes, with recorded causal errors. MCP parameter-validation errors remain normal Agent feedback. The offline RPC mock test still needs Windows localhost socket-pair access for asyncio; the restricted execution sandbox may need that permission even though no model/MCP endpoint is contacted.
+
+The old `run_agent.ps1` delegates to this entry point; `prepare_baseline_smoke.py` now delegates to validation. Legacy per-task outputs remain readable through existing analysis utilities but are not the formal experiment path.
+
+## 7. Strategy integration and change record
+
+The adapter interface is `update(knowledge, old_tools, new_tools, context) -> UpdateResult`. Knowledge is keyed by `server::tool` and contains description/schema information; transport routes are excluded. Role 1 registers Selective Patch with `custom.experiment.adapters.register`, and lists its importable module in `strategy_plugins`. Inputs are defensive copies; results include knowledge, changed entries, explanation, and elapsed time. Unavailable strategies fail before model calls.
+
+Keep [fixed-plan.md](fixed-plan.md) as the change reference: record files, before/after behavior, necessity, benchmark effect, and verification for each logical change. Code and documentation default to English; additional documents, commits, pushes, PRs, and model-backed checks require explicit instructions.
+
+Windows spawn, interruption, worker failure, and state isolation have offline acceptance checks. macOS launcher resolution is covered, but a real macOS runtime check remains pending.

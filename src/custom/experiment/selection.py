@@ -1,0 +1,188 @@
+"""One frozen ID list and immutable official inputs."""
+import hashlib
+import json
+from pathlib import Path
+import random
+
+ROOT = Path(__file__).resolve().parents[3]
+STAGES = ("original", "iter3", "iter5")
+
+
+def read_json(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
+                                     separators=(",", ":")).encode()).hexdigest()
+
+
+def file_hash(path):
+    hasher = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            hasher.update(block)
+    return hasher.hexdigest()
+
+
+def tree_hash(path):
+    path = Path(path)
+    if not path.is_dir():
+        raise ValueError(f"Missing fixture directory: {path}")
+    return digest({item.relative_to(path).as_posix(): file_hash(item)
+                   for item in sorted(path.rglob("*")) if item.is_file()})
+
+
+def load_config(path):
+    path = Path(path).resolve()
+    config = read_json(path)
+    if not isinstance(config, dict):
+        raise ValueError("Experiment configuration must be an object")
+    allowed = {"selection_file", "selection_seed", "task_source", "candidate_source", "fixtures",
+               "agent_repeats", "judge_attempts_per_trajectory", "agent_model", "judge_model",
+               "agent_temperature", "judge_temperature", "agent_max_tokens", "judge_max_tokens",
+               "agent_thinking", "judge_thinking",
+               "round_policy", "max_requests", "stages", "strategies", "runtime", "mode",
+               "mock", "strategy_plugins", "judge_failure_top_up", "automatic_api_retries"}
+    if set(config) - allowed:
+        raise ValueError(f"Unknown configuration fields: {sorted(set(config) - allowed)}")
+    if config.get("mode", "live") not in ("live", "offline"):
+        raise ValueError("mode must be live or offline")
+    if config.get("stages") != list(STAGES):
+        raise ValueError("Stages must be original -> iter3 -> iter5")
+    if config.get("agent_repeats") != 3 or config.get("judge_attempts_per_trajectory") != 5:
+        raise ValueError("Use 3 Agent repeats and 5 judge slots")
+    if config.get("judge_failure_top_up", False) or config.get("automatic_api_retries", 0) != 0:
+        raise ValueError("Retries and judge top-up must be disabled")
+    if config.get("round_policy") not in ("early_tool_count_plus_one", "fixed"):
+        raise ValueError("Declare an early_tool_count_plus_one or fixed round policy")
+    if config.get("round_policy") == "fixed" and (type(config.get("max_requests")) is not int
+                                                  or config["max_requests"] < 1):
+        raise ValueError("fixed round policy requires a positive max_requests")
+    for key in ("agent_max_tokens", "judge_max_tokens"):
+        if type(config.get(key)) is not int or config[key] < 1:
+            raise ValueError(f"{key} must be a positive integer")
+    for key in ("agent_temperature", "judge_temperature"):
+        if type(config.get(key)) not in (int, float) or not 0 <= config[key] <= 2:
+            raise ValueError(f"Invalid {key}")
+    for key in ("agent_thinking", "judge_thinking"):
+        if config.get(key) not in (None, "enabled", "disabled"):
+            raise ValueError(f"Invalid {key}")
+    if type(config.get("selection_seed")) is not int:
+        raise ValueError("selection_seed must be an integer")
+    if not isinstance(config.get("agent_model"), str) or not config["agent_model"]:
+        raise ValueError("agent_model is required")
+    if not isinstance(config.get("strategies"), list) or not config["strategies"]:
+        raise ValueError("Declare at least one strategy")
+    if any(not isinstance(name, str) or not name for name in config["strategies"]):
+        raise ValueError("Strategy names must be nonempty strings")
+    if not isinstance(config.get("judge_model", ""), str):
+        raise ValueError("judge_model must be a string")
+    if len(set(config["strategies"])) != len(config["strategies"]):
+        raise ValueError("Duplicate strategies")
+    runtime = config.get("runtime", {})
+    runtime_allowed = {"configs", "policies", "connect_timeout", "read_timeout", "tool_timeout",
+                       "startup_timeout", "shutdown_timeout", "model_timeout", "metadata_verified",
+                       "evolution_files", "catalog_source"}
+    if runtime.get("catalog_source", "evolution_overlay") not in ("live", "evolution_overlay"):
+        raise ValueError("Declare a live or evolution_overlay catalog source")
+    if set(runtime) - runtime_allowed:
+        raise ValueError("Unknown runtime fields; credentials belong in private local configuration")
+    for key in ("connect_timeout", "read_timeout", "tool_timeout", "startup_timeout",
+                "shutdown_timeout", "model_timeout"):
+        if type(runtime.get(key)) not in (int, float) or not 0 < runtime[key] <= 3600:
+            raise ValueError(f"Invalid runtime {key}")
+    return config
+
+
+def inputs(config):
+    records = read_json(ROOT / config["task_source"])
+    candidates = read_json(ROOT / config["candidate_source"])["samples"]
+    ids = [entry["idx"] for entry in candidates]
+    if any(type(idx) is not int for idx in ids) or len(ids) != len(set(ids)):
+        raise ValueError("Invalid candidate IDs")
+    by_id = {record["idx"]: record for record in records}
+    if len(by_id) != len(records) or not set(ids) <= set(by_id):
+        raise ValueError("Invalid task-source identities")
+    return by_id, sorted(ids)
+
+
+def select(config):
+    _, candidates = inputs(config)
+    path = ROOT / config["selection_file"]
+    if path.exists():
+        raise ValueError("Selection is already frozen; edit the same ID list intentionally")
+    selected = random.Random(config["selection_seed"]).sample(candidates, 10)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump({"seed": config["selection_seed"], "candidate_order": "ascending_numeric",
+                   "candidate_sha256": file_hash(ROOT / config["candidate_source"]),
+                   "samples": [{"idx": idx} for idx in selected]}, stream, indent=2)
+        stream.write("\n")
+    return selected
+
+
+def tasks(config):
+    by_id, candidates = inputs(config)
+    selection = read_json(ROOT / config["selection_file"])
+    ids = [sample["idx"] for sample in selection["samples"]]
+    if len(ids) != 10 or any(type(idx) is not int for idx in ids) or len(set(ids)) != 10:
+        raise ValueError("Selection must contain exactly 10 distinct integer IDs")
+    if not set(ids) <= set(candidates):
+        raise ValueError("Selection contains IDs outside the upstream candidates")
+    if "candidate_sha256" in selection and selection["candidate_sha256"] != file_hash(ROOT / config["candidate_source"]):
+        raise ValueError("Candidate source changed after selection")
+    # No reference tools calls, answers, trajectories, or evaluation fields cross this boundary.
+    return [{"idx": idx, "question": by_id[idx]["question"], "servers": by_id[idx]["servers"]}
+            for idx in ids]
+
+
+def request_limit(config, task):
+    if config["round_policy"] == "fixed":
+        return config["max_requests"]
+    # Preserve the upstream Early branch's effective budget when all specified tools exist.
+    return max(10, 2 * sum(len(names) for names in task["servers"].values())) + 1
+
+
+def fingerprints(config):
+    paths = [config["task_source"], config["candidate_source"], config["selection_file"]]
+    paths += [p.relative_to(ROOT).as_posix() for p in (ROOT / "src/custom/data/mutation").rglob("evolution.json")]
+    paths += [name for names in config["runtime"].get("evolution_files", {}).values() for name in names if name not in paths]
+    paths += [f"servers/1mcp_config/{stage}/mcp.json" for stage in STAGES]
+    paths += [f"servers/{stage}_servers/package-lock.json" for stage in STAGES
+              if (ROOT / f"servers/{stage}_servers/package-lock.json").exists()]
+    source = {name: file_hash(ROOT / name) for name in paths}
+    source["fixtures"] = tree_hash(ROOT / config["fixtures"])
+    if config.get("mode", "live") == "live":
+        from custom.utils import model_config
+        source["provider_endpoint"] = digest(model_config.base_url())
+        for stage, name in config["runtime"]["configs"].items():
+            source[f"local_config:{stage}"] = file_hash(ROOT / name)
+            local = read_json(ROOT / name)["mcpServers"]
+            from .runtime import ALIASES
+            required = {ALIASES.get(s, s) for task in tasks(config) for s in task["servers"]}
+            for server in sorted(required & local.keys()):
+                for argument in local[server].get("args", []):
+                    path = Path(argument)
+                    if path.is_absolute() and path.is_file():
+                        source[f"tool_entry:{stage}:{server}:{path.name}"] = file_hash(path)
+        for name in (".runtime/package-lock.json", ".runtime/node_modules/@1mcp/agent/package.json"):
+            if (ROOT / name).is_file():
+                source[name] = file_hash(ROOT / name)
+    code_files = list((ROOT / "src/custom").rglob("*.py")) + list((ROOT / "custom").rglob("*.py"))
+    code_files += list((ROOT / "src/custom/experiment").glob("*.mjs"))
+    code_files += list((ROOT / "scripts").glob("*.py")) + list((ROOT / "scripts").glob("*.ps1"))
+    code_files += [ROOT / "requirements-api.txt"]
+    import importlib
+    for name in config.get("strategy_plugins", []):
+        module = importlib.import_module(name)
+        origin = getattr(module, "__file__", None)
+        if origin:
+            path = Path(origin).resolve()
+            code_files.append(path)
+            # Include a plugin's local helper modules, without scanning the entire runtime.
+            code_files += list(path.parent.glob("*.py") if path.parent == ROOT
+                               else path.parent.rglob("*.py"))
+    code = digest({p.relative_to(ROOT).as_posix() if p.is_relative_to(ROOT) else str(p): file_hash(p)
+                   for p in sorted(set(code_files))})
+    return {"config": digest(config), "sources": source, "code": code}

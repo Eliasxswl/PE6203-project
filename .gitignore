@@ -6,7 +6,7 @@ servers/iter3_servers/
 servers/iter5_servers/
 config/local/
 logs/
-results/
+results/baseline/
 __pycache__/
 *.pyc
 .env

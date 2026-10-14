@@ -1,20 +1,20 @@
 param(
-    [Parameter(Mandatory=$true)][string]$TaskFile,
-    [string]$OutputPath,
-    [ValidateSet('original','iter3','iter5')][string]$Stage = 'original',
-    [int]$Port = 3050,
-    [string]$MutationPath,
-    [string]$RunId = 'run-1'
+    [string]$Config = 'config/experiment.json',
+    [string]$Resume,
+    [switch]$Offline,
+    [switch]$Parallel,
+    [int]$Workers = 2
 )
+# Compatibility wrapper; all experimental behavior belongs to the Python entry point.
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$env:PYTHONPATH = Join-Path $projectRoot 'src'
-$env:PYTHONUTF8 = '1'
-Set-Location -LiteralPath "$projectRoot\src"
-$runArgs = @('-m','custom.real_mcp.tool_level_test','--step','3','--test_case_file',$TaskFile,'--stage',$Stage,'--run_id',$RunId,'--mcp_server_url',"http://127.0.0.1:$Port/mcp")
-if ($OutputPath) { $runArgs += @('--output_path',$OutputPath) }
-if ($Stage -ne 'original') {
-    $runArgs[3] = '4'
-    if (-not $MutationPath) { throw 'Pass the verified -MutationPath for this stage and task subset.' }
-    $runArgs += @('--mutation_path',$MutationPath)
+Set-Location -LiteralPath $projectRoot
+$interpreter = Join-Path $projectRoot '.venv\Scripts\python.exe'
+if (-not (Test-Path -LiteralPath $interpreter)) {
+    $interpreter = (Get-Command python -ErrorAction Stop).Source
 }
-& "$projectRoot\.venv\Scripts\python.exe" @runArgs
+$runArgs = @('-m', 'custom.experiment', 'run', '--config', $Config)
+if ($Resume) { $runArgs += @('--resume', $Resume) }
+if ($Offline) { $runArgs += '--offline' }
+if ($Parallel) { $runArgs += @('--parallel', '--workers', "$Workers") }
+& $interpreter @runArgs
+exit $LASTEXITCODE
