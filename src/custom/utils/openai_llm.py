@@ -11,13 +11,10 @@ sys.path.append('FastChat')
 from openai import OpenAI
 from typing import List, Dict, Optional
 
-from FastChat.fastchat.model.model_adapter import get_conversation_template
-from FastChat.fastchat.conversation import get_conv_template
+from custom.utils import model_config
 from requests.exceptions import Timeout, ConnectionError
 
 
-api_key = 'sk-xxxxx'
-base_url = 'https://api.huiyan-ai.cn/v1'
 
 def chat_with_openai(
     conversation: List[Dict[str, str]],
@@ -41,7 +38,7 @@ def chat_with_openai(
         模型生成的回复字符串。
     """
     # 创建客户端，base_url 可为 None（使用默认）
-    client = OpenAI(api_key=api_key, base_url=base_url)
+    client = OpenAI(api_key=model_config.api_key(), base_url=model_config.base_url(), max_retries=0)
     try:
         response = client.chat.completions.create(
             model=model,
@@ -53,6 +50,8 @@ def chat_with_openai(
         content = response.choices[0].message.content
         return content.strip() if content else ""
     except Exception as e: # tool_name
+        import logging
+        logging.getLogger(__name__).error("Model call failed (%s)", type(e).__name__)
         return None
 
 
@@ -169,6 +168,7 @@ def continue_gen(model_name, messages, gen_continue=False) -> str:
         "top_p": 0.9,  # 0.9
     }
     # conv = get_conversation_template(os.path.join("LLaMA-Factory/lora", self.model_name))
+    from fastchat.model.model_adapter import get_conversation_template
     conv = get_conversation_template('qwen')
     for history_item in messages:
         role = history_item[0]

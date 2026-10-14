@@ -4,15 +4,15 @@ import uuid
 
 from openai.types.chat import ChatCompletionToolParam, ChatCompletionMessageToolCall
 
-from custom.utils.fastchat_utils import chat_with_fastchat
 from custom.utils.test_utils import offset_date, generate_tree_string
+from custom.utils import model_config
 
 SINGLE_SERVER_INTERATION_SYSTEM_PROMPT = '''You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. 
 Note that do not to ask any questions to the user, just call the tool to complete the task.
 
 Considering real-time performance, the time is set to be around `{SET_TIME}`.
 
-These files are stored in the local file system and serve as relevant resources for tool utilization. Add the prefix path "./anotation_path" to the following file systems as an absolute path during use:
+These files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix "{WORKSPACE_ROOT}" for the following files:
 `{FILE_EXISTS}`
 
 Database Configuration (if applicable):
@@ -131,8 +131,9 @@ class ChatModel:
         self.temperature = temperature
         self.max_new_tokens = max_new_tokens
         self.client = OpenAI(
-            api_key=api_key,
-            base_url=model_url,
+            api_key=api_key or model_config.api_key(),
+            base_url=model_url or model_config.base_url(),
+            max_retries=0,
         )
         self.url = mcp_server_url
         self.extra_body = {"enable_thinking": True}
@@ -141,7 +142,7 @@ class ChatModel:
             self.client.chat.completions.create,
             model=model_name,
             temperature=temperature,
-            max_completion_tokens=max_new_tokens,
+            max_tokens=max_new_tokens,
             # extra_body=self.extra_body,
         )
         self.tools = [
@@ -159,6 +160,7 @@ class ChatModel:
         self.mcp_client = mcp_client
         self.messages = [{'role':'system', 'content':SINGLE_SERVER_INTERATION_SYSTEM_PROMPT.format(
             SET_TIME=str(offset_date(0)),
+            WORKSPACE_ROOT=str(model_config.workspace_dir()),
             FILE_EXISTS=file_exists
         )
 }]
@@ -168,7 +170,7 @@ class ChatModel:
     def init_extra_body(self):
         self.extra_body["enable_thinking"] = False
 
-    def chat_with_retry(self, message, retry=4):
+    def chat_with_retry(self, message, retry=1):
         @on_exception(expo, Exception, max_tries=retry)
         def _chat_with_retry(message):
             return self.chat(messages=message)
@@ -181,7 +183,7 @@ class ChatModel:
             raise e
 
     def complete_with_retry(self, **args):
-        @on_exception(expo, Exception, max_tries=5)
+        @on_exception(expo, Exception, max_tries=1)
         def _chat_with_retry(**args):
             return self.chat(**args)
 
@@ -222,6 +224,7 @@ class ChatModel:
                         )
                     response_message = response.choices[0].message
                 else:
+                    from custom.utils.fastchat_utils import chat_with_fastchat
                     response_message = chat_with_fastchat(this_messages=self.messages, model_name=self.model_name, tools=self.tools)
 
                 round_num += 1

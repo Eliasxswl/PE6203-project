@@ -1,0 +1,14 @@
+.venv/
+.runtime/
+servers/downloads/
+servers/original_servers/
+servers/iter3_servers/
+servers/iter5_servers/
+config/local/
+logs/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+bigmodel-openai-doc.md

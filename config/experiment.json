@@ -1,0 +1,10 @@
+{
+  "agent_repeats": 3,
+  "judge_attempts_per_trajectory": 5,
+  "agent_model": "glm-4-flash-250414",
+  "judge_failure_top_up": false,
+  "automatic_api_retries": 0,
+  "stages": ["original", "iter3", "iter5"],
+  "strategies": ["no_update", "full_rewrite", "selective_patch"],
+  "status": "protocol_only_repeat_runner_and_workspace_reset_not_yet_implemented"
+}

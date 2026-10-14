@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import pty
 import threading
 import subprocess
 import shlex

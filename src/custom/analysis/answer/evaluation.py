@@ -1,6 +1,6 @@
 """
 基于 eval_error_prompt.build_mcp_bench_judge_prompt 对单条轨迹做 LLM 评分。
-默认对每条 case 评估 5 次，每次随机打乱三个维度的 rubric 与 Step 1/2 条目顺序（prompt shuffle）。
+对每条 case 固定尝试评估 5 次，不为失败额外补跑；随机打乱评分条目顺序。
 测试数据为列表，元素含 question, trajectory_messages, answer, servers。
 """
 from __future__ import annotations
@@ -17,11 +17,18 @@ from custom.prompt.eval_error_prompt import build_mcp_bench_judge_prompt
 from custom.utils.test_utils import load_all_json_files, format_tools_to_string, get_1mcp_server_tools
 from custom.utils.mcp_utils import get_1mcp_status
 from custom.utils.openai_llm import chat_with_openai
-from custom.analysis.mutation.utils import extract_json_from_markdown
+from custom.utils import model_config
+from custom.utils.test_utils import parse_string_to_json
 
-tool_status, _ = asyncio.run(get_1mcp_status('http://127.0.0.1:3050/mcp'))
+def extract_json_from_markdown(text):
+    try:
+        return parse_string_to_json(text)
+    except (ValueError, TypeError):
+        return None
 
-NUM_EVAL_RUNS = 5
+tool_status = None
+
+NUM_EVAL_RUNS = model_config.judge_runs()
 # 默认同时评估的任务数（每条 case 视为一个 task）；受 API 限流时可调小
 DEFAULT_MAX_WORKERS = 5
 # 维度下标：0=Task Fulfillment, 1=Information Grounding, 2=Planning Efficiency
@@ -146,6 +153,12 @@ def evaluate_one(
     parsed = extract_json_from_markdown(raw.strip())
     if parsed is None:
         return {"error": "Failed to parse judge JSON", "raw": raw}
+    if not isinstance(parsed, dict) or any(
+        not isinstance(parsed.get(key), int) or isinstance(parsed.get(key), bool)
+        or not 1 <= parsed[key] <= 10
+        for key in ('task_fulfillment', 'grounding', 'planning_and_efficiency')
+    ):
+        return {"error": "Invalid or missing judge scores", "raw": parsed}
     return parsed
 
 
@@ -192,7 +205,7 @@ def aggregate_eval_runs(run_payloads: List[Dict[str, Any]]) -> Dict[str, Any]:
     return out
 
 
-def evaluate_one_five_times(
+def evaluate_one_fixed_attempts(
     case: Dict[str, Any],
     *,
     model: str = "gpt-4o",
@@ -207,21 +220,9 @@ def evaluate_one_five_times(
     """
     rng = rng or random.Random()
     runs: List[Dict[str, Any]] = []
-    # NOTE: 评估过程中可能出现 LLM 返回不可解析 JSON，导致 successful_runs < num_runs。
-    # 这里按“成功解析的次数”补跑，直到成功次数达到 num_runs（默认 5）。
-    # 为避免一直失败造成死循环，设置最大总尝试次数上限。
-    target_successful_runs = max(1, int(num_runs))
-    max_total_runs = max(target_successful_runs, target_successful_runs * 3)
-    while True:
-        successful_so_far = sum(
-            1
-            for item in runs
-            if isinstance(item.get("result"), dict) and "error" not in item.get("result", {})
-        )
-        if successful_so_far >= target_successful_runs:
-            break
-        if len(runs) >= max_total_runs:
-            break
+    if num_runs != 5:
+        raise ValueError('Use exactly 5 judge attempts per trajectory.')
+    for _ in range(num_runs):
         order = _random_dimension_order(rng)
         result = evaluate_one(
             case,
@@ -232,7 +233,7 @@ def evaluate_one_five_times(
         )
         runs.append({"dimension_order": list(order), "result": result})
     aggregate = aggregate_eval_runs(runs)
-    packed: Dict[str, Any] = {"runs": runs, "aggregate": aggregate}
+    packed: Dict[str, Any] = {"runs": runs, "aggregate": aggregate, "attempt_policy": "fixed_5_no_top_up"}
     # 将聚合后的整数分数字段也挂在顶层，兼容原先 eval_result 为扁平 JSON 的用法
     for k in ("task_fulfillment", "grounding", "planning_and_efficiency"):
         if k in aggregate:
@@ -279,7 +280,7 @@ def _evaluate_case_task(
 ) -> Dict[str, Any]:
     """供线程池调用的单 task 评估（独立 RNG，避免多线程共享 random 状态）。"""
     rng = random.Random(rng_seed)
-    return evaluate_one_five_times(case, model=model, num_runs=num_runs, rng=rng)
+    return evaluate_one_fixed_attempts(case, model=model, num_runs=num_runs, rng=rng)
 
 
 def evaluate_list(
@@ -294,14 +295,14 @@ def evaluate_list(
     """评估每条轨迹；对多个 task 使用线程池并发（每条 case 内仍为顺序多次 LLM 调用）。
 
     若提供 save_dir，则每评估一条即写入 save_dir/{idx}.json（idx 为从 0 起的序号）。
-    每条 case 默认评估 num_runs 次（prompt shuffle），结果写入 case['eval_result']。
+    每条 case 固定评估 5 次（prompt shuffle），结果写入 case['eval_result']。
     """
     total_scores = {'task_fulfillment_mean':0, 'grounding_mean':0, 'planning_and_efficiency_mean':0}
     total_number = 0
     assert save_dir is not None
 
     def _is_eval_complete(path: str, *, required_successful_runs: int) -> bool:
-        """判断已落盘的 EVAL 文件是否满足所需评估次数（默认 5）。"""
+        """检查是否已记录固定五次尝试；失败也算已完成的尝试。"""
         try:
             with open(path, "r", encoding="utf-8") as f:
                 payload = json.load(f)
@@ -316,17 +317,17 @@ def evaluate_list(
         if not isinstance(aggregate, dict):
             return False
 
-        successful_runs = aggregate.get("successful_runs")
-        if not isinstance(successful_runs, int):
-            return False
-
-        return successful_runs >= int(required_successful_runs)
+        # Failures are recorded attempts: do not silently rerun them on resume.
+        return (
+            eval_result.get('attempt_policy') == 'fixed_5_no_top_up'
+            and aggregate.get('total_runs') == required_successful_runs == 5
+        )
 
     items = list(cases.items())
     need_eval: List[Tuple[Any, Dict[str, Any]]] = []
     for key, case in items:
         path = os.path.join(save_dir, f"{case['idx']}.json")
-        # 即使文件存在，也要检查是否满足 required_successful_runs（默认 5）
+        # 重启时复用已记录的五次尝试，不为失败自动重新评分。
         if (not os.path.exists(path)) or (not _is_eval_complete(path, required_successful_runs=num_runs)):
             need_eval.append((key, case))
 
@@ -362,14 +363,17 @@ def evaluate_list(
             if not isinstance(packed, dict) or "aggregate" not in packed:
                 continue
 
-        total_scores["task_fulfillment_mean"] += packed["aggregate"]["task_fulfillment_mean"]
-        total_scores["grounding_mean"] += packed["aggregate"]["grounding_mean"]
-        total_scores["planning_and_efficiency_mean"] += packed["aggregate"]["planning_and_efficiency_mean"]
+        scores = packed['aggregate']
+        if any(scores.get(key) is None for key in total_scores):
+            continue
+        total_scores["task_fulfillment_mean"] += scores["task_fulfillment_mean"]
+        total_scores["grounding_mean"] += scores["grounding_mean"]
+        total_scores["planning_and_efficiency_mean"] += scores["planning_and_efficiency_mean"]
         total_number += 1
-    print(f"task_fulfillment: {total_scores['task_fulfillment_mean'] / total_number:.3f}")
-    print(f"grounding: {total_scores['grounding_mean'] / total_number:.3f}")
-    print(f"planning_and_efficiency: {total_scores['planning_and_efficiency_mean'] / total_number:.3f}")
-    print(total_number)
+    if total_number:
+        for key, value in total_scores.items():
+            print(f'{key}: {value / total_number:.3f}')
+    print(f'Scored trajectories: {total_number}/{len(items)}; missing scores must be reported, not treated as success.')
 
 # --answer_path custom/data/exp_output/gpt-5.1/ANSWER --mutation_answer_path custom/data/mutation/HYBRID/ANSWER-gpt-5.1
 if __name__ == "__main__":
@@ -382,8 +386,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--mutation_answer_path", default='', help="Path to JSON list of cases (question, trajectory_messages, answer, servers)",
     )
-    parser.add_argument("--model", default="deepseek-chat")
-    parser.add_argument("--num_runs", type=int, default=NUM_EVAL_RUNS, help="Evaluations per case (prompt shuffle each run)")
+    parser.add_argument("--model", default=os.environ.get("BIGMODEL_JUDGE_MODEL") or os.environ.get("BIGMODEL_MODEL", ""))
+    parser.add_argument("--mcp_server_url", default="http://127.0.0.1:3050/mcp")
+    parser.add_argument("--task_selection", required=True, help="Explicit JSON containing samples with idx; confirm the official selection before final evaluation.")
+    parser.add_argument("--num_runs", type=int, choices=[5], default=NUM_EVAL_RUNS, help="Exactly 5 judge attempts per trajectory; no failure top-up")
     parser.add_argument(
         "--max-workers",
         type=int,
@@ -397,6 +403,9 @@ if __name__ == "__main__":
         help="Base seed for per-task RNG (shuffle order); reproducible across runs",
     )
     args = parser.parse_args()
+    if not args.model:
+        parser.error('Set BIGMODEL_JUDGE_MODEL / BIGMODEL_MODEL or pass --model.')
+    tool_status, _ = asyncio.run(get_1mcp_status(args.mcp_server_url))
     print(f'will be evaluated: {args.answer_path}')
 
     answer_path = args.answer_path
@@ -410,7 +419,7 @@ if __name__ == "__main__":
 
     cases = load_all_json_files(answer_path)
 
-    with open(f'custom/data/test_cases/real.json', 'r', encoding='utf-8') as f:
+    with open(args.task_selection, 'r', encoding='utf-8') as f:
         real_test_cases = json.load(f)
     real_test_case_ids = [item['idx'] for item in real_test_cases['samples']]
 

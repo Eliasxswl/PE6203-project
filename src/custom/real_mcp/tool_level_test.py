@@ -14,6 +14,7 @@ from custom.utils.test_utils import *
 from custom.utils.openai_llm import chat_with_openai
 from custom.utils.mcp_utils import *
 from custom.agents.SimpleOpenAIAgent import ChatModel
+from custom.utils import model_config
 
 
 def get_all_evolution_status(mutation_path):
@@ -459,7 +460,7 @@ if __name__ == "__main__":
         "--output_path", default='custom/data/test_cases/',
     )
     parser.add_argument(
-        "--model_name", default='gpt-4o'
+        "--model_name", default=os.environ.get('BIGMODEL_MODEL', '')
     )
     parser.add_argument(
         "--combination_num", default=100, type=int
@@ -489,6 +490,8 @@ if __name__ == "__main__":
         help="Enable FastChat format conversion and inference mode"
     )
     args = parser.parse_args()
+    if not args.model_name:
+        parser.error('Set BIGMODEL_MODEL or pass --model_name.')
     # assert args.mutation_type != ''
 
     # output_number = 0
@@ -590,12 +593,12 @@ if __name__ == "__main__":
 
             openai_agent = ChatModel(
                 model_name=args.model_name,
-                api_key='your api key',
-                model_url='your api base url',
+                api_key=None,
+                model_url=None,
                 tools=involved_tools,
                 max_round=10 if 2*len(involved_tools) < 10 else 2*len(involved_tools),
                 tool_server_map=reverse_mapping(involved_servers),
-                file_exists=generate_tree_string('./anotation_path'),
+                file_exists=generate_tree_string(str(model_config.workspace_dir())),
                 mcp_server_url=args.mcp_server_url
             )
             answer, trajectory_messages, stop_flag, exceeded_flag = openai_agent.run_with_server(test_case['question'], args.fschat_flag)
@@ -648,12 +651,12 @@ if __name__ == "__main__":
                 continue
             openai_agent = ChatModel(
                 model_name=args.model_name,
-                api_key='your api key',
-                model_url='your api base url',
+                api_key=None,
+                model_url=None,
                 tools=involved_tools,
                 max_round=10 if 2*origin_tool_number<10 else 2*origin_tool_number,
                 tool_server_map=reverse_mapping(test_case['servers']),
-                file_exists=generate_tree_string('./anotation_path'),
+                file_exists=generate_tree_string(str(model_config.workspace_dir())),
                 mcp_server_url=args.mcp_server_url
             )
             # print(test_case['question'])

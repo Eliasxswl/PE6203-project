@@ -1,5 +1,22 @@
 # MCPEvol-Bench
 
+## PE6203 Group Project 4
+
+This fork is the group's development repository for tool-harness adaptation.
+The upstream benchmark is [Octobrist/MCPEvol-Bench](https://github.com/Octobrist/MCPEvol-Bench), based on commit `888c779a0fe735f612ca62bdd1fdd7c9e6bf8701`.
+
+Group setup and current implementation status:
+
+- [Windows and BigModel setup](SETUP-WINDOWS.md)
+- [Submission scope and remaining work](SUBMISSION-SCOPE.md)
+- [Experiment protocol](config/experiment.json): three agent runs per task/version/strategy, five judge attempts per trajectory.
+- Copy `.env.example` to `.env` and supply your own key and model settings. `.env` stays local.
+- Offline checks: `.venv/Scripts/python.exe -m unittest discover -s tests -v`.
+
+The current group changes prepare API-mode execution on Windows and bound judge attempts. Three adaptation strategies, persistent tool knowledge, isolated repeated runs, and full benchmark evaluation remain to be implemented. Only a small subset of real tools has been validated; no model-backed benchmark results are claimed yet.
+
+The upstream benchmark documentation follows below.
+
 **Benchmarking LLM agents when MCP toolsets evolve across iterations.**
 
 MCPEvol-Bench evaluates how well language-model agents **plan** and **complete tasks** when the underlying Model Context Protocol (MCP) servers change over time—mirroring real deployments where tools are added, removed, or refined.
