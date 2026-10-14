@@ -1,7 +1,7 @@
 # Windows 与 BigModel 配置
 
 本地源码 commit：888c779a0fe735f612ca62bdd1fdd7c9e6bf8701。
-Python 3.12.14，1mcp 0.39.1，模型 API 模式。依赖锁定在 requirements-api.lock.txt。
+Python 3.12.14，1mcp 0.39.1，模型 API 模式。依赖锁定在 requirements-api.txt。
 
 ## 已完成
 
@@ -27,7 +27,7 @@ https://open.bigmodel.cn/api/paas/v4/
 
 实际 chat completions 地址为 https://open.bigmodel.cn/api/paas/v4/chat/completions 。
 官方说明：https://docs.bigmodel.cn/cn/guide/develop/openai/introduction 。
-已读取官方 .md 文档，项目内保存 bigmodel-openai-doc.md。
+临时官方文档副本已清理；接口来源见上方官方链接。
 这里按普通 API 配置，不默认套用 Coding Plan 地址或套餐额度。
 
 ## 持久化本地配置
@@ -114,7 +114,7 @@ task_selection 的格式为 {"samples":[{"idx":任务ID}]}。任务运行文件�
 ## 重建
 
 ```powershell
-& .venv\Scripts\python.exe -m pip install -r requirements-api.lock.txt
+& .venv\Scripts\python.exe -m pip install -r requirements-api.txt
 npm.cmd install --prefix .runtime @1mcp/agent@0.39.1
 & .venv\Scripts\python.exe scripts\prepare_local_config.py
 ```
