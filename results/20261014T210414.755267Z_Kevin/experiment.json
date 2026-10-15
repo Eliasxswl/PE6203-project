@@ -1,0 +1,359 @@
+{
+  "schema_version": 1,
+  "operator": "Kevin",
+  "created_at": "2026-10-14T21:04:14.755267+00:00",
+  "revision": "379fe418d778b10fb043f6baf83e9135cf72d735",
+  "dirty_source": true,
+  "fingerprints": {
+    "config": "ff0f5223d20a8f66e6b5d4d8628e279a1be5e86067d626fee80a78e47cd7444a",
+    "sources": {
+      "src/custom/data/test_cases/test_cases.json": "1370d7f9ee4ec8f8635dd6af3a6e7e41e790b4be86d0e3de4990774ac99fbae2",
+      "src/custom/data/test_cases/chosen_idx.json": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
+      "config/subsets/selected_tasks.json": "1414b49e19b641475cea53f3653537d8d18776199886eb31f41430d26a62198b",
+      "src/custom/data/mutation/HYBRID/evolution.json": "2e656f38506f6b5107fa8286a2a396a3b69fef890d082187c47c8405cce2a9dd",
+      "src/custom/data/mutation/HYBRID/HYBRID/evolution.json": "9c1457123f1e79b642707e526f9727bd9edd21f13e1d19827a53e5bf9dd1a8b4",
+      "src/custom/data/mutation/HYBRID/HYBRID/HYBRID/evolution.json": "1e95354a65dac662d3cdb0e13a0860befbe39b5c554b760ec30ecdb2cff01777",
+      "src/custom/data/mutation/HYBRID/HYBRID/HYBRID/HYBRID/evolution.json": "a5bba8ab5f3cb3ea617f5c4954f8ec51141d9f5bdb2970d6395e4798b6e2c6ba",
+      "servers/1mcp_config/original/mcp.json": "0cb5cce358c3c9aacf071c8dbac9a0106bca1d95f5d84c3e799c211a99087576",
+      "servers/1mcp_config/iter3/mcp.json": "11d45c6cdc418c315638423f8e183481b30a66dec767240ff83cfc9ca4ca36a1",
+      "servers/1mcp_config/iter5/mcp.json": "8ff8da2a9f7916109c85acf86c39835b004cdfe30c2b81c069dc921540cb0175",
+      "servers/original_servers/package-lock.json": "73172bf4273a76b5f9610739a5523281a335e80e369f46a7d3d92e99567bdb8e",
+      "fixtures": "6534dd6c9d7d1fca6e0419b0cc45acb6335922dbc85f5fd12ae9cb2cc09b9420",
+      "provider_endpoint": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "local_config:original": "5dfe5da9d970f3e3a83718b06033f5980ee45e80d2f977477e92b4ea3bc58f66",
+      "tool_entry:original:@kazuph/mcp-taskmanager:index.js": "4043569cd544a680168aa41b3a9a2c570eb24ca4e1ed5ca2905f13040b793566",
+      "tool_entry:original:@modelcontextprotocol/server-filesystem:index.js": "c2f3126214742c10f6cb25297e3b89465f894b62a4df8dd042ea3d0e2d033652",
+      "tool_entry:original:@modelcontextprotocol/server-sequential-thinking:index.js": "81986868f123134e5d1661140fd69a77d50b4c57d1dbab59eb73b922dfe3c43f",
+      "tool_entry:original:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:original:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      "local_config:iter3": "231354ebd0b29f9828992596a7f5cc607423906f58078b062e5cf408cfa91c45",
+      "tool_entry:iter3:@kazuph/mcp-taskmanager:index.js": "9e724f19204380db8de315d227411e8565a5283f0ef3b3fc50bc943aa3de6070",
+      "tool_entry:iter3:@modelcontextprotocol/server-filesystem:index.js": "d31538776b622f750fcda37854574d325b460bf07fcc1680238b99ab4d8e1692",
+      "tool_entry:iter3:@modelcontextprotocol/server-sequential-thinking:index.js": "defb818d5e896b0e49142e0134f531b0302c23bdbe9a2ad543a223633b737faf",
+      "tool_entry:iter3:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:iter3:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      "local_config:iter5": "30026911c6de3c50d7ec9d313335811a61e993532fe17a273f44e48937ccce07",
+      "tool_entry:iter5:@kazuph/mcp-taskmanager:index.js": "ee9ddc830eb8394ff0d2727c961eaa93105b406a95696b5c45151001548bd67c",
+      "tool_entry:iter5:@modelcontextprotocol/server-filesystem:index.js": "1f0af4858dc8ca14c7048ca75660ac3c6bef523758adad830dbec0684a1190c8",
+      "tool_entry:iter5:@modelcontextprotocol/server-sequential-thinking:index.js": "88a42960c3fcb5ca23d87e2a5cea2f4203d6f5351744009fd2967fe699af0bd7",
+      "tool_entry:iter5:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:iter5:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      ".runtime/package-lock.json": "4ca9b63fa56b06d63a7350d9b3c3847ee0d9eac4b77f38f1e7f0f7bc701033f7",
+      ".runtime/node_modules/@1mcp/agent/package.json": "bec573a0fdce42cd816b81ef92e5b9b345048ccd58aecf5c69de65c475c2eab5"
+    },
+    "code": "ec12b3f2283de8e082b86f8b6627d09f720c01ad6d208e726386b26f52cdaa01"
+  },
+  "settings": {
+    "selection_file": "config/subsets/selected_tasks.json",
+    "selection_seed": 6203,
+    "task_source": "src/custom/data/test_cases/test_cases.json",
+    "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+    "fixtures": "anotation_path",
+    "mode": "live",
+    "agent_repeats": 1,
+    "judge_attempts_per_trajectory": 5,
+    "agent_model": "glm-4.7-flash",
+    "judge_model": "",
+    "agent_temperature": 0.2,
+    "judge_temperature": 0,
+    "agent_max_tokens": 8192,
+    "judge_max_tokens": 8192,
+    "round_policy": "early_tool_count_plus_one",
+    "judge_failure_top_up": false,
+    "automatic_api_retries": 0,
+    "stages": [
+      "original",
+      "iter3",
+      "iter5"
+    ],
+    "strategies": [
+      "no_update",
+      "full_rewrite"
+    ],
+    "strategy_plugins": [],
+    "runtime": {
+      "configs": {
+        "original": "config/local/original.json",
+        "iter3": "config/local/iter3.json",
+        "iter5": "config/local/iter5.json"
+      },
+      "policies": {
+        "12306-mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes read-only train/station queries and process-local caches."
+        },
+        "original_from_tina": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source implements a static catalog and simulated orders; no order HTTP request."
+        },
+        "@remotion/mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs read-only remote documentation fetches."
+        },
+        "@opentofu/opentofu-mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs registry/documentation reads."
+        },
+        "@driflyte/mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes remote topic listing and search reads."
+        },
+        "bazi-mcp": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source calculates Bazi data locally without persistent application state."
+        },
+        "mcp-trends-hub": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source fetches public news/RSS; mutable cache is process-local."
+        },
+        "mcp-server-commands": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory."
+        },
+        "mcp-shrimp-task-manager": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "DATA_DIR points to private task/memory/template state.",
+          "env_paths": {
+            "DATA_DIR": "workspace/shrimp-data"
+          }
+        },
+        "mcp-tasks": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+          "env_paths": {
+            "SOURCES_PATH": "workspace/tasks-sources.json",
+            "WORKSPACE_FOLDER_PATHS": "workspace"
+          }
+        },
+        "@aiuluna/knowledge-graph-mcp": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+          "env_paths": {
+            "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+          }
+        }
+      },
+      "connect_timeout": 5,
+      "read_timeout": 60,
+      "tool_timeout": 60,
+      "startup_timeout": 45,
+      "shutdown_timeout": 10,
+      "model_timeout": 180,
+      "metadata_verified": false,
+      "evolution_files": {
+        "original": [],
+        "iter3": [],
+        "iter5": []
+      },
+      "catalog_source": "live"
+    },
+    "agent_thinking": "enabled",
+    "judge_thinking": "disabled",
+    "task_count": 5
+  },
+  "selected_ids": [
+    9,
+    24,
+    117,
+    273,
+    403
+  ],
+  "execution": {
+    "parallel": false,
+    "workers": 1
+  },
+  "planned_jobs": [
+    {
+      "strategy": "no_update",
+      "stage": "original",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "original",
+      "task_id": 24,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "original",
+      "task_id": 117,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "original",
+      "task_id": 273,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "original",
+      "task_id": 403,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task_id": 24,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task_id": 117,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task_id": 273,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task_id": 403,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task_id": 24,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task_id": 117,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task_id": 273,
+      "repeat": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task_id": 403,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "original",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "original",
+      "task_id": 24,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "original",
+      "task_id": 117,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "original",
+      "task_id": 273,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "original",
+      "task_id": 403,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task_id": 24,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task_id": 117,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task_id": 273,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task_id": 403,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task_id": 24,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task_id": 117,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task_id": 273,
+      "repeat": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task_id": 403,
+      "repeat": 0
+    }
+  ],
+  "prompt_time": "2026-10-15 (星期四)"
+}
