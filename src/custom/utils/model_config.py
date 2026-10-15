@@ -20,6 +20,28 @@ def api_key():
 def base_url():
     return os.environ.get("BIGMODEL_BASE_URL") or os.environ.get("OPENAI_BASE_URL") or DEFAULT_BASE_URL
 
+
+def role_api_key(role, provider=None):
+    provider = provider or {}
+    name = provider.get("api_key_env")
+    if name:
+        value = os.environ.get(name)
+        if not value:
+            raise RuntimeError(f"Set {name} in .env or the environment before calling {role}.")
+        return value
+    return (os.environ.get("BIGMODEL_JUDGE_API_KEY") if role == "judge" else None) or api_key()
+
+
+def role_base_url(role, provider=None):
+    provider = provider or {}
+    name = provider.get("base_url_env")
+    if name:
+        value = os.environ.get(name)
+        if not value:
+            raise RuntimeError(f"Set {name} in .env or the environment before calling {role}.")
+        return value
+    return (os.environ.get("BIGMODEL_JUDGE_BASE_URL") if role == "judge" else None) or base_url()
+
 def model_name():
     value = os.environ.get("BIGMODEL_MODEL")
     if not value:

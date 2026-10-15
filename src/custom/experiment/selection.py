@@ -12,6 +12,25 @@ def read_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def provider_options(config, role):
+    value = config.get("providers", {}).get(role, {})
+    return value if isinstance(value, list) else [value]
+
+
+def provider_for(config, role, key):
+    options = provider_options(config, role)
+    if len(options) == 1:
+        return options[0]
+    parts = key.removesuffix("/judge").split("/")
+    position = 0
+    if len(parts) >= 4:
+        task_id, repeat = int(parts[-2]), int(parts[-1])
+        ids = [sample["idx"] for sample in read_json(ROOT / config["selection_file"])["samples"]]
+        position = ids.index(task_id) + repeat
+    # Assign by frozen task position/repeat, preserving the account across strategies/stages.
+    return options[position % len(options)]
+
+
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
                                      separators=(",", ":")).encode()).hexdigest()
@@ -41,7 +60,7 @@ def load_config(path):
     allowed = {"selection_file", "selection_seed", "task_source", "candidate_source", "fixtures",
                "task_count", "agent_repeats", "judge_attempts_per_trajectory", "agent_model", "judge_model",
                "agent_temperature", "judge_temperature", "agent_max_tokens", "judge_max_tokens",
-               "agent_thinking", "judge_thinking", "request_policy",
+               "agent_thinking", "judge_thinking", "request_policy", "providers",
                "round_policy", "max_requests", "stages", "strategies", "runtime", "mode",
                "mock", "strategy_plugins", "judge_failure_top_up", "automatic_api_retries"}
     if set(config) - allowed:
@@ -61,15 +80,40 @@ def load_config(path):
     policy = config.get("request_policy")
     if policy is not None:
         fields = {"minimum_interval", "overload_cooldown", "maximum_cooldown", "recovery_successes"}
-        if not isinstance(policy, dict) or set(policy) != fields:
+        optional = {"max_concurrency", "long_context_concurrency", "long_context_threshold"}
+        if not isinstance(policy, dict) or not fields <= set(policy) or set(policy) - fields - optional:
             raise ValueError("request_policy requires explicit interval, cooldowns, and recovery_successes")
         for key in fields - {"recovery_successes"}:
-            if type(policy[key]) not in (int, float) or not 0 < policy[key] <= 3600:
+            if type(policy[key]) not in (int, float) or not (0 <= policy[key] <= 3600 if key == "minimum_interval" else 0 < policy[key] <= 3600):
                 raise ValueError(f"Invalid request_policy {key}")
         if type(policy["recovery_successes"]) is not int or policy["recovery_successes"] < 1:
             raise ValueError("request_policy recovery_successes must be a positive integer")
         if not policy["minimum_interval"] <= policy["overload_cooldown"] <= policy["maximum_cooldown"]:
             raise ValueError("request_policy intervals must increase from minimum to maximum")
+        for key in optional:
+            if key in policy and (type(policy[key]) is not int or policy[key] < 1):
+                raise ValueError(f"Invalid request_policy {key}")
+        if policy.get("long_context_concurrency", 1) > policy.get("max_concurrency", 1):
+            raise ValueError("request_policy long context cap exceeds overall cap")
+    providers = config.get("providers", {})
+    if not isinstance(providers, dict) or set(providers) - {"agent", "judge"}:
+        raise ValueError("providers must contain agent/judge settings")
+    import re
+    entries = []
+    for value in providers.values():
+        if isinstance(value, list):
+            if not value:
+                raise ValueError("Provider pools must not be empty")
+            entries.extend(value)
+        else:
+            entries.append(value)
+    for provider in entries:
+        if not isinstance(provider, dict) or set(provider) - {"api_key_env", "base_url_env", "quota_group"}:
+            raise ValueError("Provider settings accept environment variable names and quota_group only")
+        for key, value in provider.items():
+            pattern = r"[A-Za-z0-9_-]{1,64}" if key == "quota_group" else r"[A-Z][A-Z0-9_]{0,63}"
+            if not isinstance(value, str) or not re.fullmatch(pattern, value):
+                raise ValueError(f"Invalid provider {key}")
     if config.get("round_policy") not in ("early_tool_count_plus_one", "fixed"):
         raise ValueError("Declare an early_tool_count_plus_one or fixed round policy")
     if config.get("round_policy") == "fixed" and (type(config.get("max_requests")) is not int
@@ -172,7 +216,9 @@ def fingerprints(config):
     source["fixtures"] = tree_hash(ROOT / config["fixtures"])
     if config.get("mode", "live") == "live":
         from custom.utils import model_config
-        source["provider_endpoint"] = digest(model_config.base_url())
+        for role in ("agent", "judge"):
+            for index, provider in enumerate(provider_options(config, role)):
+                source[f"provider_endpoint:{role}:{index}"] = digest(model_config.role_base_url(role, provider))
         for stage, name in config["runtime"]["configs"].items():
             source[f"local_config:{stage}"] = file_hash(ROOT / name)
             local = read_json(ROOT / name)["mcpServers"]

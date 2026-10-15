@@ -36,42 +36,50 @@
       "12306-mcp": {
         "kind": "stateless",
         "reviewed": true,
-        "reason": "Source exposes read-only train/station queries and process-local caches."
+        "reason": "Source exposes read-only train/station queries and process-local caches.",
+        "concurrency": "readonly"
       },
       "original_from_tina": {
         "kind": "process_local",
         "reviewed": true,
-        "reason": "Source implements a static catalog and simulated orders; no order HTTP request."
+        "reason": "Source implements a static catalog and simulated orders; no order HTTP request.",
+        "concurrency": "private"
       },
       "@remotion/mcp": {
         "kind": "stateless",
         "reviewed": true,
-        "reason": "Source performs read-only remote documentation fetches."
+        "reason": "Source performs read-only remote documentation fetches.",
+        "concurrency": "readonly"
       },
       "@opentofu/opentofu-mcp-server": {
         "kind": "stateless",
         "reviewed": true,
-        "reason": "Source performs registry/documentation reads."
+        "reason": "Source performs registry/documentation reads.",
+        "concurrency": "readonly"
       },
       "@driflyte/mcp-server": {
         "kind": "stateless",
         "reviewed": true,
-        "reason": "Source exposes remote topic listing and search reads."
+        "reason": "Source exposes remote topic listing and search reads.",
+        "concurrency": "readonly"
       },
       "bazi-mcp": {
         "kind": "process_local",
         "reviewed": true,
-        "reason": "Source calculates Bazi data locally without persistent application state."
+        "reason": "Source calculates Bazi data locally without persistent application state.",
+        "concurrency": "private"
       },
       "mcp-trends-hub": {
         "kind": "stateless",
         "reviewed": true,
-        "reason": "Source fetches public news/RSS; mutable cache is process-local."
+        "reason": "Source fetches public news/RSS; mutable cache is process-local.",
+        "concurrency": "readonly"
       },
       "mcp-server-commands": {
         "kind": "workspace",
         "reviewed": true,
-        "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory."
+        "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory.",
+        "concurrency": "private"
       },
       "mcp-shrimp-task-manager": {
         "kind": "workspace",
@@ -79,7 +87,8 @@
         "reason": "DATA_DIR points to private task/memory/template state.",
         "env_paths": {
           "DATA_DIR": "workspace/shrimp-data"
-        }
+        },
+        "concurrency": "private"
       },
       "mcp-tasks": {
         "kind": "workspace",
@@ -88,7 +97,8 @@
         "env_paths": {
           "SOURCES_PATH": "workspace/tasks-sources.json",
           "WORKSPACE_FOLDER_PATHS": "workspace"
-        }
+        },
+        "concurrency": "private"
       },
       "@aiuluna/knowledge-graph-mcp": {
         "kind": "workspace",
@@ -96,7 +106,8 @@
         "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
         "env_paths": {
           "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
-        }
+        },
+        "concurrency": "private"
       }
     },
     "connect_timeout": 5,
@@ -117,9 +128,34 @@
   "judge_thinking": null,
   "task_count": 5,
   "request_policy": {
-    "minimum_interval": 10,
+    "minimum_interval": 0.2,
     "overload_cooldown": 60,
     "maximum_cooldown": 300,
-    "recovery_successes": 5
+    "recovery_successes": 5,
+    "max_concurrency": 2,
+    "long_context_concurrency": 2,
+    "long_context_threshold": 8192
+  },
+  "providers": {
+    "agent": [
+      {
+        "api_key_env": "BIGMODEL_API_KEY",
+        "quota_group": "account_one"
+      },
+      {
+        "api_key_env": "BIGMODEL_API_KEY_2",
+        "quota_group": "account_two"
+      }
+    ],
+    "judge": [
+      {
+        "api_key_env": "BIGMODEL_API_KEY",
+        "quota_group": "account_one"
+      },
+      {
+        "api_key_env": "BIGMODEL_API_KEY_2",
+        "quota_group": "account_two"
+      }
+    ]
   }
 }

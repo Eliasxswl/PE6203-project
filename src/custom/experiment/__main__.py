@@ -11,7 +11,7 @@ from .core import initial_snapshot, run_episode
 from .errors import Cancelled, CheckpointFailure
 from .results import Store, create, episode_id, safe_error, writer_lock
 from .runtime import ALIASES, policy_for, reap_orphans
-from .selection import ROOT, STAGES, fingerprints, load_config, read_json, select, tasks
+from .selection import ROOT, STAGES, fingerprints, load_config, provider_options, read_json, select, tasks
 
 
 def validate(config):
@@ -34,7 +34,9 @@ def validate(config):
             for path in paths:
                 if not (ROOT / path).is_file():
                     raise ValueError(f"Missing evolution metadata for {stage}")
-        model_config.api_key()  # Read configuration only; never create a model client here.
+        for role in ("agent", "judge"):
+            for provider in provider_options(config, role):
+                model_config.role_api_key(role, provider)
         if set(config["runtime"].get("configs", {})) != set(STAGES):
             raise ValueError("Provide a local configuration for every stage")
         for stage, name in config["runtime"]["configs"].items():
@@ -74,6 +76,13 @@ def specifications(store, config, task_list):
 
 
 def execute(config, task_list, experiment=None, parallel=False, workers=1, warnings=None):
+    if parallel and config.get("mode", "live") == "live":
+        for server in {ALIASES.get(s, s) for task in task_list for s in task["servers"]}:
+            policy = policy_for(server, config)
+            if policy.get("concurrency") not in ("private", "readonly", "exclusive"):
+                raise ValueError(f"Parallel isolation is not declared for {server}")
+            if policy["concurrency"] == "exclusive" and not policy.get("shared_resources"):
+                raise ValueError(f"Exclusive backend requires shared_resources: {server}")
     expected = fingerprints(config)
     if experiment is None:
         experiment = create(config, task_list, expected, parallel, workers)

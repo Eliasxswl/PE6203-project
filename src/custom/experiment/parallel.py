@@ -1,17 +1,17 @@
-"""Small spawn supervisor with durable event acknowledgements and owned workers."""
+"""Bounded spawn pool, task isolation, durable acknowledgements, and stage barriers."""
 from collections import deque
 import multiprocessing as mp
 from multiprocessing.connection import wait
 import os
 import time
 
-from .core import run_episode
+from .core import run_episode, run_trajectory
 from .errors import Cancelled, CheckpointFailure
-from .results import episode_id, safe_error
+from .results import episode_id, identity, safe_error
 from .runtime import OwnedJob, reap_orphans
 
 
-def episode_worker(spec, connection, cancel, ready):
+def episode_worker(connection, cancel, ready):
     if os.name != "nt":
         os.setsid()
     ready.wait()
@@ -25,36 +25,61 @@ def episode_worker(spec, connection, cancel, ready):
             raise CheckpointFailure("Parent writer disconnected") from exc
 
     try:
-        run_episode(spec, emit, cancel)
-        connection.send(("done", None))
-    except Cancelled:
-        connection.send(("cancelled", None))
-    except BaseException as exc:
-        try:
-            connection.send(("failed", safe_error(exc)))
-        except (EOFError, OSError):
-            pass
+        while True:
+            spec = connection.recv()
+            if spec is None:
+                return
+            try:
+                run_trajectory(spec, emit, cancel)
+                connection.send(("done", None))
+            except Cancelled:
+                connection.send(("cancelled", None))
+                return
+            except BaseException as exc:
+                connection.send(("failed", safe_error(exc)))
+                return
+    except (EOFError, OSError):
+        return
     finally:
         connection.close()
 
 
 def supervise(specs, store, workers, shutdown_timeout):
-    context = mp.get_context("spawn")
-    pending, active = deque(specs), {}
-    cancel = context.Event()
-    stopped = None
+    for spec in specs:
+        run_episode(spec, store.apply, dispatch=lambda jobs: supervise_stage(
+            jobs, store, workers, shutdown_timeout))
 
-    def launch(spec):
+
+def supervise_stage(specs, store, workers, shutdown_timeout):
+    """Only the parent writes; every Agent and scoring job owns one trajectory."""
+    context = mp.get_context("spawn")
+    pending, active = deque(), {}
+    cancel = context.Event()
+    for spec in specs:
+        key = identity(spec["strategy"], spec["stage"], spec["task"]["idx"], spec["repeat"])
+        row = store.records["trajectories"][key]
+        if row["status"] in ("pending", "running"):
+            pending.append({**spec, "key": key, "records": {key: row},
+                            "phase": "judge" if row["agent_status"] == "completed" else "agent"})
+
+    def assign(connection, spec):
+        item = active[connection]
+        item.update(spec=spec, events=[], retiring=False)
+        connection.send(spec)
+
+    def launch():
         parent, child = context.Pipe()
         ready = context.Event()
-        process = context.Process(target=episode_worker, args=(spec, child, cancel, ready))
+        process = context.Process(target=episode_worker, args=(child, cancel, ready))
         job = OwnedJob()
         try:
             process.start()
             child.close()
             job.assign(process.pid)
-            active[parent] = {"process": process, "job": job, "spec": spec, "done": False}
+            active[parent] = {"process": process, "job": job, "spec": None,
+                              "events": [], "retiring": False}
             ready.set()
+            assign(parent, pending.popleft())
         except BaseException:
             if process.pid:
                 process.terminate()
@@ -64,60 +89,78 @@ def supervise(specs, store, workers, shutdown_timeout):
             child.close()
             raise
 
+    def recover(item, reason, error=None):
+        spec = item["spec"]
+        if spec is None:
+            return
+        eid = episode_id(spec["strategy"], spec["repeat"])
+        store.event(reason, episode=eid, trajectory=spec["key"], error=error)
+        store.recover(eid, reason=reason, trajectory=spec["key"])
+        item["spec"] = None
+
     def handle(connection):
         item = active[connection]
         try:
             kind, data = connection.recv()
-        except EOFError:
+        except (EOFError, OSError):
             item["eof"] = True
             return
-        eid = episode_id(item["spec"]["strategy"], item["spec"]["repeat"])
         if kind == "event":
+            item["events"].append(data)
             store.apply(data)
             connection.send("saved")
-        elif kind == "done":
-            item["done"] = True
+            return
+        if kind == "done":
+            spec = item["spec"]
+            row = store.records["trajectories"][spec["key"]]
+            if spec["phase"] == "agent" and row["agent_status"] == "completed":
+                pending.append({**spec, "records": {spec["key"]: row}, "phase": "judge"})
+            reap_orphans(item["events"])
+            item["spec"] = None
         else:
-            item["done"] = True
-            store.event("worker_cancelled" if kind == "cancelled" else "worker_failed", episode=eid, error=data)
-            store.recover(eid, reason="worker_cancelled" if kind == "cancelled" else "worker_failed")
-            store.records["episodes"][eid]["status"] = "interrupted" if kind == "cancelled" else "failed"
-            store.save()
+            recover(item, "worker_cancelled" if kind == "cancelled" else "worker_failed", data)
+            item["retiring"] = True
+
+    def close(connection):
+        item = active.pop(connection)
+        item["process"].join()
+        item["job"].close()
+        reap_orphans(item["events"])
+        connection.close()
 
     try:
         while pending or active:
+            for connection, item in list(active.items()):
+                if item["spec"] is None and not item["retiring"]:
+                    if pending:
+                        assign(connection, pending.popleft())
+                    else:
+                        connection.send(None)
+                        item["retiring"] = True
             while pending and len(active) < workers:
-                launch(pending.popleft())
+                launch()
+            if not active:
+                break
             for connection in wait(list(active), timeout=.2):
                 handle(connection)
             for connection, item in list(active.items()):
                 process = item["process"]
                 if process.exitcode is None:
                     continue
-                # Drain the terminal event before classifying a normal process exit as a crash.
-                while not item.get("eof") and connection.poll():
+                while not item.get("eof"):
                     try:
-                        handle(connection)
+                        if not connection.poll():
+                            break
                     except (EOFError, OSError):
+                        item["eof"] = True
                         break
-                    if item["done"]:
-                        break
-                if not item["done"]:
-                    eid = episode_id(item["spec"]["strategy"], item["spec"]["repeat"])
-                    store.event("worker_crash", episode=eid, exit_code=process.exitcode)
-                    store.recover(eid, reason="worker_crash")
-                    store.records["episodes"][eid]["status"] = "failed"
-                    store.save()
-                process.join()
-                item["job"].close()
-                reap_orphans(store.records["events"], episode_id(item["spec"]["strategy"], item["spec"]["repeat"]))
-                connection.close()
-                del active[connection]
-    except BaseException as exc:
-        stopped = exc
+                    handle(connection)
+                if item["spec"] is not None:
+                    recover(item, "worker_crash", {"exit_code": process.exitcode})
+                close(connection)
+    except BaseException:
         cancel.set()
         deadline = time.monotonic() + shutdown_timeout
-        # Drain and acknowledge already issued requests during cooperative shutdown.
         while active and time.monotonic() < deadline:
             for connection in wait(list(active), timeout=.1):
                 try:
@@ -126,14 +169,11 @@ def supervise(specs, store, workers, shutdown_timeout):
                     pass
             for connection, item in list(active.items()):
                 if item["process"].exitcode is not None:
-                    item["process"].join()
-                    item["job"].close()
-                    connection.close()
-                    del active[connection]
+                    close(connection)
         raise
     finally:
         cancel.set()
-        for connection, item in active.items():
+        for connection, item in list(active.items()):
             process = item["process"]
             if process.is_alive():
                 process.terminate()
@@ -142,5 +182,5 @@ def supervise(specs, store, workers, shutdown_timeout):
                     process.kill()
                     process.join(5)
             item["job"].close()
-            reap_orphans(store.records["events"], episode_id(item["spec"]["strategy"], item["spec"]["repeat"]))
+            reap_orphans(item["events"])
             connection.close()

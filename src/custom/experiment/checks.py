@@ -36,6 +36,8 @@ def check_models(config):
                  "temperature": config["judge_temperature"], "max_tokens": config["judge_max_tokens"]}
         if config.get("judge_thinking"):
             judge["extra_body"] = {"thinking": {"type": config["judge_thinking"]}}
+        client.close()
+        client = make_client(config, "preflight/judge", role="judge")
         response = client.chat.completions.create(messages=[{"role": "user", "content":
             "For a connectivity test, return only a JSON object with the integer 8 for each key: "
             + ", ".join(SCORES)}], **judge)

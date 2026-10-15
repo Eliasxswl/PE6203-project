@@ -111,12 +111,17 @@ class OwnedJob:
 def policy_for(server, config):
     server = ALIASES.get(server, server)
     if server in BUILTIN_POLICIES:
-        return {"kind": BUILTIN_POLICIES[server]}
+        return {"kind": BUILTIN_POLICIES[server], "concurrency": "private"}
     policy = config["runtime"].get("policies", {}).get(server)
     if not isinstance(policy, dict) or not policy.get("reviewed") or not policy.get("reason"):
         raise ExecutionFailure(f"Backend state isolation has not been reviewed: {server}")
     if policy.get("kind") not in ("stateless", "process_local", "workspace"):
         raise ExecutionFailure(f"Unsupported reset policy: {server}")
+    if policy.get("external_mutation"):
+        raise ExecutionFailure(f"External writes require an implemented private namespace/reset: {server}")
+    resources = policy.get("shared_resources", [])
+    if not isinstance(resources, list) or any(not isinstance(r, str) or not r for r in resources):
+        raise ExecutionFailure(f"Invalid shared_resources: {server}")
     return policy
 
 
@@ -183,15 +188,28 @@ class LiveRuntime:
         self.catalog = {}
         self.owner_callback = owner_callback or (lambda event: None)
         self.registered = False
+        self.resource_guard = None
+        self.startup_guard = None
 
     def __enter__(self):
         try:
+            from .isolation import resource_locks
+            resources = [name for server in self.servers
+                         for name in policy_for(server, self.config).get("shared_resources", [])]
+            self.resource_guard = resource_locks(resources, self.cancel)
+            self.resource_guard.__enter__()
             self.directory.mkdir(parents=True, exist_ok=False)
+            prepared_at = time.perf_counter()
             config_path, self.workspace = prepare_config(self.config, self.stage, self.servers, self.directory)
+            self.owner_callback({"kind": "runtime_prepared", "runtime_id": self.directory.name,
+                                 "fixture_prepare_seconds": time.perf_counter() - prepared_at})
             node = shutil.which("node")
             executable = ROOT / ".runtime/node_modules/@1mcp/agent/build/index.js"
             if not node or not executable.is_file():
                 raise ExecutionFailure("Prepared Node/1mcp installation is missing")
+            # Hold port selection ownership until this service has actually bound.
+            self.startup_guard = resource_locks(["local:mcp-port-startup"], self.cancel)
+            self.startup_guard.__enter__()
             with socket.socket() as sock:
                 sock.bind(("127.0.0.1", 0))
                 port = sock.getsockname()[1]
@@ -217,10 +235,18 @@ class LiveRuntime:
                     raise Cancelled()
                 if self.proc.poll() is not None:
                     raise ExecutionFailure(f"Owned MCP service exited with code {self.proc.returncode}")
+                if self.startup_guard is not None:
+                    with socket.socket() as probe:
+                        if probe.connect_ex(("127.0.0.1", port)) == 0:
+                            self.startup_guard.__exit__(None, None, None)
+                            self.startup_guard = None
                 try:
                     self.catalog = asyncio.run(asyncio.wait_for(self._catalog(), min(3, max(.1, deadline - time.monotonic()))))
                     if all(any(tool["server"] == ALIASES.get(server, server) for tool in self.catalog.values())
                            for server in self.servers):
+                        if self.startup_guard is not None:
+                            self.startup_guard.__exit__(None, None, None)
+                            self.startup_guard = None
                         return self
                     last_error = ExecutionFailure("MCP catalog is incomplete")
                 except Exception as exc:
@@ -278,30 +304,37 @@ class LiveRuntime:
                                    unknown_outcome=getattr(exc, "response", None) is None) from exc
 
     def __exit__(self, *_):
-        if self.proc:
-            if os.name == "nt":
-                if self.job:
-                    self.job.close()
-            else:
-                try:
-                    os.killpg(self.proc.pid, signal.SIGTERM)
-                except ProcessLookupError:
-                    pass
-            try:
-                self.proc.wait(timeout=self.config["runtime"]["shutdown_timeout"])
-            except subprocess.TimeoutExpired:
-                if os.name != "nt":
+        try:
+            if self.proc:
+                if os.name == "nt":
+                    if self.job:
+                        self.job.close()
+                else:
                     try:
-                        os.killpg(self.proc.pid, signal.SIGKILL)
+                        os.killpg(self.proc.pid, signal.SIGTERM)
                     except ProcessLookupError:
                         pass
-                self.proc.kill()
-                self.proc.wait(timeout=5)
-        if self.job:
-            self.job.close()
-        if self.log:
-            self.log.close()
-        if self.registered:
-            self.registered = False
-            self.owner_callback({"kind": "runtime_stopped", "runtime_id": self.directory.name})
-        # Keep owned logs/configs for diagnostics under the ignored runtime root.
+                try:
+                    self.proc.wait(timeout=self.config["runtime"]["shutdown_timeout"])
+                except subprocess.TimeoutExpired:
+                    if os.name != "nt":
+                        try:
+                            os.killpg(self.proc.pid, signal.SIGKILL)
+                        except ProcessLookupError:
+                            pass
+                    self.proc.kill()
+                    self.proc.wait(timeout=5)
+            if self.job:
+                self.job.close()
+            if self.log:
+                self.log.close()
+            if self.registered:
+                self.registered = False
+                self.owner_callback({"kind": "runtime_stopped", "runtime_id": self.directory.name})
+            # Keep owned logs/configs for diagnostics under the ignored runtime root.
+        finally:
+            for name in ("startup_guard", "resource_guard"):
+                guard = getattr(self, name, None)
+                if guard is not None:
+                    guard.__exit__(None, None, None)
+                    setattr(self, name, None)

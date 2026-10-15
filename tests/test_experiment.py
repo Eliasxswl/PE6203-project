@@ -517,6 +517,33 @@ execute(payload["config"], payload["tasks"], payload["experiment"])
         self.assertEqual(len(loaded.records["trajectories"]), 90)
         self.assertTrue(all(len(row["judge_attempts"]) == 5 for row in loaded.records["trajectories"].values()))
 
+    def test_one_episode_uses_multiple_task_workers_and_preserves_private_knowledge(self):
+        self.config.update(task_count=3, agent_repeats=1)
+        self.task_list = self.task_list[:3]
+        store = self.store()
+        store.manifest["execution"] = {"parallel": True, "workers": 2}
+        atomic_json(store.path / "experiment.json", store.manifest)
+        execute(self.config, self.task_list, store.path, True, 2)
+        loaded = Store(store.path)
+        early = [r for r in loaded.records["trajectories"].values() if r["identity"]["stage"] == "original"]
+        self.assertEqual(len({r["agent_worker_pid"] for r in early}), 2)
+        self.assertEqual(len({r["knowledge_sha256"] for r in early}), 1)
+        self.assertTrue(all(r["status"] == "completed" for r in loaded.records["trajectories"].values()))
+        self.assertEqual(sum(len(r["judge_attempts"]) for r in loaded.records["trajectories"].values()), 45)
+
+    def test_parallel_policy_rejects_shared_web_writes_and_undeclared_resources(self):
+        config = deepcopy(self.config)
+        config["runtime"]["policies"]["shared-web"] = {"kind": "workspace", "reviewed": True,
+            "reason": "Test fixture", "concurrency": "exclusive", "external_mutation": True,
+            "shared_resources": ["website:test"]}
+        with self.assertRaisesRegex(ExecutionFailure, "External writes"):
+            policy_for("shared-web", config)
+        config["mode"] = "live"
+        config["runtime"]["policies"]["shared-web"].pop("external_mutation")
+        config["runtime"]["policies"]["shared-web"].pop("shared_resources")
+        with self.assertRaisesRegex(ValueError, "shared_resources"):
+            execute(config, [{"idx": 0, "servers": {"shared-web": []}}], parallel=True, workers=2)
+
     def test_spawn_worker_crash_is_local_and_unstarted_work_remains_resumable(self):
         key = identity("full_rewrite", "original", 0, 0)
         self.config["mock"] = {"worker_crash_on": [key]}

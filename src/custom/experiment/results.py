@@ -195,9 +195,11 @@ class Store:
             self.records["events"].append({"time": utc_now(), **redact(event)})
         self.save()
 
-    def recover(self, episode=None, reason="unclean_stop"):
+    def recover(self, episode=None, reason="unclean_stop", trajectory=None):
         changed = False
         for key, row in self.records["trajectories"].items():
+            if trajectory is not None and key != trajectory:
+                continue
             ident = row["identity"]
             if episode and episode_id(ident["strategy"], ident["repeat"]) != episode:
                 continue
