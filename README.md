@@ -29,7 +29,7 @@ python -m pip install -r requirements-api.txt
 npm install --prefix .runtime @1mcp/agent@0.39.1
 ```
 
-Copy `.env.example` to `.env`, then fill in the key and model settings. `.env` loads automatically and stays out of Git. `requirements.txt` is the upstream full environment; our API workflow uses only `requirements-api.txt`.
+Copy `.env.example` to `.env` and fill in the API key. `.env` loads automatically and stays out of Git. Formal model and experiment settings come from `config/experiment.json`; the model variables in `.env` are for standalone diagnostics. `requirements.txt` is the upstream full environment; our API workflow uses only `requirements-api.txt`.
 
 ## Tasks and tools
 
@@ -39,22 +39,21 @@ Copy `.env.example` to `.env`, then fill in the key and model settings. `.env` l
 - Extract using `python scripts/extract_servers.py original` (repeat for `iter3` and `iter5`), then run `python scripts/prepare_local_config.py`.
 - Generated server configurations: `config/local/`. Prepare these separately on every machine.
 
-## Start a smoke check
+## Start the pipeline
 
-Keep terminal 1 running; terminal 2 discovers tools without calling a model:
+Run from the repository root with the environment active:
 
 ```text
-# Terminal 1, repository root
-python scripts/start_mcp.py --stage smoke
-# Terminal 2, repository root
-python scripts/probe_mcp.py
+python -m custom.experiment validate --config config/experiment.json
+python -m custom.experiment check --config config/experiment.json
+python -m custom.experiment run --config config/experiment.json
 ```
 
-For real task runs, subset selection, scoring commands, and result paths, follow [the setup guide](docs/setup.md). Windows smoke checks passed; macOS still needs a teammate's real-machine check.
+`validate` checks configuration without model calls. `check` discovers tool catalogs and makes three model requests on success; its output is diagnostic only. `run` starts private tool servers, runs tasks, and scores trajectories automatically. It needs no separately started server or second scoring command. Use `check --skip-models` for tool-only diagnostics. Manual smoke-server commands are in [the setup guide](docs/setup.md).
 
 ## Experiment pipeline
 
-The ten-task ID list is frozen in `config/subsets/selected_tasks.json`. Start from the repository root:
+The current five-task pilot ID list is frozen in `config/subsets/selected_tasks.json`. The pilot uses `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
 
 ```text
 python -m custom.experiment validate --config config/experiment.json --offline
@@ -62,11 +61,13 @@ python -m custom.experiment run --config config/experiment.json --offline
 python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
 ```
 
-Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence, not benchmark results. The live protocol compares `no_update` and `full_rewrite`: 10 tasks, 3 versions, 3 repeats, and 5 judge attempts per trajectory (180 trajectories / 900 planned judge attempts). After implementation review, explicit authorization, and verification of server isolation and current stage catalogs, omit `--offline` for model-backed execution.
+Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The live pilot compares `no_update` and `full_rewrite`: 5 tasks, 3 versions, 1 repeat, and 5 judge attempts per trajectory (30 trajectories / 150 planned slots). Task count and repeats are configurable. The dependency-screened pilot does not represent a random benchmark sample.
 
-Live output: `results/<experiment-id>/{experiment.json,records.json}`. Use `run --resume <experiment-directory>` with the same configuration/mode to continue unstarted work, and `summarize --experiment <experiment-directory>` to aggregate it. Completed, failed, and ambiguous requests are not replayed.
+The shared `request_policy` spaces model requests and cools down on HTTP 429, without retrying failed calls or adding judge attempts.
 
-Run `python -m custom.experiment check --config config/experiment.json` for separate connectivity evidence under the ignored runtime directory; it is not a strategy or formal result.
+Live output: `results/<experiment-id>/{experiment.json,records.json}`. Use `run --config config/experiment.json --resume <experiment-directory>` with the same configuration/mode to continue unstarted work, and `summarize --experiment <experiment-directory>` to aggregate it. Completed, failed, and ambiguous requests are not replayed. Keep code, configuration, selection, and inputs unchanged while running.
+
+Results remain local for now and will be uploaded after execution finishes. Keep code commits separate from result commits; stage explicit paths rather than the entire repository. Credentials, downloaded tools, local configurations, and runtime logs stay ignored.
 
 The common pipeline supplies `no_update` and `full_rewrite`; Role 1 must register `selective_patch` through the adapter contract. Unsupported strategies fail validation. Unknown backends fail execution until their state isolation is reviewed and implemented. Windows spawn is tested offline; a real macOS check remains pending.
 

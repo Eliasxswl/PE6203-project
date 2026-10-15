@@ -61,7 +61,7 @@ def specifications(store, config, task_list):
         initial_snapshot(config, task_list, store.apply)
     specs = []
     for strategy in config["strategies"]:
-        for repeat in range(3):
+        for repeat in range(config["agent_repeats"]):
             eid = episode_id(strategy, repeat)
             rows = {key: row for key, row in store.records["trajectories"].items()
                     if row["identity"]["strategy"] == strategy and row["identity"]["repeat"] == repeat}

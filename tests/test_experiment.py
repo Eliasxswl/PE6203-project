@@ -28,7 +28,8 @@ class ExperimentTests(unittest.TestCase):
         fixture.mkdir()
         (fixture / "unchanged.txt").write_bytes(b"official fixture bytes\r\n")
         self.config = load_config(ROOT / "config/experiment.json")
-        self.config.update(mode="offline", fixtures=str(fixture), strategies=["full_rewrite"])
+        self.config.update(mode="offline", fixtures=str(fixture), strategies=["full_rewrite"],
+                           task_count=10, agent_repeats=3)
         self.task_list = [{"idx": idx, "question": "Read the fixture and finish.",
                            "servers": {"@modelcontextprotocol/server-filesystem": ["read_file"]}}
                           for idx in range(10)]
@@ -91,6 +92,34 @@ class ExperimentTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             adapters.load_plugins({**config, "strategies": ["upstream_baseline"]})
 
+    def test_five_task_one_repeat_pilot_has_30_trajectories_and_150_slots(self):
+        config = {**self.config, "task_count": 5, "agent_repeats": 1,
+                  "strategies": ["no_update", "full_rewrite"]}
+        task_list = self.task_list[:5]
+        path = create(config, task_list, fingerprints(config))
+        self.addCleanup(self.remove_owned, path)
+        store = Store(path)
+        rows = list(store.records["trajectories"].values())
+        self.assertEqual(len(rows), 30)
+        self.assertEqual(sum(len(row["judge_attempts"]) for row in rows), 150)
+        self.assertEqual(len(specifications(store, config, task_list)), 2)
+        for spec in specifications(store, config, task_list):
+            run_episode(spec, store.apply)
+        self.assertTrue(all(row["status"] == "completed"
+                            for row in store.records["trajectories"].values()))
+
+    def test_pilot_selection_size_and_repeat_validation(self):
+        config = {**self.config, "task_count": 5,
+                  "selection_file": str(self.directory / "selected.json")}
+        self.assertEqual(len(select(config)), 5)
+        self.assertEqual(len(tasks(config)), 5)
+        for key in ("task_count", "agent_repeats"):
+            for invalid in (0, -1, True, 1.5):
+                path = self.directory / "invalid.json"
+                atomic_json(path, {**config, key: invalid})
+                with self.assertRaisesRegex(ValueError, key):
+                    load_config(path)
+
     def test_model_connectivity_check_is_separate_from_formal_results(self):
         from custom.experiment.checks import check_models
         from unittest.mock import Mock
@@ -105,7 +134,11 @@ class ExperimentTests(unittest.TestCase):
             result = check_models(self.config)
         self.assertEqual(result["status"], "passed")
         self.assertEqual(client.chat.completions.create.call_count, 3)
-        self.assertEqual(client.chat.completions.create.call_args.kwargs["extra_body"], {"thinking":{"type":"disabled"}})
+        kwargs = client.chat.completions.create.call_args.kwargs
+        if self.config.get("judge_thinking"):
+            self.assertEqual(kwargs["extra_body"], {"thinking":{"type": self.config["judge_thinking"]}})
+        else:
+            self.assertNotIn("extra_body", kwargs)
 
     @unittest.skipUnless(os.name == "nt", "Windows import compatibility")
     def test_windows_loader_preserves_archived_imports(self):
@@ -124,6 +157,7 @@ class ExperimentTests(unittest.TestCase):
     def test_unverified_live_mapping_fails_without_constructing_clients(self):
         config = deepcopy(self.config)
         config["mode"] = "live"
+        config["task_count"] = len(read_json(ROOT / config["selection_file"])["samples"])
         config["runtime"]["catalog_source"] = "evolution_overlay"
         with patch("custom.experiment.core.make_client") as client:
             with self.assertRaisesRegex(ValueError, "verified, explicit"):

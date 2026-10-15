@@ -32,7 +32,7 @@ npm install --prefix .runtime @1mcp/agent@0.39.1
 python -m pip check
 ```
 
-Use a Node.js version supported by 1mcp; Node.js 24 was used locally. Install only `requirements-api.txt` for our workflow. The upstream `requirements.txt` describes a much larger environment, including local-model/GPU packages, and is retained as a reference. Windows-only packages in our list have platform markers.
+Use Node.js 24 for the tested setup, including the Windows archived-import hook. Older Node versions have not been verified for this pipeline. Install only `requirements-api.txt` for our workflow. The upstream `requirements.txt` describes a much larger environment, including local-model/GPU packages, and is retained as a reference. Windows-only packages in our list have platform markers.
 
 ## 2. Local model configuration
 
@@ -41,7 +41,7 @@ Copy `.env.example` to `.env` once and fill in:
 ```ini
 BIGMODEL_API_KEY=your-key
 BIGMODEL_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
-BIGMODEL_MODEL=glm-4.7-flash
+BIGMODEL_MODEL=glm-4-flash-250414
 BIGMODEL_JUDGE_MODEL=
 BENCH_JUDGE_RUNS=5
 PYTHONUTF8=1
@@ -60,7 +60,7 @@ python scripts/check_model.py
 python scripts/check_model.py --tool-call
 ```
 
-Each command sends one model request. The first checks text output; the second checks function calling. Historical execution outputs have been cleared; run these checks only when a model-backed check is authorized.
+Each command sends one model request. The first checks text output; the second checks function calling. These standalone helpers use `.env` and do not exercise the experiment's shared request gate; prefer the common `check` command below when checking experiment settings.
 
 ## 3. Tasks and tool bundles
 
@@ -84,11 +84,19 @@ python scripts/prepare_local_config.py
 
 Extraction creates `servers/original_servers/`, `servers/iter3_servers/`, and `servers/iter5_servers/`. `original` is Early, `iter3` is Middle, and `iter5` is Late. Downloads and generated configs are local-only files. Every teammate must generate configs for their own machine.
 
-The generator resolves Windows `.cmd`/`.exe` launchers and macOS `bin` launchers, and replaces template workspace paths. Some remaining npx entries may download packages on first use; verify their versions before formal experiments. Some tools require additional browser, database, network, or OS dependencies.
+The generator resolves Windows `.cmd`/`.exe` launchers and macOS `bin` launchers, replaces template workspace paths, and resolves available npm binaries from each frozen archive. The formal runtime rejects any selected backend still using a downloading launcher such as npx or uvx; inspect its local configuration before running. Other tools may require additional browser, database, network, or OS dependencies. Do not regenerate local configs while an experiment is running: they are fingerprinted inputs.
 
 ## 4. Verify MCP before running a task
 
-With the virtual environment active, keep terminal 1 running:
+The common check starts and closes its own private servers. It discovers the selected tools across all three versions, then checks model tool calling, tool feedback, and scoring JSON (three model requests if all succeed):
+
+```text
+python -m custom.experiment check --config config/experiment.json
+```
+
+Use `--skip-models` for tool-only checking. To narrow a diagnostic check, add `--server <selected-server-name>` and/or `--stage original`. Reports go under ignored `.runtime/experiments/checks/`; they never become benchmark trajectories. Live `run` also owns its servers and performs scoring automatically, so no manual server or separate scoring command is required.
+
+For optional manual smoke diagnostics, with the virtual environment active, keep terminal 1 running:
 
 ```text
 python scripts/start_mcp.py --stage smoke
@@ -106,15 +114,21 @@ The smoke configurations contain only sequential-thinking. Tool discovery does n
 
 ## 5. Freeze and validate the experiment
 
-The common entry point runs from the repository root without changing directories or setting PYTHONPATH. The current seed is 6203 and the ten IDs are already frozen in `config/subsets/selected_tasks.json`. The source remains the untouched official task dataset; reference answers and trajectories are excluded from Agent input.
+The common entry point runs from the repository root without changing directories or setting PYTHONPATH. The current seed is 6203 and the five pilot IDs are frozen in `config/subsets/selected_tasks.json`. The source remains the untouched official task dataset; reference answers and trajectories are excluded from Agent input.
 
 ```text
 python -m custom.experiment validate --config config/experiment.json --offline
 ```
 
-Use `select --config config/experiment.json` only when the selection file does not exist. To intentionally adjust the subset before a new experiment, edit this same ID list; validation rejects duplicate, unknown, and noncandidate IDs. Selection never replaces failed tasks.
+Use `select --config config/experiment.json` only when the selection file does not exist. To intentionally adjust the subset before a new experiment, edit this same ID list; set `task_count` to the list length; validation rejects count mismatches, duplicate, unknown, and noncandidate IDs. Selection never replaces failed tasks.
 
-`config/experiment.json` fixes three stages, three Agent repeats, five judge slots, models, temperatures, token limits, and timeout policy. GLM-4.7-Flash uses explicit thinking settings: Agent enabled, judge disabled; Agent output budget is 8192 tokens. These settings are identical across the two strategies. The two baseline strategies are `no_update` and `full_rewrite`; together they plan 180 trajectories and 900 judge attempts. The effective request cap is the upstream Early tool-count budget plus the historical extra request, frozen per task across stages. Completion and exhaustion are recorded separately.
+`config/experiment.json` sets models, temperatures, token limits, and timeouts. The current pilot uses GLM-4-Flash-250414 for Agent and judge, omitting the newer thinking-mode option; output budgets are 8192 tokens. Settings are identical across strategies. GLM-4.7-Flash was tried earlier but encountered persistent provider overload; its results belong to separate experiments.
+
+The baseline strategies are `no_update` and `full_rewrite`. The current pilot uses 5 tasks, 3 versions, 1 Agent repeat, and 5 judge slots per trajectory: 30 trajectories and 150 planned slots. Set `task_count` and `agent_repeats` together with the frozen ID list for another protocol. IDs 9, 24, 117, 273, and 403 were selected for local dependencies, not as a representative random sample. The earlier 10-task, three-repeat design would produce 180 trajectories / 900 slots with two strategies.
+
+`request_policy` shares one admission gate per model across Agent, judge, and spawn workers using the same endpoint, credential, and policy in this checkout. It waits at least 10 seconds after each response. HTTP 429 triggers a 60/120/240/300-second cooldown; subsequent successes retain half that delay until five clean responses lower the cooldown level. Server `Retry-After` is honored. A crashed owner leaves a conservative request lease. Waits and dispatches are logged; failed requests are never replayed, and judge slots remain exactly five. Gate state stays under ignored `.runtime/experiments/rate-limits/`. These timing values do not guarantee provider availability.
+
+The effective request cap is the upstream Early tool-count budget plus its historical extra request, frozen per task across stages. Completion and exhaustion are recorded separately.
 
 All tools belonging to each task's required servers form the knowledge scope. One Early catalog is frozen for all strategies/repeats; each episode receives a copy. Current semantic descriptions and schemas are separate from changing callable routes. The Agent prompt, stop feedback, visible response truncation, and upstream judge rubric remain in use; complete raw responses are additionally saved.
 
@@ -132,9 +146,16 @@ python -m custom.experiment summarize --experiment <experiment-directory>
 python -m unittest discover -s tests -v
 ```
 
-Offline output is under `.runtime/experiments/offline-results/`, separate from formal model-backed results. The launcher prints the exact experiment directory. Serial execution is the default; optional spawn workers execute ordered strategy/repeat episodes with one model request per worker at a time. Resume preserves the original mode and worker count.
+Offline output is under `.runtime/experiments/offline-results/`, separate from model-backed results. The launcher prints the exact experiment directory. Serial execution is the default; optional spawn workers execute ordered strategy/repeat episodes. Live model calls also share the request gate, so parallel workers do not bypass its serialization/cooldown. Resume preserves the original mode and worker count.
 
-After review and explicit authorization, omit `--offline` for live execution. First use `check --config config/experiment.json` to discover stage catalogs and test model tool calling and scoring JSON separately. If selecting `catalog_source: evolution_overlay`, supply ordered evolution files and verify their correspondence before setting `runtime.metadata_verified`; live catalogs do not pretend this mapping has been verified. Configure private MCP launchers in `config/local/`; downloading launchers are rejected until replaced by verified frozen entry points.
+For live execution after setup and checking:
+
+```text
+python -m custom.experiment validate --config config/experiment.json
+python -m custom.experiment run --config config/experiment.json
+```
+
+Both task execution and scoring run through this entry point. `validate` sends no model requests but requires local configs and credentials in live mode. If selecting `catalog_source: evolution_overlay`, supply ordered evolution files and verify their correspondence before setting `runtime.metadata_verified`; live catalogs do not pretend this mapping has been verified. Configure private MCP launchers in `config/local/`; downloading launchers are rejected until replaced by verified frozen entry points.
 
 Filesystem, task-manager, sequential-thinking, and time backends have explicit built-in isolation. Other backends require a source review and a recorded policy in `runtime.policies`. A reviewed workspace policy may declare `env_paths`, mapping state environment variables to paths relative to the private runtime. Read-only external services may use a reviewed stateless policy. Mutable remote services need a concrete isolation/reset implementation, not merely a reviewed flag. Unsupported backends produce recorded execution failures; no task is silently replaced.
 
@@ -147,6 +168,8 @@ results/<UTC-microseconds>_<sanitized-git-user-name>/
 ```
 
 The manifest records public settings, source/code fingerprints, selected IDs, and planned identities. Records contain complete traces, knowledge snapshots/updates, model attempt statuses/available usage, exactly five judge slots per trajectory, failures, timings, and aggregates. Credentials and temporary runtime state are excluded from formal output.
+
+Results are not included in the current code push. Once execution finishes, upload only the selected complete experiment directory in a separate commit; retain its manifest and records together. The experiment ID combines a UTC timestamp with microseconds and the Git user name, so different runs use separate directories. Avoid editing or committing the same run's `records.json` from two machines. Stage explicit code/doc paths for code commits and explicit experiment directories for result commits. `.env`, local configs, logs, downloads, and runtime state remain ignored; do not force-add them.
 
 Execution failures skip scoring and do not stop unrelated runs. Agent mistakes in an operational environment remain scored. Judge failures consume slots without top-up; means use valid scores and include explicit coverage counts. ECS uses valid matched task/repeat records across the three stages and the upstream population standard deviation.
 

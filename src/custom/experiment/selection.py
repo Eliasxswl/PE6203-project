@@ -39,9 +39,9 @@ def load_config(path):
     if not isinstance(config, dict):
         raise ValueError("Experiment configuration must be an object")
     allowed = {"selection_file", "selection_seed", "task_source", "candidate_source", "fixtures",
-               "agent_repeats", "judge_attempts_per_trajectory", "agent_model", "judge_model",
+               "task_count", "agent_repeats", "judge_attempts_per_trajectory", "agent_model", "judge_model",
                "agent_temperature", "judge_temperature", "agent_max_tokens", "judge_max_tokens",
-               "agent_thinking", "judge_thinking",
+               "agent_thinking", "judge_thinking", "request_policy",
                "round_policy", "max_requests", "stages", "strategies", "runtime", "mode",
                "mock", "strategy_plugins", "judge_failure_top_up", "automatic_api_retries"}
     if set(config) - allowed:
@@ -50,10 +50,26 @@ def load_config(path):
         raise ValueError("mode must be live or offline")
     if config.get("stages") != list(STAGES):
         raise ValueError("Stages must be original -> iter3 -> iter5")
-    if config.get("agent_repeats") != 3 or config.get("judge_attempts_per_trajectory") != 5:
-        raise ValueError("Use 3 Agent repeats and 5 judge slots")
+    config.setdefault("task_count", 10)
+    for key in ("task_count", "agent_repeats"):
+        if type(config.get(key)) is not int or config[key] < 1:
+            raise ValueError(f"{key} must be a positive integer")
+    if config.get("judge_attempts_per_trajectory") != 5:
+        raise ValueError("Use 5 judge slots per trajectory")
     if config.get("judge_failure_top_up", False) or config.get("automatic_api_retries", 0) != 0:
         raise ValueError("Retries and judge top-up must be disabled")
+    policy = config.get("request_policy")
+    if policy is not None:
+        fields = {"minimum_interval", "overload_cooldown", "maximum_cooldown", "recovery_successes"}
+        if not isinstance(policy, dict) or set(policy) != fields:
+            raise ValueError("request_policy requires explicit interval, cooldowns, and recovery_successes")
+        for key in fields - {"recovery_successes"}:
+            if type(policy[key]) not in (int, float) or not 0 < policy[key] <= 3600:
+                raise ValueError(f"Invalid request_policy {key}")
+        if type(policy["recovery_successes"]) is not int or policy["recovery_successes"] < 1:
+            raise ValueError("request_policy recovery_successes must be a positive integer")
+        if not policy["minimum_interval"] <= policy["overload_cooldown"] <= policy["maximum_cooldown"]:
+            raise ValueError("request_policy intervals must increase from minimum to maximum")
     if config.get("round_policy") not in ("early_tool_count_plus_one", "fixed"):
         raise ValueError("Declare an early_tool_count_plus_one or fixed round policy")
     if config.get("round_policy") == "fixed" and (type(config.get("max_requests")) is not int
@@ -112,7 +128,7 @@ def select(config):
     path = ROOT / config["selection_file"]
     if path.exists():
         raise ValueError("Selection is already frozen; edit the same ID list intentionally")
-    selected = random.Random(config["selection_seed"]).sample(candidates, 10)
+    selected = random.Random(config["selection_seed"]).sample(candidates, config["task_count"])
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("x", encoding="utf-8") as stream:
         json.dump({"seed": config["selection_seed"], "candidate_order": "ascending_numeric",
@@ -126,8 +142,9 @@ def tasks(config):
     by_id, candidates = inputs(config)
     selection = read_json(ROOT / config["selection_file"])
     ids = [sample["idx"] for sample in selection["samples"]]
-    if len(ids) != 10 or any(type(idx) is not int for idx in ids) or len(set(ids)) != 10:
-        raise ValueError("Selection must contain exactly 10 distinct integer IDs")
+    count = config["task_count"]
+    if len(ids) != count or any(type(idx) is not int for idx in ids) or len(set(ids)) != count:
+        raise ValueError(f"Selection must contain exactly {count} distinct integer IDs")
     if not set(ids) <= set(candidates):
         raise ValueError("Selection contains IDs outside the upstream candidates")
     if "candidate_sha256" in selection and selection["candidate_sha256"] != file_hash(ROOT / config["candidate_source"]):

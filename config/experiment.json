@@ -5,9 +5,9 @@
   "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
   "fixtures": "anotation_path",
   "mode": "live",
-  "agent_repeats": 3,
+  "agent_repeats": 1,
   "judge_attempts_per_trajectory": 5,
-  "agent_model": "glm-4.7-flash",
+  "agent_model": "glm-4-flash-250414",
   "judge_model": "",
   "agent_temperature": 0.2,
   "judge_temperature": 0,
@@ -113,6 +113,13 @@
     },
     "catalog_source": "live"
   },
-  "agent_thinking": "enabled",
-  "judge_thinking": "disabled"
+  "agent_thinking": null,
+  "judge_thinking": null,
+  "task_count": 5,
+  "request_policy": {
+    "minimum_interval": 10,
+    "overload_cooldown": 60,
+    "maximum_cooldown": 300,
+    "recovery_successes": 5
+  }
 }

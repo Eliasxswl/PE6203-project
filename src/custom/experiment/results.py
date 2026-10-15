@@ -145,7 +145,7 @@ def create(config, task_list, fingerprints, parallel=False, workers=1):
     records = {"schema_version": SCHEMA, "status": "prepared", "events": [], "episodes": {},
                "trajectories": {}, "aggregate": {}, "initial_snapshot": None}
     for strategy in config["strategies"]:
-        for repeat in range(3):
+        for repeat in range(config["agent_repeats"]):
             records["episodes"][episode_id(strategy, repeat)] = {"stages": {}, "status": "pending"}
             for stage in STAGES:
                 for task in task_list:

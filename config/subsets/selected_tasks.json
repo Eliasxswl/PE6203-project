@@ -4,34 +4,20 @@
   "candidate_sha256": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
   "samples": [
     {
-      "idx": 107
+      "idx": 9
     },
     {
-      "idx": 157
+      "idx": 24
     },
     {
-      "idx": 58
+      "idx": 117
     },
     {
-      "idx": 70
+      "idx": 273
     },
     {
-      "idx": 289
-    },
-    {
-      "idx": 356
-    },
-    {
-      "idx": 358
-    },
-    {
-      "idx": 192
-    },
-    {
-      "idx": 278
-    },
-    {
-      "idx": 68
+      "idx": 403
     }
-  ]
+  ],
+  "selection_method": "Dependency-screened local pilot; not an unrestricted random sample"
 }

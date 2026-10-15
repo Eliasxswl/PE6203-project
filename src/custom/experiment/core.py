@@ -18,15 +18,20 @@ def runtime_for(config, stage, servers, task_list, cancel, owner_callback=None):
     return LiveRuntime(config, stage, servers, cancel, owner_callback)
 
 
-def make_client(config, key):
+def make_client(config, key, cancel=None, emit=None):
     if config.get("mode") == "offline":
         from .testing import OfflineClient
         return OfflineClient(config, key)
     import httpx
     from openai import OpenAI
     from custom.utils import model_config
-    return OpenAI(api_key=model_config.api_key(), base_url=model_config.base_url(), max_retries=0,
+    client = OpenAI(api_key=model_config.api_key(), base_url=model_config.base_url(), max_retries=0,
                   timeout=httpx.Timeout(config["runtime"]["model_timeout"], connect=config["runtime"]["connect_timeout"]))
+    if config.get("request_policy"):
+        from .rate_limit import ControlledClient
+        event_sink = (lambda event: emit({**event, "request_key": key})) if emit else None
+        return ControlledClient(client, config, model_config.base_url(), model_config.api_key(), cancel, event_sink)
+    return client
 
 
 def judge_prompt(task, row, catalog, order):
@@ -178,7 +183,7 @@ def run_episode(spec, emit, cancel=None):
                         current = adapters.stage_catalog(runtime.catalog, config, stage)
                         if adapters.semantic(expected) != adapters.semantic(current):
                             raise ExecutionFailure("Tool catalog changed after the stage checkpoint")
-                        client = make_client(config, key)
+                        client = make_client(config, key, cancel, send)
                         tools, routing = adapters.agent_tools(knowledge, runtime.catalog, required)
                         row["tool_identities"] = {tool["name"]: tool["meta"]["benchmark_semantic_identity"] for tool in tools}
                         if not tools:
@@ -230,7 +235,7 @@ def run_episode(spec, emit, cancel=None):
                     row["judge_catalog"] = deepcopy(expected)
                     save_row(key, row)
                 if client is None:
-                    client = make_client(config, key + "/judge")
+                    client = make_client(config, key + "/judge", cancel, send)
                 for attempt in row["judge_attempts"]:
                     check_cancel()
                     if attempt["status"] != "pending":
