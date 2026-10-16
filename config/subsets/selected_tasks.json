@@ -17,7 +17,22 @@
     },
     {
       "idx": 403
+    },
+    {
+      "idx": 267
+    },
+    {
+      "idx": 157
+    },
+    {
+      "idx": 278
+    },
+    {
+      "idx": 389
+    },
+    {
+      "idx": 425
     }
   ],
-  "selection_method": "Dependency-screened local pilot; not an unrestricted random sample"
+  "selection_method": "Dependency-screened local pilot; original five retained, five added before execution; not an unrestricted random sample"
 }

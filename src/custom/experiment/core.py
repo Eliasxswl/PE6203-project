@@ -7,9 +7,10 @@ import time
 
 from . import adapters
 from .errors import Cancelled, CheckpointFailure, ExecutionFailure
-from .results import PROTOCOL, SCORES, TERMINAL, episode_id, identity, redact, safe_error, utc_now
+from .results import SCORES, TERMINAL, episode_id, identity, redact, safe_error, utc_now
 from .runtime import ALIASES, LiveRuntime
 from .selection import STAGES, digest, provider_for, request_limit
+from .evidence import PROTOCOL, workspace_snapshot, workspace_changes
 
 
 def runtime_for(config, stage, servers, task_list, cancel, owner_callback=None):
@@ -40,26 +41,40 @@ def make_client(config, key, cancel=None, emit=None, role="agent"):
     return client
 
 
-def judge_prompt(task, row, catalog, order):
-    from custom.analysis.answer.evaluation import messages_to_string, truncate_tool_content
-    from custom.prompt.eval_error_prompt import build_mcp_bench_judge_prompt
-    from custom.utils.test_utils import format_tools_to_string
-    descriptions = ""
-    for original in task["servers"]:
-        server = ALIASES.get(original, original)
-        current = [{**tool, "name": key} for key, tool in catalog.items() if tool["server"] == server]
-        descriptions += f"Tools for Server - {original}: \n{format_tools_to_string(current)}\n\n"
-    visible = truncate_tool_content(row["trajectory_messages"])[2:]
-    for message in visible:
-        if message.get("tool_calls"):
-            message["tool_calls"] = deepcopy(message["tool_calls"])
-            for call in message["tool_calls"]:
-                function = call.get("function", {})
-                name = function.get("name")
-                if name is not None:
-                    function["name"] = row.get("tool_identities", {}).get(name, name)
-    trajectory = messages_to_string(visible)
-    return build_mcp_bench_judge_prompt(task["question"], descriptions, trajectory, row["answer"], dimension_order=tuple(order))
+def judge_messages(task, row, catalog, order):
+    """Build numbered evidence without replaying historical messages as instructions."""
+    from custom.agents.tool_results import visible_result
+    from custom.prompt.eval_error_prompt import build_structured_judge_messages
+    servers = {ALIASES.get(server, server) for server in task["servers"]}
+    tools = [{"name": key, "server": tool["server"],
+              "description": tool.get("description", ""),
+              "inputSchema": deepcopy(tool.get("inputSchema", {})),
+              "outputSchema": deepcopy(tool.get("outputSchema", {}))}
+             for key, tool in sorted(catalog.items()) if tool["server"] in servers]
+    visible = deepcopy(row["trajectory_messages"])[2:]
+    raw_tools = {item["tool_call_id"]: item["response"] for item in row.get("raw_tool_trace", [])}
+    tool_count = sum(message.get("role") == "tool" for message in visible)
+    per_tool = max(512, min(32000, 96000 // max(1, tool_count)))
+    for index, message in enumerate(visible, 1):
+        message["step_id"] = f"step_{index:03d}"
+        if message.get("role") == "tool" and message.get("tool_call_id") in raw_tools:
+            message["content"] = json.loads(visible_result(raw_tools[message["tool_call_id"]], max_chars=per_tool))
+        for call in message.get("tool_calls") or []:
+            function = call.get("function", {})
+            name = function.get("name")
+            if name is not None:
+                function["name"] = row.get("tool_identities", {}).get(name, name)
+    if (visible and visible[-1].get("role") == "assistant"
+            and not visible[-1].get("tool_calls")
+            and visible[-1].get("content") == row["answer"]):
+        visible[-1].pop("content")
+        visible[-1]["content_reference"] = "final_answer"
+    data = {"original_task": task["question"], "available_tools": tools,
+            "trajectory": visible,
+            "outcome_evidence": {"stop_reason": row.get("stop_reason"),
+                                 "workspace": deepcopy(row.get("outcome_evidence", {"scope": "not_captured"}))},
+            "final_answer": row["answer"]}
+    return build_structured_judge_messages(data, dimension_order=tuple(order))
 
 
 def initial_snapshot(config, task_list, emit):
@@ -267,7 +282,9 @@ def run_trajectory(spec, emit, cancel=None):
                                   max_new_tokens=config["agent_max_tokens"], tool_caller=runtime.call,
                                   event_callback=on_agent_event, mcp_server_url=runtime.url,
                                   thinking=config.get("agent_thinking"))
+                before = workspace_snapshot(runtime.workspace)
                 answer, messages, stop, exceeded = agent.run_with_server(task["question"])
+                row["outcome_evidence"] = workspace_changes(before, workspace_snapshot(runtime.workspace, include_text=True))
                 row.update(answer=answer, trajectory_messages=messages, raw_tool_trace=agent.raw_tool_trace,
                            stop=stop, exceeded=exceeded, stop_reason=agent.stop_reason,
                            agent_usage=agent.model_usage, request_count=agent.request_count,
@@ -292,7 +309,7 @@ def run_trajectory(spec, emit, cancel=None):
                 continue
             seed = int(digest([config["selection_seed"], stage, task["idx"], repeat, attempt["slot"]])[:16], 16)
             order = random.Random(seed).sample([0, 1, 2], 3)
-            prompt = judge_prompt(task, row, row["judge_catalog"], order)
+            messages = judge_messages(task, row, row["judge_catalog"], order)
             attempt.update(status="started", dimension_order=order, started_at=utc_now())
             row["phase"] = "judge"
             save_row(key, row)
@@ -301,7 +318,7 @@ def run_trajectory(spec, emit, cancel=None):
                 if attempt["slot"] in config.get("mock", {}).get("judge_fail_slots", []) and config["mode"] == "offline":
                     raise ExecutionFailure("Injected judge failure")
                 response = client.chat.completions.create(model=config.get("judge_model") or config["agent_model"],
-                    messages=[{"role": "user", "content": prompt}], temperature=config["judge_temperature"],
+                    messages=messages, temperature=config["judge_temperature"],
                     max_tokens=config["judge_max_tokens"],
                     **({"extra_body": {"thinking": {"type": config["judge_thinking"]}}}
                        if config.get("judge_thinking") else {}))

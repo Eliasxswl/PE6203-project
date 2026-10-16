@@ -82,7 +82,7 @@ python scripts/prepare_local_config.py
 
 These versions correspond to Early, Middle, and Late. Every teammate generates local configs on their own machine. Downloads, extracted tools, and local configs stay ignored. Selected servers must use frozen local executables; downloading launchers such as npx/uvx are rejected. Other tasks may need additional services or OS dependencies.
 
-Role 3 edits only the ID list and matching `task_count` before a new experiment. Keep original tasks and inputs unchanged. The current dependency-screened selection is **9, 24, 117, 273, 403**; it is not a representative random sample.
+Role 3 edits only the ID list and matching `task_count` before a new experiment. Keep original tasks and inputs unchanged. The current dependency-screened selection is **9, 24, 117, 273, 403, 115, 157, 278, 389, 425**; it is not a representative random sample.
 
 ## 4. Validate and run
 
@@ -96,7 +96,7 @@ python -m custom.experiment run --config config/experiment.json --parallel --wor
 - `check` starts private tools and verifies model tool calling, tool feedback, and scoring JSON. Successful model checking uses three requests and currently checks the first provider in each role. Check added account keys separately before a full run. Use `--skip-models`, `--server <name>`, or `--stage original` to narrow diagnostics.
 - `run` owns tool startup, task execution, and scoring. No separate server or scoring script is needed. Omit `--parallel --workers 4` for serial execution.
 
-The current pilot compares `no_update` and `full_rewrite`: **5 tasks × 3 versions × 1 repeat = 30 trajectories**, each with **5 judge slots = 150 planned slots**. Adding Selective Patch requires Role 1's registered implementation.
+The current pilot compares `no_update` and `full_rewrite`: **10 tasks × 3 versions × 1 repeat = 60 trajectories**, each with **5 judge slots = 300 planned slots**. Adding Selective Patch requires Role 1's registered implementation.
 
 Workers execute independent tasks within a version, then queue scoring jobs in the same bounded pool. Agent turns and tool calls remain sequential within each trajectory. Every version finishes before the next knowledge update. Each trajectory receives fresh inputs, backend state, services, and conversation; one parent writes checkpoints.
 
@@ -111,6 +111,8 @@ results/<UTC-microseconds>_<git-user-name>/
 ```
 
 The manifest preserves settings and source/code fingerprints. Records contain trajectories, raw tool traces, knowledge updates, attempt statuses, usage, timings, scores, and failures. Diagnostics stay under ignored `.runtime/experiments/checks/`.
+
+Judge rules use a separate system message; a JSON user message contains the original task, tools, numbered trajectory, existing evidence, and final answer. Reasoning cites evidence per requirement. No task-success validator is added. This branch labels new results `minimal_repair_v2`: corrected termination, explicit MCP result/error transport, retained judge evidence, a clarified grading profile, and bounded local file-change evidence. See the [repair plan](harness-repair-plan.md) for the exact scope. Do not mix these scores with earlier pilots. File evidence supplements model grading; it does not prove arbitrary task success or inspect remote services. Old experiments cannot resume under changed source fingerprints.
 
 ```text
 python -m custom.experiment run --config config/experiment.json --resume <experiment-directory>
@@ -135,5 +137,3 @@ Offline execution uses fake models/tools and writes under `.runtime/experiments/
 **Backend isolation:** parallel policies declare `concurrency: private`, `readonly`, or `exclusive`. Exclusive resources require common `shared_resources` names such as `tcp:3000`; OS locks serialize access. Workspace state may be redirected through `env_paths`. Mutable remote services require an implemented reset/private namespace and are otherwise rejected. These controls are not a security sandbox for arbitrary commands.
 
 See [fixed-plan.md](fixed-plan.md) for protocol decisions and validation history. Default documentation is maintained here and in the root README.
-
-Execution repair: new runs use `execution_repair_v1`. Nonempty text without tool calls ends the Agent turn; a finish marker never suppresses structured tool calls. Tool results retain MCP content, structured data, and error flags; Agent-visible results have an explicit 32,000-character limit with truncation metadata, while raw results remain complete. Provider/runtime failures remain execution failures. The Judge prompt, scoring rules, five attempts, aggregation, and five-task default selection remain unchanged. Old runs cannot resume under changed source fingerprints, and scores from different execution protocols must not be pooled. Experimental Judge changes and ten-task pilots remain on `harness-repair`.

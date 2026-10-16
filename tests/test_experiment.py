@@ -194,9 +194,9 @@ class ExperimentTests(unittest.TestCase):
         self.assertTrue(tools[0]["meta"]["benchmark_remote_name"].startswith("missing:"))
 
     def test_duplicate_and_invalid_api_names_keep_distinct_semantic_routes_for_judge(self):
-        from custom.experiment.core import judge_prompt
+        from custom.experiment.core import judge_messages
         catalog = {server + "::read": {"server": server, "name": "read", "description": server,
-                    "inputSchema": {}, "remote_name": "route:" + server} for server in ("one", "two")}
+                    "inputSchema": {}, "outputSchema": {"type": "object"}, "remote_name": "route:" + server} for server in ("one", "two")}
         catalog["one::invalid.name"] = {"server": "one", "name": "invalid.name", "description": "invalid API characters",
                                        "inputSchema": {}, "remote_name": "route:invalid"}
         tools, _ = adapters.agent_tools(adapters.semantic(catalog), catalog, ["one", "two"])
@@ -210,9 +210,13 @@ class ExperimentTests(unittest.TestCase):
                      for i, tool in enumerate(tools)]}]
         row = {"answer": "done", "trajectory_messages": messages, "tool_identities": mapping}
         before = deepcopy(messages)
-        prompt = judge_prompt({"question": "question", "servers": {"one": [], "two": []}}, row, catalog, [0, 1, 2])
-        self.assertIn('Call one::read(', prompt)
-        self.assertIn('Call two::read(', prompt)
+        messages = judge_messages({"question": "question", "servers": {"one": [], "two": []}}, row, catalog, [0, 1, 2])
+        data = json.loads(messages[1]["content"])
+        names = {call["function"]["name"] for call in data["trajectory"][0]["tool_calls"]}
+        self.assertIn("one::read", names)
+        self.assertIn("two::read", names)
+        self.assertEqual({t["name"] for t in data["available_tools"]}, set(catalog))
+        self.assertEqual(next(t for t in data["available_tools"] if t["name"] == "one::read")["outputSchema"], {"type": "object"})
         self.assertEqual(row["trajectory_messages"], before)
 
     def test_plugin_source_change_is_in_the_resume_fingerprint(self):
@@ -256,6 +260,24 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(call.call_count, 2)
         self.assertFalse(finished)
         self.assertTrue(exceeded)
+
+    def test_workspace_evidence_is_persisted_before_disposable_runtime_cleanup(self):
+        from custom.experiment.evidence import PROTOCOL
+        original = OfflineRuntime.call
+        def write_artifact(runtime, remote, arguments):
+            (runtime.workspace / "output.md").write_text("- [ ] Follow up\n", encoding="utf-8")
+            return original(runtime, remote, arguments)
+        store = self.store()
+        with patch.object(OfflineRuntime, "call", write_artifact):
+            self.run_one(store)
+        row = store.records["trajectories"][identity("full_rewrite", "original", 0, 0)]
+        self.assertEqual(store.manifest["harness_protocol"], PROTOCOL)
+        self.assertEqual(row["harness_protocol"], PROTOCOL)
+        self.assertEqual(row["outcome_evidence"]["changes"][0]["path"], "output.md")
+        self.assertEqual(row["outcome_evidence"]["changes"][0]["text"].splitlines(), ["- [ ] Follow up"])
+        self.assertEqual(row["stop_reason"], "final_response")
+        self.assertEqual(Store(store.path).records["trajectories"][identity("full_rewrite", "original", 0, 0)]
+                         ["outcome_evidence"], row["outcome_evidence"])
 
     def test_manifest_and_rows_preserve_execution_protocol(self):
         from custom.experiment.results import PROTOCOL
@@ -372,6 +394,7 @@ class ExperimentTests(unittest.TestCase):
         row["judge_attempts"][3] = {"slot": 3, "status": "pending"}
         row["judge_attempts"][4] = {"slot": 4, "status": "pending"}
         agent_before = deepcopy(row["agent_attempts"])
+        evidence_before = deepcopy(row["outcome_evidence"])
         store.save()
         store = Store(store.path)
         store.recover()
@@ -380,6 +403,7 @@ class ExperimentTests(unittest.TestCase):
         row = store.records["trajectories"][key]
         self.assertEqual(call.call_count, 2)
         self.assertEqual(row["agent_attempts"], agent_before)
+        self.assertEqual(row["outcome_evidence"], evidence_before)
         self.assertEqual(row["judge_attempts"][2]["status"], "outcome_unknown")
         self.assertAlmostEqual(row["score"]["task_fulfillment"], 22 / 3)
 

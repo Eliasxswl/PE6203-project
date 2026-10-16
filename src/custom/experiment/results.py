@@ -13,8 +13,8 @@ import time
 import uuid
 
 from .selection import ROOT, STAGES, digest, read_json
+from .evidence import PROTOCOL
 
-PROTOCOL = "execution_repair_v1"
 SCHEMA = 1
 SCORES = ("task_fulfillment", "grounding", "planning_and_efficiency")
 TERMINAL = {"completed", "execution_failed", "interrupted", "outcome_unknown"}

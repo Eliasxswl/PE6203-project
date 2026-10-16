@@ -7,14 +7,18 @@ The runnable pipeline and the two baselines are implemented. Role 1 still suppli
 ## Current pilot
 
 - The authority is `config/experiment.json`, with one ID list in `config/subsets/selected_tasks.json`.
-- Selected IDs: 9, 24, 117, 273, 403. These were screened for local dependencies, not sampled as a representative benchmark subset. Original task content, tool implementations, templates, fixtures, prompts, and rubric remain unchanged.
-- Strategies: `no_update`, `full_rewrite`. Versions: `original` (Early), `iter3` (Middle), `iter5` (Late). One Agent repeat and five judge slots per trajectory give **30 trajectories / 150 planned slots**.
+- Selected IDs: 9, 24, 117, 273, 403, 267, 157, 278, 389, 425. These were screened for local dependencies, not sampled as a representative benchmark subset. Original task content, tool implementations, templates, and fixtures remain unchanged. Archived pilots used the upstream execution/grading behavior. This branch uses the explicitly labelled `minimal_repair_v2` protocol described below.
+- Strategies: `no_update`, `full_rewrite`. Versions: `original` (Early), `iter3` (Middle), `iter5` (Late). One Agent repeat and five judge slots per trajectory give **60 trajectories / 300 planned slots**.
 - Task count and Agent repeats are configurable. The earlier two-baseline, 10-task, three-repeat design gives 180 trajectories / 900 slots; this is not the active pilot. Adding Selective Patch requires registration and a separately frozen experiment.
 - Agent and judge currently use `glm-4-flash-250414`, with the thinking-mode option omitted. Agent temperature is 0.2, judge temperature is 0, and both output budgets are 8192 tokens. GLM-4.7-Flash was tried in separate pilots and encountered persistent provider overload.
 - All strategies start from independent copies of the same frozen Early catalog. Knowledge evolves in version order. Each task gets fresh fixtures, backend state, services, and Agent conversation.
 - The request cap preserves the upstream Early effective budget, `max(10, 2 * required Early tool count) + 1`, across versions. Operational mistakes and budget exhaustion remain scored behavior.
 
 Completed-pilot scores are preliminary: an audit of task 117 found high TF scores on trajectories missing required splitting/archive-search steps. This exposes judge-validity limitations; repeated ratings do not remove systematic grading bias. Raw results and the upstream rubric are preserved.
+
+## Shared harness repair
+
+The [minimal repair plan](harness-repair-plan.md) defines this branch's complete change scope. New experiments label manifests and trajectories `minimal_repair_v2`; do not pool their scores with archived pilots. Text responses without tool calls end execution; empty, length-limited, refused, and budget-exhausted exits remain distinct. MCP results retain structured data and error flags, with explicit size limits and full raw traces. Judge input retains assistant statements and bounded raw tool results, plus before/after evidence for local file changes. The repaired rubric removes the completion/efficiency contradiction and specifies zero-opportunity conventions; the upstream rubric remains the legacy default. File evidence does not automatically establish task success or cover remote state. Existing isolation, strategies, budgets, selection, five judge slots, and aggregation remain unchanged. Live judge calibration is still required before treating scores as scientifically validated.
 
 ## Entry points and member interfaces
 
@@ -59,9 +63,4 @@ Offline acceptance on 2026-10-15 passed all 65 tests after the concurrency chang
 
 Validation logs are local diagnostics, not benchmark results. Startup and model checks do not replace per-trajectory execution evidence. Results are uploaded separately after execution finishes; credentials, runtime logs/state, local configs, downloads, and extracted bundles stay ignored. Stage explicit paths to avoid mixing results with code. Do not create additional documents, commits, pushes, PRs, or model-backed checks without user authorization.
 
-## Execution-only repair
-
-
-Execution repair: new runs use `execution_repair_v1`. Nonempty text without tool calls ends the Agent turn; a finish marker never suppresses structured tool calls. Tool results retain MCP content, structured data, and error flags; Agent-visible results have an explicit 32,000-character limit with truncation metadata, while raw results remain complete. Provider/runtime failures remain execution failures. The Judge prompt, scoring rules, five attempts, aggregation, and five-task default selection remain unchanged. Old runs cannot resume under changed source fingerprints, and scores from different execution protocols must not be pooled. Experimental Judge changes and ten-task pilots remain on `harness-repair`.
-
-See [harness-repair-plan.md](harness-repair-plan.md) for the narrow merge scope and acceptance record.
+The structured Judge input follow-up separates fixed evaluator instructions from JSON evidence, retains call IDs and numbered steps, and references a duplicate final answer once. Existing scoring dimensions, output fields, five slots, shuffle, and averaging remain unchanged. No task-success validator or human review is added. Original five IDs remain first to preserve their provider assignment. Added IDs are 267 (prioritized log-aggregation workflow), 157 (time and simulated cafe), 278 (technical subtasks/dependencies), 389 (Chinese planning request), and 425 (technical plan and project task list). All use existing reviewed private backends; task 157 uses the source-reviewed simulated cafe, not a real purchase. This ten-task convenience pilot is not a representative benchmark sample.

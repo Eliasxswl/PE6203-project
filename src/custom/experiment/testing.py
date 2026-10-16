@@ -101,7 +101,7 @@ class OfflineClient:
         if self.key in settings.get("interrupt_trajectories", []):
             raise Cancelled()
         if "tools" not in kwargs:
-            score = 3 if "Unknown tool:" in kwargs["messages"][0]["content"] else 8
+            score = 3 if "Unknown tool:" in kwargs["messages"][-1]["content"] else 8
             return Response(Message(json.dumps({**{s: score for s in SCORES},
                 **{s + "_reasoning": "Deterministic offline judge" for s in SCORES}})))
         if self.calls == 1 and kwargs["tools"]:

@@ -53,7 +53,7 @@ python -m custom.experiment run --config config/experiment.json
 
 ## Experiment pipeline
 
-The current five-task pilot ID list is frozen in `config/subsets/selected_tasks.json`. The pilot uses `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
+The current ten-task pilot ID list is frozen in `config/subsets/selected_tasks.json`. The pilot uses `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
 
 ```text
 python -m custom.experiment validate --config config/experiment.json --offline
@@ -61,7 +61,7 @@ python -m custom.experiment run --config config/experiment.json --offline
 python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
 ```
 
-Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The live pilot compares `no_update` and `full_rewrite`: 5 tasks, 3 versions, 1 repeat, and 5 judge attempts per trajectory (30 trajectories / 150 planned slots). Task count and repeats are configurable. The dependency-screened pilot does not represent a random benchmark sample.
+Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The live pilot compares `no_update` and `full_rewrite`: 10 tasks, 3 versions, 1 repeat, and 5 judge attempts per trajectory (60 trajectories / 300 planned slots). Task count and repeats are configurable. The dependency-screened pilot does not represent a random benchmark sample.
 
 Optional parallel execution uses the same entry point:
 
