@@ -158,6 +158,8 @@ Before a formal run, freeze code/configuration in an authorized commit, resolve 
 
 Keep each manifest and records file together. Upload completed result directories separately from code; avoid concurrent edits to the same run. Credentials, local configs, downloads, runtime logs, and temporary state stay ignored. Commit or push only when authorized.
 
+Stopped tool runtimes automatically remove their copied `workspace`, private `home` and `tmp`; small service logs and generated configurations remain under `.runtime/r/`. This also applies to startup failures. For file-state debugging, explicitly add `"keep_workspaces": true` inside the experiment's `runtime` settings before starting a new run. Cleanup errors are logged without changing scores. Hard-killed processes can leave copies behind; inspect only after the relevant experiment has stopped. Original fixtures, tool bundles and archived results are unaffected.
+
 ## 6. Development and member interfaces
 
 ```text
