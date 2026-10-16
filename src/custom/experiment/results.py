@@ -14,6 +14,7 @@ import uuid
 
 from .selection import ROOT, STAGES, digest, read_json
 
+PROTOCOL = "execution_repair_v1"
 SCHEMA = 1
 SCORES = ("task_fulfillment", "grounding", "planning_and_efficiency")
 TERMINAL = {"completed", "execution_failed", "interrupted", "outcome_unknown"}
@@ -156,7 +157,7 @@ def create(config, task_list, fingerprints, parallel=False, workers=1):
                         "tool_attempts": [],
                         "judge_attempts": [{"slot": i, "status": "pending"} for i in range(5)],
                         "errors": [], "raw_tool_trace": [], "trajectory_messages": [], "score": None}
-    manifest = {"schema_version": SCHEMA, "operator": operator, "created_at": utc_now(),
+    manifest = {"schema_version": SCHEMA, "harness_protocol": PROTOCOL, "operator": operator, "created_at": utc_now(),
                 "revision": git("rev-parse", "HEAD"), "dirty_source": bool(git("status", "--porcelain")),
                 "fingerprints": fingerprints, "settings": config, "selected_ids": [t["idx"] for t in task_list],
                 "execution": {"parallel": parallel, "workers": workers},

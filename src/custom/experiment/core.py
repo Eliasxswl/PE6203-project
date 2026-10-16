@@ -7,7 +7,7 @@ import time
 
 from . import adapters
 from .errors import Cancelled, CheckpointFailure, ExecutionFailure
-from .results import SCORES, TERMINAL, episode_id, identity, redact, safe_error, utc_now
+from .results import PROTOCOL, SCORES, TERMINAL, episode_id, identity, redact, safe_error, utc_now
 from .runtime import ALIASES, LiveRuntime
 from .selection import STAGES, digest, provider_for, request_limit
 
@@ -211,7 +211,7 @@ def run_trajectory(spec, emit, cancel=None):
         if row["agent_status"] != "completed":
             row["agent_worker_pid"] = os.getpid()
             row.update(status="running", agent_status="running", started_at=utc_now(),
-                       request_limit=request_limit(config, task), knowledge_sha256=digest(knowledge))
+                       request_limit=request_limit(config, task), knowledge_sha256=digest(knowledge), harness_protocol=PROTOCOL)
             save_row(key, row)
             required = {ALIASES.get(s, s) for s in task["servers"]}
             unavailable = required & snapshot["errors"].keys()

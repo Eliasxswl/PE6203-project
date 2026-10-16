@@ -239,19 +239,32 @@ class ExperimentTests(unittest.TestCase):
 
     def test_round_boundary_uses_exact_cap_and_completion_is_not_exhaustion(self):
         from custom.agents.SimpleOpenAIAgent import ChatModel
+        from types import SimpleNamespace
         client = OfflineClient(self.config, "budget")
-        with patch.object(client.chat.completions, "create", side_effect=[Response(Message("working")), Response(Message("[FINISH] done"))]) as call:
-            agent = ChatModel(client=client, model_name="offline", tools=[], tool_server_map={}, max_round=2)
+        tool_reply = Response(Message(tool_calls=[SimpleNamespace(id="call", function=SimpleNamespace(name="read", arguments="{}"))]))
+        with patch.object(client.chat.completions, "create", side_effect=[tool_reply, Response(Message("done"))]) as call:
+            agent = ChatModel(client=client, model_name="offline", tools=[], tool_server_map={"read": "files"},
+                              tool_caller=lambda *_: "read", max_round=2)
             _, _, finished, exceeded = agent.run_with_server("question")
         self.assertEqual(call.call_count, 2)
         self.assertTrue(finished)
         self.assertFalse(exceeded)
-        with patch.object(client.chat.completions, "create", return_value=Response(Message("working"))) as call:
-            agent = ChatModel(client=client, model_name="offline", tools=[], tool_server_map={}, max_round=2)
+        with patch.object(client.chat.completions, "create", return_value=tool_reply) as call:
+            agent = ChatModel(client=client, model_name="offline", tools=[], tool_server_map={"read": "files"},
+                              tool_caller=lambda *_: "read", max_round=2)
             _, _, finished, exceeded = agent.run_with_server("question")
         self.assertEqual(call.call_count, 2)
         self.assertFalse(finished)
         self.assertTrue(exceeded)
+
+    def test_manifest_and_rows_preserve_execution_protocol(self):
+        from custom.experiment.results import PROTOCOL
+        store = self.store()
+        self.run_one(store)
+        self.assertEqual(store.manifest["harness_protocol"], PROTOCOL)
+        row = store.records["trajectories"][identity("full_rewrite", "original", 0, 0)]
+        self.assertEqual(row["harness_protocol"], PROTOCOL)
+        self.assertEqual(row["stop_reason"], "final_response")
 
     def test_one_failed_run_is_recorded_and_not_judged_or_retried(self):
         key = identity("full_rewrite", "original", 0, 0)
@@ -268,7 +281,8 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(good["score"]["task_fulfillment"], 8)
         self.assertGreater(len(json.dumps(good["raw_tool_trace"][0]["response"])), 900)
         visible = next(m["content"] for m in good["trajectory_messages"] if m["role"] == "tool")
-        self.assertEqual(len(visible), 503)
+        self.assertGreater(len(json.loads(visible)["content"][0]["text"]), 900)
+        self.assertFalse(json.loads(visible)["isError"])
         before = deepcopy(store.records["trajectories"])
         self.run_one(store)
         self.assertEqual(store.records["trajectories"], before)
