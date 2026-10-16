@@ -522,6 +522,10 @@ execute(payload["config"], payload["tasks"], payload["experiment"])
         atomic_json(parallel.path / "experiment.json", parallel.manifest)
         _, serial_aggregate = execute(self.config, self.task_list, serial.path)
         _, parallel_aggregate = execute(self.config, self.task_list, parallel.path, True, 2)
+        # Wall-clock update time is measured, so it cannot be equal across executions.
+        for aggregate in (serial_aggregate, parallel_aggregate):
+            for costs in aggregate["update_costs"].values():
+                costs.pop("elapsed_seconds")
         self.assertEqual(serial_aggregate, parallel_aggregate)
         self.assertEqual(sum(group["valid"] for group in serial_aggregate["groups"].values()), 90)
         with patch("custom.experiment.core.make_client") as client:

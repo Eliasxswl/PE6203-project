@@ -85,7 +85,7 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
                 raise ValueError(f"Exclusive backend requires shared_resources: {server}")
     expected = fingerprints(config)
     if experiment is None:
-        experiment = create(config, task_list, expected, parallel, workers)
+        experiment = create(config, task_list, expected, parallel, workers, warnings)
     experiment = Path(experiment).resolve()
     with writer_lock(experiment):
         store = Store(experiment)
@@ -131,7 +131,10 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
                 row.update(score=None, score_exclusion_reason="experimental_inputs_changed")
             return experiment, store.summarize()
         failures = any(row["status"] != "completed" or row.get("score") is None for row in store.records["trajectories"].values())
-        store.records["status"] = "partial" if pending else "completed_with_failures" if failures else "completed"
+        judge_warnings = any(a["status"] != "completed" for row in store.records["trajectories"].values()
+                             for a in row["judge_attempts"])
+        store.records["status"] = ("partial" if pending else "completed_with_failures" if failures
+                                   else "completed_with_warnings" if judge_warnings else "completed")
         store.event("experiment_stopped", status=store.records["status"])
         return experiment, store.summarize()
 
@@ -153,8 +156,22 @@ def main(argv=None):
             command.add_argument("--workers", type=int)
     summarize = subparsers.add_parser("summarize")
     summarize.add_argument("--experiment", type=Path, required=True)
+    diff = subparsers.add_parser("catalog-diff", help="Read saved catalogs; no network or result changes")
+    diff.add_argument("--experiment", type=Path, required=True)
+    judge = subparsers.add_parser("judge-check", help="Explicit real-trajectory scoring diagnostic; no tools")
+    judge.add_argument("--config", default="config/experiment.json")
+    judge.add_argument("--experiment", type=Path, required=True)
+    judge.add_argument("--trajectory", required=True, help="strategy/stage/task/repeat from records.json")
+    judge.add_argument("--attempts", type=int, default=1, choices=range(1, 6))
+    judge.add_argument("--provider-index", type=int, default=0)
+    judge.add_argument("--offline", action="store_true")
     args = parser.parse_args(argv)
     try:
+        if args.command == "catalog-diff":
+            from .evidence import archived_tasks, catalog_evidence
+            store = Store(args.experiment)
+            print(json.dumps(catalog_evidence(store.records, archived_tasks(store.manifest)), indent=2))
+            return 0
         if args.command == "summarize":
             with writer_lock(args.experiment):
                 result = Store(args.experiment).summarize()
@@ -163,14 +180,21 @@ def main(argv=None):
         config = load_config(ROOT / args.config)
         if args.offline:
             config["mode"] = "offline"
+        if args.command == "judge-check":
+            from .checks import check_judge
+            result = check_judge(config, args.experiment, args.trajectory, args.attempts, args.provider_index)
+            print(json.dumps(result, indent=2))
+            return 0 if result["status"] == "passed" else 2
         if args.command == "select":
             print(json.dumps({"selected_ids": select(config)}))
             return 0
         task_list, warnings = validate(config)
         if args.command == "validate":
+            from .readiness import preparation
             fingerprints(config)
             print(json.dumps({"status": "valid", "mode": config["mode"], "tasks": len(task_list),
-                              "strategies": config["strategies"], "warnings": warnings}, indent=2))
+                              "strategies": config["strategies"], "warnings": warnings,
+                              "preparation": preparation(config, warnings)}, indent=2))
             return 0
         if args.command == "check":
             from .checks import check
@@ -189,8 +213,9 @@ def main(argv=None):
         if type(workers) is not int or not 1 <= workers <= 32:
             raise ValueError("workers must be between 1 and 32")
         path, aggregate = execute(config, task_list, args.resume, parallel, workers, warnings)
-        print(json.dumps({"experiment": str(path), "groups": aggregate["groups"]}, indent=2))
-        return 0
+        print(json.dumps({"experiment": str(path), "groups": aggregate["groups"],
+                          "completion": aggregate["completion"]}, indent=2))
+        return aggregate["completion"]["exit_code"]
     except (ValueError, RuntimeError, OSError, KeyError, CheckpointFailure) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 2

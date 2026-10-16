@@ -62,6 +62,23 @@ def judge_prompt(task, row, catalog, order):
     return build_mcp_bench_judge_prompt(task["question"], descriptions, trajectory, row["answer"], dimension_order=tuple(order))
 
 
+def request_judge(client, config, prompt):
+    """Shared formal/diagnostic request; prompt and rubric remain unchanged."""
+    return client.chat.completions.create(model=config.get("judge_model") or config["agent_model"],
+        messages=[{"role": "user", "content": prompt}], temperature=config["judge_temperature"],
+        max_tokens=config["judge_max_tokens"],
+        **({"extra_body": {"thinking": {"type": config["judge_thinking"]}}}
+           if config.get("judge_thinking") else {}))
+
+
+def parse_judge(raw):
+    from custom.analysis.answer.evaluation import extract_json_from_markdown
+    result = extract_json_from_markdown(raw)
+    if not isinstance(result, dict) or any(type(result.get(s)) is not int or not 1 <= result[s] <= 10 for s in SCORES):
+        raise ValueError("Invalid or missing judge scores")
+    return result
+
+
 def initial_snapshot(config, task_list, emit):
     """Freeze one Early catalog for every strategy/repeat, without model calls."""
     snapshot = {"status": "updating", "before": {}, "catalog": {}, "errors": {}}
@@ -77,7 +94,7 @@ def initial_snapshot(config, task_list, emit):
     snapshot.update(status="ready", knowledge=adapters.semantic(snapshot["catalog"]),
                     changed_entries=sorted(snapshot["catalog"]),
                     explanation="Shared frozen Early knowledge; each episode receives a defensive copy",
-                    elapsed_seconds=0.0)
+                    elapsed_seconds=0.0, **adapters.no_model_usage())
     emit({"kind": "initial_snapshot", "snapshot": snapshot})
     return snapshot
 
@@ -135,7 +152,8 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
                 if stage == "original":
                     result = {"knowledge": adapters.semantic(snapshot["catalog"]),
                               "changed_entries": sorted(snapshot["catalog"]),
-                              "explanation": "Independent Early initial knowledge", "elapsed_seconds": 0.0}
+                              "explanation": "Independent Early initial knowledge", "elapsed_seconds": 0.0,
+                              **adapters.no_model_usage()}
                 else:
                     result = adapters.update(strategy, knowledge, previous, snapshot["catalog"],
                                              {"stage": stage, "repeat": repeat})
@@ -300,17 +318,10 @@ def run_trajectory(spec, emit, cancel=None):
             try:
                 if attempt["slot"] in config.get("mock", {}).get("judge_fail_slots", []) and config["mode"] == "offline":
                     raise ExecutionFailure("Injected judge failure")
-                response = client.chat.completions.create(model=config.get("judge_model") or config["agent_model"],
-                    messages=[{"role": "user", "content": prompt}], temperature=config["judge_temperature"],
-                    max_tokens=config["judge_max_tokens"],
-                    **({"extra_body": {"thinking": {"type": config["judge_thinking"]}}}
-                       if config.get("judge_thinking") else {}))
+                response = request_judge(client, config, prompt)
                 raw = response.choices[0].message.content or ""
-                from custom.analysis.answer.evaluation import extract_json_from_markdown
-                result = extract_json_from_markdown(raw)
                 attempt.update(raw=raw, usage=response.usage.model_dump() if response.usage else None)
-                if not isinstance(result, dict) or any(type(result.get(s)) is not int or not 1 <= result[s] <= 10 for s in SCORES):
-                    raise ValueError("Invalid or missing judge scores")
+                result = parse_judge(raw)
                 attempt.update(status="completed", result=result)
             except Exception as exc:
                 error = safe_error(exc)

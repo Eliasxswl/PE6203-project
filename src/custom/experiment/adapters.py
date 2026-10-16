@@ -3,6 +3,7 @@ from copy import deepcopy
 from dataclasses import asdict, dataclass
 import importlib
 import json
+import math
 import time
 
 
@@ -48,6 +49,18 @@ class UpdateResult:
     changed_entries: list
     explanation: str
     elapsed_seconds: float = 0.0
+    api_calls: int | None = None
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    api_cost: float | None = None
+    cost_currency: str | None = None
+    cost_basis: str | None = None
+
+
+def no_model_usage():
+    """An observed zero, distinct from a legacy plugin's unreported usage."""
+    return {"api_calls": 0, "input_tokens": 0, "output_tokens": 0,
+            "api_cost": 0, "cost_currency": None, "cost_basis": "No model requests"}
 
 
 REGISTRY = {}
@@ -83,11 +96,11 @@ def update(strategy, knowledge, old_tools, new_tools, context):
     started = time.perf_counter()
     before = deepcopy(knowledge)
     if strategy == "no_update":
-        result = UpdateResult(deepcopy(before), [], "Retain Early semantic knowledge")
+        result = UpdateResult(deepcopy(before), [], "Retain Early semantic knowledge", **no_model_usage())
     elif strategy == "full_rewrite":
         rebuilt = semantic(new_tools)
         changed = sorted(key for key in before.keys() | rebuilt.keys() if before.get(key) != rebuilt.get(key))
-        result = UpdateResult(rebuilt, changed, "Rebuild all tool knowledge from current catalog")
+        result = UpdateResult(rebuilt, changed, "Rebuild all tool knowledge from current catalog", **no_model_usage())
     else:
         result = REGISTRY[strategy](deepcopy(before), semantic(old_tools), semantic(new_tools), deepcopy(context))
         if not isinstance(result, UpdateResult):
@@ -97,6 +110,18 @@ def update(strategy, knowledge, old_tools, new_tools, context):
     if any("remote_name" in tool or "meta" in tool for tool in result.knowledge.values()):
         raise ValueError("Transport routing cannot be stored in strategy knowledge")
     result.elapsed_seconds = time.perf_counter() - started
+    for field in ("api_calls", "input_tokens", "output_tokens"):
+        value = getattr(result, field)
+        if value is not None and (type(value) is not int or value < 0):
+            raise ValueError(f"Update {field} must be a nonnegative integer or null")
+    if result.api_cost is not None:
+        if type(result.api_cost) not in (int, float) or not math.isfinite(result.api_cost) or result.api_cost < 0:
+            raise ValueError("Update api_cost must be finite and nonnegative or null")
+        if not result.cost_basis or (result.api_cost > 0 and not result.cost_currency):
+            raise ValueError("Reported update cost needs a basis and positive cost needs a currency")
+    for field in ("cost_currency", "cost_basis"):
+        if getattr(result, field) is not None and not isinstance(getattr(result, field), str):
+            raise ValueError(f"Update {field} must be a string or null")
     payload = asdict(result)
     json.dumps(payload, allow_nan=False)
     return payload

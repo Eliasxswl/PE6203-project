@@ -193,9 +193,16 @@ def tasks(config):
         raise ValueError("Selection contains IDs outside the upstream candidates")
     if "candidate_sha256" in selection and selection["candidate_sha256"] != file_hash(ROOT / config["candidate_source"]):
         raise ValueError("Candidate source changed after selection")
+    from .evidence import validate_annotations
+    validate_annotations(selection)
     # No reference tools calls, answers, trajectories, or evaluation fields cross this boundary.
     return [{"idx": idx, "question": by_id[idx]["question"], "servers": by_id[idx]["servers"]}
             for idx in ids]
+
+
+def annotations(config):
+    from .evidence import validate_annotations
+    return validate_annotations(read_json(ROOT / config["selection_file"]))
 
 
 def request_limit(config, task):

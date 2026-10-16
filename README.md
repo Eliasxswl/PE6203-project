@@ -49,7 +49,7 @@ python -m custom.experiment check --config config/experiment.json
 python -m custom.experiment run --config config/experiment.json
 ```
 
-`validate` checks configuration without model calls. `check` discovers tool catalogs and makes three model requests on success; its output is diagnostic only. `run` starts private tool servers, runs tasks, and scores trajectories automatically. It needs no separately started server or second scoring command. Use `check --skip-models` for tool-only diagnostics. Manual smoke-server commands are in [the setup guide](docs/setup.md).
+`validate` checks configuration and reports preparation gaps without model calls. `check` discovers tool catalogs and makes three model requests on success; its output is diagnostic only. `run` starts private tool servers, runs tasks, and scores trajectories automatically. Use `check --skip-models` for tool-only diagnostics. The setup guide also covers `catalog-diff` (saved catalog evidence) and explicit `judge-check` (real-trajectory scoring compatibility).
 
 ## Experiment pipeline
 
@@ -74,6 +74,8 @@ Workers run independent tasks within each version, then queue scoring jobs. Know
 Agent and judge models are independent fields in `config/experiment.json`. For a separate judge key, set it in `.env` and change the judge provider entries to reference that environment variable; explicit provider entries take precedence over fallback judge variables. `providers.agent.quota_group` and `providers.judge.quota_group` must match for the same account, even with different keys. Use distinct groups only for confirmed separate accounts. Different models have separate gates. The current profile uses both keys for Agent and judge, with stable task assignment across the two accounts. Four workers can therefore use up to two requests per account. For one-account use, replace each provider list with its first entry. See the setup guide. Extra keys do not guarantee availability during platform overload.
 
 Live output: `results/<experiment-id>/{experiment.json,records.json}`. Use `run --config config/experiment.json --resume <experiment-directory>` with the same configuration/mode to continue unstarted work, and `summarize --experiment <experiment-directory>` to aggregate it. Completed, failed, and ambiguous requests are not replayed. Keep code, configuration, selection, and inputs unchanged while running.
+
+New manifests freeze runtime versions, bundle archive hashes and optional Role 3 classifications from the selection file. Results include update costs, common-sample ECS (`paired_ecs`), and confirmed recovery/retention cohorts. Missing update usage stays unknown. Exit code 0 means operational completion, 3 means partial/unscored trajectories, and 2 means failure or invalidation; none grants formal acceptance. Invalid judge slots with usable trajectory scores are reported as warnings. See the setup guide for the member contracts.
 
 Completed pilot results are archived under `results/`, including provider-failure runs. Keep code commits separate from result commits; upload finished experiments and stage explicit paths rather than the entire repository. Credentials, downloaded tools, local configurations, and runtime logs stay ignored.
 
