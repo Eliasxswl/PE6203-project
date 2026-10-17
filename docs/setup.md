@@ -31,11 +31,12 @@ Skip creation if `.venv` already exists. `requirements.txt` is the larger upstre
 
 ## 2. Configure API access
 
-Copy `.env.example` to `.env` and fill in the two account keys:
+Copy `.env.example` to `.env` and fill in the three independent account keys:
 
 ```ini
 BIGMODEL_API_KEY=your-first-account-key
 BIGMODEL_API_KEY_2=your-second-account-key
+BIGMODEL_API_KEY_3=your-third-account-key
 BIGMODEL_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
 BIGMODEL_MODEL=glm-4-flash-250414
 BIGMODEL_JUDGE_MODEL=
@@ -54,7 +55,7 @@ Formal settings come from `config/experiment.json`:
 | `providers.agent`, `providers.judge` | Account pools using environment variable names and public quota-group labels |
 | `request_policy` | Per-account/model concurrency, dispatch spacing, and overload cooldown |
 
-The current profile uses `glm-4-flash-250414` for both roles and both accounts. Each account allows two simultaneous requests, including long contexts; four workers can therefore use up to four in total. A 0.2-second dispatch interval smooths requests without sleeping after every response. HTTP 429 reduces capacity and adds shared cooldown. Calls are never retried or judge slots topped up.
+The current profile uses `glm-4-flash-250414` for both roles across three independent accounts. Each account allows two simultaneous requests, including long contexts; six workers can therefore use up to six in total. A 0.2-second dispatch interval smooths requests without sleeping after every response. HTTP 429 reduces capacity and adds shared cooldown. Calls are never retried or judge slots topped up.
 
 The same account must always use the same `quota_group`, even across different keys or roles. Tasks are assigned by frozen list position/repeat, preserving the account across strategies and versions. For one-account use, replace both provider lists with their first entry. For a separate judge account, change the judge provider entries to reference its key variable and quota group. Explicit `api_key_env`/`base_url_env` entries override fallback judge variables. Model variables in `.env` apply to standalone diagnostics, not formal runs.
 
@@ -112,16 +113,16 @@ Classification names are destinations relative to Early: `iter3` means Early →
 ```text
 python -m custom.experiment validate --config config/experiment.json
 python -m custom.experiment check --config config/experiment.json
-python -m custom.experiment run --config config/experiment.json --parallel --workers 4
+python -m custom.experiment run --config config/experiment.json --parallel --workers 6
 ```
 
 - `validate` checks configuration without model requests and reports dirty source, pending classifications, archive presence and backend-policy warnings. It does not approve a formal experiment or prove backend availability.
 - `check` starts private tools and verifies model tool calling, tool feedback, and scoring JSON. Successful model checking uses three requests and currently checks the first provider in each role. Check added account keys separately before a full run. Use `--skip-models`, `--server <name>`, or `--stage original` to narrow diagnostics.
-- `run` owns tool startup, task execution, and scoring. No separate server or scoring script is needed. Omit `--parallel --workers 4` for serial execution.
+- `run` owns tool startup, task execution, and scoring. No separate server or scoring script is needed. Omit `--parallel --workers 6` for serial execution.
 
 All 17 selected tasks passed the [local preflight](../results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json) checks applicable to their dependencies, and both model accounts passed synthetic tool-calling and scoring checks. Passing preflight does not establish whole-task completion. Recheck dependencies on the intended host before running.
 
-The current configuration compares `no_update` and `full_rewrite` on 17 tasks with one repeat: **102 logical conditions, 85 actual trajectories and 425 judge slots**. Early is executed once per task/repeat with five judge slots; all strategies reference that same result. With S strategies, N tasks and R repeats, actual trajectories = `(1 + 2S) × N × R`; judge slots = five times that count. Three strategies therefore need seven actual trajectories per task/repeat. Repeats remain independent: three repeats require three Early executions per task. Adding Selective Patch requires Role 1's registered implementation. Preflight does not start this experiment.
+The current configuration compares `no_update`, `full_rewrite`, and `selective_patch` on 17 tasks with one repeat: **153 logical conditions, 119 actual trajectories and 595 judge slots**. Early is executed once per task/repeat with five judge slots; all strategies reference that same result. With S strategies, N tasks and R repeats, actual trajectories = `(1 + 2S) × N × R`; judge slots = five times that count. Three strategies therefore need seven actual trajectories per task/repeat. Repeats remain independent: three repeats require three Early executions per task. Role 1's plugin is registered via `strategy_plugins`. Preflight does not start this experiment. For the six-task integration trial (9, 24, 117, 416, 273, 403), use `python -m custom.experiment run --config config/strategy-smoke.json --parallel --workers 6`: 42 actual trajectories and 210 judge slots. The frozen 17-task selection is unchanged.
 
 For an explicit scoring compatibility check, choose a completed Agent trajectory key from an archived `records.json`:
 
@@ -167,7 +168,7 @@ Stopped tool runtimes automatically remove their copied `workspace`, private `ho
 ## 6. Development and member interfaces
 
 ```text
-python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 4
+python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 6
 python -m unittest discover -s tests -v
 ```
 
@@ -180,3 +181,5 @@ Offline execution uses fake models/tools and writes under `.runtime/experiments/
 See [fixed-plan.md](fixed-plan.md) for protocol decisions and validation history. Default documentation is maintained here and in the root README.
 
 New runs use `shared_early_v1`: shared Early executions, classification relative to Early, and same-version comparisons against No Update. Existing execution repairs remain: nonempty text without tool calls ends the Agent turn; a finish marker never suppresses structured tool calls. Tool results retain MCP content, structured data, and error flags; Agent-visible results have an explicit 32,000-character limit with truncation metadata, while raw results remain complete. Provider/runtime failures remain execution failures. The Judge prompt, scoring rules, five attempts, TF/PE/ECS formulas, models and repeats are unchanged. The current selection is Role 3's frozen 17-task core set. Old runs cannot resume under changed source fingerprints; historical independent Early executions are not retroactively shared. Scores from different protocols must not be pooled. Experimental Judge changes and ten-task pilots remain on `harness-repair`.
+
+Selective Patch compares adjacent catalogs and patches changed fields locally, without model calls. With complete initial catalog knowledge and exact deterministic updates, its resulting knowledge equals Full Rewrite; observed score differences between them cannot establish an adaptation-method advantage. Patch audit work and unchanged-field preservation can still be inspected.

@@ -61,17 +61,17 @@ python -m custom.experiment run --config config/experiment.json --offline
 python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
 ```
 
-Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The current configuration compares `no_update` and `full_rewrite`: 17 tasks, 3 versions, 1 repeat. Early is executed and judged once per task/repeat, shared across strategies: **102 logical conditions, 85 actual trajectories, 425 judge slots**. Task count and repeats are configurable. This dependency-screened selection does not represent a random benchmark sample; integration and preflight do not certify task completion or formal protocol approval.
+Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The current configuration compares `no_update`, `full_rewrite`, and `selective_patch`: 17 tasks, 3 versions, 1 repeat. Early is executed and judged once per task/repeat, shared across strategies: **153 logical conditions, 119 actual trajectories, 595 judge slots**. Task count and repeats are configurable. This dependency-screened selection does not represent a random benchmark sample; integration and preflight do not certify task completion or formal protocol approval.
 
 Optional parallel execution uses the same entry point:
 
 ```text
-python -m custom.experiment run --config config/experiment.json --parallel --workers 4
+python -m custom.experiment run --config config/experiment.json --parallel --workers 6
 ```
 
 Workers run independent tasks within each version, then queue scoring jobs. Knowledge updates keep Early -> Middle -> Late order. A shared account/model request gate currently allows two in-flight requests, including estimated long contexts, and a 0.2-second dispatch interval. There is no fixed wait after successful responses. Overload reduces concurrency and adds shared cooldown; requests are never retried or judge slots topped up.
 
-Agent and judge models are independent fields in `config/experiment.json`. For a separate judge key, set it in `.env` and change the judge provider entries to reference that environment variable; explicit provider entries take precedence over fallback judge variables. `providers.agent.quota_group` and `providers.judge.quota_group` must match for the same account, even with different keys. Use distinct groups only for confirmed separate accounts. Different models have separate gates. The current profile uses both keys for Agent and judge, with stable task assignment across the two accounts. Four workers can therefore use up to two requests per account. For one-account use, replace each provider list with its first entry. See the setup guide. Extra keys do not guarantee availability during platform overload.
+Agent and judge models are independent fields in `config/experiment.json`. For a separate judge key, set it in `.env` and change the judge provider entries to reference that environment variable; explicit provider entries take precedence over fallback judge variables. `providers.agent.quota_group` and `providers.judge.quota_group` must match for the same account, even with different keys. Use distinct groups only for confirmed separate accounts. Different models have separate gates. The current profile uses three independent account keys for Agent and judge, with stable task assignment. Six workers can therefore use up to two requests per account. For one-account use, replace each provider list with its first entry. See the setup guide. Extra keys do not guarantee availability during platform overload.
 
 Live output: `results/<experiment-id>/{experiment.json,records.json}`. Use `run --config config/experiment.json --resume <experiment-directory>` with the same configuration/mode to continue unstarted work, and `summarize --experiment <experiment-directory>` to aggregate it. Completed, failed, and ambiguous requests are not replayed. Keep code, configuration, selection, and inputs unchanged while running.
 
@@ -79,7 +79,7 @@ New manifests freeze runtime versions, bundle archive hashes and optional Role 3
 
 Completed pilot results are archived under `results/`, including provider-failure runs. Keep code commits separate from result commits; upload finished experiments and stage explicit paths rather than the entire repository. Credentials, downloaded tools, local configurations, and runtime logs stay ignored.
 
-The common pipeline supplies `no_update` and `full_rewrite`; Role 1 must register `selective_patch` through the adapter contract. Unsupported strategies fail validation. Unknown backends fail execution until their state isolation is reviewed and implemented. Four-worker spawn and four concurrent local MCP runtimes were tested; real macOS/Linux checks remain pending.
+The common pipeline supplies `no_update`, `full_rewrite`, and the registered `custom.experiment.selective_patch` plugin. Unsupported strategies fail validation. A six-task trial uses `config/strategy-smoke.json` through the same entry point. Unknown backends fail execution until their state isolation is reviewed and implemented. Four-worker spawn and four concurrent local MCP runtimes were tested; real macOS/Linux checks remain pending.
 
 See [docs/fixed-plan.md](docs/fixed-plan.md) for protocol, justified changes, and validation evidence; [docs/setup.md](docs/setup.md) covers detailed usage.
 

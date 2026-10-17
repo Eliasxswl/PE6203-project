@@ -23,9 +23,12 @@
   ],
   "strategies": [
     "no_update",
-    "full_rewrite"
+    "full_rewrite",
+    "selective_patch"
   ],
-  "strategy_plugins": [],
+  "strategy_plugins": [
+    "custom.experiment.selective_patch"
+  ],
   "runtime": {
     "configs": {
       "original": "config/local/original.json",
@@ -145,6 +148,10 @@
       {
         "api_key_env": "BIGMODEL_API_KEY_2",
         "quota_group": "account_two"
+      },
+      {
+        "api_key_env": "BIGMODEL_API_KEY_3",
+        "quota_group": "account_three"
       }
     ],
     "judge": [
@@ -155,6 +162,10 @@
       {
         "api_key_env": "BIGMODEL_API_KEY_2",
         "quota_group": "account_two"
+      },
+      {
+        "api_key_env": "BIGMODEL_API_KEY_3",
+        "quota_group": "account_three"
       }
     ]
   }

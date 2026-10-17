@@ -77,7 +77,7 @@ class ExperimentTests(unittest.TestCase):
 
     def test_unavailable_strategy_fails_before_clients(self):
         config = deepcopy(self.config)
-        config["strategies"] = ["selective_patch"]
+        config["strategies"] = ["unimplemented_test_strategy"]
         with patch("custom.experiment.core.make_client") as client:
             with self.assertRaises(ValueError):
                 validate(config)
