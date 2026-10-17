@@ -1,0 +1,15 @@
+stage original: 45 catalog entries
+stage iter3: 46 catalog entries
+stage iter5: 46 catalog entries
+=== @kazuph/mcp-taskmanager ===
+  ~ request_planning  iter3:DESC+PARAM  iter5:DESC+PARAM
+=== @modelcontextprotocol/server-filesystem ===
+  - REMOVED by iter5 (present iter3=True) : read_file
+  ~ read_text_file  iter3:DESC+PARAM  iter5:DESC+PARAM
+  ~ search_files  iter5:PARAM
+=== @modelcontextprotocol/server-sequential-thinking ===
+  + ADDED later: iter3=False iter5=True : convergent-synthesis
+  + ADDED later: iter3=True iter5=True : parallel-thinking
+  ~ sequentialthinking  iter3:DESC  iter5:DESC+PARAM
+=== mcp-shrimp-task-manager ===
+=== mcp-tasks ===
