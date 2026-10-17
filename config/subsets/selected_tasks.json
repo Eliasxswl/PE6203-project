@@ -4,20 +4,351 @@
   "candidate_sha256": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
   "samples": [
     {
-      "idx": 9
+      "idx": 9,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "request_planning and read_text_file change description and inputSchema between original and iter3 (pilot run 20261015T045814 live catalogs)."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Between iter3 and iter5, request_planning changes description and inputSchema again, search_files changes description and inputSchema, and the read_text_file description changes again; the read_file removal at iter5 does not affect any required tool."
+          }
+        }
+      }
     },
     {
-      "idx": 24
+      "idx": 24,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "read_text_file changes description and inputSchema and the sequentialthinking description changes between original and iter3; the added parallel-thinking tool is not required by this task."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Between iter3 and iter5, sequentialthinking changes description and inputSchema and the read_text_file description changes again."
+          }
+        }
+      }
     },
     {
-      "idx": 117
+      "idx": 117,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "description"
+            ],
+            "rationale": "Only the sequentialthinking description changes between original and iter3; all mcp-shrimp-task-manager and mcp-tasks required tools are unchanged."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Between iter3 and iter5, sequentialthinking changes description and inputSchema; shrimp and mcp-tasks required tools remain unchanged."
+          }
+        }
+      }
     },
     {
-      "idx": 273
+      "idx": 416,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "request_planning changes description and inputSchema between original and iter3; all mcp-shrimp-task-manager required tools are unchanged."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "request_planning changes description and inputSchema again between iter3 and iter5; mcp-shrimp-task-manager required tools remain unchanged."
+          }
+        }
+      }
     },
     {
-      "idx": 403
+      "idx": 267,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 271,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 273,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 274,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 278,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 386,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 389,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 390,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 394,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 403,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 410,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 411,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
+    },
+    {
+      "idx": 425,
+      "classification": {
+        "status": "confirmed",
+        "reviewed_by": "Role 3",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "All required tools (mcp-shrimp-task-manager, mcp-tasks) are identical across original, iter3 and iter5 in the pilot run 20261015T045814 live catalogs."
+          }
+        }
+      }
     }
   ],
-  "selection_method": "Dependency-screened local pilot; not an unrestricted random sample"
+  "selection_method": "Enumerated all 201 upstream candidates; 25 are runnable under the current isolation policies. The frozen set is the 17 tasks whose servers are covered by pilot live-catalog evidence: 4 changed (9, 24, 117, 416) plus 13 retention controls. No random sampling."
 }
