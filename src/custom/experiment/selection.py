@@ -60,13 +60,15 @@ def load_config(path):
     allowed = {"selection_file", "selection_seed", "task_source", "candidate_source", "fixtures",
                "task_count", "agent_repeats", "judge_attempts_per_trajectory", "agent_model", "judge_model",
                "agent_temperature", "judge_temperature", "agent_max_tokens", "judge_max_tokens",
-               "agent_thinking", "judge_thinking", "request_policy", "providers",
+               "agent_thinking", "judge_thinking", "judge_output_mode", "request_policy", "providers",
                "round_policy", "max_requests", "stages", "strategies", "runtime", "mode",
                "mock", "strategy_plugins", "judge_failure_top_up", "automatic_api_retries"}
     if set(config) - allowed:
         raise ValueError(f"Unknown configuration fields: {sorted(set(config) - allowed)}")
     if config.get("mode", "live") not in ("live", "offline"):
         raise ValueError("mode must be live or offline")
+    if config.get("judge_output_mode", "text") not in ("text", "json_object"):
+        raise ValueError("judge_output_mode must be text or json_object; strict provider schema is not verified")
     if config.get("stages") != list(STAGES):
         raise ValueError("Stages must be original -> iter3 -> iter5")
     config.setdefault("task_count", 10)

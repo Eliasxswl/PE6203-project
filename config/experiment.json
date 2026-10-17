@@ -168,5 +168,6 @@
         "quota_group": "account_three"
       }
     ]
-  }
+  },
+  "judge_output_mode": "json_object"
 }

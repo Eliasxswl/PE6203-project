@@ -10,6 +10,7 @@ from unittest.mock import Mock, patch
 from custom.experiment import adapters
 from custom.experiment.__main__ import main
 from custom.experiment.checks import check_judge
+from custom.experiment.judge_output import REASONS
 from custom.experiment.evidence import archived_tasks, catalog_diff, catalog_evidence, validate_annotations
 from custom.experiment.readiness import environment, preparation
 from custom.experiment.results import (SCORES, Store, aggregate_records, atomic_json, completion,
@@ -268,7 +269,7 @@ class ReadinessTests(unittest.TestCase):
         store.save()
         before = (store.path / "records.json").read_bytes()
         client = Mock()
-        client.chat.completions.create.side_effect = [Response(Message(json.dumps({s: 8 for s in SCORES}))),
+        client.chat.completions.create.side_effect = [Response(Message(json.dumps({**{s: 8 for s in SCORES}, **{s: "test" for s in REASONS}}))),
                                                       Response(Message('{"task_fulfillment":100}'))]
         with patch("custom.experiment.checks.make_client", return_value=client):
             result = check_judge(self.config, store.path, key, attempts=2, provider_index=1)
@@ -303,7 +304,7 @@ class ReadinessTests(unittest.TestCase):
         store.save()
         before = (store.path / "records.json").read_bytes()
         client = Mock()
-        client.chat.completions.create.return_value = Response(Message(json.dumps({s: 8 for s in SCORES})))
+        client.chat.completions.create.return_value = Response(Message(json.dumps({**{s: 8 for s in SCORES}, **{s: "test" for s in REASONS}})))
         with patch("custom.experiment.checks.make_client", return_value=client):
             result = check_judge(self.config, store.path, alias_key)
         self.addCleanup(Path(result["report"]).unlink, missing_ok=True)

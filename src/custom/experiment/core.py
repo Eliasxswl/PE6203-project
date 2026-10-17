@@ -7,6 +7,7 @@ import time
 
 from . import adapters
 from .errors import Cancelled, CheckpointFailure, ExecutionFailure
+from .judge_output import contract as judge_contract, parse as parse_judge_output, request_options, validate_completion
 from .results import PROTOCOL, SCORES, TERMINAL, episode_id, identity, redact, safe_error, utc_now
 from .runtime import ALIASES, LiveRuntime
 from .selection import STAGES, digest, provider_for, request_limit
@@ -63,20 +64,12 @@ def judge_prompt(task, row, catalog, order):
 
 
 def request_judge(client, config, prompt):
-    """Shared formal/diagnostic request; prompt and rubric remain unchanged."""
-    return client.chat.completions.create(model=config.get("judge_model") or config["agent_model"],
-        messages=[{"role": "user", "content": prompt}], temperature=config["judge_temperature"],
-        max_tokens=config["judge_max_tokens"],
-        **({"extra_body": {"thinking": {"type": config["judge_thinking"]}}}
-           if config.get("judge_thinking") else {}))
+    """Shared formal/diagnostic request; serialization is separate from rubric."""
+    return client.chat.completions.create(**request_options(config, prompt))
 
 
-def parse_judge(raw):
-    from custom.analysis.answer.evaluation import extract_json_from_markdown
-    result = extract_json_from_markdown(raw)
-    if not isinstance(result, dict) or any(type(result.get(s)) is not int or not 1 <= result[s] <= 10 for s in SCORES):
-        raise ValueError("Invalid or missing judge scores")
-    return result
+def parse_judge(raw, config=None):
+    return parse_judge_output(raw, config)
 
 
 def initial_snapshot(config, task_list, emit):
@@ -314,7 +307,7 @@ def run_trajectory(spec, emit, cancel=None):
             seed = int(digest([config["selection_seed"], stage, task["idx"], repeat, attempt["slot"]])[:16], 16)
             order = random.Random(seed).sample([0, 1, 2], 3)
             prompt = judge_prompt(task, row, row["judge_catalog"], order)
-            attempt.update(status="started", dimension_order=order, started_at=utc_now())
+            attempt.update(status="started", dimension_order=order, started_at=utc_now(), output_contract=judge_contract(config))
             row["phase"] = "judge"
             save_row(key, row)
             judge_started = time.perf_counter()
@@ -323,8 +316,10 @@ def run_trajectory(spec, emit, cancel=None):
                     raise ExecutionFailure("Injected judge failure")
                 response = request_judge(client, config, prompt)
                 raw = response.choices[0].message.content or ""
-                attempt.update(raw=raw, usage=response.usage.model_dump() if response.usage else None)
-                result = parse_judge(raw)
+                attempt.update(raw=raw, usage=response.usage.model_dump() if response.usage else None,
+                               finish_reason=response.choices[0].finish_reason)
+                validate_completion(response, config)
+                result = parse_judge(raw, config)
                 attempt.update(status="completed", result=result)
             except Exception as exc:
                 error = safe_error(exc)

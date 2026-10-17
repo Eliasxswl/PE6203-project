@@ -26,7 +26,7 @@ class Message:
 
 class Response:
     def __init__(self, message):
-        self.choices = [SimpleNamespace(message=message)]
+        self.choices = [SimpleNamespace(message=message, finish_reason="stop")]
         self.usage = SimpleNamespace(model_dump=lambda: {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})
 
     def model_dump(self, **_):
@@ -102,8 +102,9 @@ class OfflineClient:
             raise Cancelled()
         if "tools" not in kwargs:
             score = 3 if "Unknown tool:" in kwargs["messages"][0]["content"] else 8
+            from .judge_output import REASONS
             return Response(Message(json.dumps({**{s: score for s in SCORES},
-                **{s + "_reasoning": "Deterministic offline judge" for s in SCORES}})))
+                **{s: "Deterministic offline judge" for s in REASONS}})))
         if self.calls == 1 and kwargs["tools"]:
             name = kwargs["tools"][0]["function"]["name"]
             return Response(Message(tool_calls=[SimpleNamespace(id="offline_call_1",

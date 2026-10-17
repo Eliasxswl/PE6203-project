@@ -6,6 +6,7 @@ import json
 import time
 
 from .core import judge_prompt, make_client, parse_judge, request_judge, runtime_for
+from .judge_output import contract as judge_contract, request_options, validate_completion
 from .results import PROTOCOL, SCORES, Store, atomic_json, safe_error
 from .runtime import ALIASES
 from .selection import ROOT, STAGES, digest, file_hash, provider_options
@@ -33,6 +34,7 @@ def check_judge(config, experiment, trajectory, attempts=1, provider_index=0):
     task = next(t for t in archived_tasks(store.manifest) if t["idx"] == row["identity"]["task_id"])
     order = [0, 1, 2]
     prompt = judge_prompt(task, row, row["judge_catalog"], order)
+    actual_prompt = request_options(effective, prompt)["messages"][0]["content"]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     path = ROOT / ".runtime/experiments/checks" / ("judge-" + stamp + ".json")
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -41,7 +43,8 @@ def check_judge(config, experiment, trajectory, attempts=1, provider_index=0):
         "source_records_sha256": file_hash(store.path / "records.json"),
         "source_harness_protocol": store.manifest.get("harness_protocol"),
         "request_harness_protocol": PROTOCOL,
-        "prompt_sha256": digest(prompt), "prompt_characters": len(prompt), "dimension_order": order,
+        "prompt_sha256": digest(actual_prompt), "prompt_characters": len(actual_prompt), "dimension_order": order,
+        "output_contract": judge_contract(effective),
         "provider_index": provider_index, "model": config.get("judge_model") or config["agent_model"],
         "temperature": config["judge_temperature"], "max_tokens": config["judge_max_tokens"],
         "thinking": config.get("judge_thinking"), "attempts": [], "status": "running"}
@@ -57,8 +60,10 @@ def check_judge(config, experiment, trajectory, attempts=1, provider_index=0):
             try:
                 response = request_judge(client, effective, prompt)
                 raw = response.choices[0].message.content or ""
-                attempt.update(raw=raw, usage=response.usage.model_dump() if response.usage else None)
-                attempt.update(result=parse_judge(raw), status="completed")
+                attempt.update(raw=raw, usage=response.usage.model_dump() if response.usage else None,
+                               finish_reason=response.choices[0].finish_reason)
+                validate_completion(response, effective)
+                attempt.update(result=parse_judge(raw, effective), status="completed")
             except Exception as exc:
                 error = safe_error(exc)
                 attempt.update(status="outcome_unknown" if error["unknown_outcome"] else "failed", error=error)
@@ -108,11 +113,11 @@ def check_models(config):
             judge["extra_body"] = {"thinking": {"type": config["judge_thinking"]}}
         client.close()
         client = make_client(config, "preflight/judge", role="judge")
-        response = client.chat.completions.create(messages=[{"role": "user", "content":
+        response = request_judge(client, config,
             "For a connectivity test, return only a JSON object with the integer 8 for each key: "
-            + ", ".join(SCORES)}], **judge)
-        from custom.analysis.answer.evaluation import extract_json_from_markdown
-        score = extract_json_from_markdown(response.choices[0].message.content or "")
+            + ", ".join(SCORES) + ". Include the three reasoning strings requested by the output contract, if present.")
+        validate_completion(response, config)
+        score = parse_judge(response.choices[0].message.content or "", config)
         if not isinstance(score, dict) or any(type(score.get(s)) is not int or score[s] != 8 for s in SCORES):
             raise ValueError("Judge did not return the expected scoring JSON")
         return {"status": "passed", "requests": 3, "agent_model": config["agent_model"],

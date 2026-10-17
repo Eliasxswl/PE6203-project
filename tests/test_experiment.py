@@ -13,6 +13,7 @@ from unittest.mock import AsyncMock, patch
 from custom.experiment import adapters
 from custom.experiment.__main__ import execute, specifications, validate
 from custom.experiment.core import run_episode
+from custom.experiment.judge_output import REASONS
 from custom.experiment.errors import Cancelled, CheckpointFailure, ExecutionFailure, ToolMistake
 from custom.experiment.results import Store, atomic_json, create, identity, writer_lock, aggregate_records, safe_error
 from custom.experiment.runtime import LiveRuntime, OwnedJob, prepare_config, policy_for
@@ -263,7 +264,8 @@ class ExperimentTests(unittest.TestCase):
             Response(Message(tool_calls=[type("Call", (), {"id":"ping", "function":type("Function", (), {
                 "name":"connectivity_ping", "arguments":"{}"})()})()])),
             Response(Message("pong")),
-            Response(Message(json.dumps({"task_fulfillment":8,"grounding":8,"planning_and_efficiency":8})))
+            Response(Message(json.dumps({"task_fulfillment":8,"grounding":8,"planning_and_efficiency":8,
+                                         **{s: "test" for s in REASONS}})))
         ]
         with patch("custom.experiment.checks.make_client", return_value=client):
             result = check_models(self.config)
@@ -510,7 +512,7 @@ class ExperimentTests(unittest.TestCase):
         store.save()
         store = Store(store.path)
         store.recover()
-        with patch("custom.experiment.testing.OfflineClient.create", autospec=True, return_value=Response(Message(json.dumps({s: 7 for s in ("task_fulfillment", "grounding", "planning_and_efficiency")})))) as call:
+        with patch("custom.experiment.testing.OfflineClient.create", autospec=True, return_value=Response(Message(json.dumps({**{s: 7 for s in ("task_fulfillment", "grounding", "planning_and_efficiency")}, **{s: "test" for s in REASONS}})))) as call:
             self.run_one(store)
         row = store.records["trajectories"][key]
         self.assertEqual(call.call_count, 2)

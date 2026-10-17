@@ -14,7 +14,7 @@ import uuid
 
 from .selection import ROOT, STAGES, annotations, digest, read_json
 
-PROTOCOL = "shared_early_v1"
+PROTOCOL = "shared_early_json_v1"
 SCHEMA = 1
 SCORES = ("task_fulfillment", "grounding", "planning_and_efficiency")
 TERMINAL = {"completed", "execution_failed", "interrupted", "outcome_unknown"}
@@ -166,9 +166,10 @@ def create(config, task_list, fingerprints, parallel=False, workers=1, warnings=
             row["shared_from"] = identity(owner, STAGES[0], ident["task_id"], ident["repeat"])
             row["judge_attempts"] = []
     from .readiness import environment, preparation, source_state
+    from .judge_output import contract as judge_contract
     state = source_state()
     manifest = {"schema_version": SCHEMA, "harness_protocol": PROTOCOL, "operator": operator, "created_at": utc_now(),
-                **state, "environment": environment(config),
+                **state, "environment": environment(config), "judge_output_contract": judge_contract(config),
                 "preparation": preparation(config, warnings or (), state=state, task_list=task_list),
                 "task_definitions": deepcopy(task_list), "task_annotations": annotations(config),
                 "fingerprints": fingerprints, "settings": config, "selected_ids": [t["idx"] for t in task_list],
