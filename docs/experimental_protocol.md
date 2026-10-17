@@ -1,6 +1,6 @@
-# Experimental Protocol (Draft v0.4) — Group Project 4, Role 3
+# Experimental Protocol (v0.4, Frozen 2026-10-17) — Group Project 4, Role 3
 
-Status legend: **[FIXED]** frozen in the repo or verified against primary sources; **[PROPOSED]** recommendation needing group sign-off; **[TBD]** needs verification or another role's action.
+Status legend: **[FIXED]** frozen in the repo or verified against primary sources; **[PROPOSED]** recommendation needing group sign-off; **[TBD]** needs verification or another role's action. Task subset frozen at commit 60013b9 (17 tasks, SHA-256 `fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07`); candidate pool hash `de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe`. Remaining open items: 1-run vs 3-run decision, Role 2 merge of `codex/selective-patch` + clean rerun.
 
 Changes from v0.3: §2 stage mapping verified against the paper and upstream artifacts (was [TBD]); iter5 resolved as a five-round server snapshot, not a fifth mutation layer; bundle inventory and reproducibility limits documented; §5 extension status updated (all eight extension servers already have isolation policies; tasks 29 and 114 provably changed today); §6 timing refreshed from the 2026-10-17 pilot observations; §8 preflight made concrete; judge fallback confirmed in code.
 
