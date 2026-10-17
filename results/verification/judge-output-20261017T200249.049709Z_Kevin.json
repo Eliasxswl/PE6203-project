@@ -1,0 +1,239 @@
+{
+  "purpose": "judge_output_serialization_diagnostics_only",
+  "historical_experiment_scores_modified": false,
+  "capability_probe": {
+    "purpose": "synthetic_structured_output_capability",
+    "model": "glm-4-flash-250414",
+    "attempts": [
+      {
+        "mode": "json_schema",
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "capability_probe",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sentinel": {
+                  "type": "string",
+                  "enum": [
+                    "schema_enforced"
+                  ]
+                },
+                "score": {
+                  "type": "integer",
+                  "enum": [
+                    8
+                  ]
+                }
+              },
+              "required": [
+                "sentinel",
+                "score"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "status": "completed",
+        "raw": "{\"unexpected\": true}",
+        "finish_reason": "stop",
+        "valid_json": true,
+        "schema_enforced": false
+      },
+      {
+        "mode": "json_object",
+        "response_format": {
+          "type": "json_object"
+        },
+        "status": "completed",
+        "raw": "{\"unexpected\":true}",
+        "finish_reason": "stop",
+        "valid_json": true,
+        "schema_enforced": false
+      }
+    ]
+  },
+  "archived_273_original_account_check": {
+    "purpose": "actual_trajectory_judge_compatibility",
+    "semantic_accuracy": "not_validated",
+    "source_experiment": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\results\\20261017T185007.587610Z_Kevin",
+    "trajectory": "full_rewrite/iter3/273/0",
+    "source_trajectory": "full_rewrite/iter3/273/0",
+    "source_records_sha256": "acaed7dce72c562ca3a5cbabde26f0055132e4e1cace289cca3464e1c5eddefe",
+    "source_harness_protocol": "shared_early_v1",
+    "request_harness_protocol": "shared_early_json_v1",
+    "prompt_sha256": "39ce3b5e83acc10bb8d7283e798ed979c3e25aa22e9863a13e30f5b42149fcfa",
+    "prompt_characters": 38021,
+    "dimension_order": [
+      0,
+      1,
+      2
+    ],
+    "output_contract": {
+      "mode": "json_object",
+      "schema_sha256": "81b3701518751bcc09f641d5324a3cc21a48837258729360ef4118a35e513c79",
+      "validation": "local_json_schema",
+      "server_strict_schema": false
+    },
+    "provider_index": 1,
+    "model": "glm-4-flash-250414",
+    "temperature": 0,
+    "max_tokens": 8192,
+    "thinking": null,
+    "attempts": [
+      {
+        "slot": 0,
+        "status": "completed",
+        "raw": "{\"task_fulfillment_reasoning\":\"Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.\",\"grounding_reasoning\":\"Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.\",\"planning_efficiency_reasoning\":\"Total tool calls: 2. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.\",\"task_fulfillment\":10,\"grounding\":10,\"planning_and_efficiency\":10}",
+        "usage": {
+          "completion_tokens": 143,
+          "prompt_tokens": 10292,
+          "total_tokens": 10435,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment_reasoning": "Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.",
+          "grounding_reasoning": "Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.",
+          "planning_efficiency_reasoning": "Total tool calls: 2. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.",
+          "task_fulfillment": 10,
+          "grounding": 10,
+          "planning_and_efficiency": 10
+        },
+        "elapsed_seconds": 6.241585199953988
+      },
+      {
+        "slot": 1,
+        "status": "completed",
+        "raw": "{\"task_fulfillment_reasoning\":\"Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.\",\"grounding_reasoning\":\"Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.\",\"planning_efficiency_reasoning\":\"Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.\",\"task_fulfillment\":10,\"grounding\":10,\"planning_and_efficiency\":10}",
+        "usage": {
+          "completion_tokens": 143,
+          "prompt_tokens": 10292,
+          "total_tokens": 10435,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment_reasoning": "Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.",
+          "grounding_reasoning": "Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.",
+          "planning_efficiency_reasoning": "Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.",
+          "task_fulfillment": 10,
+          "grounding": 10,
+          "planning_and_efficiency": 10
+        },
+        "elapsed_seconds": 4.594641500036232
+      },
+      {
+        "slot": 2,
+        "status": "completed",
+        "raw": "{\"task_fulfillment_reasoning\":\"Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.\",\"grounding_reasoning\":\"Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.\",\"planning_efficiency_reasoning\":\"Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.\",\"task_fulfillment\":10,\"grounding\":10,\"planning_and_efficiency\":10}",
+        "usage": {
+          "completion_tokens": 143,
+          "prompt_tokens": 10292,
+          "total_tokens": 10435,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment_reasoning": "Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.",
+          "grounding_reasoning": "Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.",
+          "planning_efficiency_reasoning": "Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.",
+          "task_fulfillment": 10,
+          "grounding": 10,
+          "planning_and_efficiency": 10
+        },
+        "elapsed_seconds": 4.224810000043362
+      },
+      {
+        "slot": 3,
+        "status": "completed",
+        "raw": "{\"task_fulfillment_reasoning\":\"Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.\",\"grounding_reasoning\":\"Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.\",\"planning_efficiency_reasoning\":\"Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.\",\"task_fulfillment\":10,\"grounding\":10,\"planning_and_efficiency\":10}",
+        "usage": {
+          "completion_tokens": 143,
+          "prompt_tokens": 10292,
+          "total_tokens": 10435,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment_reasoning": "Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.",
+          "grounding_reasoning": "Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.",
+          "planning_efficiency_reasoning": "Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.",
+          "task_fulfillment": 10,
+          "grounding": 10,
+          "planning_and_efficiency": 10
+        },
+        "elapsed_seconds": 3.7859581999946386
+      },
+      {
+        "slot": 4,
+        "status": "completed",
+        "raw": "{\"task_fulfillment_reasoning\":\"Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.\",\"grounding_reasoning\":\"Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.\",\"planning_efficiency_reasoning\":\"Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.\",\"task_fulfillment\":10,\"grounding\":10,\"planning_and_efficiency\":10}",
+        "usage": {
+          "completion_tokens": 143,
+          "prompt_tokens": 10292,
+          "total_tokens": 10435,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment_reasoning": "Total requirements: 6. Met requirements: 6. Defect rate: 0%. Score: 10.",
+          "grounding_reasoning": "Total claims: 6. Unsupported claims: 0. Defect rate: 0%. Score: 10.",
+          "planning_efficiency_reasoning": "Total tool calls: 3. Redundant/unnecessary calls: 0. Defect rate: 0%. Score: 10.",
+          "task_fulfillment": 10,
+          "grounding": 10,
+          "planning_and_efficiency": 10
+        },
+        "elapsed_seconds": 5.338939499924891
+      }
+    ],
+    "status": "passed"
+  },
+  "other_accounts_synthetic_checks": {
+    "purpose": "synthetic_judge_output_contract_only",
+    "output_contract": {
+      "mode": "json_object",
+      "schema_sha256": "81b3701518751bcc09f641d5324a3cc21a48837258729360ef4118a35e513c79",
+      "validation": "local_json_schema",
+      "server_strict_schema": false
+    },
+    "accounts": [
+      {
+        "provider_index": 0,
+        "raw": "{\"task_fulfillment\":8,\"grounding\":8,\"planning_and_efficiency\":8,\"task_fulfillment_reasoning\":\"Synthetic test\",\"grounding_reasoning\":\"Synthetic test\",\"planning_efficiency_reasoning\":\"Synthetic test\"}",
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment": 8,
+          "grounding": 8,
+          "planning_and_efficiency": 8,
+          "task_fulfillment_reasoning": "Synthetic test",
+          "grounding_reasoning": "Synthetic test",
+          "planning_efficiency_reasoning": "Synthetic test"
+        },
+        "status": "passed"
+      },
+      {
+        "provider_index": 2,
+        "raw": "{\"task_fulfillment\":8,\"grounding\":8,\"planning_and_efficiency\":8,\"task_fulfillment_reasoning\":\"Synthetic test\",\"grounding_reasoning\":\"Synthetic test\",\"planning_efficiency_reasoning\":\"Synthetic test\"}",
+        "finish_reason": "stop",
+        "result": {
+          "task_fulfillment": 8,
+          "grounding": 8,
+          "planning_and_efficiency": 8,
+          "task_fulfillment_reasoning": "Synthetic test",
+          "grounding_reasoning": "Synthetic test",
+          "planning_efficiency_reasoning": "Synthetic test"
+        },
+        "status": "passed"
+      }
+    ],
+    "status": "passed"
+  }
+}
