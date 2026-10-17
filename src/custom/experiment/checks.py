@@ -1,12 +1,79 @@
 """Standalone preflight evidence, never a formal strategy or trajectory."""
 from datetime import datetime, timezone
 from pathlib import Path
+from copy import deepcopy
 import json
+import time
 
-from .core import make_client, runtime_for
-from .results import SCORES, atomic_json, safe_error
+from .core import judge_prompt, make_client, parse_judge, request_judge, runtime_for
+from .results import PROTOCOL, SCORES, Store, atomic_json, safe_error
 from .runtime import ALIASES
-from .selection import ROOT, STAGES
+from .selection import ROOT, STAGES, digest, file_hash, provider_options
+
+
+def check_judge(config, experiment, trajectory, attempts=1, provider_index=0):
+    """Explicit diagnostic only: replay an archived trajectory, never execute tools."""
+    from .evidence import archived_tasks
+    if type(attempts) is not int or not 1 <= attempts <= 5:
+        raise ValueError("Use 1 to 5 diagnostic attempts")
+    options = provider_options(config, "judge")
+    if not 0 <= provider_index < len(options):
+        raise ValueError("Judge provider index is outside the configured pool")
+    effective = deepcopy(config)
+    effective.setdefault("providers", {})["judge"] = options[provider_index]
+    store = Store(experiment)
+    row = store.records["trajectories"].get(trajectory)
+    if row is None or row.get("agent_status") != "completed" or not row.get("trajectory_messages"):
+        raise ValueError("Select an archived trajectory whose Agent completed with saved messages")
+    if "judge_catalog" not in row:
+        raise ValueError("Archived trajectory has no saved Judge catalog")
+    task = next(t for t in archived_tasks(store.manifest) if t["idx"] == row["identity"]["task_id"])
+    order = [0, 1, 2]
+    prompt = judge_prompt(task, row, row["judge_catalog"], order)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
+    path = ROOT / ".runtime/experiments/checks" / ("judge-" + stamp + ".json")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    result = {"purpose": "actual_trajectory_judge_compatibility", "semantic_accuracy": "not_validated",
+        "source_experiment": str(store.path), "trajectory": trajectory,
+        "source_records_sha256": file_hash(store.path / "records.json"),
+        "source_harness_protocol": store.manifest.get("harness_protocol"),
+        "request_harness_protocol": PROTOCOL,
+        "prompt_sha256": digest(prompt), "prompt_characters": len(prompt), "dimension_order": order,
+        "provider_index": provider_index, "model": config.get("judge_model") or config["agent_model"],
+        "temperature": config["judge_temperature"], "max_tokens": config["judge_max_tokens"],
+        "thinking": config.get("judge_thinking"), "attempts": [], "status": "running"}
+    atomic_json(path, result)
+    client = None
+    try:
+        client = make_client(effective, "preflight/judge", role="judge")
+        for slot in range(attempts):
+            attempt = {"slot": slot, "status": "started"}
+            result["attempts"].append(attempt)
+            atomic_json(path, result)
+            started = time.perf_counter()
+            try:
+                response = request_judge(client, effective, prompt)
+                raw = response.choices[0].message.content or ""
+                attempt.update(raw=raw, usage=response.usage.model_dump() if response.usage else None)
+                attempt.update(result=parse_judge(raw), status="completed")
+            except Exception as exc:
+                error = safe_error(exc)
+                attempt.update(status="outcome_unknown" if error["unknown_outcome"] else "failed", error=error)
+            attempt["elapsed_seconds"] = time.perf_counter() - started
+            atomic_json(path, result)
+        result["status"] = "passed" if all(a["status"] == "completed" for a in result["attempts"]) else "failed"
+    except Exception as exc:
+        result.update(status="failed", error=safe_error(exc))
+    finally:
+        if client is not None:
+            try:
+                client.close()
+            except Exception as exc:
+                result.update(status="failed", cleanup_error=safe_error(exc))
+        atomic_json(path, result)
+    return {"status": result["status"], "purpose": result["purpose"], "semantic_accuracy": "not_validated",
+            "attempted": len(result["attempts"]), "valid": sum(a["status"] == "completed" for a in result["attempts"]),
+            "provider_index": provider_index, "model": result["model"], "report": str(path)}
 
 
 def check_models(config):

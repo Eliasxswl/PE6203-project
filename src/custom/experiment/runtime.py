@@ -3,11 +3,14 @@ import asyncio
 from contextlib import contextmanager
 from datetime import timedelta
 import json
+import logging
 import os
 from pathlib import Path
+import re
 import shutil
 import signal
 import socket
+import stat
 import subprocess
 import time
 import uuid
@@ -24,6 +27,57 @@ BUILTIN_POLICIES = {
     "@modelcontextprotocol/server-sequential-thinking": "process_local",
     "@guanxiong/mcp-server-time": "process_local",
 }
+
+
+def cleanup_runtime_data(directory):
+    """Remove disposable state only from a stopped, owned runtime; retain diagnostics."""
+    directory = Path(directory)
+    root = ROOT / ".runtime/r"
+
+    def redirected(path):
+        try:
+            info = path.lstat()
+        except FileNotFoundError:
+            return False
+        return path.is_symlink() or bool(getattr(info, "st_file_attributes", 0) &
+                                         getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0))
+
+    if (any(redirected(p) for p in (root.parent, root, directory))
+            or directory.resolve().parent != root.resolve()
+            or not re.fullmatch(r"[0-9a-f]{16}", directory.name)):
+        raise ValueError("Refusing cleanup outside an owned runtime directory")
+    targets = []
+    for name in ("workspace", "home", "tmp"):
+        target = directory / name
+        if redirected(target) or target.resolve().parent != directory.resolve():
+            raise ValueError("Refusing cleanup of redirected runtime state")
+        if target.exists():
+            if not target.is_dir():
+                raise ValueError("Runtime state must be a directory")
+            targets.append(target)
+    for target in targets:
+        def writable(function, path, error):
+            candidate = Path(path)
+            if (not isinstance(error[1], PermissionError) or redirected(candidate)
+                    or not candidate.resolve().is_relative_to(target.resolve())
+                    or function not in (os.unlink, os.remove, os.rmdir)):
+                raise error[1]
+            os.chmod(candidate, candidate.stat().st_mode | stat.S_IWRITE)
+            function(path)
+
+        for retry in range(5):
+            try:
+                shutil.rmtree(target, onerror=writable)
+                break
+            except FileNotFoundError:
+                if target.exists():
+                    raise
+                break
+            except OSError as exc:
+                if os.name != "nt" or getattr(exc, "winerror", None) not in (5, 32, 33, 145) or retry == 4:
+                    raise
+                time.sleep(.05 * (retry + 1))
+    return [target.name for target in targets]
 
 
 def process_identity(pid):
@@ -304,6 +358,7 @@ class LiveRuntime:
                                    unknown_outcome=getattr(exc, "response", None) is None) from exc
 
     def __exit__(self, *_):
+        stopped = False
         try:
             if self.proc:
                 if os.name == "nt":
@@ -328,13 +383,22 @@ class LiveRuntime:
                 self.job.close()
             if self.log:
                 self.log.close()
+            stopped = True
             if self.registered:
                 self.registered = False
                 self.owner_callback({"kind": "runtime_stopped", "runtime_id": self.directory.name})
-            # Keep owned logs/configs for diagnostics under the ignored runtime root.
         finally:
-            for name in ("startup_guard", "resource_guard"):
-                guard = getattr(self, name, None)
-                if guard is not None:
-                    guard.__exit__(None, None, None)
-                    setattr(self, name, None)
+            try:
+                if stopped and not self.config["runtime"].get("keep_workspaces", False):
+                    try:
+                        cleanup_runtime_data(self.directory)
+                    except (OSError, ValueError) as exc:
+                        # Storage maintenance must not change a trajectory's experimental outcome.
+                        logging.getLogger(__name__).warning("Runtime data cleanup deferred for %s (%s)",
+                                                            self.directory.name, type(exc).__name__)
+            finally:
+                for name in ("startup_guard", "resource_guard"):
+                    guard = getattr(self, name, None)
+                    if guard is not None:
+                        guard.__exit__(None, None, None)
+                        setattr(self, name, None)

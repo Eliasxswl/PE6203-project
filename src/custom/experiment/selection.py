@@ -143,11 +143,13 @@ def load_config(path):
     runtime = config.get("runtime", {})
     runtime_allowed = {"configs", "policies", "connect_timeout", "read_timeout", "tool_timeout",
                        "startup_timeout", "shutdown_timeout", "model_timeout", "metadata_verified",
-                       "evolution_files", "catalog_source"}
+                       "evolution_files", "catalog_source", "keep_workspaces"}
     if runtime.get("catalog_source", "evolution_overlay") not in ("live", "evolution_overlay"):
         raise ValueError("Declare a live or evolution_overlay catalog source")
     if set(runtime) - runtime_allowed:
         raise ValueError("Unknown runtime fields; credentials belong in private local configuration")
+    if type(runtime.get("keep_workspaces", False)) is not bool:
+        raise ValueError("runtime keep_workspaces must be a boolean")
     for key in ("connect_timeout", "read_timeout", "tool_timeout", "startup_timeout",
                 "shutdown_timeout", "model_timeout"):
         if type(runtime.get(key)) not in (int, float) or not 0 < runtime[key] <= 3600:
@@ -193,9 +195,16 @@ def tasks(config):
         raise ValueError("Selection contains IDs outside the upstream candidates")
     if "candidate_sha256" in selection and selection["candidate_sha256"] != file_hash(ROOT / config["candidate_source"]):
         raise ValueError("Candidate source changed after selection")
+    from .evidence import validate_annotations
+    validate_annotations(selection)
     # No reference tools calls, answers, trajectories, or evaluation fields cross this boundary.
     return [{"idx": idx, "question": by_id[idx]["question"], "servers": by_id[idx]["servers"]}
             for idx in ids]
+
+
+def annotations(config):
+    from .evidence import validate_annotations
+    return validate_annotations(read_json(ROOT / config["selection_file"]))
 
 
 def request_limit(config, task):

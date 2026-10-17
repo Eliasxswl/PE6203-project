@@ -7,9 +7,11 @@ from openai.types.chat import ChatCompletionToolParam, ChatCompletionMessageTool
 
 from custom.utils.test_utils import offset_date, generate_tree_string
 from custom.utils import model_config
+from custom.agents.tool_results import raw_result, visible_result
 
 SINGLE_SERVER_INTERATION_SYSTEM_PROMPT = '''You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. 
 Note that do not to ask any questions to the user, just call the tool to complete the task.
+When the task is complete or you cannot proceed, provide a final text response without tool calls.
 
 Considering real-time performance, the time is set to be around `{SET_TIME}`.
 
@@ -229,7 +231,6 @@ class ChatModel:
     def run_with_server(self, query, fschat_flag=False):
         started = time.perf_counter()
         self.messages.append({'role':'user', 'content':query})
-        no_tool_count = 0
         final_text = []
         stop_flag = False
         exceeded_flag = False
@@ -278,36 +279,25 @@ class ChatModel:
                 else:
                     content = str(response_message)
 
-                if content is not None and '[FINISH]' in content:
-                    final_text.append(content)
-                    stop_flag = True
-                    self.stop_reason = 'finish_marker'
-                elif (
-                        content
-                        and not response_message.tool_calls
-                        # and not response_message.function_call
-                ):
-                    no_tool_count += 1
-                    if no_tool_count == 3:
+                finish_reason = getattr(response.choices[0], 'finish_reason', None) if not fschat_flag else None
+                refusal = getattr(response_message, 'refusal', None)
+                if finish_reason == 'tool_calls' and not response_message.tool_calls:
+                    raise ValueError('Model declared tool calls without structured tool_calls')
+                if finish_reason in ('length', 'content_filter') or refusal:
+                    if content or refusal:
+                        final_text.append(content or refusal)
+                    self.stop_reason = 'model_length_limit' if finish_reason == 'length' else 'model_refusal'
+                    break
+                if not response_message.tool_calls:
+                    if content and content.strip():
                         final_text.append(content)
                         stop_flag = True
-                        self.stop_reason = 'three_text_responses'
+                        self.stop_reason = 'final_response'
                     else:
-                        self.messages.append(
-                            {
-                                "role": "user",
-                                "content": 'Please call the tool directly to complete the task without asking me any questions.',
-                            }
-                        )
+                        self.stop_reason = 'empty_response'
+                    break
                 else:
                     tool_calls = response_message.tool_calls
-                    if not tool_calls:
-                        logger.warning(
-                            "Received empty response from LLM without content or tool calls."
-                        )
-                        self.stop_reason = 'empty_response'
-                        break
-                    no_tool_count = 0
                     for tool_call in tool_calls:
                         protocol_error = None
                         self.event_callback('tool_start', {'messages': self.messages,
@@ -329,7 +319,7 @@ class ChatModel:
 
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
-                            result = "Tool call timed out."
+                            result = {"isError": True, "content": [{"type": "text", "text": "Tool call timed out."}]}
                             tool_id = tool_call.id
                         except Exception as e:
                             from custom.experiment.errors import ExecutionFailure
@@ -340,7 +330,7 @@ class ChatModel:
                                 raise
                             logger.error("Error calling tool %s (%s)", tool_name, type(e).__name__)
                             protocol_error = getattr(e, 'raw_response', None)
-                            result = f"Error: {str(e)}"
+                            result = {"isError": True, "content": [{"type": "text", "text": f"Error: {str(e)}"}]}
                             tool_id = tool_call.id
                         self.raw_tool_trace.append({
                             'tool_call_id': tool_call.id,
@@ -348,13 +338,9 @@ class ChatModel:
                             'semantic_identity': self.semantic_tool_names.get(tool_call.function.name),
                             'protocol_error': protocol_error,
                             'arguments': tool_call.function.arguments,
-                            'response': result.model_dump(mode='json', exclude_none=True)
-                            if hasattr(result, 'model_dump') else str(result),
+                            'response': raw_result(result),
                         })
-                        if hasattr(result, 'content'):
-                            result = str(result.content)[:500]+'...'
-                        else:
-                            result = str(result)[:500]+'...'
+                        result = visible_result(result)
                         self.messages.append(
                             {
                                 "role": "tool",
@@ -365,10 +351,12 @@ class ChatModel:
                         self.event_callback('tool_completed', {'messages': self.messages,
                                                                'raw_tool_trace': self.raw_tool_trace})
         except Exception as e:
+            from custom.experiment.results import safe_error
+            self.execution_error = self.execution_error or safe_error(e)
             logger.error("Task execution stopped (%s)", type(e).__name__)
             final_text.append(f"Error: {str(e)}")
             self.messages.append({"role": "assistant", "content": str(e)})
-        if not stop_flag and round_num >= self.max_round:
+        if self.stop_reason is None and not stop_flag and round_num >= self.max_round:
             exceeded_flag = True
             self.stop_reason = 'request_budget_exhausted'
         if self.execution_error:

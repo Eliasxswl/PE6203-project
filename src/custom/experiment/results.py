@@ -12,8 +12,9 @@ import subprocess
 import time
 import uuid
 
-from .selection import ROOT, STAGES, digest, read_json
+from .selection import ROOT, STAGES, annotations, digest, read_json
 
+PROTOCOL = "execution_repair_v1"
 SCHEMA = 1
 SCORES = ("task_fulfillment", "grounding", "planning_and_efficiency")
 TERMINAL = {"completed", "execution_failed", "interrupted", "outcome_unknown"}
@@ -134,7 +135,7 @@ def episode_id(strategy, repeat):
     return f"{strategy}/{repeat}"
 
 
-def create(config, task_list, fingerprints, parallel=False, workers=1):
+def create(config, task_list, fingerprints, parallel=False, workers=1, warnings=None):
     def git(*args):
         return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
     operator = git("config", "user.name")
@@ -156,8 +157,12 @@ def create(config, task_list, fingerprints, parallel=False, workers=1):
                         "tool_attempts": [],
                         "judge_attempts": [{"slot": i, "status": "pending"} for i in range(5)],
                         "errors": [], "raw_tool_trace": [], "trajectory_messages": [], "score": None}
-    manifest = {"schema_version": SCHEMA, "operator": operator, "created_at": utc_now(),
-                "revision": git("rev-parse", "HEAD"), "dirty_source": bool(git("status", "--porcelain")),
+    from .readiness import environment, preparation, source_state
+    state = source_state()
+    manifest = {"schema_version": SCHEMA, "harness_protocol": PROTOCOL, "operator": operator, "created_at": utc_now(),
+                **state, "environment": environment(config),
+                "preparation": preparation(config, warnings or (), state=state, task_list=task_list),
+                "task_definitions": deepcopy(task_list), "task_annotations": annotations(config),
                 "fingerprints": fingerprints, "settings": config, "selected_ids": [t["idx"] for t in task_list],
                 "execution": {"parallel": parallel, "workers": workers},
                 "planned_jobs": [r["identity"] for r in records["trajectories"].values()]}
@@ -232,6 +237,12 @@ class Store:
 
     def summarize(self):
         aggregate = aggregate_records(self.records["trajectories"])
+        aggregate["update_costs"] = update_costs(self.records.get("episodes", {}))
+        from .evidence import catalog_evidence
+        evidence = catalog_evidence(self.records, self.manifest.get("task_definitions", []))
+        aggregate["recovery_retention"] = cohort_scores(self.records["trajectories"],
+            self.manifest.get("task_annotations", {}), evidence)
+        aggregate["completion"] = completion(self.records)
         self.records["aggregate"] = aggregate
         self.save()
         return aggregate
@@ -242,7 +253,7 @@ def aggregate_records(rows):
     for row in rows.values():
         group = row["identity"]["strategy"] + "/" + row["identity"]["stage"]
         groups.setdefault(group, []).append(row)
-    output = {"groups": {}, "ecs": {}, "paired": {}}
+    output = {"groups": {}, "ecs": {}, "paired": {}, "paired_ecs": {}}
     for group, records in groups.items():
         scores = [r["score"] for r in records if r.get("score") is not None]
         counts = Counter(r["status"] for r in records)
@@ -261,8 +272,27 @@ def aggregate_records(rows):
         complete = [list(stage_scores.values()) for stage_scores in matched.values() if set(stage_scores) == set(STAGES)]
         # Upstream uses population variance for exactly the three version conditions.
         output["ecs"][strategy] = {"matched_task_repeats": len(complete),
+                                     "identities": [list(k) for k, v in sorted(matched.items()) if set(v) == set(STAGES)],
                                      "value": statistics.mean(statistics.mean(v) - statistics.pstdev(v) for v in complete)
                                      if complete else None}
+    planned = {(r["identity"]["task_id"], r["identity"]["repeat"]) for r in rows.values()}
+    indexed = {(r["identity"]["strategy"], r["identity"]["stage"], r["identity"]["task_id"], r["identity"]["repeat"]): r
+               for r in rows.values()}
+    common_ecs, excluded = [], []
+    for task_id, repeat in sorted(planned):
+        missing = [{"strategy": strategy, "stage": stage,
+                    "reason": indexed.get((strategy, stage, task_id, repeat), {}).get("score_exclusion_reason", "no_valid_score")}
+                   for strategy in strategies for stage in STAGES
+                   if indexed.get((strategy, stage, task_id, repeat), {}).get("score") is None]
+        if missing:
+            excluded.append({"task_id": task_id, "repeat": repeat, "missing": missing})
+        else:
+            common_ecs.append((task_id, repeat))
+    output["paired_ecs"] = {"matched": len(common_ecs), "identities": [list(k) for k in common_ecs],
+        "excluded": excluded, "values": {strategy: statistics.mean(
+            statistics.mean(v) - statistics.pstdev(v) for v in (
+                [indexed[(strategy, stage, task_id, repeat)]["score"]["task_fulfillment"] for stage in STAGES]
+                for task_id, repeat in common_ecs)) if common_ecs else None for strategy in strategies}}
     for stage in STAGES:
         by_strategy = {s: {(r["identity"]["task_id"], r["identity"]["repeat"]): r["score"]
                            for r in rows.values() if r["identity"]["strategy"] == s
@@ -273,3 +303,82 @@ def aggregate_records(rows):
                                     "means": {s: {dim: statistics.mean(scores[k][dim] for k in common) if common else None
                                                    for dim in SCORES} for s, scores in by_strategy.items()}}
     return output
+
+
+def update_costs(episodes):
+    """Count each episode transition once, never once per trajectory."""
+    groups = {}
+    for eid, episode in episodes.items():
+        strategy = eid.rsplit("/", 1)[0]
+        for stage in STAGES[1:]:
+            snapshot = episode.get("stages", {}).get(stage, {})
+            groups.setdefault(strategy + "/" + stage, []).append(snapshot)
+    result = {}
+    for group, snapshots in groups.items():
+        summary = {"planned_updates": len(snapshots), "statuses": dict(Counter(s.get("status", "pending") for s in snapshots))}
+        for field in ("elapsed_seconds", "api_calls", "input_tokens", "output_tokens"):
+            known = [s[field] for s in snapshots if s.get(field) is not None]
+            summary[field] = {"reported": len(known), "unreported": len(snapshots) - len(known),
+                              "total_reported": sum(known) if known else None}
+        costs = [s for s in snapshots if s.get("api_cost") is not None]
+        currencies = {s.get("cost_currency") for s in costs if s["api_cost"] != 0}
+        # Unknown or mixed currencies must never silently become a single money total.
+        summary["api_cost"] = {"reported": len(costs), "unreported": len(snapshots) - len(costs),
+            "total_reported": sum(s["api_cost"] for s in costs) if costs and len(currencies) <= 1 else None,
+            "currency": next(iter(currencies)) if len(currencies) == 1 else None,
+            "bases": sorted({s["cost_basis"] for s in costs if s.get("cost_basis")}),
+            "mixed_currencies": len(currencies) > 1}
+        result[group] = summary
+    return result
+
+
+def cohort_scores(rows, annotations, evidence):
+    from .evidence import confirmed_label
+    output = {"status": "not_configured" if not annotations else "pending", "transitions": {},
+              "delta": "Current TF minus previous-version TF on common valid task/repeat pairs; not a task-success validator."}
+    strategies = sorted({r["identity"]["strategy"] for r in rows.values()})
+    indexed = {(r["identity"]["strategy"], r["identity"]["stage"], r["identity"]["task_id"], r["identity"]["repeat"]): r
+               for r in rows.values()}
+    planned = sorted({(r["identity"]["task_id"], r["identity"]["repeat"]) for r in rows.values()})
+    for index, stage in enumerate(STAGES[1:], 1):
+        groups = {"changed": [], "retention": []}
+        excluded = []
+        for task_id, repeat in planned:
+            labels, reasons = [], []
+            for strategy in strategies:
+                label, reason = confirmed_label(annotations, evidence, episode_id(strategy, repeat), stage, task_id)
+                if reason:
+                    reasons.append({"strategy": strategy, "reason": reason})
+                else:
+                    labels.append(label)
+                if any(indexed.get((strategy, s, task_id, repeat), {}).get("score") is None
+                       for s in (STAGES[index - 1], stage)):
+                    reasons.append({"strategy": strategy, "reason": "no_paired_valid_scores"})
+            if reasons:
+                excluded.append({"task_id": task_id, "repeat": repeat, "reasons": reasons})
+            elif labels:
+                groups[labels[0]["cohort"]].append((task_id, repeat))
+        output["transitions"][stage] = {"previous_stage": STAGES[index - 1], "excluded": excluded}
+        for cohort, common in groups.items():
+            output["transitions"][stage][cohort] = {"matched": len(common), "identities": [list(k) for k in common],
+                "mean_tf_delta": {strategy: statistics.mean(
+                    indexed[(strategy, stage, task_id, repeat)]["score"]["task_fulfillment"]
+                    - indexed[(strategy, STAGES[index - 1], task_id, repeat)]["score"]["task_fulfillment"]
+                    for task_id, repeat in common) if common else None for strategy in strategies}}
+    if annotations:
+        output["status"] = "available" if any(v[c]["matched"] for v in output["transitions"].values()
+                                               for c in ("changed", "retention")) else "pending"
+    return output
+
+
+def completion(records):
+    rows = list(records["trajectories"].values())
+    judge_statuses = Counter(a["status"] for r in rows for a in r["judge_attempts"])
+    score_count = sum(r.get("score") is not None for r in rows)
+    status = records["status"]
+    exit_code = 0 if status in ("completed", "completed_with_warnings") else 3 if status in (
+        "completed_with_failures", "partial") else 2
+    return {"status": status, "exit_code": exit_code, "planned_trajectories": len(rows),
+            "scored_trajectories": score_count, "judge_statuses": dict(judge_statuses),
+            "judge_slots": sum(judge_statuses.values()), "valid_judge_slots": judge_statuses["completed"],
+            "formal_acceptance": "not_assessed"}
