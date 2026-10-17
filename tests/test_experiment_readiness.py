@@ -241,7 +241,8 @@ class ReadinessTests(unittest.TestCase):
         self.assertEqual(result["tool_bundles"]["iter3"]["status"], "missing")
 
     def test_preparation_reports_pending_without_approving_or_blocking_pilots(self):
-        result = preparation(self.config, ["Unreviewed backend"], state={"revision": "abc", "dirty_source": True})
+        with patch("custom.experiment.readiness.annotations", return_value={}):
+            result = preparation(self.config, ["Unreviewed backend"], state={"revision": "abc", "dirty_source": True})
         self.assertTrue(result["dirty_source"])
         self.assertEqual(len(result["classification_pending_ids"]), self.config["task_count"])
         self.assertEqual(result["formal_acceptance"], "not_assessed")

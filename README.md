@@ -53,7 +53,7 @@ python -m custom.experiment run --config config/experiment.json
 
 ## Experiment pipeline
 
-The current 19-task selection (17 core and 2 extension tasks) is in `config/subsets/selected_tasks.json`. Classification annotations remain drafts pending review. The configured model is `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
+Role 3's frozen 17-task core selection is in `config/subsets/selected_tasks.json`. All selected tasks have Role 3-confirmed classifications. The configured model is `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
 
 ```text
 python -m custom.experiment validate --config config/experiment.json --offline
@@ -61,7 +61,7 @@ python -m custom.experiment run --config config/experiment.json --offline
 python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
 ```
 
-Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The current configuration compares `no_update` and `full_rewrite`: 19 tasks, 3 versions, 1 repeat. Early is executed and judged once per task/repeat, shared across strategies: **114 logical conditions, 95 actual trajectories, 475 judge slots**. Task count and repeats are configurable. This dependency-screened selection does not represent a random benchmark sample; integration and preflight do not certify task completion or formal protocol approval.
+Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The current configuration compares `no_update` and `full_rewrite`: 17 tasks, 3 versions, 1 repeat. Early is executed and judged once per task/repeat, shared across strategies: **102 logical conditions, 85 actual trajectories, 425 judge slots**. Task count and repeats are configurable. This dependency-screened selection does not represent a random benchmark sample; integration and preflight do not certify task completion or formal protocol approval.
 
 Optional parallel execution uses the same entry point:
 
