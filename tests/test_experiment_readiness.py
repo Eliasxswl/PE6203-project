@@ -162,7 +162,8 @@ class ReadinessTests(unittest.TestCase):
         evidence = catalog_evidence({"episodes": episodes}, task_list)
         result = cohort_scores(rows, labels, evidence)
         self.assertEqual(result["transitions"]["iter3"]["retention"]["matched"], 2)
-        self.assertEqual(result["transitions"]["iter3"]["retention"]["mean_tf_delta"]["no_update"], 0)
+        deltas = result["transitions"]["iter3"]["retention"]["mean_tf_delta_vs_no_update"]
+        self.assertEqual(deltas, {"no_update": 0, "full_rewrite": 1})
         labels["1"]["status"] = "draft"
         episodes["full_rewrite/0"]["stages"]["iter3"]["catalog"]["files::read"]["description"] = "Changed"
         evidence = catalog_evidence({"episodes": episodes}, task_list)
@@ -181,6 +182,37 @@ class ReadinessTests(unittest.TestCase):
         task = report["transitions"]["no_update/0"]["iter3"]["tasks"]["1"]
         self.assertEqual(task["status"], "unavailable")
         self.assertIsNone(task["suggested_change_types"])
+
+    def test_late_classification_is_relative_to_early_even_without_middle_to_late_changes(self):
+        rows, episodes, task_list = self.rows_and_evidence()
+        for episode in episodes.values():
+            for stage in STAGES[1:]:
+                episode["stages"][stage]["catalog"]["files::read"]["description"] = "Changed once"
+        labels = {str(idx): label("changed", ["description"]) for idx in (1, 2)}
+        report = catalog_evidence({"episodes": episodes}, task_list)
+        self.assertEqual(report["reference_stage"], "original")
+        self.assertEqual(report["transitions"]["no_update/0"]["iter5"]["tasks"]["1"]["suggested_change_types"],
+                         ["description"])
+        # No previous-version TF is needed for a same-version comparison.
+        rows[identity("full_rewrite", "iter3", 1, 0)]["score"] = None
+        rows[identity("full_rewrite", "original", 1, 0)]["score"] = None
+        result = cohort_scores(rows, labels, report)
+        late = result["transitions"]["iter5"]["changed"]
+        self.assertEqual(late["matched"], 2)
+        self.assertEqual(late["mean_tf_delta_vs_no_update"], {"no_update": 0, "full_rewrite": 1})
+        rows[identity("no_update", "iter5", 1, 0)]["score"] = None
+        result = cohort_scores(rows, labels, report)
+        self.assertEqual(result["transitions"]["iter5"]["changed"]["identities"], [[2, 0]])
+
+    def test_recovery_without_no_update_reports_missing_comparator(self):
+        rows, episodes, task_list = self.rows_and_evidence()
+        rows = {key: row for key, row in rows.items() if row["identity"]["strategy"] != "no_update"}
+        result = cohort_scores(rows, {"1": label(), "2": label()},
+                               catalog_evidence({"episodes": episodes}, task_list))
+        self.assertEqual(result["status"], "pending")
+        self.assertEqual(result["transitions"]["iter5"]["retention"]["matched"], 0)
+        self.assertIn("comparison_strategy_not_configured", {
+            reason["reason"] for item in result["transitions"]["iter5"]["excluded"] for reason in item["reasons"]})
 
     def test_manifest_freezes_annotations_and_runtime_versions(self):
         selection = read_json(ROOT / self.config["selection_file"])
@@ -211,7 +243,7 @@ class ReadinessTests(unittest.TestCase):
     def test_preparation_reports_pending_without_approving_or_blocking_pilots(self):
         result = preparation(self.config, ["Unreviewed backend"], state={"revision": "abc", "dirty_source": True})
         self.assertTrue(result["dirty_source"])
-        self.assertEqual(len(result["classification_pending_ids"]), 5)
+        self.assertEqual(len(result["classification_pending_ids"]), self.config["task_count"])
         self.assertEqual(result["formal_acceptance"], "not_assessed")
         self.assertEqual(result["backend_policy_warnings"], ["Unreviewed backend"])
 
@@ -257,6 +289,29 @@ class ReadinessTests(unittest.TestCase):
                     "fingerprints": {"sources": {str(source): "wrong-hash"}}}
         with self.assertRaisesRegex(ValueError, "fingerprint"):
             archived_tasks(manifest)
+
+    def test_judge_diagnostic_resolves_shared_early_without_changing_archive(self):
+        store = self.store()
+        alias_key, alias = next((key, row) for key, row in store.records["trajectories"].items()
+                                if row.get("shared_from"))
+        source_key = alias["shared_from"]
+        store.records["trajectories"][source_key].update(agent_status="completed", answer="done", judge_catalog={},
+            trajectory_messages=[{"role": "system", "content": "system"},
+                                 {"role": "user", "content": "question"},
+                                 {"role": "assistant", "content": "done"}])
+        store.save()
+        before = (store.path / "records.json").read_bytes()
+        client = Mock()
+        client.chat.completions.create.return_value = Response(Message(json.dumps({s: 8 for s in SCORES})))
+        with patch("custom.experiment.checks.make_client", return_value=client):
+            result = check_judge(self.config, store.path, alias_key)
+        self.addCleanup(Path(result["report"]).unlink, missing_ok=True)
+        report = read_json(result["report"])
+        self.assertEqual(report["trajectory"], alias_key)
+        self.assertEqual(report["source_trajectory"], source_key)
+        self.assertEqual(result["valid"], 1)
+        self.assertEqual(client.chat.completions.create.call_count, 1)
+        self.assertEqual((store.path / "records.json").read_bytes(), before)
 
 
 if __name__ == "__main__":

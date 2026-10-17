@@ -62,7 +62,9 @@ def specifications(store, config, task_list):
     if not store.records.get("initial_snapshot") or store.records["initial_snapshot"]["status"] != "ready":
         initial_snapshot(config, task_list, store.apply)
     specs = []
-    for strategy in config["strategies"]:
+    owner = store.manifest.get("shared_early", {}).get("owner_strategy")
+    ordered = sorted(config["strategies"], key=lambda strategy: strategy != owner)
+    for strategy in ordered:
         for repeat in range(config["agent_repeats"]):
             eid = episode_id(strategy, repeat)
             rows = {key: row for key, row in store.records["trajectories"].items()

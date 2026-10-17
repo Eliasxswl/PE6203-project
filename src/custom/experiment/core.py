@@ -182,7 +182,8 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
                 send({"kind": "stage", "episode": eid, "stage": later, "snapshot": snapshots[later]})
             continue
         jobs = [{**spec, "task": task, "stage": stage, "snapshot": deepcopy(snapshot),
-                 "knowledge": deepcopy(knowledge), "records": rows} for task in task_list]
+                 "knowledge": deepcopy(knowledge), "records": rows} for task in task_list
+                if not rows[identity(strategy, stage, task["idx"], repeat)].get("shared_from")]
         if dispatch is None:
             for job in jobs:
                 run_trajectory(job, send, cancel)
@@ -220,6 +221,8 @@ def run_trajectory(spec, emit, cancel=None):
     check_cancel()
     key = identity(strategy, stage, task["idx"], repeat)
     row = rows[key]
+    if row.get("shared_from"):
+        return
     if row["status"] in TERMINAL:
         return
     client = None

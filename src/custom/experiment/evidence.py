@@ -105,8 +105,8 @@ def catalog_evidence(records, task_list):
     for eid, episode in records.get("episodes", {}).items():
         stages = episode.get("stages", {})
         result[eid] = {}
-        for index, stage in enumerate(STAGES[1:], 1):
-            before, after = stages.get(STAGES[index - 1], {}), stages.get(stage, {})
+        for stage in STAGES[1:]:
+            before, after = stages.get(STAGES[0], {}), stages.get(stage, {})
             if before.get("status") != "ready" or after.get("status") != "ready":
                 result[eid][stage] = {"status": "unavailable", "tasks": {}}
                 continue
@@ -128,7 +128,8 @@ def catalog_evidence(records, task_list):
                     "required_tool_changes": changes, "missing_in_both": missing_both,
                     "suggested_change_types": [kind for kind, keys in changes.items() if keys] if available else None}
             result[eid][stage] = {"status": "available", **diff, "tasks": labels}
-    return {"scope": "Required tool descriptions and input schemas; unchanged definitions do not prove unchanged behavior.",
+    return {"reference_stage": STAGES[0],
+            "scope": "Required tool descriptions and input schemas relative to Early; unchanged definitions do not prove unchanged behavior.",
             "transitions": result}
 
 

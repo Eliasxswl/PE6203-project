@@ -126,7 +126,7 @@
   },
   "agent_thinking": null,
   "judge_thinking": null,
-  "task_count": 5,
+  "task_count": 19,
   "request_policy": {
     "minimum_interval": 0.2,
     "overload_cooldown": 60,

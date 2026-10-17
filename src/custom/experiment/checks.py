@@ -23,6 +23,9 @@ def check_judge(config, experiment, trajectory, attempts=1, provider_index=0):
     effective.setdefault("providers", {})["judge"] = options[provider_index]
     store = Store(experiment)
     row = store.records["trajectories"].get(trajectory)
+    source_trajectory = row.get("shared_from", trajectory) if row else trajectory
+    if source_trajectory != trajectory:
+        row = store.records["trajectories"][source_trajectory]
     if row is None or row.get("agent_status") != "completed" or not row.get("trajectory_messages"):
         raise ValueError("Select an archived trajectory whose Agent completed with saved messages")
     if "judge_catalog" not in row:
@@ -34,7 +37,7 @@ def check_judge(config, experiment, trajectory, attempts=1, provider_index=0):
     path = ROOT / ".runtime/experiments/checks" / ("judge-" + stamp + ".json")
     path.parent.mkdir(parents=True, exist_ok=True)
     result = {"purpose": "actual_trajectory_judge_compatibility", "semantic_accuracy": "not_validated",
-        "source_experiment": str(store.path), "trajectory": trajectory,
+        "source_experiment": str(store.path), "trajectory": trajectory, "source_trajectory": source_trajectory,
         "source_records_sha256": file_hash(store.path / "records.json"),
         "source_harness_protocol": store.manifest.get("harness_protocol"),
         "request_harness_protocol": PROTOCOL,

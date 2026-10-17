@@ -83,16 +83,17 @@ class ExperimentTests(unittest.TestCase):
                 validate(config)
             client.assert_not_called()
 
-    def test_formal_plan_has_two_baselines_and_900_judge_slots(self):
+    def test_formal_plan_has_180_conditions_but_150_runs_and_750_slots(self):
         config = {**self.config, "strategies": ["no_update", "full_rewrite"]}
         store = self.store(config)
         rows = list(store.records["trajectories"].values())
         self.assertEqual(len(rows), 180)
-        self.assertEqual(sum(len(row["judge_attempts"]) for row in rows), 900)
+        self.assertEqual(len(store.manifest["planned_jobs"]), 150)
+        self.assertEqual(sum(len(row["judge_attempts"]) for row in rows), 750)
         with self.assertRaises(ValueError):
             adapters.load_plugins({**config, "strategies": ["upstream_baseline"]})
 
-    def test_five_task_one_repeat_pilot_has_30_trajectories_and_150_slots(self):
+    def test_five_task_pilot_has_30_conditions_but_25_runs_and_125_slots(self):
         config = {**self.config, "task_count": 5, "agent_repeats": 1,
                   "strategies": ["no_update", "full_rewrite"]}
         task_list = self.task_list[:5]
@@ -101,7 +102,8 @@ class ExperimentTests(unittest.TestCase):
         store = Store(path)
         rows = list(store.records["trajectories"].values())
         self.assertEqual(len(rows), 30)
-        self.assertEqual(sum(len(row["judge_attempts"]) for row in rows), 150)
+        self.assertEqual(len(store.manifest["planned_jobs"]), 25)
+        self.assertEqual(sum(len(row["judge_attempts"]) for row in rows), 125)
         self.assertEqual(len(specifications(store, config, task_list)), 2)
         for spec in specifications(store, config, task_list):
             run_episode(spec, store.apply)
@@ -119,6 +121,139 @@ class ExperimentTests(unittest.TestCase):
                 atomic_json(path, {**config, key: invalid})
                 with self.assertRaisesRegex(ValueError, key):
                     load_config(path)
+
+    def test_shared_early_executes_and_scores_once_per_task_repeat(self):
+        self.task_list = self.task_list[:2]
+        self.config.update(strategies=["full_rewrite", "no_update"], agent_repeats=2)
+        store = self.store()
+        calls = []
+        original = OfflineClient.create
+        def count(client, **kwargs):
+            calls.append(client.key)
+            return original(client, **kwargs)
+        with patch.object(OfflineClient, "create", count):
+            for spec in specifications(store, self.config, self.task_list):
+                run_episode(spec, store.apply)
+        rows = store.records["trajectories"]
+        for task in self.task_list:
+            for repeat in range(2):
+                source_key = identity("no_update", "original", task["idx"], repeat)
+                source = rows[source_key]
+                alias = rows[identity("full_rewrite", "original", task["idx"], repeat)]
+                self.assertEqual(alias["shared_from"], source_key)
+                self.assertEqual(alias["score"], source["score"])
+                self.assertEqual(calls.count(source_key), 2)
+                self.assertEqual(calls.count(source_key + "/judge"), 5)
+                self.assertEqual(alias["agent_attempts"], [])
+                self.assertEqual(alias["judge_attempts"], [])
+                self.assertNotIn("usage", alias)
+                self.assertNotIn(identity("full_rewrite", "original", task["idx"], repeat), calls)
+        store.records["status"] = "completed"
+        report = store.summarize()["completion"]
+        self.assertEqual(report["logical_conditions"], 24)
+        self.assertEqual(report["planned_trajectories"], 20)
+        self.assertEqual(report["scored_trajectories"], 20)
+        self.assertEqual(report["judge_slots"], 100)
+        self.assertEqual(report["shared_early_references"], 4)
+        with patch("custom.experiment.core.make_client") as client:
+            self.assertEqual(specifications(Store(store.path), self.config, self.task_list), [])
+            client.assert_not_called()
+
+    def test_shared_early_resume_preserves_failed_and_unknown_judge_slots(self):
+        self.task_list = self.task_list[:1]
+        self.config.update(strategies=["no_update", "full_rewrite"], agent_repeats=1)
+        store = self.store()
+        self.run_one(store, "no_update")
+        key = identity("no_update", "original", 0, 0)
+        row = store.records["trajectories"][key]
+        row.update(status="running", score=None)
+        row["judge_attempts"][1]["status"] = "failed"
+        row["judge_attempts"][2]["status"] = "started"
+        for slot in (3, 4):
+            row["judge_attempts"][slot] = {"slot": slot, "status": "pending"}
+        agent_before = deepcopy(row["agent_attempts"])
+        store.save()
+        loaded = Store(store.path)
+        loaded.recover()
+        original = OfflineClient.create
+        calls = []
+        def count(client, **kwargs):
+            calls.append(client.key)
+            return original(client, **kwargs)
+        with patch.object(OfflineClient, "create", count):
+            self.run_one(loaded, "no_update")
+            self.run_one(loaded, "full_rewrite")
+        source = loaded.records["trajectories"][key]
+        alias = loaded.records["trajectories"][identity("full_rewrite", "original", 0, 0)]
+        self.assertEqual(calls.count(key + "/judge"), 2)
+        self.assertNotIn(key, calls)
+        self.assertEqual(source["agent_attempts"], agent_before)
+        self.assertEqual(source["judge_attempts"][2]["status"], "outcome_unknown")
+        self.assertEqual(alias["score"], source["score"])
+        self.assertEqual(alias["judge_attempts"], [])
+
+    def test_shared_early_agent_interruption_is_not_replayed_for_other_strategy(self):
+        self.task_list = self.task_list[:1]
+        key = identity("no_update", "original", 0, 0)
+        self.config.update(strategies=["no_update", "full_rewrite"], agent_repeats=1,
+                           mock={"interrupt_trajectories": [key]})
+        store = self.store()
+        with self.assertRaises(Cancelled):
+            self.run_one(store, "no_update")
+        loaded = Store(store.path)
+        loaded.recover()
+        for spec in specifications(loaded, self.config, self.task_list):
+            run_episode(spec, loaded.apply)
+        source = loaded.records["trajectories"][key]
+        alias = loaded.records["trajectories"][identity("full_rewrite", "original", 0, 0)]
+        self.assertEqual(source["status"], "outcome_unknown")
+        self.assertEqual(len(source["agent_attempts"]), 1)
+        self.assertEqual(alias["status"], source["status"])
+        self.assertIsNone(alias["score"])
+        self.assertEqual(alias["agent_attempts"], [])
+
+    def test_three_strategies_share_early_but_keep_adjacent_adapter_inputs(self):
+        self.task_list = self.task_list[:1]
+        self.config.update(strategies=["test_patch", "full_rewrite", "no_update"], agent_repeats=1)
+        seen = []
+        def update(knowledge, old, new, context):
+            seen.append((context["stage"], next(iter(old.values()))["description"]))
+            return adapters.UpdateResult(adapters.semantic(new), [], "Offline contract test")
+        with patch.dict(adapters.REGISTRY, {"test_patch": update}):
+            store = self.store()
+            for spec in specifications(store, self.config, self.task_list):
+                run_episode(spec, store.apply)
+        self.assertEqual(seen, [("iter3", "Offline original tool"), ("iter5", "Offline iter3 tool")])
+        self.assertEqual(len(store.manifest["logical_conditions"]), 9)
+        self.assertEqual(len(store.manifest["planned_jobs"]), 7)
+        rows = store.records["trajectories"].values()
+        self.assertEqual(sum(len(r["judge_attempts"]) for r in rows), 35)
+        early = [r for r in rows if r["identity"]["stage"] == "original"]
+        self.assertTrue(all(r["score"] == early[0]["score"] for r in early))
+
+    def test_shared_early_serial_spawn_equivalence_and_worker_crash(self):
+        self.task_list = self.task_list[:2]
+        self.config.update(strategies=["full_rewrite", "no_update"], agent_repeats=1)
+        reports = []
+        for parallel in (False, True):
+            path, report = execute(self.config, self.task_list, parallel=parallel, workers=2 if parallel else 1)
+            self.addCleanup(self.remove_owned, path)
+            for cost in report["update_costs"].values():
+                cost.pop("elapsed_seconds")
+            reports.append(report)
+        self.assertEqual(reports[0], reports[1])
+        self.assertEqual(reports[0]["completion"]["planned_trajectories"], 10)
+        key = identity("no_update", "original", 0, 0)
+        self.config["mock"] = {"worker_crash_on": [key]}
+        path, _ = execute(self.config, self.task_list, parallel=True, workers=2)
+        self.addCleanup(self.remove_owned, path)
+        execute(self.config, self.task_list, path, parallel=True, workers=2)
+        rows = Store(path).records["trajectories"]
+        source, alias = rows[key], rows[identity("full_rewrite", "original", 0, 0)]
+        self.assertEqual(source["status"], "outcome_unknown")
+        self.assertEqual(len(source["agent_attempts"]), 1)
+        self.assertEqual(alias["status"], source["status"])
+        self.assertEqual(alias["judge_attempts"], [])
 
     def test_model_connectivity_check_is_separate_from_formal_results(self):
         from custom.experiment.checks import check_models

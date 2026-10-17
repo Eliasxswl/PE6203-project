@@ -53,7 +53,7 @@ python -m custom.experiment run --config config/experiment.json
 
 ## Experiment pipeline
 
-The current five-task pilot ID list is frozen in `config/subsets/selected_tasks.json`. The pilot uses `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
+The current 19-task selection (17 core and 2 extension tasks) is in `config/subsets/selected_tasks.json`. Classification annotations remain drafts pending review. The configured model is `glm-4-flash-250414` for Agent and judge. For development without model or tool-server calls:
 
 ```text
 python -m custom.experiment validate --config config/experiment.json --offline
@@ -61,7 +61,7 @@ python -m custom.experiment run --config config/experiment.json --offline
 python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
 ```
 
-Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The live pilot compares `no_update` and `full_rewrite`: 5 tasks, 3 versions, 1 repeat, and 5 judge attempts per trajectory (30 trajectories / 150 planned slots). Task count and repeats are configurable. The dependency-screened pilot does not represent a random benchmark sample.
+Offline runs use deterministic providers and write under `.runtime/experiments/offline-results/`; they are development evidence. The current configuration compares `no_update` and `full_rewrite`: 19 tasks, 3 versions, 1 repeat. Early is executed and judged once per task/repeat, shared across strategies: **114 logical conditions, 95 actual trajectories, 475 judge slots**. Task count and repeats are configurable. This dependency-screened selection does not represent a random benchmark sample; integration and preflight do not certify task completion or formal protocol approval.
 
 Optional parallel execution uses the same entry point:
 
@@ -75,7 +75,7 @@ Agent and judge models are independent fields in `config/experiment.json`. For a
 
 Live output: `results/<experiment-id>/{experiment.json,records.json}`. Use `run --config config/experiment.json --resume <experiment-directory>` with the same configuration/mode to continue unstarted work, and `summarize --experiment <experiment-directory>` to aggregate it. Completed, failed, and ambiguous requests are not replayed. Keep code, configuration, selection, and inputs unchanged while running.
 
-New manifests freeze runtime versions, bundle archive hashes and optional Role 3 classifications from the selection file. Results include update costs, common-sample ECS (`paired_ecs`), and confirmed recovery/retention cohorts. Missing update usage stays unknown. Exit code 0 means operational completion, 3 means partial/unscored trajectories, and 2 means failure or invalidation; none grants formal acceptance. Invalid judge slots with usable trajectory scores are reported as warnings. See the setup guide for the member contracts.
+New manifests freeze runtime versions, bundle archive hashes and optional Role 3 classifications from the selection file. Classifications compare each evolved version against Early; recovery/retention uses same-version TF minus No Update TF. Results include update costs and common-sample ECS (`paired_ecs`). Shared Early rows use `shared_from`; follow that key for traces and usage, and count the source only once. Missing update usage stays unknown. Exit code 0 means operational completion, 3 means partial/unscored trajectories, and 2 means failure or invalidation; none grants formal acceptance. Invalid judge slots with usable trajectory scores are reported as warnings. See the setup guide for the member contracts.
 
 Completed pilot results are archived under `results/`, including provider-failure runs. Keep code commits separate from result commits; upload finished experiments and stage explicit paths rather than the entire repository. Credentials, downloaded tools, local configurations, and runtime logs stay ignored.
 

@@ -14,7 +14,7 @@ import uuid
 
 from .selection import ROOT, STAGES, annotations, digest, read_json
 
-PROTOCOL = "execution_repair_v1"
+PROTOCOL = "shared_early_v1"
 SCHEMA = 1
 SCORES = ("task_fulfillment", "grounding", "planning_and_efficiency")
 TERMINAL = {"completed", "execution_failed", "interrupted", "outcome_unknown"}
@@ -157,6 +157,14 @@ def create(config, task_list, fingerprints, parallel=False, workers=1, warnings=
                         "tool_attempts": [],
                         "judge_attempts": [{"slot": i, "status": "pending"} for i in range(5)],
                         "errors": [], "raw_tool_trace": [], "trajectory_messages": [], "score": None}
+    # One source per task/repeat. References carry scores/status, never duplicate
+    # requests, traces or usage. Prefer the unchanged baseline as the source owner.
+    owner = "no_update" if "no_update" in config["strategies"] else config["strategies"][0]
+    for row in records["trajectories"].values():
+        ident = row["identity"]
+        if ident["stage"] == STAGES[0] and ident["strategy"] != owner:
+            row["shared_from"] = identity(owner, STAGES[0], ident["task_id"], ident["repeat"])
+            row["judge_attempts"] = []
     from .readiness import environment, preparation, source_state
     state = source_state()
     manifest = {"schema_version": SCHEMA, "harness_protocol": PROTOCOL, "operator": operator, "created_at": utc_now(),
@@ -165,7 +173,10 @@ def create(config, task_list, fingerprints, parallel=False, workers=1, warnings=
                 "task_definitions": deepcopy(task_list), "task_annotations": annotations(config),
                 "fingerprints": fingerprints, "settings": config, "selected_ids": [t["idx"] for t in task_list],
                 "execution": {"parallel": parallel, "workers": workers},
-                "planned_jobs": [r["identity"] for r in records["trajectories"].values()]}
+                "analysis": {"classification_reference": STAGES[0], "comparison_strategy": "no_update"},
+                "shared_early": {"owner_strategy": owner, "scope": "task_and_repeat", "judge_slots_per_source": 5},
+                "logical_conditions": [r["identity"] for r in records["trajectories"].values()],
+                "planned_jobs": [r["identity"] for r in records["trajectories"].values() if not r.get("shared_from")]}
     atomic_json(experiment / "experiment.json", manifest)
     atomic_json(experiment / "records.json", records)
     return experiment
@@ -180,7 +191,27 @@ class Store:
             raise ValueError("Unsupported result schema")
 
     def save(self):
+        self.sync_shared()
         atomic_json(self.path / "records.json", self.records)
+
+    def sync_shared(self):
+        """Publish source outcomes atomically, including partial/failure states."""
+        rows = self.records["trajectories"]
+        for row in rows.values():
+            source_key = row.get("shared_from")
+            if not source_key:
+                continue
+            source = rows[source_key]
+            ident, source_ident = row["identity"], source["identity"]
+            if (source.get("shared_from") or ident["stage"] != STAGES[0]
+                    or source_ident["stage"] != STAGES[0]
+                    or any(ident[field] != source_ident[field] for field in ("task_id", "repeat"))):
+                raise ValueError("Invalid shared Early source")
+            for field in ("status", "agent_status", "score", "score_exclusion_reason", "knowledge_sha256"):
+                if field in source:
+                    row[field] = deepcopy(source[field])
+                else:
+                    row.pop(field, None)
 
     def event(self, kind, **data):
         self.records["events"].append({"kind": kind, "time": utc_now(), **redact(data)})
@@ -203,6 +234,8 @@ class Store:
     def recover(self, episode=None, reason="unclean_stop", trajectory=None):
         changed = False
         for key, row in self.records["trajectories"].items():
+            if row.get("shared_from"):
+                continue
             if trajectory is not None and key != trajectory:
                 continue
             ident = row["identity"]
@@ -236,6 +269,7 @@ class Store:
         return changed
 
     def summarize(self):
+        self.sync_shared()
         aggregate = aggregate_records(self.records["trajectories"])
         aggregate["update_costs"] = update_costs(self.records.get("episodes", {}))
         from .evidence import catalog_evidence
@@ -258,6 +292,8 @@ def aggregate_records(rows):
         scores = [r["score"] for r in records if r.get("score") is not None]
         counts = Counter(r["status"] for r in records)
         output["groups"][group] = {"planned": len(records), "valid": len(scores), "statuses": dict(counts),
+                                    "independent_trajectories": sum(not r.get("shared_from") for r in records),
+                                    "shared_references": sum(bool(r.get("shared_from")) for r in records),
                                     "excluded": len(records) - len(scores),
                                     "means": {s: sum(score[s] for score in scores) / len(scores) if scores else None
                                               for s in SCORES},
@@ -335,35 +371,37 @@ def update_costs(episodes):
 def cohort_scores(rows, annotations, evidence):
     from .evidence import confirmed_label
     output = {"status": "not_configured" if not annotations else "pending", "transitions": {},
-              "delta": "Current TF minus previous-version TF on common valid task/repeat pairs; not a task-success validator."}
+              "reference_stage": STAGES[0], "comparison_strategy": "no_update",
+              "delta": "Same-version TF minus No Update TF on common valid task/repeat pairs; not a success rate or task-success validator."}
     strategies = sorted({r["identity"]["strategy"] for r in rows.values()})
     indexed = {(r["identity"]["strategy"], r["identity"]["stage"], r["identity"]["task_id"], r["identity"]["repeat"]): r
                for r in rows.values()}
     planned = sorted({(r["identity"]["task_id"], r["identity"]["repeat"]) for r in rows.values()})
-    for index, stage in enumerate(STAGES[1:], 1):
+    for stage in STAGES[1:]:
         groups = {"changed": [], "retention": []}
         excluded = []
         for task_id, repeat in planned:
             labels, reasons = [], []
+            if "no_update" not in strategies:
+                reasons.append({"strategy": "no_update", "reason": "comparison_strategy_not_configured"})
             for strategy in strategies:
                 label, reason = confirmed_label(annotations, evidence, episode_id(strategy, repeat), stage, task_id)
                 if reason:
                     reasons.append({"strategy": strategy, "reason": reason})
                 else:
                     labels.append(label)
-                if any(indexed.get((strategy, s, task_id, repeat), {}).get("score") is None
-                       for s in (STAGES[index - 1], stage)):
+                if indexed.get((strategy, stage, task_id, repeat), {}).get("score") is None:
                     reasons.append({"strategy": strategy, "reason": "no_paired_valid_scores"})
             if reasons:
                 excluded.append({"task_id": task_id, "repeat": repeat, "reasons": reasons})
             elif labels:
                 groups[labels[0]["cohort"]].append((task_id, repeat))
-        output["transitions"][stage] = {"previous_stage": STAGES[index - 1], "excluded": excluded}
+        output["transitions"][stage] = {"reference_stage": STAGES[0], "excluded": excluded}
         for cohort, common in groups.items():
             output["transitions"][stage][cohort] = {"matched": len(common), "identities": [list(k) for k in common],
-                "mean_tf_delta": {strategy: statistics.mean(
+                "mean_tf_delta_vs_no_update": {strategy: statistics.mean(
                     indexed[(strategy, stage, task_id, repeat)]["score"]["task_fulfillment"]
-                    - indexed[(strategy, STAGES[index - 1], task_id, repeat)]["score"]["task_fulfillment"]
+                    - indexed[("no_update", stage, task_id, repeat)]["score"]["task_fulfillment"]
                     for task_id, repeat in common) if common else None for strategy in strategies}}
     if annotations:
         output["status"] = "available" if any(v[c]["matched"] for v in output["transitions"].values()
@@ -372,13 +410,16 @@ def cohort_scores(rows, annotations, evidence):
 
 
 def completion(records):
-    rows = list(records["trajectories"].values())
+    logical = list(records["trajectories"].values())
+    rows = [r for r in logical if not r.get("shared_from")]
     judge_statuses = Counter(a["status"] for r in rows for a in r["judge_attempts"])
     score_count = sum(r.get("score") is not None for r in rows)
     status = records["status"]
     exit_code = 0 if status in ("completed", "completed_with_warnings") else 3 if status in (
         "completed_with_failures", "partial") else 2
     return {"status": status, "exit_code": exit_code, "planned_trajectories": len(rows),
+            "logical_conditions": len(logical), "shared_early_references": len(logical) - len(rows),
+            "scored_logical_conditions": sum(r.get("score") is not None for r in logical),
             "scored_trajectories": score_count, "judge_statuses": dict(judge_statuses),
             "judge_slots": sum(judge_statuses.values()), "valid_judge_slots": judge_statuses["completed"],
             "formal_acceptance": "not_assessed"}

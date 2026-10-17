@@ -4,20 +4,389 @@
   "candidate_sha256": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
   "samples": [
     {
-      "idx": 9
+      "idx": 9,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
     },
     {
-      "idx": 24
+      "idx": 24,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM; new tools visible: parallel-thinking. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM; new tools visible: convergent-synthesis;parallel-thinking. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
     },
     {
-      "idx": 117
+      "idx": 29,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Observed required-tool catalog comparison against Early in results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json. Catalog evidence only; external availability is recorded separately. Pending Role 3 review."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Observed required-tool catalog comparison against Early in results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json. Catalog evidence only; external availability is recorded separately. Pending Role 3 review."
+          }
+        }
+      }
     },
     {
-      "idx": 273
+      "idx": 117,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC; new tools visible: parallel-thinking. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM; new tools visible: convergent-synthesis;parallel-thinking. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
     },
     {
-      "idx": 403
+      "idx": 157,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Observed required-tool catalog comparison against Early in results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json. Catalog evidence only; external availability is recorded separately. Pending Role 3 review."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Observed required-tool catalog comparison against Early in results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json. Catalog evidence only; external availability is recorded separately. Pending Role 3 review."
+          }
+        }
+      }
+    },
+    {
+      "idx": 267,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 271,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 273,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 274,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 278,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 386,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 389,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 390,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 394,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 403,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 410,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 411,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 416,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "changed",
+            "change_types": [
+              "parameter",
+              "description"
+            ],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: DESC+PARAM. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
+    },
+    {
+      "idx": 425,
+      "classification": {
+        "status": "draft",
+        "transitions": {
+          "iter3": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          },
+          "iter5": {
+            "cohort": "retention",
+            "change_types": [],
+            "rationale": "Role 3 provisional required-tool annotation relative to Early: unaffected. Source: docs/task_subset_annotation.csv."
+          }
+        }
+      }
     }
   ],
-  "selection_method": "Dependency-screened local pilot; not an unrestricted random sample"
+  "selection_method": "Role 3 selection: 17 core tasks and 2 extension tasks (29, 157); dependency-screened, not random. Classification review pending.",
+  "selection_sources": {
+    "task_list": "docs/benchmark_task_list.md",
+    "annotations": "docs/task_subset_annotation.csv",
+    "annotations_sha256": "d89a2de3afad88779f9197e38fbc3b1e9377eb2734ff2f77b6bf9195034458c4",
+    "catalog_preflight": "results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json"
+  },
+  "classification_reference": "original"
 }
