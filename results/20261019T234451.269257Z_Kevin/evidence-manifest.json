@@ -1,0 +1,35 @@
+{
+  "source_revision": "52f7d1dcfb855c410614960ce95e2fff73e773e3",
+  "dirty_source": false,
+  "fingerprints_verified": true,
+  "files": [
+    {
+      "archive": "evidence/catalog-baseline-17x3.json",
+      "sha256": "ce59a44ceae8aa2e11520fe67168227981b1673d84efebe82cf2bd1eb4073ac3"
+    },
+    {
+      "archive": "evidence/selected_tasks.json",
+      "sha256": "fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07"
+    },
+    {
+      "archive": "evidence/main-experiment-profile.json",
+      "sha256": "a166ea3ffda35fe51dc7da24424ea330799af0942a0a7540a9bd32c1ddf5e38a"
+    },
+    {
+      "archive": "evidence/source.zip",
+      "sha256": "b04bf1e0787c84634eddee2b84ae1b4288972b29528e78bfe8ab13d812859777"
+    },
+    {
+      "archive": "records.json",
+      "sha256": "80d1198386f4a8f0bbb1f51cce4fb4344afb938ca1dfded40ac3546777621872"
+    },
+    {
+      "archive": "experiment.json",
+      "sha256": "fde5f89db3d5ab0401d39f12c5be0e3e32823c6c381fd61cf5937a28a6599c23"
+    },
+    {
+      "archive": "aggregate.json",
+      "sha256": "059036d46a117f7fc2d3bde7c3833c059da53185de016df4de8848ef3e93d959"
+    }
+  ]
+}
