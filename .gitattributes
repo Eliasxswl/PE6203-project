@@ -1,0 +1,2 @@
+# Frozen research JSON must keep identical bytes across Windows/macOS clones.
+/config/practice/*.json text eol=lf

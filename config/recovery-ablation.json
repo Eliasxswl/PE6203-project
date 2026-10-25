@@ -188,8 +188,8 @@
   "judge_output_mode": "json_object",
   "agent_backend": "langchain",
   "memory": {
-    "artifact": "config/practice/typed-k0.json",
-    "source": "results/20261025T002729.059489Z_Kevin/candidate-evidence.json",
+    "artifact": "config/practice/typed-k0-portable.json",
+    "source": "config/practice/typed-evidence.json",
     "inject": true,
     "context_chars": 8000,
     "model": "glm-4-flash-250414"
