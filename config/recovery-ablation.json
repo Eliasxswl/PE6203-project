@@ -135,8 +135,8 @@
     "overload_cooldown": 60,
     "maximum_cooldown": 300,
     "recovery_successes": 5,
-    "max_concurrency": 2,
-    "long_context_concurrency": 2,
+    "max_concurrency": 1,
+    "long_context_concurrency": 1,
     "long_context_threshold": 8192
   },
   "providers": {

@@ -18,6 +18,9 @@ COMPLETE_PREFIX = (REFERENCE_PREFIX +
     'Preserve the requested workflow and distinguish an input document from a task-list destination. '
     'If the request already gives an output filename, resolve a relative filename within the current '
     '${WORKSPACE} workspace and use it; an initialization error does not erase that supplied filename. '
+    'For requested local task tracking with no specified or initialized destination, use '
+    '${WORKSPACE}/tasks.md as the default, unless the request requires a particular existing list. '
+    'Initialize the selected task source before adding items and bind its actual returned source ID. '
     'Confirm completion through actual tool calls and their results.\n')
 INSTRUCTIONS = '''Maintain reusable tool-use knowledge from the supplied observations.
 Store tool calling procedures, argument constraints, observed dependencies and limitations.

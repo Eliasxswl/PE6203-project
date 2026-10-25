@@ -113,19 +113,24 @@ class ChatModel:
                     'semantic_identity': meta.get('benchmark_semantic_identity'), 'arguments': args,
                     'response': response, 'protocol_error': protocol_error})
                 feedback = validation_feedback(definition, call['args'], response)
+                failed_result = reported_error(meta.get('benchmark_semantic_identity'), response)
                 if feedback:
                     self.raw_tool_trace[-1]['harness_schema_feedback'] = feedback
+                if failed_result and not response.get('isError'):
+                    self.raw_tool_trace[-1]['harness_reported_error'] = True
                 if self.recovery is not None:
                     self.recovery.observe(self.raw_tool_trace[-1])
                 visible = deepcopy(response)
                 if feedback:
                     visible['harness_schema_feedback'] = feedback
+                if failed_result and not response.get('isError'):
+                    visible['harness_reported_error'] = True
                 content = visible_result(visible)
                 self.messages.append({'role': 'tool', 'tool_call_id': call['id'], 'content': content})
                 self.event_callback('tool_completed', {'messages': deepcopy(self.messages),
                                                       'raw_tool_trace': deepcopy(self.raw_tool_trace)})
                 return ToolMessage(content=content, tool_call_id=call['id'], name=call['name'],
-                                   status='error' if reported_error(meta.get('benchmark_semantic_identity'), response) else 'success')
+                                   status='error' if failed_result else 'success')
 
         def transport_only(**kwargs):
             raise RuntimeError('MCP tools must dispatch through the observed transport middleware')

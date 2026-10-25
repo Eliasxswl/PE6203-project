@@ -191,7 +191,7 @@ Selective Patch compares adjacent catalogs and patches changed fields locally, w
 
 The `langmem-adaptation` branch is separate from the core experiment on `main`. The current goal is maintaining usable harness knowledge for comparing update strategies. Memory/no-memory and synthetic-practice runs under `results/` are historical diagnostics.
 
-Use a separate virtual environment and install `requirements-memory.txt`. The optional `agent_backend: langchain` delegates the model/tool loop to official `create_agent`; existing MCP tools, isolation, budgets and Judge remain external. Configure `.env` and local tool paths as above. `config/recovery-ablation.json` uses five independent accounts (`BIGMODEL_API_KEY` through `_5`) and up to ten workers. Reduce both provider pools when fewer accounts are available.
+Use a separate virtual environment and install `requirements-memory.txt`. The optional `agent_backend: langchain` delegates the model/tool loop to official `create_agent`; existing MCP tools, isolation, budgets and Judge remain external. Configure `.env` and local tool paths as above. `config/recovery-ablation.json` uses five independent accounts (`BIGMODEL_API_KEY` through `_5`) and up to ten workers. The current development profile permits one in-flight model request per account to reduce connection pressure. Reduce both provider pools when fewer accounts are available.
 
 ```text
 python -m custom.experiment memory-pilot --config config/recovery-ablation.json --parallel --workers 10

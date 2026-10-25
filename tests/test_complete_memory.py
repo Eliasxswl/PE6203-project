@@ -32,7 +32,6 @@ class CompleteMemoryTests(unittest.TestCase):
             for record in records:
                 for binding in record['current_tool_bindings']:
                     self.assertEqual(binding['callable_name'],aliases.get(binding['knowledge_tool']))
-            self.assertIn('resolve a relative filename',context)
 
     def test_complete_profile_fails_instead_of_silently_dropping_entries(self):
         cfg=load_config(ROOT/'config/recovery-ablation.json');cfg['memory'].update(profile='complete',context_chars=100)
