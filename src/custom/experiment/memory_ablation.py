@@ -10,6 +10,38 @@ from .selection import ROOT, fingerprints
 PROTOCOL = 'langmem_usefulness_ablation_v1'
 CONDITIONS = ('without_memory', 'with_memory')
 RECOVERY_CONDITIONS = ('without_memory', 'file_only', 'error_triggered')
+PILOT_CONDITIONS = ('full_memory',)
+
+
+def report_pilot(store):
+    from custom.agents.tool_feedback import reported_error
+    rows = list(store.records['trajectories'].values())
+    metrics = ('task_fulfillment', 'grounding', 'planning_and_efficiency')
+    scored = [r for r in rows if r.get('score') is not None]
+    output = {'protocol': 'complete_memory_task_pilot_v1', 'status': store.records['status'],
+        'purpose': 'Development inspection on the unchanged selected tasks, not a memory-benefit or strategy comparison.',
+        'planned': len(rows), 'completed_agents': sum(r['agent_status'] == 'completed' for r in rows),
+        'scored': len(scored), 'valid_judge_slots': sum(a['status'] == 'completed' for r in rows for a in r['judge_attempts']),
+        'means': {m: sum(r['score'][m] for r in scored) / len(scored) if scored else None for m in metrics}, 'tasks': []}
+    for row in sorted(rows, key=lambda r: (r['identity']['task_id'], r['identity']['repeat'])):
+        calls = row['raw_tool_trace']
+        errors = []
+        for index, call in enumerate(calls):
+            if reported_error(call.get('semantic_identity'), call['response']):
+                errors.append({'tool_call_id': call['tool_call_id'], 'tool': call['semantic_identity'],
+                    'later_successful_same_tool_call': any(c['semantic_identity'] == call['semantic_identity'] and
+                        not reported_error(c.get('semantic_identity'), c['response']) for c in calls[index+1:])})
+        exposure = row.get('memory_exposure', {})
+        output['tasks'].append({'task_id': row['identity']['task_id'], 'repeat': row['identity']['repeat'],
+            'agent_status': row['agent_status'], 'score': row.get('score'), 'stop_reason': row.get('stop_reason'),
+            'requests': row.get('request_count'), 'request_limit': row.get('request_limit'),
+            'selected_memory_ids': exposure.get('selected_ids', []),
+            'complete_library_visible': bool(exposure.get('total_library_entries')) and
+                len(exposure.get('selected_ids', [])) == exposure['total_library_entries'],
+            'tool_errors': errors, 'unrecovered_tool_errors': sum(not e['later_successful_same_tool_call'] for e in errors),
+            'schema_feedback_calls': sum(bool(c.get('harness_schema_feedback')) for c in calls),
+            'review_required': bool(errors) or row['agent_status'] != 'completed'})
+    return output
 
 
 def report_three(store):
@@ -64,6 +96,8 @@ def check_frozen_scopes(snapshot, artifact, required_servers):
 
 
 def report(store):
+    if store.manifest.get('diagnostic', {}).get('conditions') == list(PILOT_CONDITIONS):
+        return report_pilot(store)
     if store.manifest.get('diagnostic', {}).get('conditions') == list(RECOVERY_CONDITIONS):
         return report_three(store)
     rows = list(store.records['trajectories'].values())
@@ -120,7 +154,10 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
     if type(workers) is not int or not 1 <= workers <= 10 or (not parallel and workers != 1):
         raise ValueError('Use 1 to 10 workers; serial mode uses one')
     artifact = load(config)
-    conditions = RECOVERY_CONDITIONS if config['memory'].get('comparison') == 'three_arm' else CONDITIONS
+    comparison = config['memory'].get('comparison')
+    conditions = PILOT_CONDITIONS if comparison == 'full_pilot' else RECOVERY_CONDITIONS if comparison == 'three_arm' else CONDITIONS
+    if conditions == PILOT_CONDITIONS and (config['agent_repeats'] != 1 or config['memory'].get('profile') != 'complete'):
+        raise ValueError('Full-library task pilot requires one repeat and the complete memory profile')
     if conditions == RECOVERY_CONDITIONS and artifact['protocol'] != 'verified_tool_recovery_k0_v1':
         raise ValueError('Three-arm recovery comparison requires verified frozen knowledge')
     selected = [next(t for t in task_list if t['idx'] == idx) for idx in task_ids]
@@ -153,6 +190,12 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
             analysis={'comparison': 'with versus without frozen LangMem knowledge; no ECS'},
             logical_conditions=[r['identity'] for r in rows.values()], planned_jobs=[r['identity'] for r in rows.values()])
         atomic_json(path / 'experiment.json', store.manifest)
+        if conditions == PILOT_CONDITIONS:
+            store.manifest.update(harness_protocol='complete_memory_task_pilot_v1', purpose='fixed_task_experience_adaptation_development')
+            store.manifest['analysis'] = {'comparison': 'Single full-library development pass on the unchanged selection; no memory ablation or ECS',
+                'evaluation': 'Existing five-slot rubric and unchanged request caps; inspect every task trace and all missing results'}
+            store.manifest['diagnostic']['condition_settings'] = {'full_memory': {'inject': True, 'profile': 'complete'}}
+            atomic_json(path / 'experiment.json', store.manifest)
         if conditions == RECOVERY_CONDITIONS:
             store.manifest['harness_protocol'] = 'triggered_recovery_three_arm_v1'
             store.manifest['analysis'] = {'comparison': 'without memory / file only / file plus error-triggered recovery; no ECS',
@@ -183,6 +226,8 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
                     for condition in conditions[offset:] + conditions[:offset]:
                         effective = deepcopy(config)
                         effective['memory']['inject'] = condition == 'with_memory'
+                        if conditions == PILOT_CONDITIONS:
+                            effective['memory'].update(inject=True, profile='complete')
                         if conditions == RECOVERY_CONDITIONS:
                             effective['memory']['inject'] = condition != 'without_memory'
                             effective['memory']['profile'] = 'error_triggered' if condition == 'error_triggered' else 'file_only'
@@ -212,5 +257,5 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
             reap_orphans(store.records['events'])
             store.save()
             output = report(store)
-            atomic_json(path / 'memory-ablation.json', output)
+            atomic_json(path / ('task-review.json' if conditions == PILOT_CONDITIONS else 'memory-ablation.json'), output)
     return path, output

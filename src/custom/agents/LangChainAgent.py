@@ -8,6 +8,7 @@ from types import SimpleNamespace
 
 from custom.agents.SimpleOpenAIAgent import SINGLE_SERVER_INTERATION_SYSTEM_PROMPT
 from custom.agents.tool_results import raw_result, visible_result
+from custom.agents.tool_feedback import reported_error, validation_feedback
 from custom.experiment.errors import ExecutionFailure
 from custom.experiment.results import safe_error
 from custom.utils import model_config
@@ -111,14 +112,20 @@ class ChatModel:
                 self.raw_tool_trace.append({'tool_call_id': call['id'], 'name': call['name'],
                     'semantic_identity': meta.get('benchmark_semantic_identity'), 'arguments': args,
                     'response': response, 'protocol_error': protocol_error})
+                feedback = validation_feedback(definition, call['args'], response)
+                if feedback:
+                    self.raw_tool_trace[-1]['harness_schema_feedback'] = feedback
                 if self.recovery is not None:
                     self.recovery.observe(self.raw_tool_trace[-1])
-                content = visible_result(response)
+                visible = deepcopy(response)
+                if feedback:
+                    visible['harness_schema_feedback'] = feedback
+                content = visible_result(visible)
                 self.messages.append({'role': 'tool', 'tool_call_id': call['id'], 'content': content})
                 self.event_callback('tool_completed', {'messages': deepcopy(self.messages),
                                                       'raw_tool_trace': deepcopy(self.raw_tool_trace)})
                 return ToolMessage(content=content, tool_call_id=call['id'], name=call['name'],
-                                   status='error' if response.get('isError') else 'success')
+                                   status='error' if reported_error(meta.get('benchmark_semantic_identity'), response) else 'success')
 
         def transport_only(**kwargs):
             raise RuntimeError('MCP tools must dispatch through the observed transport middleware')

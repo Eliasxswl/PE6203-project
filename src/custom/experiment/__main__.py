@@ -144,12 +144,15 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run the fixed MCPEvol experiment protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check"):
+    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check", "memory-pilot"):
         command = subparsers.add_parser(name)
         command.add_argument("--config", default="config/experiment.json")
         command.add_argument("--offline", action="store_true", help="Use deterministic providers without network/model calls")
         if name in ('expand-memory', 'recovery-check'):
             command.add_argument('--workers', type=int, default=10)
+        if name == 'memory-pilot':
+            command.add_argument('--workers', type=int, default=1)
+            command.add_argument('--parallel', action='store_true')
         if name == 'memory-ablation':
             group = command.add_mutually_exclusive_group(required=True)
             group.add_argument('--task-id', type=int, action='append')
@@ -200,12 +203,15 @@ def main(argv=None):
             path, result = expand_memory(config, args.workers)
             print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
             return 0 if result['status'] == 'completed' else 2
-        if args.command == 'recovery-check':
-            from .skills import quick_check
-            validate(config)
-            path, result = quick_check(config, args.workers)
+        if args.command in ('recovery-check', 'memory-pilot'):
+            from .memory_ablation import run as memory_pilot
+            task_list, warnings = validate(config)
+            config['agent_repeats'] = 1
+            config['memory'].update(inject=True, profile='complete', comparison='full_pilot')
+            parallel = args.workers > 1 if args.command == 'recovery-check' else args.parallel
+            path, result = memory_pilot(config, task_list, [t['idx'] for t in task_list], parallel, args.workers)
             print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
-            return 0 if result['status'] == 'passed' else 2
+            return 0 if result['status'] == 'completed' else 2
         if args.command == 'memory-causal-check':
             if args.suite.startswith('transfer'):
                 from .transfer import run as causal_check

@@ -12,6 +12,13 @@ from .selection import ROOT, digest, file_hash, provider_for, read_json
 PROTOCOL = 'langmem_tool_knowledge_v1'
 REFERENCE_PREFIX = ('\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, '
                     'not observations of the current task. Current tool schemas and observed outputs take precedence.\n')
+COMPLETE_PREFIX = (REFERENCE_PREFIX +
+    'The complete frozen library follows. Select procedures by the current requested operation; examples '
+    'are reference structures, not additional work to perform. Invoke only tools supplied in this run. '
+    'Preserve the requested workflow and distinguish an input document from a task-list destination. '
+    'If the request already gives an output filename, resolve a relative filename within the current '
+    '${WORKSPACE} workspace and use it; an initialization error does not erase that supplied filename. '
+    'Confirm completion through actual tool calls and their results.\n')
 INSTRUCTIONS = '''Maintain reusable tool-use knowledge from the supplied observations.
 Store tool calling procedures, argument constraints, observed dependencies and limitations.
 Each memory must identify the semantic tool IDs it depends on. Only use IDs in the supplied catalog.
@@ -39,9 +46,9 @@ def validate_options(options):
         raise ValueError('memory requires artifact, source, inject and context_chars')
     if 'model' in options and (not isinstance(options['model'], str) or not options['model']):
         raise ValueError('Invalid memory model')
-    if options.get('profile', 'all') not in ('all', 'file_only', 'error_triggered'):
+    if options.get('profile', 'all') not in ('all', 'file_only', 'error_triggered', 'complete'):
         raise ValueError('Invalid memory profile')
-    if options.get('comparison', 'two_arm') not in ('two_arm', 'three_arm'):
+    if options.get('comparison', 'two_arm') not in ('two_arm', 'three_arm', 'full_pilot'):
         raise ValueError('Invalid memory comparison')
     if type(options['inject']) is not bool or type(options['context_chars']) is not int or options['context_chars'] < 1:
         raise ValueError('Invalid memory injection options')
@@ -234,9 +241,22 @@ def render(config, catalog, required, workspace, api_names=None):
     api_names = api_names if api_names is not None else {key: value.get('name', key.split('::')[-1])
                                                        for key, value in catalog.items()}
     selected, lines, characters = [], [], 0
-    prefix = REFERENCE_PREFIX
+    complete = options.get('profile') == 'complete'
+    prefix = COMPLETE_PREFIX.replace('${WORKSPACE}', workspace.as_posix()) if complete else REFERENCE_PREFIX
     if options['inject']:
         for item in sorted(artifact['memories'], key=lambda m: m['id']):
+            if complete:
+                names = {k: api_names.get(k, v['name']) for k, v in artifact['catalog'].items()}
+                data = json.loads(guidance_line(item, names, workspace, structured=artifact['protocol'] != PROTOCOL))
+                data['current_tool_bindings'] = [{'knowledge_tool': k, 'callable_name': api_names.get(k)} for k in item['value']['tool_ids']]
+                data['all_dependencies_available'] = set(item['value']['tool_ids']) <= set(api_names)
+                line = json.dumps(data, ensure_ascii=False) + '\n'
+                if len(prefix) + characters + len(line) > options['context_chars']:
+                    raise ValueError('Complete library exceeds memory.context_chars; no entries were silently dropped')
+                selected.append(item['id'])
+                lines.append(line)
+                characters += len(line)
+                continue
             if options.get('profile', 'all') in ('file_only', 'error_triggered') and item.get('case_id') != 'expanded-file-recovery':
                 continue
             if not set(item['value']['tool_ids']) <= ids:
@@ -252,4 +272,5 @@ def render(config, catalog, required, workspace, api_names=None):
     context = prefix + ''.join(lines) if lines else ''
     return context, {'artifact_sha256': artifact['memory_sha256'], 'selected_ids': selected,
                      'context_characters': len(context), 'context_sha256': digest(context),
+                     'profile': options.get('profile', 'all'), 'total_library_entries': len(artifact['memories']),
                      'presentation': 'visible_api_names_v1' if artifact['protocol'] == PROTOCOL else 'verified_procedure_v1'}
