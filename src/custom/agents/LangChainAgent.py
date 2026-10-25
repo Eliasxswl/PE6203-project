@@ -30,6 +30,7 @@ class ChatModel:
             SET_TIME=prompt_time or str(offset_date(0)),
             WORKSPACE_ROOT=(workspace_root or model_config.workspace_dir()).as_posix(), FILE_EXISTS=file_exists)
         self.messages = [{'role': 'system', 'content': self.system_prompt}]
+        self.recovery = None
         self.tool_definitions = deepcopy(tools)
         self.temperature, self.max_new_tokens, self.thinking = temperature, max_new_tokens, thinking
 
@@ -61,9 +62,9 @@ class ChatModel:
 
     def run_with_server(self, query, fschat_flag=False):
         from langchain.agents import create_agent
-        from langchain.agents.middleware import ModelCallLimitMiddleware, before_model, wrap_tool_call
+        from langchain.agents.middleware import ModelCallLimitMiddleware, before_model, wrap_model_call, wrap_tool_call
         from langchain.agents.middleware.model_call_limit import ModelCallLimitExceededError
-        from langchain_core.messages import ToolMessage, convert_to_openai_messages
+        from langchain_core.messages import SystemMessage, ToolMessage, convert_to_openai_messages
         from langchain_core.tools import StructuredTool
         from langchain_openai import ChatOpenAI
 
@@ -74,6 +75,14 @@ class ChatModel:
         @before_model
         def snapshot(state, runtime):
             self.messages = convert_to_openai_messages(state['messages'])
+
+        @wrap_model_call
+        def repair_reference(request, handler):
+            context = self.recovery.take() if self.recovery is not None else ''
+            if context:
+                base = request.system_message.content if request.system_message is not None else self.system_prompt
+                request = request.override(system_message=SystemMessage(content=base + context))
+            return handler(request)
 
         @wrap_tool_call
         def mcp_transport(request, handler):
@@ -102,6 +111,8 @@ class ChatModel:
                 self.raw_tool_trace.append({'tool_call_id': call['id'], 'name': call['name'],
                     'semantic_identity': meta.get('benchmark_semantic_identity'), 'arguments': args,
                     'response': response, 'protocol_error': protocol_error})
+                if self.recovery is not None:
+                    self.recovery.observe(self.raw_tool_trace[-1])
                 content = visible_result(response)
                 self.messages.append({'role': 'tool', 'tool_call_id': call['id'], 'content': content})
                 self.event_callback('tool_completed', {'messages': deepcopy(self.messages),
@@ -122,7 +133,7 @@ class ChatModel:
         self.system_prompt = self.messages[0]['content']
         agent = create_agent(model=model, tools=tools,
             system_prompt=self.system_prompt,
-            middleware=[snapshot, ModelCallLimitMiddleware(run_limit=self.max_round, exit_behavior='error'), mcp_transport])
+            middleware=[snapshot, ModelCallLimitMiddleware(run_limit=self.max_round, exit_behavior='error'), repair_reference, mcp_transport])
         answer = ''
         exceeded = False
         try:

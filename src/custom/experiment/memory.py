@@ -35,10 +35,14 @@ def schema():
 
 def validate_options(options):
     required = {'artifact', 'source', 'inject', 'context_chars'}
-    if not isinstance(options, dict) or not required <= set(options) or set(options) - required - {'model'}:
+    if not isinstance(options, dict) or not required <= set(options) or set(options) - required - {'model', 'profile', 'comparison'}:
         raise ValueError('memory requires artifact, source, inject and context_chars')
     if 'model' in options and (not isinstance(options['model'], str) or not options['model']):
         raise ValueError('Invalid memory model')
+    if options.get('profile', 'all') not in ('all', 'file_only', 'error_triggered'):
+        raise ValueError('Invalid memory profile')
+    if options.get('comparison', 'two_arm') not in ('two_arm', 'three_arm'):
+        raise ValueError('Invalid memory comparison')
     if type(options['inject']) is not bool or type(options['context_chars']) is not int or options['context_chars'] < 1:
         raise ValueError('Invalid memory injection options')
     for key in ('artifact', 'source'):
@@ -233,6 +237,8 @@ def render(config, catalog, required, workspace, api_names=None):
     prefix = REFERENCE_PREFIX
     if options['inject']:
         for item in sorted(artifact['memories'], key=lambda m: m['id']):
+            if options.get('profile', 'all') in ('file_only', 'error_triggered') and item.get('case_id') != 'expanded-file-recovery':
+                continue
             if not set(item['value']['tool_ids']) <= ids:
                 continue
             if not set(item['value']['tool_ids']) <= set(api_names):

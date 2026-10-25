@@ -9,6 +9,47 @@ from .selection import ROOT, fingerprints
 
 PROTOCOL = 'langmem_usefulness_ablation_v1'
 CONDITIONS = ('without_memory', 'with_memory')
+RECOVERY_CONDITIONS = ('without_memory', 'file_only', 'error_triggered')
+
+
+def report_three(store):
+    rows = store.records['trajectories']
+    metrics = ('task_fulfillment', 'grounding', 'planning_and_efficiency')
+    output = {'protocol': 'triggered_recovery_three_arm_v1', 'status': store.records['status'], 'conditions': {},
+        'interpretation': 'Frozen Early-only knowledge ablation; primary means use identical task/repeat triples. Missing slots are not zeros. No evolution-method claim.'}
+    for condition in RECOVERY_CONDITIONS:
+        group = [r for r in rows.values() if r['identity']['strategy'] == condition]
+        output['conditions'][condition] = {'planned': len(group), 'completed_agents': sum(r['agent_status'] == 'completed' for r in group),
+            'scored': sum(r.get('score') is not None for r in group), 'execution_failures': sum(r['agent_status'] == 'failed' for r in group),
+            'valid_judge_slots': sum(a['status'] == 'completed' for r in group for a in r['judge_attempts']),
+            'not_attempted_judge_slots': sum(a['status'] == 'not_attempted' for r in group for a in r['judge_attempts']),
+            'activation_count': sum(len(r.get('memory_activations', [])) for r in group),
+            'activated_trajectories': sum(bool(r.get('memory_activations')) for r in group)}
+    units = sorted({(r['identity']['task_id'], r['identity']['repeat']) for r in rows.values()})
+    triples = []
+    for task_id, repeat in units:
+        triple = {c: rows[identity(c, 'original', task_id, repeat)] for c in RECOVERY_CONDITIONS}
+        if all(r.get('score') is not None for r in triple.values()):
+            triples.append((task_id, repeat, triple))
+    def means(items):
+        return {c: {m: sum(t[c]['score'][m] for _, _, t in items) / len(items) if items else None for m in metrics} for c in RECOVERY_CONDITIONS}
+    output['common_sample'] = {'triples': len(triples), 'tasks': len({i for i, _, _ in triples}), 'means': means(triples),
+        'same_catalog': all(len({r.get('knowledge_sha256') for r in t.values()}) == 1 for _, _, t in triples),
+        'included': [{'task_id': i, 'repeat': j} for i, j, _ in triples]}
+    complete = [(i, j, t) for i, j, t in triples if all(sum(a['status'] == 'completed' for a in r['judge_attempts']) == 5 for r in t.values())]
+    output['complete_five_judge_sensitivity'] = {'triples': len(complete), 'means': means(complete)}
+    output['comparisons'] = {}
+    for baseline, treatment in [('without_memory', 'file_only'), ('without_memory', 'error_triggered'), ('file_only', 'error_triggered')]:
+        pairs = []
+        for task_id, repeat in units:
+            before, after = (rows[identity(c, 'original', task_id, repeat)] for c in (baseline, treatment))
+            if before.get('score') is not None and after.get('score') is not None:
+                pairs.append({'task_id': task_id, 'repeat': repeat, 'deltas': {m: after['score'][m] - before['score'][m] for m in metrics}})
+        output['comparisons'][treatment + '_vs_' + baseline] = {'baseline': baseline, 'treatment': treatment,
+            'pairs': len(pairs), 'mean_deltas': {m: sum(p['deltas'][m] for p in pairs) / len(pairs) if pairs else None for m in metrics}, 'details': pairs}
+    output['tasks'] = [{'task_id': i, 'triples': len(group), 'means': means(group)} for i in sorted({x[0] for x in triples})
+                       for group in [[x for x in triples if x[0] == i]]]
+    return output
 
 
 def check_frozen_scopes(snapshot, artifact, required_servers):
@@ -23,6 +64,8 @@ def check_frozen_scopes(snapshot, artifact, required_servers):
 
 
 def report(store):
+    if store.manifest.get('diagnostic', {}).get('conditions') == list(RECOVERY_CONDITIONS):
+        return report_three(store)
     rows = list(store.records['trajectories'].values())
     output = {'protocol': store.manifest.get('harness_protocol', PROTOCOL), 'status': store.records['status'], 'conditions': {}, 'pairs': [],
               'interpretation': 'Frozen-knowledge Early-only comparison; model rubric scores do not certify task completion or evolution-method superiority.'}
@@ -77,6 +120,9 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
     if type(workers) is not int or not 1 <= workers <= 10 or (not parallel and workers != 1):
         raise ValueError('Use 1 to 10 workers; serial mode uses one')
     artifact = load(config)
+    conditions = RECOVERY_CONDITIONS if config['memory'].get('comparison') == 'three_arm' else CONDITIONS
+    if conditions == RECOVERY_CONDITIONS and artifact['protocol'] != 'verified_tool_recovery_k0_v1':
+        raise ValueError('Three-arm recovery comparison requires verified frozen knowledge')
     selected = [next(t for t in task_list if t['idx'] == idx) for idx in task_ids]
     for server in {ALIASES.get(s, s) for t in selected for s in t['servers']}:
         if parallel and policy_for(server, config).get('concurrency') not in ('private', 'readonly'):
@@ -91,7 +137,7 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
         for template in store.records['trajectories'].values():
             if template['identity']['stage'] != 'original':
                 continue
-            for condition in CONDITIONS:
+            for condition in conditions:
                 row = deepcopy(template)
                 row['identity']['strategy'] = condition
                 row.pop('shared_from', None)
@@ -101,12 +147,23 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
         store.manifest.update(harness_protocol='verified_recovery_usefulness_ablation_v1' if recovery else PROTOCOL,
             purpose='frozen_recovery_knowledge_usefulness' if recovery else 'official_langmem_usefulness_diagnostic',
             diagnostic={'task_ids': task_ids, 'memory_sha256': artifact['memory_sha256'],
-                'conditions': list(CONDITIONS), 'stage': 'original', 'no_online_learning': True,
-                'order': 'Alternate leading condition by task position/repeat; parallel completion unrestricted'},
+                'conditions': list(conditions), 'stage': 'original', 'no_online_learning': True,
+                'order': 'Rotate leading condition by task position/repeat; parallel completion unrestricted'},
             shared_early=None, task_annotations={}, prompt_time=str(offset_date(0)),
             analysis={'comparison': 'with versus without frozen LangMem knowledge; no ECS'},
             logical_conditions=[r['identity'] for r in rows.values()], planned_jobs=[r['identity'] for r in rows.values()])
         atomic_json(path / 'experiment.json', store.manifest)
+        if conditions == RECOVERY_CONDITIONS:
+            store.manifest['harness_protocol'] = 'triggered_recovery_three_arm_v1'
+            store.manifest['analysis'] = {'comparison': 'without memory / file only / file plus error-triggered recovery; no ECS',
+                'primary': 'All scored task/repeat triples, same samples across three conditions',
+                'sensitivity': 'Triples with all five Judge slots valid in every condition',
+                'missing_data': 'No retry or slot top-up; show all coverage and pairwise results'}
+            store.manifest['diagnostic']['condition_settings'] = {
+                'without_memory': {'inject': False, 'profile': 'file_only'},
+                'file_only': {'inject': True, 'profile': 'file_only'},
+                'error_triggered': {'inject': True, 'profile': 'error_triggered'}}
+            atomic_json(path / 'experiment.json', store.manifest)
         inputs = path / 'inputs'
         inputs.mkdir()
         atomic_json(inputs / 'frozen-k0.json', artifact)
@@ -122,9 +179,13 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
             jobs = []
             for repeat in range(config['agent_repeats']):
                 for position, task in enumerate(selected):
-                    for condition in (CONDITIONS if (position + repeat) % 2 == 0 else CONDITIONS[::-1]):
+                    offset = (position + repeat) % len(conditions)
+                    for condition in conditions[offset:] + conditions[:offset]:
                         effective = deepcopy(config)
                         effective['memory']['inject'] = condition == 'with_memory'
+                        if conditions == RECOVERY_CONDITIONS:
+                            effective['memory']['inject'] = condition != 'without_memory'
+                            effective['memory']['profile'] = 'error_triggered' if condition == 'error_triggered' else 'file_only'
                         jobs.append({'config': effective, 'tasks': task_list, 'task': task,
                             'stage': 'original', 'strategy': condition, 'repeat': repeat,
                             'snapshot': deepcopy(snapshot), 'knowledge': deepcopy(snapshot['knowledge']),

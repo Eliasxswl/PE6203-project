@@ -270,6 +270,13 @@ def run_trajectory(spec, emit, cancel=None):
                     elif kind == "tool_failed":
                         row["tool_attempts"][-1].update(status="outcome_unknown" if payload.get("unknown_outcome") else "failed",
                                                         error=payload, completed_at=utc_now())
+                    elif kind == 'memory_activated':
+                        row.setdefault('memory_activations', []).append(deepcopy(payload))
+                        exposure = row['memory_exposure']
+                        exposure.setdefault('static_selected_ids', deepcopy(exposure['selected_ids']))
+                        exposure['selected_ids'] = sorted(set(exposure['selected_ids']) | set(payload['selected_ids']))
+                        exposure['recovery_selected_ids'] = sorted({v for a in row['memory_activations'] for v in a['selected_ids']})
+                        exposure['recovery_activation_count'] = len(row['memory_activations'])
                     save_row(key, row)
 
                 if config.get('agent_backend') == 'langchain':
@@ -293,6 +300,11 @@ def run_trajectory(spec, emit, cancel=None):
                         api_names={tool['meta']['benchmark_semantic_identity']: tool['name'] for tool in tools})
                     row['memory_exposure'] = exposure
                     agent.messages[0]['content'] += context
+                    if config.get('memory', {}).get('profile') == 'error_triggered':
+                        if config.get('agent_backend') != 'langchain':
+                            raise ValueError('Triggered recovery requires the official LangChain loop')
+                        from .recovery_context import configure as configure_recovery
+                        agent.recovery = configure_recovery(config, tools, runtime.workspace, len(context), on_agent_event)
                     save_row(key, row)
                 answer, messages, stop, exceeded = agent.run_with_server(task["question"])
                 row.update(answer=answer, trajectory_messages=messages, raw_tool_trace=agent.raw_tool_trace,

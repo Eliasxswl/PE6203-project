@@ -232,6 +232,7 @@ def episode(spec):
                 elif kind == 'model_completed':row['model_attempts'][-1].update(status='completed', response=data)
                 elif kind == 'model_failed':row['model_attempts'][-1].update(status='failed', error=data)
                 elif kind == 'tool_completed':row['calls'] = deepcopy(data['raw_tool_trace'])
+                elif kind == 'memory_activated':row.setdefault('memory_activations', []).append(deepcopy(data))
                 atomic_json(path, row)
             agent = ChatModel(model_name=config['agent_model'], client=client, tools=tools, max_round=6,
                 tool_server_map=routing, workspace_root=runtime.workspace, file_exists='Independent disposable practice workspace.',
@@ -241,6 +242,16 @@ def episode(spec):
                 aliases = {t['meta']['benchmark_semantic_identity']:t['name'] for t in tools}
                 context = REFERENCE_PREFIX + ''.join(guidance_line(e, aliases, runtime.workspace) for e in spec['entries'])
                 agent.messages[0]['content'] += context
+            if spec.get('recovery_profile'):
+                from .memory import render
+                from .recovery_context import configure
+                aliases = {t['meta']['benchmark_semantic_identity']:t['name'] for t in tools}
+                context, exposure = render(config, current, {server}, runtime.workspace, aliases)
+                agent.messages[0]['content'] += context
+                agent.recovery = configure(config, tools, runtime.workspace, len(context), event)
+                row['static_exposure'] = exposure
+                if agent.recovery is not None:
+                    for c in seeds:agent.recovery.observe(c)
             answer, _, _, _ = agent.run_with_server(query(case, runtime.workspace, seeds))
             calls = deepcopy(agent.raw_tool_trace)
             ok, verified_calls, proof = goal(runtime, case, calls, seeds)
@@ -264,6 +275,54 @@ def episode(spec):
         if client is not None:client.close()
         atomic_json(path, row)
     return row
+
+
+def quick_check(config, workers=10):
+    """Small regression check of the gate, with the existing frozen practice inputs."""
+    from custom.utils.test_utils import offset_date
+    if config.get('mode') == 'offline' or config.get('agent_backend') != 'langchain' or not 1 <= workers <= 10:
+        raise ValueError('Recovery check requires live LangChain and 1 to 10 workers')
+    artifact = load(config)
+    operator = subprocess.check_output(['git', 'config', 'user.name'], cwd=ROOT, text=True).strip()
+    name = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ_') + ''.join(c if c.isalnum() or c in '-_' else '_' for c in operator)
+    directory = ROOT / 'results' / name
+    directory.mkdir()
+    (directory / 'trials').mkdir()
+    fixture = directory / 'fixtures'
+    fixture.mkdir()
+    manifest = {'protocol':'triggered_recovery_quick_check_v1','status':'running','judge_calls':0,
+        'settings':config,'source_sha256':source_hash(),'memory_sha256':artifact['memory_sha256'],
+        'meaning':'Regression of fixed inputs and repair gating, not new held-out usefulness evidence.',
+        'cases':[c for c in definitions() if c['family'] in ('source','request') and c['split']=='validation']}
+    atomic_json(directory/'experiment.json',manifest)
+    print('Recovery quick check: '+str(directory),flush=True)
+    specs=[]
+    for i,case in enumerate(manifest['cases']):
+        for profile in ('file_only','error_triggered'):
+            effective=deepcopy(config)
+            effective['fixtures']=fixture.relative_to(ROOT).as_posix()
+            effective['providers']['agent']=[config['providers']['agent'][i%len(config['providers']['agent'])]]
+            effective['memory'].update(inject=True,profile=profile)
+            specs.append({'config':effective,'case':case,'condition':profile,'repeat':0,'catalog':artifact['catalog'],
+                'recovery_profile':profile,'prompt_time':str(offset_date(0)),
+                'journal':str(directory/'trials'/f'{case["id"]}-{profile}.json')})
+    rows=[]
+    with ProcessPoolExecutor(max_workers=workers,mp_context=mp.get_context('spawn')) as executor:
+        for future in as_completed([executor.submit(episode,s) for s in specs]):
+            row=future.result();rows.append(row)
+            print(f'{row["case"]["id"]} {row["condition"]}: {row["status"]}, goal={row["success"]}, activations={len(row.get("memory_activations",[]))}',flush=True)
+    violations=[r['case']['id']+'/'+r['condition'] for r in rows if r.get('memory_activations') and (r['condition']=='file_only' or not r['case']['recovery'])]
+    passed=(len(rows)==8 and all(r['status']=='completed' and r['success'] for r in rows) and not violations
+        and all(r.get('memory_activations') for r in rows if r['condition']=='error_triggered' and r['case']['recovery']))
+    result={'status':'passed' if passed else 'incomplete_or_failed','planned':8,'completed':sum(r['status']=='completed' for r in rows),
+        'verified_operations':sum(r['status']=='completed' and r['success'] for r in rows),
+        'unexpected_activations':violations,'activation_count':sum(len(r.get('memory_activations',[])) for r in rows),
+        'source_unchanged':source_hash()==manifest['source_sha256'],'judge_calls':0,'memory_sha256':artifact['memory_sha256']}
+    if not result['source_unchanged']:result['status']='invalidated'
+    manifest['status']=result['status']
+    atomic_json(directory/'experiment.json',manifest)
+    atomic_json(directory/'quick-check.json',result)
+    return directory,result
 
 
 def retain_template(row):

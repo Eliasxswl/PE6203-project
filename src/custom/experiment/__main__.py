@@ -144,11 +144,11 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run the fixed MCPEvol experiment protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "memory-ablation", "memory-causal-check", "expand-memory"):
+    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check"):
         command = subparsers.add_parser(name)
         command.add_argument("--config", default="config/experiment.json")
         command.add_argument("--offline", action="store_true", help="Use deterministic providers without network/model calls")
-        if name == 'expand-memory':
+        if name in ('expand-memory', 'recovery-check'):
             command.add_argument('--workers', type=int, default=10)
         if name == 'memory-ablation':
             group = command.add_mutually_exclusive_group(required=True)
@@ -156,6 +156,7 @@ def main(argv=None):
             group.add_argument('--all-selected', action='store_true', help='Use every task in the frozen selection')
             command.add_argument('--parallel', action='store_true', default=False)
             command.add_argument('--workers', type=int, default=1)
+            command.add_argument('--three-arm', action='store_true', help='Compare no memory, file-only and error-triggered recovery')
         if name == 'memory-causal-check':
             command.add_argument('--workers', type=int, default=1)
             command.add_argument('--suite', choices=['original', 'transfer', 'transfer-templates'], default='original')
@@ -199,6 +200,12 @@ def main(argv=None):
             path, result = expand_memory(config, args.workers)
             print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
             return 0 if result['status'] == 'completed' else 2
+        if args.command == 'recovery-check':
+            from .skills import quick_check
+            validate(config)
+            path, result = quick_check(config, args.workers)
+            print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
+            return 0 if result['status'] == 'passed' else 2
         if args.command == 'memory-causal-check':
             if args.suite.startswith('transfer'):
                 from .transfer import run as causal_check
@@ -241,6 +248,8 @@ def main(argv=None):
         task_list, warnings = validate(config)
         if args.command == 'memory-ablation':
             from .memory_ablation import run as memory_ablation
+            if args.three_arm:
+                config['memory']['comparison'] = 'three_arm'
             task_ids = [t['idx'] for t in task_list] if args.all_selected else args.task_id
             path, report = memory_ablation(config, task_list, task_ids, args.parallel, args.workers)
             print(json.dumps({'experiment': str(path), 'report': report}, indent=2))
