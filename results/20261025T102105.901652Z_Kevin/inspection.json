@@ -1,0 +1,597 @@
+{
+  "protocol": "fixed17_complete_library_inspection_v1",
+  "selected_ids": [
+    9,
+    24,
+    117,
+    416,
+    267,
+    271,
+    273,
+    274,
+    278,
+    386,
+    389,
+    390,
+    394,
+    403,
+    410,
+    411,
+    425
+  ],
+  "one_agent_repeat": true,
+  "five_judge_slots_each": true,
+  "complete_library_visible_on_all_17": true,
+  "run_fingerprints_unchanged": true,
+  "summary": {
+    "planned": 17,
+    "completed_agents": 15,
+    "scored": 15,
+    "valid_judge_slots": 71,
+    "means": {
+      "task_fulfillment": 9.083333333333334,
+      "grounding": 9.426666666666668,
+      "planning_and_efficiency": 9.733333333333333
+    }
+  },
+  "judge_statuses": {
+    "completed": 71,
+    "not_attempted": 10,
+    "outcome_unknown": 4
+  },
+  "quality_reference": {
+    "kind": "Descriptive historical regression reference, different run/protocol; not a paired strategy or memory-benefit test.",
+    "historical_run": "results/20261025T015921.317328Z_Kevin",
+    "matching_scored_task_count": 15,
+    "task_equal_historical_without_memory_tf": 9.016666666666667,
+    "current_tf": 9.083333333333334
+  },
+  "active_portable_memory_matches_this_run": true,
+  "memory_sha256": "201be7a448c2530451e90a8eef4814f354a9677c99f5970dfcce7d2ea8625e8d",
+  "task_notes": [
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "Observed actual file search/read and request planning/retrieval.",
+      "historical_without_memory_tf": 6.1,
+      "tool_sequence": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file",
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@kazuph/mcp-taskmanager::get_next_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/9/0"
+    },
+    {
+      "task_id": 24,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 1,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": true,
+      "note": "API failure before tool execution in this cohort; earlier development cohort demonstrated source setup and corrected successful add. No prior score substituted.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [],
+      "provider_failures": [
+        "APITimeoutError"
+      ],
+      "record_key": "full_memory/original/24/0"
+    },
+    {
+      "task_id": 117,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/117/0"
+    },
+    {
+      "task_id": 267,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 9.25,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No argument error this cohort; only analyze_task used. No claim that work.md was persisted.",
+      "historical_without_memory_tf": 9.25,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::analyze_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/267/0"
+    },
+    {
+      "task_id": 271,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 3,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No repeated path question this cohort; planning/analysis used, not a demonstrated default-file write.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task",
+        "mcp-shrimp-task-manager::analyze_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/271/0"
+    },
+    {
+      "task_id": 273,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 8.2,
+        "grounding": 6.8,
+        "planning_and_efficiency": 9.4
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool-input error; lower rubric score requires result-quality review.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/273/0"
+    },
+    {
+      "task_id": 274,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/274/0"
+    },
+    {
+      "task_id": 278,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/278/0"
+    },
+    {
+      "task_id": 386,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 5.8,
+        "grounding": 4.6,
+        "planning_and_efficiency": 6.6
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No parameter error; rubric TF=5.8 reflects limited analysis response. Not declared fully solved.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::analyze_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/386/0"
+    },
+    {
+      "task_id": 389,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 5.5,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::analyze_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/389/0"
+    },
+    {
+      "task_id": 390,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/390/0"
+    },
+    {
+      "task_id": 394,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 9.733333333333333,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/394/0"
+    },
+    {
+      "task_id": 403,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/403/0"
+    },
+    {
+      "task_id": 410,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/410/0"
+    },
+    {
+      "task_id": 411,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "No tool argument error observed. Actual calls and rubric scores reviewed; complete business execution was not independently program-verified.",
+      "historical_without_memory_tf": 9.066666666666666,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::plan_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/411/0"
+    },
+    {
+      "task_id": 416,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 3.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 3,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "note": "Correct request ID flow, but stopped asking approval before further work. TF=3; workflow progression remains limited.",
+      "historical_without_memory_tf": 5.6,
+      "tool_sequence": [
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@kazuph/mcp-taskmanager::get_next_task"
+      ],
+      "provider_failures": [],
+      "record_key": "full_memory/original/416/0"
+    },
+    {
+      "task_id": 425,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 3,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [
+        {
+          "tool_call_id": "call_-7142417019952953684",
+          "tool": "mcp-shrimp-task-manager::split_tasks",
+          "later_successful_same_tool_call": false
+        }
+      ],
+      "unrecovered_tool_errors": 1,
+      "schema_feedback_calls": 1,
+      "textual_tool_call_without_execution": false,
+      "review_required": true,
+      "note": "Executed actual analysis and split calls instead of printing an unavailable call. Split JSON was invalid; provider timeout prevented assessing subsequent repair.",
+      "historical_without_memory_tf": 10.0,
+      "tool_sequence": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::split_tasks"
+      ],
+      "provider_failures": [
+        "APITimeoutError"
+      ],
+      "record_key": "full_memory/original/425/0"
+    }
+  ],
+  "development_history": [
+    "results/20261025T095535.220416Z_Kevin",
+    "results/20261025T100639.526718Z_Kevin"
+  ],
+  "history_policy": "Separate complete one-repeat passes on the same 17 tasks. No scores replaced, no API retry or Judge top-up. Earlier scores are not pooled into the latest mean.",
+  "remaining": "Experience inputs/adaptation are prepared; the registered Selective Patch implementation and main remain unchanged. This is not the three-strategy evolution experiment.",
+  "archive_sha256": {
+    "experiment.json": "cfe9059f91c97b825c5c4cd9afe58e3450d265a22ffd7e9c6e104de9310fb030",
+    "records.json": "85cbcdb6c398ddf2aafa69d3a94330e611f9015e1099f3b7e4c9a5915bbc72d3",
+    "task-review.json": "700fc1656fffc1d3e3d41d9c9bc716ccf572d16aee8e400feafd28ac5e16ddc0"
+  }
+}
