@@ -15,6 +15,8 @@ REFERENCE_PREFIX = ('\n\nTool-use knowledge learned from independent past practi
 COMPLETE_PREFIX = (REFERENCE_PREFIX +
     'The complete frozen library follows. Select procedures by the current requested operation; examples '
     'are reference structures, not additional work to perform. Invoke only tools supplied in this run. '
+    'A reference whose dependencies are unavailable is background knowledge, not an executable call. '
+    'Execute through structured tool calls; printing a function name and JSON does not execute it. '
     'Preserve the requested workflow and distinguish an input document from a task-list destination. '
     'If the request already gives an output filename, resolve a relative filename within the current '
     '${WORKSPACE} workspace and use it; an initialization error does not erase that supplied filename. '
@@ -249,10 +251,14 @@ def render(config, catalog, required, workspace, api_names=None):
     if options['inject']:
         for item in sorted(artifact['memories'], key=lambda m: m['id']):
             if complete:
-                names = {k: api_names.get(k, v['name']) for k, v in artifact['catalog'].items()}
+                names = {k: api_names.get(k, k) for k in artifact['catalog']}
                 data = json.loads(guidance_line(item, names, workspace, structured=artifact['protocol'] != PROTOCOL))
                 data['current_tool_bindings'] = [{'knowledge_tool': k, 'callable_name': api_names.get(k)} for k in item['value']['tool_ids']]
                 data['all_dependencies_available'] = set(item['value']['tool_ids']) <= set(api_names)
+                if not data['all_dependencies_available']:
+                    data['knowledge_tool_ids'] = list(item['value']['tool_ids'])
+                    data['tools'] = [api_names[k] for k in item['value']['tool_ids'] if k in api_names]
+                    data['execution_status'] = 'reference_only_missing_dependencies'
                 line = json.dumps(data, ensure_ascii=False) + '\n'
                 if len(prefix) + characters + len(line) > options['context_chars']:
                     raise ValueError('Complete library exceeds memory.context_chars; no entries were silently dropped')
@@ -272,6 +278,10 @@ def render(config, catalog, required, workspace, api_names=None):
             selected.append(item['id'])
             lines.append(line)
             characters += len(line)
+    if complete and lines:
+        prefix += 'Actual callable tool names in this run: ' + json.dumps(sorted(api_names.values())) + '\n'
+        if len(prefix) + characters > options['context_chars']:
+            raise ValueError('Complete library plus tool bindings exceeds memory.context_chars')
     context = prefix + ''.join(lines) if lines else ''
     return context, {'artifact_sha256': artifact['memory_sha256'], 'selected_ids': selected,
                      'context_characters': len(context), 'context_sha256': digest(context),

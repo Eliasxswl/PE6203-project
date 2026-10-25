@@ -188,7 +188,7 @@
   "judge_output_mode": "json_object",
   "agent_backend": "langchain",
   "memory": {
-    "artifact": "results/20261025T002729.059489Z_Kevin/candidate-k0.json",
+    "artifact": "config/practice/typed-k0.json",
     "source": "results/20261025T002729.059489Z_Kevin/candidate-evidence.json",
     "inject": true,
     "context_chars": 8000,

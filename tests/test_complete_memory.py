@@ -30,6 +30,7 @@ class CompleteMemoryTests(unittest.TestCase):
             records=[json.loads(line) for line in lines if line.startswith('{')]
             self.assertEqual(len(records),len(expected))
             for record in records:
+                self.assertTrue(set(record['tools']) <= set(aliases.values()))
                 for binding in record['current_tool_bindings']:
                     self.assertEqual(binding['callable_name'],aliases.get(binding['knowledge_tool']))
 
@@ -72,6 +73,39 @@ class CompleteMemoryTests(unittest.TestCase):
         self.assertTrue(report['tasks'][0]['complete_library_visible'])
         self.assertTrue(report['tasks'][0]['tool_errors'][0]['later_successful_same_tool_call'])
         self.assertEqual(report['tasks'][0]['unrecovered_tool_errors'],0)
+
+    def test_retained_template_container_types_bind_to_native_schemas(self):
+        from custom.experiment.skills import bind
+        from jsonschema import validate
+        artifact=load(load_config(ROOT/'config/recovery-ablation.json'))
+        values={'WORKSPACE':ROOT.as_posix(),'SOURCE_PATH':(ROOT/'current.md').as_posix(),
+            'SOURCE_ID':'observed-id','STATUS':'To Do','TASK_TEXT_1':'Current first item','TASK_TEXT_2':'Current second item',
+            'REQUEST':'Current request','REQUEST_ID':'req-observed',
+            'TASK_1_TITLE':'Current first title','TASK_1_DESCRIPTION':'Current first description',
+            'TASK_2_TITLE':'Current second title','TASK_2_DESCRIPTION':'Current second description'}
+        for entry in artifact['memories']:
+            if entry['case_id'] not in ('verified-source-workflow','verified-request-workflow'):continue
+            for template in entry['value']['tool_call_templates']:
+                args=bind(template['arguments'],values)
+                validate(args,artifact['catalog'][template['tool_id']]['inputSchema'])
+                if 'texts' in args:self.assertTrue(all(isinstance(v,str) for v in args['texts']))
+                if 'tasks' in args:self.assertTrue(all(isinstance(v,dict) for v in args['tasks']))
+
+    def test_missing_field_feedback_includes_its_declared_type(self):
+        tool={'inputSchema':{'type':'object','properties':{'thought_number':{'type':'integer','minimum':1}},'required':['thought_number']},
+              'meta':{'benchmark_semantic_identity':'mcp-shrimp-task-manager::process_thought'}}
+        response={'isError':True,'content':[{'type':'text','text':'schema_input_invalid'}]}
+        issue=validation_feedback(tool,{},response)[0]
+        self.assertEqual(issue['argument_path'],'/thought_number')
+        self.assertEqual(issue['field_schema']['type'],'integer')
+
+    def test_printed_tool_call_is_reviewed_even_with_a_high_rubric_score(self):
+        from custom.experiment.memory_ablation import report_pilot
+        row={'identity':{'task_id':425,'repeat':0},'raw_tool_trace':[],'agent_status':'completed',
+             'answer':'search_files\n{"path":"current"}','score':{'task_fulfillment':10,'grounding':10,'planning_and_efficiency':10},'judge_attempts':[]}
+        result=report_pilot(SimpleNamespace(records={'status':'completed','trajectories':{'one':row}}))
+        self.assertTrue(result['tasks'][0]['textual_tool_call_without_execution'])
+        self.assertTrue(result['tasks'][0]['review_required'])
 
 
 if __name__=='__main__':unittest.main()

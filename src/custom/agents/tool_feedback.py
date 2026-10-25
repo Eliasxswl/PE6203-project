@@ -23,9 +23,20 @@ def validation_feedback(definition, arguments, response):
         return []
     from jsonschema.validators import validator_for
     schema = definition['inputSchema']
-    issues = [{'argument_path': '/' + '/'.join(map(str, e.absolute_path)), 'constraint': e.validator,
-               'expected': e.validator_value, 'message': e.message[:1024]}
-              for e in validator_for(schema)(schema).iter_errors(arguments)]
+    issues, seen = [], set()
+    for error in validator_for(schema)(schema).iter_errors(arguments):
+        if error.validator == 'required' and isinstance(error.instance, dict):
+            for field in error.validator_value:
+                path = tuple(error.absolute_path) + (field,)
+                if field in error.instance or path in seen:
+                    continue
+                seen.add(path)
+                issues.append({'argument_path': '/' + '/'.join(map(str, path)), 'constraint': 'required',
+                    'field_schema': error.schema.get('properties', {}).get(field, {}),
+                    'message': 'Include this missing field using the declared type and constraints.'})
+        else:
+            issues.append({'argument_path': '/' + '/'.join(map(str, error.absolute_path)), 'constraint': error.validator,
+                           'expected': error.validator_value, 'message': error.message[:1024]})
     if identity == 'mcp-shrimp-task-manager::split_tasks' and isinstance(arguments.get('tasksRaw'), str):
         try:
             json.loads(arguments['tasksRaw'])

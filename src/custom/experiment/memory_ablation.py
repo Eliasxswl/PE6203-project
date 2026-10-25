@@ -14,6 +14,7 @@ PILOT_CONDITIONS = ('full_memory',)
 
 
 def report_pilot(store):
+    import re
     from custom.agents.tool_feedback import reported_error
     rows = list(store.records['trajectories'].values())
     metrics = ('task_fulfillment', 'grounding', 'planning_and_efficiency')
@@ -32,6 +33,7 @@ def report_pilot(store):
                     'later_successful_same_tool_call': any(c['semantic_identity'] == call['semantic_identity'] and
                         not reported_error(c.get('semantic_identity'), c['response']) for c in calls[index+1:])})
         exposure = row.get('memory_exposure', {})
+        textual_call = bool(not calls and re.match(r'^\s*[A-Za-z_][A-Za-z0-9_-]*\s*\{', row.get('answer', '')))
         output['tasks'].append({'task_id': row['identity']['task_id'], 'repeat': row['identity']['repeat'],
             'agent_status': row['agent_status'], 'score': row.get('score'), 'stop_reason': row.get('stop_reason'),
             'requests': row.get('request_count'), 'request_limit': row.get('request_limit'),
@@ -40,7 +42,8 @@ def report_pilot(store):
                 len(exposure.get('selected_ids', [])) == exposure['total_library_entries'],
             'tool_errors': errors, 'unrecovered_tool_errors': sum(not e['later_successful_same_tool_call'] for e in errors),
             'schema_feedback_calls': sum(bool(c.get('harness_schema_feedback')) for c in calls),
-            'review_required': bool(errors) or row['agent_status'] != 'completed'})
+            'textual_tool_call_without_execution': textual_call,
+            'review_required': bool(errors) or textual_call or row['agent_status'] != 'completed'})
     return output
 
 
