@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "planned": 8,
+  "completed": 8,
+  "verified_operations": 8,
+  "unexpected_activations": [],
+  "activation_count": 3,
+  "source_unchanged": true,
+  "judge_calls": 0,
+  "memory_sha256": "349705f574a1cdad0d99e01c18ca9af1b3c2948b0d58333f25065474f38b99d0"
+}
