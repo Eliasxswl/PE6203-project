@@ -62,9 +62,14 @@ def load_config(path):
                "agent_temperature", "judge_temperature", "agent_max_tokens", "judge_max_tokens",
                "agent_thinking", "judge_thinking", "judge_output_mode", "request_policy", "providers",
                "round_policy", "max_requests", "stages", "strategies", "runtime", "mode",
-               "mock", "strategy_plugins", "judge_failure_top_up", "automatic_api_retries"}
+               "mock", "strategy_plugins", "judge_failure_top_up", "automatic_api_retries", "memory", "agent_backend"}
     if set(config) - allowed:
         raise ValueError(f"Unknown configuration fields: {sorted(set(config) - allowed)}")
+    if 'memory' in config:
+        from .memory import validate_options
+        validate_options(config['memory'])
+    if config.get('agent_backend', 'legacy') not in ('legacy', 'langchain'):
+        raise ValueError('agent_backend must be legacy or langchain')
     if config.get("mode", "live") not in ("live", "offline"):
         raise ValueError("mode must be live or offline")
     if config.get("judge_output_mode", "text") not in ("text", "json_object"):
@@ -218,6 +223,9 @@ def request_limit(config, task):
 
 def fingerprints(config):
     paths = [config["task_source"], config["candidate_source"], config["selection_file"]]
+    if 'memory' in config:
+        paths += [config['memory']['artifact'], config['memory']['source']]
+        paths += [name for name in ('requirements-memory.txt',) if (ROOT / name).exists()]
     paths += [p.relative_to(ROOT).as_posix() for p in (ROOT / "src/custom/data/mutation").rglob("evolution.json")]
     paths += [name for names in config["runtime"].get("evolution_files", {}).values() for name in names if name not in paths]
     paths += [f"servers/1mcp_config/{stage}/mcp.json" for stage in STAGES]

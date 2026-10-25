@@ -144,10 +144,21 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run the fixed MCPEvol experiment protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for name in ("select", "validate", "check", "run"):
+    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "memory-ablation", "memory-causal-check", "expand-memory"):
         command = subparsers.add_parser(name)
         command.add_argument("--config", default="config/experiment.json")
         command.add_argument("--offline", action="store_true", help="Use deterministic providers without network/model calls")
+        if name == 'expand-memory':
+            command.add_argument('--workers', type=int, default=10)
+        if name == 'memory-ablation':
+            group = command.add_mutually_exclusive_group(required=True)
+            group.add_argument('--task-id', type=int, action='append')
+            group.add_argument('--all-selected', action='store_true', help='Use every task in the frozen selection')
+            command.add_argument('--parallel', action='store_true', default=False)
+            command.add_argument('--workers', type=int, default=1)
+        if name == 'memory-causal-check':
+            command.add_argument('--workers', type=int, default=1)
+            command.add_argument('--suite', choices=['original', 'transfer', 'transfer-templates'], default='original')
         if name == "check":
             command.add_argument("--server", action="append", help="Check selected backends only; repeatable")
             command.add_argument("--stage", choices=STAGES)
@@ -182,6 +193,43 @@ def main(argv=None):
         config = load_config(ROOT / args.config)
         if args.offline:
             config["mode"] = "offline"
+        if args.command == 'expand-memory':
+            from .skills import run as expand_memory
+            validate(config)
+            path, result = expand_memory(config, args.workers)
+            print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
+            return 0 if result['status'] == 'completed' else 2
+        if args.command == 'memory-causal-check':
+            if args.suite.startswith('transfer'):
+                from .transfer import run as causal_check
+                path, result = causal_check(config, args.workers, template_mode=args.suite == 'transfer-templates')
+            else:
+                from .causal import run as causal_check
+                path, result = causal_check(config, args.workers)
+            print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
+            return 0 if result['status'] == 'completed' else 2
+        if args.command == 'run' and 'memory' in config:
+            raise ValueError('LangMem is currently a usefulness diagnostic only; use memory-ablation, not a formal evolution run')
+        if args.command == 'prepare-recovery-memory':
+            if config.get('mode') == 'offline' or config.get('agent_backend') != 'langchain':
+                raise ValueError('Verified recovery practice requires the live official agent backend')
+            from .recovery_memory import prepare as prepare_recovery
+            task_list, warnings = validate(config)
+            result = prepare_recovery(config, task_list)
+            print(json.dumps({'protocol': result['protocol'], 'memory_sha256': result['memory_sha256'],
+                             'memories': len(result['memories']), 'builds': result['builds']}, indent=2))
+            return 0
+        if args.command in ('memory-check', 'prepare-memory'):
+            from .memory import check as memory_check, prepare as prepare_memory
+            if config.get('mode') == 'offline':
+                raise ValueError('Official memory extraction requires a real model; no simulated success')
+            result = memory_check(config) if args.command == 'memory-check' else prepare_memory(config)
+            output = result if args.command == 'memory-check' else {key: result[key] for key in
+                ('protocol', 'memory_sha256', 'builds', 'versions')}
+            if args.command == 'prepare-memory':
+                output['memories'] = len(result['memories'])
+            print(json.dumps(output, indent=2))
+            return 0
         if args.command == "judge-check":
             from .checks import check_judge
             result = check_judge(config, args.experiment, args.trajectory, args.attempts, args.provider_index)
@@ -191,6 +239,12 @@ def main(argv=None):
             print(json.dumps({"selected_ids": select(config)}))
             return 0
         task_list, warnings = validate(config)
+        if args.command == 'memory-ablation':
+            from .memory_ablation import run as memory_ablation
+            task_ids = [t['idx'] for t in task_list] if args.all_selected else args.task_id
+            path, report = memory_ablation(config, task_list, task_ids, args.parallel, args.workers)
+            print(json.dumps({'experiment': str(path), 'report': report}, indent=2))
+            return 0 if report['status'] == 'completed' else 2
         if args.command == "validate":
             from .readiness import preparation
             fingerprints(config)

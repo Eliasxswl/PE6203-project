@@ -272,7 +272,10 @@ def run_trajectory(spec, emit, cancel=None):
                                                         error=payload, completed_at=utc_now())
                     save_row(key, row)
 
-                from custom.agents.SimpleOpenAIAgent import ChatModel
+                if config.get('agent_backend') == 'langchain':
+                    from custom.agents.LangChainAgent import ChatModel
+                else:
+                    from custom.agents.SimpleOpenAIAgent import ChatModel
                 from custom.utils.test_utils import generate_tree_string
                 agent = ChatModel(model_name=config["agent_model"], client=client, tools=tools,
                                   max_round=row["request_limit"], tool_server_map=routing,
@@ -281,6 +284,16 @@ def run_trajectory(spec, emit, cancel=None):
                                   max_new_tokens=config["agent_max_tokens"], tool_caller=runtime.call,
                                   event_callback=on_agent_event, mcp_server_url=runtime.url,
                                   thinking=config.get("agent_thinking"))
+                row['agent_backend'] = config.get('agent_backend', 'legacy')
+                if hasattr(agent, 'dependency_versions'):
+                    row['agent_dependency_versions'] = agent.dependency_versions
+                if 'memory' in config:
+                    from .memory import render as render_memory
+                    context, exposure = render_memory(config, knowledge, required, runtime.workspace,
+                        api_names={tool['meta']['benchmark_semantic_identity']: tool['name'] for tool in tools})
+                    row['memory_exposure'] = exposure
+                    agent.messages[0]['content'] += context
+                    save_row(key, row)
                 answer, messages, stop, exceeded = agent.run_with_server(task["question"])
                 row.update(answer=answer, trajectory_messages=messages, raw_tool_trace=agent.raw_tool_trace,
                            stop=stop, exceeded=exceeded, stop_reason=agent.stop_reason,

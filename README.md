@@ -86,3 +86,7 @@ The common pipeline supplies `no_update`, `full_rewrite`, and the registered `cu
 See [docs/fixed-plan.md](docs/fixed-plan.md) for protocol, justified changes, and validation evidence; [docs/setup.md](docs/setup.md) covers detailed usage.
 
 Offline tests: `python -m unittest discover -s tests -v`. Commit or push only when explicitly instructed.
+
+## Experience research branch
+
+`langmem-adaptation` contains optional frozen-experience experiments, isolated from the core pipeline on `main`. Use a separate environment with `requirements-memory.txt`; see the final sections of [docs/setup.md](docs/setup.md). `config/recovery-ablation.json` keeps the original 17 tasks, three Agent repeats and five Judge slots. Archived results include independent practice evidence, frozen knowledge and paired with/without-experience comparisons. These diagnostics do not replace the three-strategy evolution experiment or establish an advantage for Selective Patch.
