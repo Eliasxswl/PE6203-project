@@ -1,0 +1,2292 @@
+{
+  "groups": {
+    "full_rewrite/original": {
+      "planned": 51,
+      "valid": 51,
+      "statuses": {
+        "completed": 51
+      },
+      "independent_trajectories": 51,
+      "shared_references": 0,
+      "excluded": 0,
+      "means": {
+        "task_fulfillment": 8.780392156862746,
+        "grounding": 9.713725490196078,
+        "planning_and_efficiency": 9.776470588235295
+      },
+      "judge_statuses": {
+        "completed": 253,
+        "failed": 2
+      }
+    },
+    "full_rewrite/iter3": {
+      "planned": 51,
+      "valid": 51,
+      "statuses": {
+        "completed": 51
+      },
+      "independent_trajectories": 51,
+      "shared_references": 0,
+      "excluded": 0,
+      "means": {
+        "task_fulfillment": 9.21764705882353,
+        "grounding": 9.66078431372549,
+        "planning_and_efficiency": 9.713725490196078
+      },
+      "judge_statuses": {
+        "completed": 254,
+        "failed": 1
+      }
+    },
+    "full_rewrite/iter5": {
+      "planned": 51,
+      "valid": 51,
+      "statuses": {
+        "completed": 51
+      },
+      "independent_trajectories": 51,
+      "shared_references": 0,
+      "excluded": 0,
+      "means": {
+        "task_fulfillment": 8.79607843137255,
+        "grounding": 9.647058823529411,
+        "planning_and_efficiency": 9.729411764705882
+      },
+      "judge_statuses": {
+        "completed": 253,
+        "failed": 2
+      }
+    }
+  },
+  "ecs": {
+    "full_rewrite": {
+      "matched_task_repeats": 51,
+      "identities": [
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          24,
+          2
+        ],
+        [
+          117,
+          0
+        ],
+        [
+          117,
+          1
+        ],
+        [
+          117,
+          2
+        ],
+        [
+          267,
+          0
+        ],
+        [
+          267,
+          1
+        ],
+        [
+          267,
+          2
+        ],
+        [
+          271,
+          0
+        ],
+        [
+          271,
+          1
+        ],
+        [
+          271,
+          2
+        ],
+        [
+          273,
+          0
+        ],
+        [
+          273,
+          1
+        ],
+        [
+          273,
+          2
+        ],
+        [
+          274,
+          0
+        ],
+        [
+          274,
+          1
+        ],
+        [
+          274,
+          2
+        ],
+        [
+          278,
+          0
+        ],
+        [
+          278,
+          1
+        ],
+        [
+          278,
+          2
+        ],
+        [
+          386,
+          0
+        ],
+        [
+          386,
+          1
+        ],
+        [
+          386,
+          2
+        ],
+        [
+          389,
+          0
+        ],
+        [
+          389,
+          1
+        ],
+        [
+          389,
+          2
+        ],
+        [
+          390,
+          0
+        ],
+        [
+          390,
+          1
+        ],
+        [
+          390,
+          2
+        ],
+        [
+          394,
+          0
+        ],
+        [
+          394,
+          1
+        ],
+        [
+          394,
+          2
+        ],
+        [
+          403,
+          0
+        ],
+        [
+          403,
+          1
+        ],
+        [
+          403,
+          2
+        ],
+        [
+          410,
+          0
+        ],
+        [
+          410,
+          1
+        ],
+        [
+          410,
+          2
+        ],
+        [
+          411,
+          0
+        ],
+        [
+          411,
+          1
+        ],
+        [
+          411,
+          2
+        ],
+        [
+          416,
+          0
+        ],
+        [
+          416,
+          1
+        ],
+        [
+          416,
+          2
+        ],
+        [
+          425,
+          0
+        ],
+        [
+          425,
+          1
+        ],
+        [
+          425,
+          2
+        ]
+      ],
+      "value": 7.932805226313207
+    }
+  },
+  "paired": {
+    "original": {
+      "matched": 51,
+      "identities": [
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          24,
+          2
+        ],
+        [
+          117,
+          0
+        ],
+        [
+          117,
+          1
+        ],
+        [
+          117,
+          2
+        ],
+        [
+          267,
+          0
+        ],
+        [
+          267,
+          1
+        ],
+        [
+          267,
+          2
+        ],
+        [
+          271,
+          0
+        ],
+        [
+          271,
+          1
+        ],
+        [
+          271,
+          2
+        ],
+        [
+          273,
+          0
+        ],
+        [
+          273,
+          1
+        ],
+        [
+          273,
+          2
+        ],
+        [
+          274,
+          0
+        ],
+        [
+          274,
+          1
+        ],
+        [
+          274,
+          2
+        ],
+        [
+          278,
+          0
+        ],
+        [
+          278,
+          1
+        ],
+        [
+          278,
+          2
+        ],
+        [
+          386,
+          0
+        ],
+        [
+          386,
+          1
+        ],
+        [
+          386,
+          2
+        ],
+        [
+          389,
+          0
+        ],
+        [
+          389,
+          1
+        ],
+        [
+          389,
+          2
+        ],
+        [
+          390,
+          0
+        ],
+        [
+          390,
+          1
+        ],
+        [
+          390,
+          2
+        ],
+        [
+          394,
+          0
+        ],
+        [
+          394,
+          1
+        ],
+        [
+          394,
+          2
+        ],
+        [
+          403,
+          0
+        ],
+        [
+          403,
+          1
+        ],
+        [
+          403,
+          2
+        ],
+        [
+          410,
+          0
+        ],
+        [
+          410,
+          1
+        ],
+        [
+          410,
+          2
+        ],
+        [
+          411,
+          0
+        ],
+        [
+          411,
+          1
+        ],
+        [
+          411,
+          2
+        ],
+        [
+          416,
+          0
+        ],
+        [
+          416,
+          1
+        ],
+        [
+          416,
+          2
+        ],
+        [
+          425,
+          0
+        ],
+        [
+          425,
+          1
+        ],
+        [
+          425,
+          2
+        ]
+      ],
+      "means": {
+        "full_rewrite": {
+          "task_fulfillment": 8.780392156862746,
+          "grounding": 9.713725490196078,
+          "planning_and_efficiency": 9.776470588235295
+        }
+      }
+    },
+    "iter3": {
+      "matched": 51,
+      "identities": [
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          24,
+          2
+        ],
+        [
+          117,
+          0
+        ],
+        [
+          117,
+          1
+        ],
+        [
+          117,
+          2
+        ],
+        [
+          267,
+          0
+        ],
+        [
+          267,
+          1
+        ],
+        [
+          267,
+          2
+        ],
+        [
+          271,
+          0
+        ],
+        [
+          271,
+          1
+        ],
+        [
+          271,
+          2
+        ],
+        [
+          273,
+          0
+        ],
+        [
+          273,
+          1
+        ],
+        [
+          273,
+          2
+        ],
+        [
+          274,
+          0
+        ],
+        [
+          274,
+          1
+        ],
+        [
+          274,
+          2
+        ],
+        [
+          278,
+          0
+        ],
+        [
+          278,
+          1
+        ],
+        [
+          278,
+          2
+        ],
+        [
+          386,
+          0
+        ],
+        [
+          386,
+          1
+        ],
+        [
+          386,
+          2
+        ],
+        [
+          389,
+          0
+        ],
+        [
+          389,
+          1
+        ],
+        [
+          389,
+          2
+        ],
+        [
+          390,
+          0
+        ],
+        [
+          390,
+          1
+        ],
+        [
+          390,
+          2
+        ],
+        [
+          394,
+          0
+        ],
+        [
+          394,
+          1
+        ],
+        [
+          394,
+          2
+        ],
+        [
+          403,
+          0
+        ],
+        [
+          403,
+          1
+        ],
+        [
+          403,
+          2
+        ],
+        [
+          410,
+          0
+        ],
+        [
+          410,
+          1
+        ],
+        [
+          410,
+          2
+        ],
+        [
+          411,
+          0
+        ],
+        [
+          411,
+          1
+        ],
+        [
+          411,
+          2
+        ],
+        [
+          416,
+          0
+        ],
+        [
+          416,
+          1
+        ],
+        [
+          416,
+          2
+        ],
+        [
+          425,
+          0
+        ],
+        [
+          425,
+          1
+        ],
+        [
+          425,
+          2
+        ]
+      ],
+      "means": {
+        "full_rewrite": {
+          "task_fulfillment": 9.217647058823529,
+          "grounding": 9.66078431372549,
+          "planning_and_efficiency": 9.713725490196078
+        }
+      }
+    },
+    "iter5": {
+      "matched": 51,
+      "identities": [
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          24,
+          2
+        ],
+        [
+          117,
+          0
+        ],
+        [
+          117,
+          1
+        ],
+        [
+          117,
+          2
+        ],
+        [
+          267,
+          0
+        ],
+        [
+          267,
+          1
+        ],
+        [
+          267,
+          2
+        ],
+        [
+          271,
+          0
+        ],
+        [
+          271,
+          1
+        ],
+        [
+          271,
+          2
+        ],
+        [
+          273,
+          0
+        ],
+        [
+          273,
+          1
+        ],
+        [
+          273,
+          2
+        ],
+        [
+          274,
+          0
+        ],
+        [
+          274,
+          1
+        ],
+        [
+          274,
+          2
+        ],
+        [
+          278,
+          0
+        ],
+        [
+          278,
+          1
+        ],
+        [
+          278,
+          2
+        ],
+        [
+          386,
+          0
+        ],
+        [
+          386,
+          1
+        ],
+        [
+          386,
+          2
+        ],
+        [
+          389,
+          0
+        ],
+        [
+          389,
+          1
+        ],
+        [
+          389,
+          2
+        ],
+        [
+          390,
+          0
+        ],
+        [
+          390,
+          1
+        ],
+        [
+          390,
+          2
+        ],
+        [
+          394,
+          0
+        ],
+        [
+          394,
+          1
+        ],
+        [
+          394,
+          2
+        ],
+        [
+          403,
+          0
+        ],
+        [
+          403,
+          1
+        ],
+        [
+          403,
+          2
+        ],
+        [
+          410,
+          0
+        ],
+        [
+          410,
+          1
+        ],
+        [
+          410,
+          2
+        ],
+        [
+          411,
+          0
+        ],
+        [
+          411,
+          1
+        ],
+        [
+          411,
+          2
+        ],
+        [
+          416,
+          0
+        ],
+        [
+          416,
+          1
+        ],
+        [
+          416,
+          2
+        ],
+        [
+          425,
+          0
+        ],
+        [
+          425,
+          1
+        ],
+        [
+          425,
+          2
+        ]
+      ],
+      "means": {
+        "full_rewrite": {
+          "task_fulfillment": 8.79607843137255,
+          "grounding": 9.647058823529411,
+          "planning_and_efficiency": 9.729411764705882
+        }
+      }
+    }
+  },
+  "paired_ecs": {
+    "matched": 51,
+    "identities": [
+      [
+        9,
+        0
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        9,
+        2
+      ],
+      [
+        24,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        24,
+        2
+      ],
+      [
+        117,
+        0
+      ],
+      [
+        117,
+        1
+      ],
+      [
+        117,
+        2
+      ],
+      [
+        267,
+        0
+      ],
+      [
+        267,
+        1
+      ],
+      [
+        267,
+        2
+      ],
+      [
+        271,
+        0
+      ],
+      [
+        271,
+        1
+      ],
+      [
+        271,
+        2
+      ],
+      [
+        273,
+        0
+      ],
+      [
+        273,
+        1
+      ],
+      [
+        273,
+        2
+      ],
+      [
+        274,
+        0
+      ],
+      [
+        274,
+        1
+      ],
+      [
+        274,
+        2
+      ],
+      [
+        278,
+        0
+      ],
+      [
+        278,
+        1
+      ],
+      [
+        278,
+        2
+      ],
+      [
+        386,
+        0
+      ],
+      [
+        386,
+        1
+      ],
+      [
+        386,
+        2
+      ],
+      [
+        389,
+        0
+      ],
+      [
+        389,
+        1
+      ],
+      [
+        389,
+        2
+      ],
+      [
+        390,
+        0
+      ],
+      [
+        390,
+        1
+      ],
+      [
+        390,
+        2
+      ],
+      [
+        394,
+        0
+      ],
+      [
+        394,
+        1
+      ],
+      [
+        394,
+        2
+      ],
+      [
+        403,
+        0
+      ],
+      [
+        403,
+        1
+      ],
+      [
+        403,
+        2
+      ],
+      [
+        410,
+        0
+      ],
+      [
+        410,
+        1
+      ],
+      [
+        410,
+        2
+      ],
+      [
+        411,
+        0
+      ],
+      [
+        411,
+        1
+      ],
+      [
+        411,
+        2
+      ],
+      [
+        416,
+        0
+      ],
+      [
+        416,
+        1
+      ],
+      [
+        416,
+        2
+      ],
+      [
+        425,
+        0
+      ],
+      [
+        425,
+        1
+      ],
+      [
+        425,
+        2
+      ]
+    ],
+    "excluded": [],
+    "values": {
+      "full_rewrite": 7.932805226313207
+    }
+  },
+  "update_costs": {
+    "full_rewrite/iter3": {
+      "planned_updates": 3,
+      "statuses": {
+        "ready": 3
+      },
+      "elapsed_seconds": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0.004270200006430969
+      },
+      "api_calls": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0
+      },
+      "input_tokens": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0
+      },
+      "output_tokens": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0
+      },
+      "api_cost": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0,
+        "currency": null,
+        "bases": [
+          "Deterministic template rewrite of all 46 tool descriptions; no model requests"
+        ],
+        "mixed_currencies": false
+      }
+    },
+    "full_rewrite/iter5": {
+      "planned_updates": 3,
+      "statuses": {
+        "ready": 3
+      },
+      "elapsed_seconds": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0.004263300012098625
+      },
+      "api_calls": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0
+      },
+      "input_tokens": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0
+      },
+      "output_tokens": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0
+      },
+      "api_cost": {
+        "reported": 3,
+        "unreported": 0,
+        "total_reported": 0,
+        "currency": null,
+        "bases": [
+          "Deterministic template rewrite of all 46 tool descriptions; no model requests"
+        ],
+        "mixed_currencies": false
+      }
+    }
+  },
+  "recovery_retention": {
+    "status": "pending",
+    "transitions": {
+      "iter3": {
+        "reference_stage": "original",
+        "excluded": [
+          {
+            "task_id": 9,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 9,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 9,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 24,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 24,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 24,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 117,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 117,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 117,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 267,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 267,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 267,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 271,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 271,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 271,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 273,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 273,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 273,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 274,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 274,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 274,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 278,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 278,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 278,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 386,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 386,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 386,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 389,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 389,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 389,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 390,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 390,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 390,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 394,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 394,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 394,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 403,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 403,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 403,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 410,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 410,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 410,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 411,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 411,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 411,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 416,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 416,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 416,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 425,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 425,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 425,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          }
+        ],
+        "changed": {
+          "matched": 0,
+          "identities": [],
+          "mean_tf_delta_vs_no_update": {
+            "full_rewrite": null
+          }
+        },
+        "retention": {
+          "matched": 0,
+          "identities": [],
+          "mean_tf_delta_vs_no_update": {
+            "full_rewrite": null
+          }
+        }
+      },
+      "iter5": {
+        "reference_stage": "original",
+        "excluded": [
+          {
+            "task_id": 9,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 9,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 9,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 24,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 24,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 24,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 117,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 117,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 117,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 267,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 267,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 267,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 271,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 271,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 271,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 273,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 273,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 273,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 274,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 274,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 274,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 278,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 278,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 278,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 386,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 386,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 386,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 389,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 389,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 389,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 390,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 390,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 390,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 394,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 394,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 394,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 403,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 403,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 403,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 410,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 410,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 410,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 411,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 411,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 411,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 416,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 416,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 416,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 425,
+            "repeat": 0,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 425,
+            "repeat": 1,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          },
+          {
+            "task_id": 425,
+            "repeat": 2,
+            "reasons": [
+              {
+                "strategy": "no_update",
+                "reason": "comparison_strategy_not_configured"
+              }
+            ]
+          }
+        ],
+        "changed": {
+          "matched": 0,
+          "identities": [],
+          "mean_tf_delta_vs_no_update": {
+            "full_rewrite": null
+          }
+        },
+        "retention": {
+          "matched": 0,
+          "identities": [],
+          "mean_tf_delta_vs_no_update": {
+            "full_rewrite": null
+          }
+        }
+      }
+    },
+    "reference_stage": "original",
+    "comparison_strategy": "no_update",
+    "delta": "Same-version TF minus No Update TF on common valid task/repeat pairs; not a success rate or task-success validator."
+  },
+  "completion": {
+    "status": "completed_with_warnings",
+    "exit_code": 0,
+    "planned_trajectories": 153,
+    "logical_conditions": 153,
+    "shared_early_references": 0,
+    "scored_logical_conditions": 153,
+    "scored_trajectories": 153,
+    "judge_statuses": {
+      "completed": 760,
+      "failed": 5
+    },
+    "judge_slots": 765,
+    "valid_judge_slots": 760,
+    "formal_acceptance": "not_assessed"
+  }
+}
