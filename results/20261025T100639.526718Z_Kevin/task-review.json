@@ -1,0 +1,410 @@
+{
+  "protocol": "complete_memory_task_pilot_v1",
+  "status": "completed_with_failures",
+  "purpose": "Development inspection on the unchanged selected tasks, not a memory-benefit or strategy comparison.",
+  "planned": 17,
+  "completed_agents": 11,
+  "scored": 11,
+  "valid_judge_slots": 50,
+  "means": {
+    "task_fulfillment": 8.954545454545455,
+    "grounding": 9.227272727272727,
+    "planning_and_efficiency": 9.113636363636363
+  },
+  "tasks": [
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": true
+    },
+    {
+      "task_id": 24,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 1,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": true
+    },
+    {
+      "task_id": 117,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 267,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 1.0,
+        "grounding": 5.5,
+        "planning_and_efficiency": 1.0
+      },
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [
+        {
+          "tool_call_id": "call_-7142415473764725466",
+          "tool": "mcp-shrimp-task-manager::process_thought",
+          "later_successful_same_tool_call": false
+        },
+        {
+          "tool_call_id": "call_-7142414683490738855",
+          "tool": "mcp-shrimp-task-manager::process_thought",
+          "later_successful_same_tool_call": false
+        },
+        {
+          "tool_call_id": "call_-7142414133734930512",
+          "tool": "mcp-tasks::tasks_add",
+          "later_successful_same_tool_call": false
+        },
+        {
+          "tool_call_id": "call_-7142419425134635067",
+          "tool": "mcp-tasks::tasks_add",
+          "later_successful_same_tool_call": false
+        }
+      ],
+      "unrecovered_tool_errors": 4,
+      "schema_feedback_calls": 4,
+      "review_required": true
+    },
+    {
+      "task_id": 271,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 7.75,
+        "grounding": 6.5,
+        "planning_and_efficiency": 9.5
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 273,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 3,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 274,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 278,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 386,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 1,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": true
+    },
+    {
+      "task_id": 389,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 9.75,
+        "grounding": 9.5,
+        "planning_and_efficiency": 9.75
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 390,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 394,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 1,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": true
+    },
+    {
+      "task_id": 403,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    },
+    {
+      "task_id": 410,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 1,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": true
+    },
+    {
+      "task_id": 411,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 4,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [
+        {
+          "tool_call_id": "call_-7142418497421703338",
+          "tool": "mcp-shrimp-task-manager::process_thought",
+          "later_successful_same_tool_call": true
+        }
+      ],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 1,
+      "review_required": true
+    },
+    {
+      "task_id": 416,
+      "repeat": 0,
+      "agent_status": "failed",
+      "score": null,
+      "stop_reason": "execution_error",
+      "requests": 1,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": true
+    },
+    {
+      "task_id": 425,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 1,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "6101115efefe4f2af004f9f8",
+        "6a7e2a96c65afdbaf886a4bc",
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "review_required": false
+    }
+  ]
+}
