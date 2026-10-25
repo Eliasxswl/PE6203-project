@@ -1,0 +1,109 @@
+{
+  "protocol": "file_recovery_transfer_v1",
+  "status": "completed_with_failures",
+  "judge_calls": 0,
+  "conditions": {
+    "no_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 1,
+      "correct_reads": 6,
+      "completed_task_successes": 6
+    },
+    "old_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 0,
+      "correct_reads": 4,
+      "completed_task_successes": 4
+    },
+    "new_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 0,
+      "correct_reads": 6,
+      "completed_task_successes": 6
+    },
+    "irrelevant_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 0,
+      "correct_reads": 6,
+      "completed_task_successes": 6
+    }
+  },
+  "paired": {
+    "no_rule": {
+      "all": {
+        "pairs": 23,
+        "new_successes": 6,
+        "other_successes": 6,
+        "wins": 0,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 18,
+        "new_successes": 3,
+        "other_successes": 3,
+        "wins": 0,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 5,
+        "new_successes": 3,
+        "other_successes": 3,
+        "wins": 0,
+        "losses": 0
+      }
+    },
+    "old_rule": {
+      "all": {
+        "pairs": 24,
+        "new_successes": 6,
+        "other_successes": 4,
+        "wins": 3,
+        "losses": 1
+      },
+      "discovery": {
+        "pairs": 18,
+        "new_successes": 3,
+        "other_successes": 1,
+        "wins": 3,
+        "losses": 1
+      },
+      "easy_controls": {
+        "pairs": 6,
+        "new_successes": 3,
+        "other_successes": 3,
+        "wins": 0,
+        "losses": 0
+      }
+    },
+    "irrelevant_rule": {
+      "all": {
+        "pairs": 24,
+        "new_successes": 6,
+        "other_successes": 6,
+        "wins": 0,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 18,
+        "new_successes": 3,
+        "other_successes": 3,
+        "wins": 0,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 6,
+        "new_successes": 3,
+        "other_successes": 3,
+        "wins": 0,
+        "losses": 0
+      }
+    }
+  },
+  "knowledge_rejection": null,
+  "fixtures_unchanged": true,
+  "source_unchanged": true
+}

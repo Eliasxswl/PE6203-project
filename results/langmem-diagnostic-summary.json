@@ -1,0 +1,61 @@
+{
+  "component": "Official LangMem create_memory_manager 0.0.30",
+  "scope": "Five development tasks, Early only, three executions per condition, five fixed judge slots; not a three-strategy evolution experiment",
+  "builder_model": "glm-4-flash-250414",
+  "final_library_sha256": "96cf96760c56b46a5d8ae25f950266c8952172b9caa5bfc6c5a85604b4097ae4",
+  "trials": [
+    {
+      "result_directory": "20261024T105627.557571Z_Kevin",
+      "presentation": "internal semantic tool IDs; prototype",
+      "conditions": {
+        "without_memory": {
+          "scored": 15,
+          "means": {
+            "task_fulfillment": 8.466666666666667,
+            "grounding": 9.693333333333333,
+            "planning_and_efficiency": 9.933333333333334
+          },
+          "valid_judge_slots": 75,
+          "exposed_trajectories": 0
+        },
+        "with_memory": {
+          "scored": 15,
+          "means": {
+            "task_fulfillment": 8.406666666666666,
+            "grounding": 9.253333333333334,
+            "planning_and_efficiency": 9.466666666666667
+          },
+          "valid_judge_slots": 72,
+          "exposed_trajectories": 15
+        }
+      }
+    },
+    {
+      "result_directory": "20261024T110532.417196Z_Kevin",
+      "presentation": "actual callable API names; corrected adapter",
+      "conditions": {
+        "without_memory": {
+          "scored": 15,
+          "means": {
+            "task_fulfillment": 8.68,
+            "grounding": 9.893333333333334,
+            "planning_and_efficiency": 9.933333333333334
+          },
+          "valid_judge_slots": 75,
+          "exposed_trajectories": 0
+        },
+        "with_memory": {
+          "scored": 15,
+          "means": {
+            "task_fulfillment": 8.44,
+            "grounding": 8.906666666666666,
+            "planning_and_efficiency": 9.946666666666665
+          },
+          "valid_judge_slots": 75,
+          "exposed_trajectories": 15
+        }
+      }
+    }
+  ],
+  "decision": "Stop this diagnostic. Component is operational, but task-performance benefit is not established. Main is unchanged."
+}

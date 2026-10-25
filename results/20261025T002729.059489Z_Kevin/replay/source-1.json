@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "calls": [
+    {
+      "tool_call_id": "replay-0",
+      "semantic_identity": "mcp-tasks::tasks_setup",
+      "arguments": "{\"source_path\": \"${WORKSPACE}/practice-source-1.json\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-1.json\",\"id\":\"nOiQ\"},\"In Progress\":0,\"To Do\":0,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":0,\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[]}"
+          }
+        ],
+        "isError": false
+      },
+      "protocol_error": null
+    },
+    {
+      "tool_call_id": "replay-1",
+      "semantic_identity": "mcp-tasks::tasks_add",
+      "arguments": "{\"source_id\": \"nOiQ\", \"status\": \"In Progress\", \"texts\": [\"orchard irrigation component 1\", \"orchard irrigation component 2\"]}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-1.json\",\"id\":\"nOiQ\"},\"In Progress\":2,\"To Do\":0,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":2,\"added\":[{\"id\":\"vwLQ\",\"text\":\"orchard irrigation component 1\",\"status\":\"In Progress\",\"index\":0},{\"id\":\"FaUw\",\"text\":\"orchard irrigation component 2\",\"status\":\"In Progress\",\"index\":1}],\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[{\"id\":\"vwLQ\",\"text\":\"orchard irrigation component 1\",\"status\":\"In Progress\",\"index\":0},{\"id\":\"FaUw\",\"text\":\"orchard irrigation component 2\",\"status\":\"In Progress\",\"index\":1}]}"
+          }
+        ],
+        "isError": false
+      },
+      "protocol_error": null
+    }
+  ],
+  "proof": {
+    "kind": "persisted_source_and_added_items",
+    "content": "{\n\t\"groups\": {\n\t\t\"In Progress\": [\n\t\t\t\"orchard irrigation component 1\",\n\t\t\t\"orchard irrigation component 2\"\n\t\t],\n\t\t\"To Do\": [],\n\t\t\"Backlog\": [],\n\t\t\"Done\": [],\n\t\t\"Reminders\": [],\n\t\t\"Notes\": [],\n\t\t\"Deleted\": []\n\t}\n}",
+    "source_id": "nOiQ"
+  }
+}

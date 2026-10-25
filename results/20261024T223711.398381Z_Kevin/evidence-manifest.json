@@ -1,0 +1,271 @@
+{
+  "archived_at": "2026-10-24T23:10:12.532191+00:00",
+  "branch": "langmem-adaptation",
+  "revision": "d97ba58a44689e6c9098f05fd8798f5e074f6d00",
+  "dirty_source": true,
+  "inputs_unchanged": true,
+  "main_unchanged": true,
+  "selective_patch_unchanged": true,
+  "code_edited_this_rerun": false,
+  "config_changes_from_previous_full_run": [
+    "memory.artifact",
+    "memory.source"
+  ],
+  "coverage": {
+    "planned_trajectories": 102,
+    "completed_agents": 97,
+    "failed_agents": 5,
+    "scored_trajectories": 97,
+    "planned_judge_slots": 510,
+    "dispatched_judge_slots": 485,
+    "valid_judge_slots": 443,
+    "unknown_judge_slots": 42,
+    "not_attempted_judge_slots": 25,
+    "paired_task_repeats": 46,
+    "tasks_with_valid_pairs": 17
+  },
+  "conditions": {
+    "without_memory": {
+      "planned": 51,
+      "completed": 50,
+      "api_execution_failures": 1,
+      "scored": 50,
+      "valid_judge_slots": 226
+    },
+    "with_memory": {
+      "planned": 51,
+      "completed": 47,
+      "api_execution_failures": 4,
+      "scored": 47,
+      "valid_judge_slots": 217
+    }
+  },
+  "paired_means": {
+    "without_memory": {
+      "task_fulfillment": 8.890217391304347,
+      "grounding": 9.852173913043478,
+      "planning_and_efficiency": 9.802173913043477
+    },
+    "with_memory": {
+      "task_fulfillment": 9.355434782608697,
+      "grounding": 9.82717391304348,
+      "planning_and_efficiency": 9.983695652173912
+    }
+  },
+  "paired_deltas": {
+    "all_tasks": {
+      "pairs": 46,
+      "mean_score_deltas_with_minus_without": {
+        "task_fulfillment": 0.4652173913043478,
+        "grounding": -0.02499999999999997,
+        "planning_and_efficiency": 0.18152173913043482
+      }
+    },
+    "memory_exposed": {
+      "pairs": 43,
+      "mean_score_deltas_with_minus_without": {
+        "task_fulfillment": 0.6046511627906976,
+        "grounding": -0.026744186046511596,
+        "planning_and_efficiency": 0.19418604651162794
+      }
+    }
+  },
+  "cohorts": {
+    "template_exposed": {
+      "pairs": 6,
+      "task_ids": [
+        9,
+        24
+      ],
+      "mean_tf_delta": 2.1333333333333333
+    },
+    "summary_only": {
+      "pairs": 37,
+      "task_ids": [
+        117,
+        267,
+        271,
+        273,
+        274,
+        278,
+        386,
+        389,
+        390,
+        394,
+        403,
+        410,
+        411,
+        425
+      ],
+      "mean_tf_delta": 0.35675675675675667
+    },
+    "unexposed": {
+      "pairs": 3,
+      "task_ids": [
+        416
+      ],
+      "mean_tf_delta": -1.5333333333333332
+    }
+  },
+  "task_balanced_tf_delta": 0.43725490196078426,
+  "task_signs": {
+    "improved": 6,
+    "tied": 7,
+    "worse": 4
+  },
+  "task9_mechanism_audit_not_scoring": [
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 0
+      },
+      "correct_fixture_read": false,
+      "read_evidence_ids": [],
+      "score": {
+        "task_fulfillment": 7.6,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "search_arguments": []
+    },
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 0
+      },
+      "correct_fixture_read": true,
+      "read_evidence_ids": [
+        "call_-7142421933395541745"
+      ],
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/5f106ed7e3b24538/workspace",
+          "pattern": "**/*yesterday*"
+        }
+      ]
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 1
+      },
+      "correct_fixture_read": false,
+      "read_evidence_ids": [],
+      "score": {
+        "task_fulfillment": 4.0,
+        "grounding": 6.6,
+        "planning_and_efficiency": 9.0
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/5fbee8844fb64086/workspace",
+          "pattern": "*yesterday*"
+        }
+      ]
+    },
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 1
+      },
+      "correct_fixture_read": true,
+      "read_evidence_ids": [
+        "call_-7142418944098301845"
+      ],
+      "score": {
+        "task_fulfillment": 8.4,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/510d8fab8d25445c/workspace",
+          "pattern": "**/*yesterday*"
+        }
+      ]
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 2
+      },
+      "correct_fixture_read": false,
+      "read_evidence_ids": [],
+      "score": {
+        "task_fulfillment": 4.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a06c349c82a844fa/workspace",
+          "pattern": "*yesterday*"
+        }
+      ]
+    },
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 2
+      },
+      "correct_fixture_read": true,
+      "read_evidence_ids": [
+        "call_-7142416195319231510"
+      ],
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/e91a57599819406d/workspace",
+          "pattern": "**/*yesterday*"
+        }
+      ]
+    }
+  ],
+  "runtime_versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "openai": "3.37.0",
+    "langchain": "1.4.7",
+    "langchain-openai": "1.7.2",
+    "langgraph": "1.2.17",
+    "mcp": "1.25.0"
+  },
+  "limitations": [
+    "Previously inspected 17-task development subset; this is a confirmation rerun, not a fresh held-out benchmark estimate.",
+    "Early-only knowledge-usefulness comparison; no three-strategy evolution experiment or ECS.",
+    "Model rubric scores do not prove complete task fulfillment.",
+    "Only tasks 9 and 24 received the new file-call templates; other score changes cannot all be attributed to those templates.",
+    "Task 416 received no injected knowledge in either condition and still differed; sampling/scoring variation remains.",
+    "Four with-memory executions and one without-memory execution failed at the API; failed slots were not replayed."
+  ],
+  "files": {
+    "experiment.json": "cae44ce64bbe08425e0ab1934d44ec652b58e927925daeceb0d0a63efb42b5b4",
+    "inputs/frozen-k0.json": "a557bca9d9988eb97941ab26aa5a8dbb6e56f24bd2e3d3fc5830f5df1376810d",
+    "inputs/independent-validation-evidence.json": "72b7a5f0b533b9733fd3741ffac7fb099f1caa1db1713758866488f0ef3b93be",
+    "inputs/independent-validation.json": "c408703119fb964f489be03d4d5d6ca24a05ed1ed68dcb4753ea7e4c137ee163",
+    "inputs/practice-evidence.json": "da38e55ad4e2a877f7835682d9785b4a5fb43434aa13c1e3175c55bdeecb898d",
+    "memory-ablation.json": "ded14a9a210362f8a1dcf2cab02572cb9f7fe2c73a171d3e27c2b957136c8dbf",
+    "records.json": "c4eff5e97625af4073b3209feacc53a7e71cebcde6b5ca84b6c39afd0bfb5f5f",
+    "source.zip": "aea999f60dd255151f3d9a89e6f1ac34435d151c41017aa94aeeabf9c290f8dd"
+  }
+}

@@ -1,0 +1,402 @@
+{
+  "protocol": "verified_file_recovery_causal_v2",
+  "status": "completed",
+  "output_mode": "json_object",
+  "model": "glm-4-flash-250414",
+  "schema": {
+    "additionalProperties": false,
+    "description": "Transferable recovery procedure grounded in observed failure and correction.",
+    "properties": {
+      "tool_ids": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Tool Ids",
+        "type": "array"
+      },
+      "content": {
+        "description": "Concise general procedure; never copy practice filenames, keyword or file contents",
+        "minLength": 1,
+        "title": "Content",
+        "type": "string"
+      },
+      "applicability": {
+        "description": "Observable situation in which the procedure applies",
+        "minLength": 1,
+        "title": "Applicability",
+        "type": "string"
+      },
+      "failed_assumption": {
+        "description": "What failed and what assumption the observation contradicts",
+        "minLength": 1,
+        "title": "Failed Assumption",
+        "type": "string"
+      },
+      "corrective_actions": {
+        "description": "Ordered general actions using current inputs and returned paths, not practice constants",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Corrective Actions",
+        "type": "array"
+      },
+      "verification": {
+        "description": "Observable successful correction criterion, not merely a final claim",
+        "minLength": 1,
+        "title": "Verification",
+        "type": "string"
+      },
+      "evidence_call_ids": {
+        "description": "IDs of the supplied real calls supporting both failure and verified correction",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 2,
+        "title": "Evidence Call Ids",
+        "type": "array"
+      }
+    },
+    "required": [
+      "tool_ids",
+      "content",
+      "applicability",
+      "failed_assumption",
+      "corrective_actions",
+      "verification",
+      "evidence_call_ids"
+    ],
+    "title": "ToolRecovery",
+    "type": "object"
+  },
+  "evidence": {
+    "independent_practice": [
+      {
+        "case": "practice-middle",
+        "scenario": "Locate by a filename keyword; extension is not supplied.",
+        "observed_calls": [
+          {
+            "tool_call_id": "practice-middle-0",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": "{\"path\": \"${WORKSPACE}/cobalt.txt\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "ENOENT: no such file or directory, open '${WORKSPACE}\\cobalt.txt'"
+                }
+              ],
+              "isError": true
+            }
+          },
+          {
+            "tool_call_id": "practice-middle-1",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+            "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/cobalt*.txt\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "No matches found"
+                }
+              ],
+              "structuredContent": {
+                "content": "No matches found"
+              },
+              "isError": false
+            }
+          },
+          {
+            "tool_call_id": "practice-middle-2",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+            "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*cobalt*\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "${WORKSPACE}\\level-0\\draft-cobalt-v2.txt"
+                }
+              ],
+              "structuredContent": {
+                "content": "${WORKSPACE}\\level-0\\draft-cobalt-v2.txt"
+              },
+              "isError": false
+            }
+          },
+          {
+            "tool_call_id": "practice-middle-3",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": "{\"path\": \"${WORKSPACE}/level-0/draft-cobalt-v2.txt\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Payload: ee42695c7b25d556af6dcb48397aa0a26bf464c2d8e72487835a342fd5454222"
+                }
+              ],
+              "structuredContent": {
+                "content": "Payload: ee42695c7b25d556af6dcb48397aa0a26bf464c2d8e72487835a342fd5454222"
+              },
+              "isError": false
+            },
+            "verification": {
+              "kind": "exact_file_read",
+              "response_sha256": "be32a097b3d876fac6e5bab97ce689c81fc014d9541d612e6f9f830453cf3636"
+            }
+          }
+        ],
+        "verified_read_call_ids": [
+          "practice-middle-3"
+        ]
+      },
+      {
+        "case": "practice-extension",
+        "scenario": "Locate by a filename keyword; extension is not supplied.",
+        "observed_calls": [
+          {
+            "tool_call_id": "practice-extension-0",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": "{\"path\": \"${WORKSPACE}/marigold.txt\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "ENOENT: no such file or directory, open '${WORKSPACE}\\marigold.txt'"
+                }
+              ],
+              "isError": true
+            }
+          },
+          {
+            "tool_call_id": "practice-extension-1",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+            "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*marigold*.txt\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "No matches found"
+                }
+              ],
+              "structuredContent": {
+                "content": "No matches found"
+              },
+              "isError": false
+            }
+          },
+          {
+            "tool_call_id": "practice-extension-2",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+            "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*marigold*\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "${WORKSPACE}\\level-0\\level-1\\level-2\\archive-marigold.md"
+                }
+              ],
+              "structuredContent": {
+                "content": "${WORKSPACE}\\level-0\\level-1\\level-2\\archive-marigold.md"
+              },
+              "isError": false
+            }
+          },
+          {
+            "tool_call_id": "practice-extension-3",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": "{\"path\": \"${WORKSPACE}/level-0/level-1/level-2/archive-marigold.md\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Payload: fd291323349dd66625927efae2a55d97444d558e0cb8a5f380e14bee8935aa5f"
+                }
+              ],
+              "structuredContent": {
+                "content": "Payload: fd291323349dd66625927efae2a55d97444d558e0cb8a5f380e14bee8935aa5f"
+              },
+              "isError": false
+            },
+            "verification": {
+              "kind": "exact_file_read",
+              "response_sha256": "fb06749f93b7360002ae2beaec991330aa2844d967aecc1ca9814018daaa7c87"
+            }
+          }
+        ],
+        "verified_read_call_ids": [
+          "practice-extension-3"
+        ]
+      },
+      {
+        "case": "practice-known",
+        "scenario": "The exact existing file path is already known; read directly.",
+        "observed_calls": [
+          {
+            "tool_call_id": "practice-known-0",
+            "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": "{\"path\": \"${WORKSPACE}/quartz-memo.txt\"}",
+            "response": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Payload: b10d1a6d04b8e3104cd7015f3f0f2e138647ed784f0b1d2be73dd0cc09280269"
+                }
+              ],
+              "structuredContent": {
+                "content": "Payload: b10d1a6d04b8e3104cd7015f3f0f2e138647ed784f0b1d2be73dd0cc09280269"
+              },
+              "isError": false
+            },
+            "verification": {
+              "kind": "exact_file_read",
+              "response_sha256": "325f5a6dd01f165c360f56918e7ac1745cee21c59e9213ea51693f039f22a217"
+            }
+          }
+        ],
+        "verified_read_call_ids": [
+          "practice-known-0"
+        ]
+      }
+    ],
+    "required_evidence_call_ids": [
+      "practice-middle-0",
+      "practice-middle-3",
+      "practice-extension-0",
+      "practice-extension-3",
+      "practice-known-0"
+    ],
+    "scope": "Explain all verified contrasts, including the direct-read boundary. Preserve each failure and verified-read ID. Infer a reusable procedure; do not copy practice constants.",
+    "catalog": {
+      "@modelcontextprotocol/server-filesystem::search_files": {
+        "server": "@modelcontextprotocol/server-filesystem",
+        "name": "search_files",
+        "description": "Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' to match files in all subdirectories. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
+          "properties": {
+            "excludePatterns": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "path": {
+              "type": "string"
+            },
+            "pattern": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "pattern"
+          ],
+          "type": "object"
+        }
+      },
+      "@modelcontextprotocol/server-filesystem::read_text_file": {
+        "server": "@modelcontextprotocol/server-filesystem",
+        "name": "read_text_file",
+        "description": "Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
+          "properties": {
+            "head": {
+              "description": "If provided, returns only the first N lines of the file",
+              "type": "number"
+            },
+            "path": {
+              "type": "string"
+            },
+            "tail": {
+              "description": "If provided, returns only the last N lines of the file",
+              "type": "number"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "type": "object"
+        }
+      }
+    }
+  },
+  "versions": {
+    "openai": "3.37.0"
+  },
+  "requests": [
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Derive one reusable tool-recovery procedure from the observed failure and verified correction below. Explain the actual change that enabled success, rather than listing tool descriptions. Preserve failure and verified-success evidence IDs. Do not copy practice filenames, keyword, task text, record IDs, payload or private paths. Use current task inputs and tool-returned identifiers in the procedure.\nObserved practice evidence:\n{\"independent_practice\": [{\"case\": \"practice-middle\", \"scenario\": \"Locate by a filename keyword; extension is not supplied.\", \"observed_calls\": [{\"tool_call_id\": \"practice-middle-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/cobalt.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"ENOENT: no such file or directory, open '${WORKSPACE}\\\\cobalt.txt'\"}], \"isError\": true}}, {\"tool_call_id\": \"practice-middle-1\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/cobalt*.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"No matches found\"}], \"structuredContent\": {\"content\": \"No matches found\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-middle-2\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*cobalt*\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"${WORKSPACE}\\\\level-0\\\\draft-cobalt-v2.txt\"}], \"structuredContent\": {\"content\": \"${WORKSPACE}\\\\level-0\\\\draft-cobalt-v2.txt\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-middle-3\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/level-0/draft-cobalt-v2.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Payload: ee42695c7b25d556af6dcb48397aa0a26bf464c2d8e72487835a342fd5454222\"}], \"structuredContent\": {\"content\": \"Payload: ee42695c7b25d556af6dcb48397aa0a26bf464c2d8e72487835a342fd5454222\"}, \"isError\": false}, \"verification\": {\"kind\": \"exact_file_read\", \"response_sha256\": \"be32a097b3d876fac6e5bab97ce689c81fc014d9541d612e6f9f830453cf3636\"}}], \"verified_read_call_ids\": [\"practice-middle-3\"]}, {\"case\": \"practice-extension\", \"scenario\": \"Locate by a filename keyword; extension is not supplied.\", \"observed_calls\": [{\"tool_call_id\": \"practice-extension-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/marigold.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"ENOENT: no such file or directory, open '${WORKSPACE}\\\\marigold.txt'\"}], \"isError\": true}}, {\"tool_call_id\": \"practice-extension-1\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*marigold*.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"No matches found\"}], \"structuredContent\": {\"content\": \"No matches found\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-extension-2\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*marigold*\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"${WORKSPACE}\\\\level-0\\\\level-1\\\\level-2\\\\archive-marigold.md\"}], \"structuredContent\": {\"content\": \"${WORKSPACE}\\\\level-0\\\\level-1\\\\level-2\\\\archive-marigold.md\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-extension-3\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/level-0/level-1/level-2/archive-marigold.md\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Payload: fd291323349dd66625927efae2a55d97444d558e0cb8a5f380e14bee8935aa5f\"}], \"structuredContent\": {\"content\": \"Payload: fd291323349dd66625927efae2a55d97444d558e0cb8a5f380e14bee8935aa5f\"}, \"isError\": false}, \"verification\": {\"kind\": \"exact_file_read\", \"response_sha256\": \"fb06749f93b7360002ae2beaec991330aa2844d967aecc1ca9814018daaa7c87\"}}], \"verified_read_call_ids\": [\"practice-extension-3\"]}, {\"case\": \"practice-known\", \"scenario\": \"The exact existing file path is already known; read directly.\", \"observed_calls\": [{\"tool_call_id\": \"practice-known-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/quartz-memo.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Payload: b10d1a6d04b8e3104cd7015f3f0f2e138647ed784f0b1d2be73dd0cc09280269\"}], \"structuredContent\": {\"content\": \"Payload: b10d1a6d04b8e3104cd7015f3f0f2e138647ed784f0b1d2be73dd0cc09280269\"}, \"isError\": false}, \"verification\": {\"kind\": \"exact_file_read\", \"response_sha256\": \"325f5a6dd01f165c360f56918e7ac1745cee21c59e9213ea51693f039f22a217\"}}], \"verified_read_call_ids\": [\"practice-known-0\"]}], \"required_evidence_call_ids\": [\"practice-middle-0\", \"practice-middle-3\", \"practice-extension-0\", \"practice-extension-3\", \"practice-known-0\"], \"scope\": \"Explain all verified contrasts, including the direct-read boundary. Preserve each failure and verified-read ID. Infer a reusable procedure; do not copy practice constants.\", \"catalog\": {\"@modelcontextprotocol/server-filesystem::search_files\": {\"server\": \"@modelcontextprotocol/server-filesystem\", \"name\": \"search_files\", \"description\": \"Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' to match files in all subdirectories. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"excludePatterns\": {\"default\": [], \"items\": {\"type\": \"string\"}, \"type\": \"array\"}, \"path\": {\"type\": \"string\"}, \"pattern\": {\"type\": \"string\"}}, \"required\": [\"path\", \"pattern\"], \"type\": \"object\"}}, \"@modelcontextprotocol/server-filesystem::read_text_file\": {\"server\": \"@modelcontextprotocol/server-filesystem\", \"name\": \"read_text_file\", \"description\": \"Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"head\": {\"description\": \"If provided, returns only the first N lines of the file\", \"type\": \"number\"}, \"path\": {\"type\": \"string\"}, \"tail\": {\"description\": \"If provided, returns only the last N lines of the file\", \"type\": \"number\"}}, \"required\": [\"path\"], \"type\": \"object\"}}}}\nReturn one JSON DATA RECORD with these seven direct keys. Replace every placeholder using the observations. Do not return a JSON Schema; do not wrap values in properties, title, type or required. No Markdown or extra text. Record shape:\n{\"tool_ids\": [\"<exact ID from catalog>\"], \"content\": \"<general procedure>\", \"applicability\": \"<observable situation>\", \"failed_assumption\": \"<why the old attempt failed>\", \"corrective_actions\": [\"<general action using current inputs>\"], \"verification\": \"<observable successful correction criterion>\", \"evidence_call_ids\": [\"practice-middle-0\", \"practice-middle-3\", \"practice-extension-0\", \"practice-extension-3\", \"practice-known-0\"]}"
+        }
+      ],
+      "response": {
+        "id": "20261025060533a30818bacb664424",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"tool_ids\":[\"@modelcontextprotocol/server-filesystem::search_files\",\"@modelcontextprotocol/server-filesystem::read_text_file\"],\"content\":\"When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.\",\"applicability\":\"适用于在不知道文件确切路径，但知道文件名关键字的情况。\",\"failed_assumption\":\"假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。\",\"corrective_actions\":[\"使用 'search_files' 工具根据文件名关键字查找文件路径\",\"使用找到的文件路径调用 'read_text_file' 读取文件内容\"],\"verification\":\"通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。\",\"evidence_call_ids\":[\"practice-middle-0\",\"practice-middle-3\",\"practice-extension-0\",\"practice-extension-3\",\"practice-known-0\"]}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null
+            }
+          }
+        ],
+        "created": 1792879539,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 245,
+          "prompt_tokens": 2213,
+          "total_tokens": 2458,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "20261025060533a30818bacb664424"
+      }
+    }
+  ],
+  "memories": [
+    {
+      "id": "04e11b754168dae66a18960f",
+      "value": {
+        "tool_ids": [
+          "@modelcontextprotocol/server-filesystem::search_files",
+          "@modelcontextprotocol/server-filesystem::read_text_file"
+        ],
+        "content": "When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.",
+        "applicability": "适用于在不知道文件确切路径，但知道文件名关键字的情况。",
+        "failed_assumption": "假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。",
+        "corrective_actions": [
+          "使用 'search_files' 工具根据文件名关键字查找文件路径",
+          "使用找到的文件路径调用 'read_text_file' 读取文件内容"
+        ],
+        "verification": "通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。",
+        "evidence_call_ids": [
+          "practice-middle-0",
+          "practice-middle-3",
+          "practice-extension-0",
+          "practice-extension-3",
+          "practice-known-0"
+        ]
+      }
+    }
+  ]
+}

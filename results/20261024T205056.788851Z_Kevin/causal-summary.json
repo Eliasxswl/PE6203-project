@@ -1,0 +1,49 @@
+{
+  "protocol": "verified_file_recovery_causal_v2",
+  "status": "completed_with_failures",
+  "conditions": {
+    "no_rule": {
+      "planned": 9,
+      "executed": 9,
+      "not_attempted": 0,
+      "unavailable_reason": null,
+      "execution_failures": 0,
+      "verified_successes": 0,
+      "model_requests": 18
+    },
+    "verified_rule": {
+      "planned": 9,
+      "executed": 9,
+      "not_attempted": 0,
+      "unavailable_reason": null,
+      "execution_failures": 1,
+      "verified_successes": 8,
+      "model_requests": 25
+    },
+    "generated_rule": {
+      "planned": 9,
+      "executed": 9,
+      "not_attempted": 0,
+      "unavailable_reason": null,
+      "execution_failures": 2,
+      "verified_successes": 6,
+      "model_requests": 23
+    },
+    "irrelevant_rule": {
+      "planned": 9,
+      "executed": 9,
+      "not_attempted": 0,
+      "unavailable_reason": null,
+      "execution_failures": 0,
+      "verified_successes": 0,
+      "model_requests": 18
+    }
+  },
+  "judge_calls": 0,
+  "knowledge_generation": {
+    "status": "accepted",
+    "rejection": null
+  },
+  "fixture_unchanged": true,
+  "source_unchanged": true
+}

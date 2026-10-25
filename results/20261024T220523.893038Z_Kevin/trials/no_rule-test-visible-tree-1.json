@@ -1,0 +1,17 @@
+{
+  "protocol": "file_recovery_transfer_v1",
+  "case": "test-visible-tree",
+  "repeat": 1,
+  "condition": "no_rule",
+  "status": "failed",
+  "model_attempts": [],
+  "rule_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+  "rule_characters": 0,
+  "outcome": null,
+  "error": {
+    "type": "ExecutionFailure",
+    "message": "MCP startup timeout (TimeoutError)",
+    "unknown_outcome": false
+  },
+  "cohort": "visible_tree"
+}

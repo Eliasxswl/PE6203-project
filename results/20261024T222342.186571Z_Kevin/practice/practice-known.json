@@ -1,0 +1,30 @@
+{
+  "case": "practice-known",
+  "scenario": "The exact existing file path is already known; read directly.",
+  "observed_calls": [
+    {
+      "tool_call_id": "practice-known-0",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": "{\"path\": \"${WORKSPACE}/quartz-memo.txt\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Payload: f207495226555674cd996f64a406e3ecb3c373f15a2b412436fa3bc40188eeb8"
+          }
+        ],
+        "structuredContent": {
+          "content": "Payload: f207495226555674cd996f64a406e3ecb3c373f15a2b412436fa3bc40188eeb8"
+        },
+        "isError": false
+      },
+      "verification": {
+        "kind": "exact_file_read",
+        "response_sha256": "5f07fe9301b8dc0388cca2e467bde92f586fc3da913b1e6da3e0dc4c2d129b3f"
+      }
+    }
+  ],
+  "verified_read_call_ids": [
+    "practice-known-0"
+  ]
+}

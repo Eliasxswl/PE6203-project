@@ -1,0 +1,140 @@
+{
+  "protocol": "langmem_usefulness_ablation_v1",
+  "source_revision": "d97ba58a44689e6c9098f05fd8798f5e074f6d00",
+  "dirty_source": true,
+  "fingerprints_verified": true,
+  "library_sha256": "96cf96760c56b46a5d8ae25f950266c8952172b9caa5bfc6c5a85604b4097ae4",
+  "frozen_fingerprints": {
+    "config": "0da53264006aa3338465d9f479fdbae2cc6c99708a381ad3a3ba863739a0fa30",
+    "sources": {
+      "src/custom/data/test_cases/test_cases.json": "1370d7f9ee4ec8f8635dd6af3a6e7e41e790b4be86d0e3de4990774ac99fbae2",
+      "src/custom/data/test_cases/chosen_idx.json": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
+      "config/subsets/selected_tasks.json": "fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07",
+      ".runtime/langmem/frozen-k0-glm4-repairs.json": "d6d443d4ec5c8cf1ea88f243fa8aacf4b071f68fdd6e786ecfaf167838854503",
+      "config/practice/langmem-evidence.json": "2292bf6e9cc76e5a4b29a385db1e7216977b5b49bea320587cc5d55829ef1076",
+      "requirements-memory.txt": "a465fb148e3f12f044370c274d846b6ba65d4e796ae084f6ddc78f24cc83a7b0",
+      "src/custom/data/mutation/HYBRID/evolution.json": "2e656f38506f6b5107fa8286a2a396a3b69fef890d082187c47c8405cce2a9dd",
+      "src/custom/data/mutation/HYBRID/HYBRID/evolution.json": "9c1457123f1e79b642707e526f9727bd9edd21f13e1d19827a53e5bf9dd1a8b4",
+      "src/custom/data/mutation/HYBRID/HYBRID/HYBRID/evolution.json": "1e95354a65dac662d3cdb0e13a0860befbe39b5c554b760ec30ecdb2cff01777",
+      "src/custom/data/mutation/HYBRID/HYBRID/HYBRID/HYBRID/evolution.json": "a5bba8ab5f3cb3ea617f5c4954f8ec51141d9f5bdb2970d6395e4798b6e2c6ba",
+      "servers/1mcp_config/original/mcp.json": "0cb5cce358c3c9aacf071c8dbac9a0106bca1d95f5d84c3e799c211a99087576",
+      "servers/1mcp_config/iter3/mcp.json": "11d45c6cdc418c315638423f8e183481b30a66dec767240ff83cfc9ca4ca36a1",
+      "servers/1mcp_config/iter5/mcp.json": "8ff8da2a9f7916109c85acf86c39835b004cdfe30c2b81c069dc921540cb0175",
+      "fixtures": "6534dd6c9d7d1fca6e0419b0cc45acb6335922dbc85f5fd12ae9cb2cc09b9420",
+      "provider_endpoint:agent:0": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:1": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:2": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:3": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:4": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:0": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:1": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:2": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:3": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:4": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "local_config:original": "5dfe5da9d970f3e3a83718b06033f5980ee45e80d2f977477e92b4ea3bc58f66",
+      "tool_entry:original:@kazuph/mcp-taskmanager:index.js": "4043569cd544a680168aa41b3a9a2c570eb24ca4e1ed5ca2905f13040b793566",
+      "tool_entry:original:@modelcontextprotocol/server-filesystem:index.js": "c2f3126214742c10f6cb25297e3b89465f894b62a4df8dd042ea3d0e2d033652",
+      "tool_entry:original:@modelcontextprotocol/server-sequential-thinking:index.js": "81986868f123134e5d1661140fd69a77d50b4c57d1dbab59eb73b922dfe3c43f",
+      "tool_entry:original:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:original:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      "local_config:iter3": "231354ebd0b29f9828992596a7f5cc607423906f58078b062e5cf408cfa91c45",
+      "tool_entry:iter3:@kazuph/mcp-taskmanager:index.js": "9e724f19204380db8de315d227411e8565a5283f0ef3b3fc50bc943aa3de6070",
+      "tool_entry:iter3:@modelcontextprotocol/server-filesystem:index.js": "d31538776b622f750fcda37854574d325b460bf07fcc1680238b99ab4d8e1692",
+      "tool_entry:iter3:@modelcontextprotocol/server-sequential-thinking:index.js": "defb818d5e896b0e49142e0134f531b0302c23bdbe9a2ad543a223633b737faf",
+      "tool_entry:iter3:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:iter3:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      "local_config:iter5": "30026911c6de3c50d7ec9d313335811a61e993532fe17a273f44e48937ccce07",
+      "tool_entry:iter5:@kazuph/mcp-taskmanager:index.js": "ee9ddc830eb8394ff0d2727c961eaa93105b406a95696b5c45151001548bd67c",
+      "tool_entry:iter5:@modelcontextprotocol/server-filesystem:index.js": "1f0af4858dc8ca14c7048ca75660ac3c6bef523758adad830dbec0684a1190c8",
+      "tool_entry:iter5:@modelcontextprotocol/server-sequential-thinking:index.js": "88a42960c3fcb5ca23d87e2a5cea2f4203d6f5351744009fd2967fe699af0bd7",
+      "tool_entry:iter5:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:iter5:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      ".runtime/node_modules/@1mcp/agent/package.json": "bec573a0fdce42cd816b81ef92e5b9b345048ccd58aecf5c69de65c475c2eab5"
+    },
+    "code": "c1b2361a51a4e2c579324c78eb34ee3921ff08af75b8b1e0f14bebbd70c78802"
+  },
+  "upstream_reference": "https://github.com/langchain-ai/langmem",
+  "component": "create_memory_manager",
+  "presentation": "visible_api_names_v1",
+  "versions": {
+    "langmem": "0.0.30",
+    "langchain-openai": "1.7.2",
+    "langchain-core": "1.7.0",
+    "langgraph": "1.2.17",
+    "trustcall": "0.0.39"
+  },
+  "files": [
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-add-prerequisite-recovery.build.json",
+      "sha256": "5bea097646f3602fed7f7c5760175940dce3eeac38f80a44195628e3cd561d03"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-file-copy.build.json",
+      "sha256": "78d15113156731160269bdaa6859601f0d1012d1dfe6aaee91bb16fb47701422"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-file-to-task.build.json",
+      "sha256": "507d4168e0c6a2a07f3997e56fda1f58cb65279b770dea7dc241a491606f85a4"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-local-task-source.build.json",
+      "sha256": "c192c75def8daa920033a974671430f7d8548c5c4472ee532464148ed24ed771"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-reasoning.build.json",
+      "sha256": "b3ea24916c2aed92a7ff4c53f15c79082f0f0d2ccc5a20acd8ab13827fad70dc"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-shrimp-plan.build.json",
+      "sha256": "121f996dd9d1e9fd1a49e1d5678c40279034e6f8d57dd88ae7ba69ae0722e64b"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-source-recovery.build.json",
+      "sha256": "37cc9a1d65aec73fb84dcf531473c64bd7e773da5f4eaedfa40cf63aae6131f6"
+    },
+    {
+      "path": "evidence/builds/frozen-k0-glm4-repairs-synthetic-task-sequence.build.json",
+      "sha256": "0d63baac374ac4ea4d4b751ff5162b44888fcd63e91a8e5aa0483bfa50db51e6"
+    },
+    {
+      "path": "evidence/config.json",
+      "sha256": "0e7c2102acf5bb8c7cf93473bfb4f9dd1ed7a39bbdfe77903e70c57e3733c44d"
+    },
+    {
+      "path": "evidence/frozen-memory.json",
+      "sha256": "d6d443d4ec5c8cf1ea88f243fa8aacf4b071f68fdd6e786ecfaf167838854503"
+    },
+    {
+      "path": "evidence/practice-evidence.json",
+      "sha256": "2292bf6e9cc76e5a4b29a385db1e7216977b5b49bea320587cc5d55829ef1076"
+    },
+    {
+      "path": "evidence/requirements-memory.txt",
+      "sha256": "a465fb148e3f12f044370c274d846b6ba65d4e796ae084f6ddc78f24cc83a7b0"
+    },
+    {
+      "path": "evidence/selected-tasks.json",
+      "sha256": "fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07"
+    },
+    {
+      "path": "evidence/source.zip",
+      "sha256": "7f15b43c2b7d124edc3714a440dbc74759be8a9ce41022313f93ad7345d0bb1e"
+    },
+    {
+      "path": "evidence/validation.json",
+      "sha256": "24614c3bf885348a989729404f36201a32e8e12b7823096462717c487525d542"
+    },
+    {
+      "path": "records.json",
+      "sha256": "8231421f0a46dea6fc3cc9e9fbb03a5c80eeb790bc65a0a3ba2032ae77d4bd7d"
+    },
+    {
+      "path": "experiment.json",
+      "sha256": "9ee02d2790bce37622da4d88b4b0e4127fb9b945e3a31eb325b994cfdb5af9cc"
+    },
+    {
+      "path": "memory-ablation.json",
+      "sha256": "e368255f8f0326b04096fcaacf533461fbf50d09eadc123bf0691bbc4d61fa14"
+    }
+  ]
+}

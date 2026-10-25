@@ -1,0 +1,78 @@
+{
+  "case": "practice-middle",
+  "scenario": "Locate by a filename keyword; extension is not supplied.",
+  "observed_calls": [
+    {
+      "tool_call_id": "practice-middle-0",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": "{\"path\": \"${WORKSPACE}/cobalt.txt\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "ENOENT: no such file or directory, open '${WORKSPACE}\\cobalt.txt'"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "tool_call_id": "practice-middle-1",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+      "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/cobalt*.txt\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "No matches found"
+          }
+        ],
+        "structuredContent": {
+          "content": "No matches found"
+        },
+        "isError": false
+      }
+    },
+    {
+      "tool_call_id": "practice-middle-2",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+      "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*cobalt*\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "${WORKSPACE}\\level-0\\draft-cobalt-v2.txt"
+          }
+        ],
+        "structuredContent": {
+          "content": "${WORKSPACE}\\level-0\\draft-cobalt-v2.txt"
+        },
+        "isError": false
+      }
+    },
+    {
+      "tool_call_id": "practice-middle-3",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": "{\"path\": \"${WORKSPACE}/level-0/draft-cobalt-v2.txt\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Payload: ee42695c7b25d556af6dcb48397aa0a26bf464c2d8e72487835a342fd5454222"
+          }
+        ],
+        "structuredContent": {
+          "content": "Payload: ee42695c7b25d556af6dcb48397aa0a26bf464c2d8e72487835a342fd5454222"
+        },
+        "isError": false
+      },
+      "verification": {
+        "kind": "exact_file_read",
+        "response_sha256": "be32a097b3d876fac6e5bab97ce689c81fc014d9541d612e6f9f830453cf3636"
+      }
+    }
+  ],
+  "verified_read_call_ids": [
+    "practice-middle-3"
+  ]
+}

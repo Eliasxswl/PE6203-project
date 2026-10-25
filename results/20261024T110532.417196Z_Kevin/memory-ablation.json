@@ -1,0 +1,213 @@
+{
+  "protocol": "langmem_usefulness_ablation_v1",
+  "status": "completed",
+  "conditions": {
+    "without_memory": {
+      "planned": 15,
+      "scored": 15,
+      "exposed_trajectories": 0,
+      "selected_memory_ids": {
+        "9/0": [],
+        "24/0": [],
+        "117/0": [],
+        "267/0": [],
+        "273/0": [],
+        "9/1": [],
+        "24/1": [],
+        "117/1": [],
+        "267/1": [],
+        "273/1": [],
+        "9/2": [],
+        "24/2": [],
+        "117/2": [],
+        "267/2": [],
+        "273/2": []
+      },
+      "means": {
+        "task_fulfillment": 8.68,
+        "grounding": 9.893333333333334,
+        "planning_and_efficiency": 9.933333333333334
+      },
+      "judge_slots": 75,
+      "valid_judge_slots": 75,
+      "agent_requests": 43
+    },
+    "with_memory": {
+      "planned": 15,
+      "scored": 15,
+      "exposed_trajectories": 15,
+      "selected_memory_ids": {
+        "9/0": [
+          "31e03761-043c-4edf-bda1-232603a375a9",
+          "4faf0f2a-cf77-4df2-a323-a10fe45a1373",
+          "8ae43ff3-850a-4358-91ed-cdc5374b8fea"
+        ],
+        "24/0": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "8ae43ff3-850a-4358-91ed-cdc5374b8fea",
+          "e7573fee-160b-4a29-9fec-dbcb9478b4cc"
+        ],
+        "117/0": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e",
+          "e7573fee-160b-4a29-9fec-dbcb9478b4cc"
+        ],
+        "267/0": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e"
+        ],
+        "273/0": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e"
+        ],
+        "9/1": [
+          "31e03761-043c-4edf-bda1-232603a375a9",
+          "4faf0f2a-cf77-4df2-a323-a10fe45a1373",
+          "8ae43ff3-850a-4358-91ed-cdc5374b8fea"
+        ],
+        "24/1": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "8ae43ff3-850a-4358-91ed-cdc5374b8fea",
+          "e7573fee-160b-4a29-9fec-dbcb9478b4cc"
+        ],
+        "117/1": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e",
+          "e7573fee-160b-4a29-9fec-dbcb9478b4cc"
+        ],
+        "267/1": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e"
+        ],
+        "273/1": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e"
+        ],
+        "9/2": [
+          "31e03761-043c-4edf-bda1-232603a375a9",
+          "4faf0f2a-cf77-4df2-a323-a10fe45a1373",
+          "8ae43ff3-850a-4358-91ed-cdc5374b8fea"
+        ],
+        "24/2": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "8ae43ff3-850a-4358-91ed-cdc5374b8fea",
+          "e7573fee-160b-4a29-9fec-dbcb9478b4cc"
+        ],
+        "117/2": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e",
+          "e7573fee-160b-4a29-9fec-dbcb9478b4cc"
+        ],
+        "267/2": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e"
+        ],
+        "273/2": [
+          "17ded508-00ac-4272-8604-cc52fcc6f701",
+          "dd62e74c-62b4-4a35-b88c-8349f21c111e"
+        ]
+      },
+      "means": {
+        "task_fulfillment": 8.44,
+        "grounding": 8.906666666666666,
+        "planning_and_efficiency": 9.946666666666665
+      },
+      "judge_slots": 75,
+      "valid_judge_slots": 75,
+      "agent_requests": 40
+    }
+  },
+  "pairs": [
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 9,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -3.0
+    },
+    {
+      "task_id": 9,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -1.2000000000000002
+    },
+    {
+      "task_id": 24,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 24,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 24,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 117,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 117,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 117,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 267,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.40000000000000036
+    },
+    {
+      "task_id": 267,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 267,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.1999999999999993
+    },
+    {
+      "task_id": 273,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 273,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    },
+    {
+      "task_id": 273,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0
+    }
+  ],
+  "interpretation": "Small development diagnostic, not a server-evolution experiment or proof of task success."
+}

@@ -1,0 +1,547 @@
+{
+  "protocol": "expanded_verified_skills_v1",
+  "status": "completed",
+  "settings": {
+    "selection_file": "config/subsets/selected_tasks.json",
+    "selection_seed": 6203,
+    "task_source": "src/custom/data/test_cases/test_cases.json",
+    "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+    "fixtures": "anotation_path",
+    "mode": "live",
+    "agent_repeats": 3,
+    "judge_attempts_per_trajectory": 5,
+    "agent_model": "glm-4-flash-250414",
+    "judge_model": "",
+    "agent_temperature": 0.2,
+    "judge_temperature": 0,
+    "agent_max_tokens": 8192,
+    "judge_max_tokens": 8192,
+    "round_policy": "early_tool_count_plus_one",
+    "judge_failure_top_up": false,
+    "automatic_api_retries": 0,
+    "stages": [
+      "original",
+      "iter3",
+      "iter5"
+    ],
+    "strategies": [
+      "no_update",
+      "full_rewrite",
+      "selective_patch"
+    ],
+    "strategy_plugins": [
+      "custom.experiment.selective_patch"
+    ],
+    "runtime": {
+      "configs": {
+        "original": "config/local/original.json",
+        "iter3": "config/local/iter3.json",
+        "iter5": "config/local/iter5.json"
+      },
+      "policies": {
+        "12306-mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes read-only train/station queries and process-local caches.",
+          "concurrency": "readonly"
+        },
+        "original_from_tina": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source implements a static catalog and simulated orders; no order HTTP request.",
+          "concurrency": "private"
+        },
+        "@remotion/mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs read-only remote documentation fetches.",
+          "concurrency": "readonly"
+        },
+        "@opentofu/opentofu-mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs registry/documentation reads.",
+          "concurrency": "readonly"
+        },
+        "@driflyte/mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes remote topic listing and search reads.",
+          "concurrency": "readonly"
+        },
+        "bazi-mcp": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source calculates Bazi data locally without persistent application state.",
+          "concurrency": "private"
+        },
+        "mcp-trends-hub": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source fetches public news/RSS; mutable cache is process-local.",
+          "concurrency": "readonly"
+        },
+        "mcp-server-commands": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory.",
+          "concurrency": "private"
+        },
+        "mcp-shrimp-task-manager": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "DATA_DIR points to private task/memory/template state.",
+          "env_paths": {
+            "DATA_DIR": "workspace/shrimp-data"
+          },
+          "concurrency": "private"
+        },
+        "mcp-tasks": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+          "env_paths": {
+            "SOURCES_PATH": "workspace/tasks-sources.json",
+            "WORKSPACE_FOLDER_PATHS": "workspace"
+          },
+          "concurrency": "private"
+        },
+        "@aiuluna/knowledge-graph-mcp": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+          "env_paths": {
+            "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+          },
+          "concurrency": "private"
+        }
+      },
+      "connect_timeout": 5,
+      "read_timeout": 60,
+      "tool_timeout": 60,
+      "startup_timeout": 45,
+      "shutdown_timeout": 10,
+      "model_timeout": 180,
+      "metadata_verified": false,
+      "evolution_files": {
+        "original": [],
+        "iter3": [],
+        "iter5": []
+      },
+      "catalog_source": "live"
+    },
+    "agent_thinking": null,
+    "judge_thinking": null,
+    "task_count": 17,
+    "request_policy": {
+      "minimum_interval": 0.2,
+      "overload_cooldown": 60,
+      "maximum_cooldown": 300,
+      "recovery_successes": 5,
+      "max_concurrency": 2,
+      "long_context_concurrency": 2,
+      "long_context_threshold": 8192
+    },
+    "providers": {
+      "agent": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ],
+      "judge": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ]
+    },
+    "judge_output_mode": "json_object",
+    "agent_backend": "langchain",
+    "memory": {
+      "artifact": "results/20261024T222342.186571Z_Kevin/candidate-k0.json",
+      "source": "results/20261024T222342.186571Z_Kevin/candidate-evidence.json",
+      "inject": true,
+      "context_chars": 8000,
+      "model": "glm-4-flash-250414"
+    }
+  },
+  "cases": [
+    {
+      "id": "analysis-0",
+      "family": "analysis",
+      "split": "practice",
+      "recovery": true,
+      "subject": "museum telemetry",
+      "summary": "Develop an independent museum telemetry prototype with clear validation and review stages.",
+      "names": [
+        "museum telemetry component 1",
+        "museum telemetry component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent museum telemetry prototype.",
+        "Implement and validate component 2 for the independent museum telemetry prototype."
+      ],
+      "source_file": "practice-analysis-0.md",
+      "status": "To Do"
+    },
+    {
+      "id": "analysis-1",
+      "family": "analysis",
+      "split": "practice",
+      "recovery": true,
+      "subject": "orchard irrigation",
+      "summary": "Develop an independent orchard irrigation prototype with clear validation and review stages.",
+      "names": [
+        "orchard irrigation component 1",
+        "orchard irrigation component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent orchard irrigation prototype.",
+        "Implement and validate component 2 for the independent orchard irrigation prototype."
+      ],
+      "source_file": "practice-analysis-1.json",
+      "status": "In Progress"
+    },
+    {
+      "id": "analysis-2",
+      "family": "analysis",
+      "split": "validation",
+      "recovery": true,
+      "subject": "harbor scheduling",
+      "summary": "Develop an independent harbor scheduling prototype with clear validation and review stages.",
+      "names": [
+        "harbor scheduling component 1",
+        "harbor scheduling component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent harbor scheduling prototype.",
+        "Implement and validate component 2 for the independent harbor scheduling prototype."
+      ],
+      "source_file": "practice-analysis-2.yml",
+      "status": "To Do"
+    },
+    {
+      "id": "analysis-3",
+      "family": "analysis",
+      "split": "validation",
+      "recovery": false,
+      "subject": "library preservation",
+      "summary": "Develop an independent library preservation prototype with clear validation and review stages.",
+      "names": [
+        "library preservation component 1",
+        "library preservation component 2",
+        "library preservation component 3"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent library preservation prototype.",
+        "Implement and validate component 2 for the independent library preservation prototype.",
+        "Implement and validate component 3 for the independent library preservation prototype."
+      ],
+      "source_file": "practice-analysis-3.md",
+      "status": "In Progress"
+    },
+    {
+      "id": "split-0",
+      "family": "split",
+      "split": "practice",
+      "recovery": true,
+      "subject": "museum telemetry",
+      "summary": "Develop an independent museum telemetry prototype with clear validation and review stages.",
+      "names": [
+        "museum telemetry component 1",
+        "museum telemetry component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent museum telemetry prototype.",
+        "Implement and validate component 2 for the independent museum telemetry prototype."
+      ],
+      "source_file": "practice-split-0.md",
+      "status": "To Do"
+    },
+    {
+      "id": "split-1",
+      "family": "split",
+      "split": "practice",
+      "recovery": true,
+      "subject": "orchard irrigation",
+      "summary": "Develop an independent orchard irrigation prototype with clear validation and review stages.",
+      "names": [
+        "orchard irrigation component 1",
+        "orchard irrigation component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent orchard irrigation prototype.",
+        "Implement and validate component 2 for the independent orchard irrigation prototype."
+      ],
+      "source_file": "practice-split-1.json",
+      "status": "In Progress"
+    },
+    {
+      "id": "split-2",
+      "family": "split",
+      "split": "validation",
+      "recovery": true,
+      "subject": "harbor scheduling",
+      "summary": "Develop an independent harbor scheduling prototype with clear validation and review stages.",
+      "names": [
+        "harbor scheduling component 1",
+        "harbor scheduling component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent harbor scheduling prototype.",
+        "Implement and validate component 2 for the independent harbor scheduling prototype."
+      ],
+      "source_file": "practice-split-2.yml",
+      "status": "To Do"
+    },
+    {
+      "id": "split-3",
+      "family": "split",
+      "split": "validation",
+      "recovery": false,
+      "subject": "library preservation",
+      "summary": "Develop an independent library preservation prototype with clear validation and review stages.",
+      "names": [
+        "library preservation component 1",
+        "library preservation component 2",
+        "library preservation component 3"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent library preservation prototype.",
+        "Implement and validate component 2 for the independent library preservation prototype.",
+        "Implement and validate component 3 for the independent library preservation prototype."
+      ],
+      "source_file": "practice-split-3.md",
+      "status": "In Progress"
+    },
+    {
+      "id": "source-0",
+      "family": "source",
+      "split": "practice",
+      "recovery": true,
+      "subject": "museum telemetry",
+      "summary": "Develop an independent museum telemetry prototype with clear validation and review stages.",
+      "names": [
+        "museum telemetry component 1",
+        "museum telemetry component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent museum telemetry prototype.",
+        "Implement and validate component 2 for the independent museum telemetry prototype."
+      ],
+      "source_file": "practice-source-0.md",
+      "status": "To Do"
+    },
+    {
+      "id": "source-1",
+      "family": "source",
+      "split": "practice",
+      "recovery": true,
+      "subject": "orchard irrigation",
+      "summary": "Develop an independent orchard irrigation prototype with clear validation and review stages.",
+      "names": [
+        "orchard irrigation component 1",
+        "orchard irrigation component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent orchard irrigation prototype.",
+        "Implement and validate component 2 for the independent orchard irrigation prototype."
+      ],
+      "source_file": "practice-source-1.json",
+      "status": "In Progress"
+    },
+    {
+      "id": "source-2",
+      "family": "source",
+      "split": "validation",
+      "recovery": true,
+      "subject": "harbor scheduling",
+      "summary": "Develop an independent harbor scheduling prototype with clear validation and review stages.",
+      "names": [
+        "harbor scheduling component 1",
+        "harbor scheduling component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent harbor scheduling prototype.",
+        "Implement and validate component 2 for the independent harbor scheduling prototype."
+      ],
+      "source_file": "practice-source-2.yml",
+      "status": "To Do"
+    },
+    {
+      "id": "source-3",
+      "family": "source",
+      "split": "validation",
+      "recovery": false,
+      "subject": "library preservation",
+      "summary": "Develop an independent library preservation prototype with clear validation and review stages.",
+      "names": [
+        "library preservation component 1",
+        "library preservation component 2",
+        "library preservation component 3"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent library preservation prototype.",
+        "Implement and validate component 2 for the independent library preservation prototype.",
+        "Implement and validate component 3 for the independent library preservation prototype."
+      ],
+      "source_file": "practice-source-3.md",
+      "status": "In Progress"
+    },
+    {
+      "id": "request-0",
+      "family": "request",
+      "split": "practice",
+      "recovery": true,
+      "subject": "museum telemetry",
+      "summary": "Develop an independent museum telemetry prototype with clear validation and review stages.",
+      "names": [
+        "museum telemetry component 1",
+        "museum telemetry component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent museum telemetry prototype.",
+        "Implement and validate component 2 for the independent museum telemetry prototype."
+      ],
+      "source_file": "practice-request-0.md",
+      "status": "To Do"
+    },
+    {
+      "id": "request-1",
+      "family": "request",
+      "split": "practice",
+      "recovery": true,
+      "subject": "orchard irrigation",
+      "summary": "Develop an independent orchard irrigation prototype with clear validation and review stages.",
+      "names": [
+        "orchard irrigation component 1",
+        "orchard irrigation component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent orchard irrigation prototype.",
+        "Implement and validate component 2 for the independent orchard irrigation prototype."
+      ],
+      "source_file": "practice-request-1.json",
+      "status": "In Progress"
+    },
+    {
+      "id": "request-2",
+      "family": "request",
+      "split": "validation",
+      "recovery": true,
+      "subject": "harbor scheduling",
+      "summary": "Develop an independent harbor scheduling prototype with clear validation and review stages.",
+      "names": [
+        "harbor scheduling component 1",
+        "harbor scheduling component 2"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent harbor scheduling prototype.",
+        "Implement and validate component 2 for the independent harbor scheduling prototype."
+      ],
+      "source_file": "practice-request-2.yml",
+      "status": "To Do"
+    },
+    {
+      "id": "request-3",
+      "family": "request",
+      "split": "validation",
+      "recovery": false,
+      "subject": "library preservation",
+      "summary": "Develop an independent library preservation prototype with clear validation and review stages.",
+      "names": [
+        "library preservation component 1",
+        "library preservation component 2",
+        "library preservation component 3"
+      ],
+      "descriptions": [
+        "Implement and validate component 1 for the independent library preservation prototype.",
+        "Implement and validate component 2 for the independent library preservation prototype.",
+        "Implement and validate component 3 for the independent library preservation prototype."
+      ],
+      "source_file": "practice-request-3.md",
+      "status": "In Progress"
+    }
+  ],
+  "workers": 10,
+  "practice_per_family": 2,
+  "heldout_per_family": 2,
+  "validation_repeats": 3,
+  "conditions": [
+    "without_memory",
+    "with_memory"
+  ],
+  "request_limit": 6,
+  "judge_calls": 0,
+  "source_sha256": "c245338cde12068d54fa242b37c0b20ffe460e30e6732b2f50a82e4086df7004",
+  "old_artifact_sha256": "a557bca9d9988eb97941ab26aa5a8dbb6e56f24bd2e3d3fc5830f5df1376810d",
+  "old_memory_sha256": "1d26f0e9f3da0cf5c9ab1a487fd580c972ee639866625c0594c41801be2263a6",
+  "prompt_time": "2026-10-25 (星期日)",
+  "claim_limit": "Independent synthetic operation checks, not official task performance. Official evaluation retains the frozen original 17 tasks.",
+  "builds": [
+    {
+      "family": "analysis",
+      "status": "rejected",
+      "error": {
+        "type": "ValueError",
+        "message": "Both declared practice repairs must succeed; no retry or invented fallback",
+        "unknown_outcome": false
+      }
+    },
+    {
+      "family": "split",
+      "status": "rejected",
+      "error": {
+        "type": "ValueError",
+        "message": "Both declared practice repairs must succeed; no retry or invented fallback",
+        "unknown_outcome": false
+      }
+    },
+    {
+      "family": "source",
+      "status": "accepted",
+      "summary_requests": 1,
+      "physical_replays": 2
+    },
+    {
+      "family": "request",
+      "status": "accepted",
+      "summary_requests": 1,
+      "physical_replays": 2
+    }
+  ],
+  "candidate_sha256": "349705f574a1cdad0d99e01c18ca9af1b3c2948b0d58333f25065474f38b99d0"
+}

@@ -1,0 +1,54 @@
+{
+  "status": "rejected",
+  "model": "glm-4-flash-250414",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Extract the two successful tool calls for the UNKNOWN-PATH recovery workflow. Copy their exact argument structure and literal syntax from successful observations. Parameterize only the current filename keyword as ${KEYWORD}, workspace prefix as ${WORKSPACE}, and the exact path returned by the preceding search as ${DISCOVERED_PATH}. Do not paraphrase argument values or invent new syntax. Cite successful calls from both unknown-path practices. Do not store practice filenames, keywords or payloads. Known exact paths remain a direct-read boundary, not part of this search workflow. Return one JSON data record with this shape; no JSON Schema, Markdown or extra text:\n{\"tool_call_templates\": [{\"tool_id\": \"<observed search tool ID>\", \"arguments\": {\"<observed parameter>\": \"<observed value with supported placeholders>\"}, \"evidence_call_ids\": [\"<successful search ID from each unknown-path practice>\"]}, {\"tool_id\": \"<observed read tool ID>\", \"arguments\": {\"<observed parameter>\": \"${DISCOVERED_PATH}\"}, \"evidence_call_ids\": [\"<verified read ID from each unknown-path practice>\"]}]}\nObserved independent practice:\n{\"catalog\": {\"@modelcontextprotocol/server-filesystem::search_files\": {\"server\": \"@modelcontextprotocol/server-filesystem\", \"name\": \"search_files\", \"description\": \"Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' to match files in all subdirectories. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"excludePatterns\": {\"default\": [], \"items\": {\"type\": \"string\"}, \"type\": \"array\"}, \"path\": {\"type\": \"string\"}, \"pattern\": {\"type\": \"string\"}}, \"required\": [\"path\", \"pattern\"], \"type\": \"object\"}}, \"@modelcontextprotocol/server-filesystem::read_text_file\": {\"server\": \"@modelcontextprotocol/server-filesystem\", \"name\": \"read_text_file\", \"description\": \"Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"head\": {\"description\": \"If provided, returns only the first N lines of the file\", \"type\": \"number\"}, \"path\": {\"type\": \"string\"}, \"tail\": {\"description\": \"If provided, returns only the last N lines of the file\", \"type\": \"number\"}}, \"required\": [\"path\"], \"type\": \"object\"}}}, \"practice\": [{\"case\": \"practice-middle\", \"scenario\": \"Locate by a filename keyword; extension is not supplied.\", \"observed_calls\": [{\"tool_call_id\": \"practice-middle-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/cobalt.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"ENOENT: no such file or directory, open '${WORKSPACE}\\\\cobalt.txt'\"}], \"isError\": true}}, {\"tool_call_id\": \"practice-middle-1\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/cobalt*.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"No matches found\"}], \"structuredContent\": {\"content\": \"No matches found\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-middle-2\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*cobalt*\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"${WORKSPACE}\\\\level-0\\\\draft-cobalt-v2.txt\"}], \"structuredContent\": {\"content\": \"${WORKSPACE}\\\\level-0\\\\draft-cobalt-v2.txt\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-middle-3\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/level-0/draft-cobalt-v2.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Payload: de15418081ba2066ca289ad62692381e42acaf8b619616c1e05d91152c7ce8a9\"}], \"structuredContent\": {\"content\": \"Payload: de15418081ba2066ca289ad62692381e42acaf8b619616c1e05d91152c7ce8a9\"}, \"isError\": false}, \"verification\": {\"kind\": \"exact_file_read\", \"response_sha256\": \"09346448a1736b268e61169a6b0a82c81047e6318df345cd4e7bf171ed164472\"}}], \"verified_read_call_ids\": [\"practice-middle-3\"], \"input_keyword\": \"cobalt\"}, {\"case\": \"practice-extension\", \"scenario\": \"Locate by a filename keyword; extension is not supplied.\", \"observed_calls\": [{\"tool_call_id\": \"practice-extension-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/marigold.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"ENOENT: no such file or directory, open '${WORKSPACE}\\\\marigold.txt'\"}], \"isError\": true}}, {\"tool_call_id\": \"practice-extension-1\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*marigold*.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"No matches found\"}], \"structuredContent\": {\"content\": \"No matches found\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-extension-2\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*marigold*\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"${WORKSPACE}\\\\level-0\\\\level-1\\\\level-2\\\\archive-marigold.md\"}], \"structuredContent\": {\"content\": \"${WORKSPACE}\\\\level-0\\\\level-1\\\\level-2\\\\archive-marigold.md\"}, \"isError\": false}}, {\"tool_call_id\": \"practice-extension-3\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/level-0/level-1/level-2/archive-marigold.md\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Payload: de781feb500b874d1d58a6626a8d6dc8520382cd295b718f86b55dff80be7a50\"}], \"structuredContent\": {\"content\": \"Payload: de781feb500b874d1d58a6626a8d6dc8520382cd295b718f86b55dff80be7a50\"}, \"isError\": false}, \"verification\": {\"kind\": \"exact_file_read\", \"response_sha256\": \"4e0f2c91406c05d36f3ba475536ce0f7def01354643c233b710fac555396b6d5\"}}], \"verified_read_call_ids\": [\"practice-extension-3\"], \"input_keyword\": \"marigold\"}, {\"case\": \"practice-known\", \"scenario\": \"The exact existing file path is already known; read directly.\", \"observed_calls\": [{\"tool_call_id\": \"practice-known-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/quartz-memo.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Payload: f207495226555674cd996f64a406e3ecb3c373f15a2b412436fa3bc40188eeb8\"}], \"structuredContent\": {\"content\": \"Payload: f207495226555674cd996f64a406e3ecb3c373f15a2b412436fa3bc40188eeb8\"}, \"isError\": false}, \"verification\": {\"kind\": \"exact_file_read\", \"response_sha256\": \"5f07fe9301b8dc0388cca2e467bde92f586fc3da913b1e6da3e0dc4c2d129b3f\"}}], \"verified_read_call_ids\": [\"practice-known-0\"], \"input_keyword\": \"quartz\"}]}"
+    }
+  ],
+  "requests": [
+    {
+      "status": "completed",
+      "response": {
+        "id": "20261025061821b4cb080474064460",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"tool_call_templates\":[{\"tool_id\":\"@modelcontextprotocol/server-filesystem::search_files\",\"arguments\":{\"path\":\"${WORKSPACE}\",\"pattern\":\"**/${KEYWORD}*.txt\"},\"evidence_call_ids\":[\"practice-middle-1\",\"practice-extension-1\"]},{\"tool_id\":\"@modelcontextprotocol/server-filesystem::read_text_file\",\"arguments\":{\"path\":\"${DISCOVERED_PATH}\"},\"evidence_call_ids\":[\"practice-middle-3\",\"practice-extension-3\"]}]}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null
+            }
+          }
+        ],
+        "created": 1792880305,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 150,
+          "prompt_tokens": 2169,
+          "total_tokens": 2319,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "20261025061821b4cb080474064460"
+      }
+    }
+  ],
+  "error": {
+    "type": "ValueError",
+    "message": "Template does not reproduce cited successful practice arguments",
+    "unknown_outcome": false
+  }
+}

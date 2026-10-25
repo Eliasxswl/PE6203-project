@@ -1,0 +1,29 @@
+{
+  "memory_boundary_tests": {
+    "passed": 8,
+    "runner": "unittest"
+  },
+  "regression_suite": {
+    "passed": 135,
+    "skipped": 1,
+    "intermediate_failures": 2,
+    "intermediate_failure_causes": [
+      "Source changed during serial/spawn fingerprint comparison",
+      "Old test mock did not provide newly recorded builder model"
+    ],
+    "followup_check": {
+      "passed": 7,
+      "scope": "Six current memory boundary tests plus the serial/spawn/resume regression"
+    },
+    "final_alias_change": {
+      "passed": 8,
+      "scope": "Current memory boundary tests including actual API alias translation/rejection"
+    }
+  },
+  "fingerprints_verified": true,
+  "memory_exposure_verified": {
+    "without_memory": 0,
+    "with_memory": 15
+  },
+  "interpretation": "Integration evidence only; no claim of improved task success."
+}

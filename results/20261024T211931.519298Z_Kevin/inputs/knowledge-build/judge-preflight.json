@@ -1,0 +1,53 @@
+{
+  "purpose": "actual_trajectory_judge_compatibility",
+  "semantic_accuracy": "not_validated",
+  "source_experiment": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\results\\20261024T110532.417196Z_Kevin",
+  "trajectory": "without_memory/original/9/0",
+  "source_trajectory": "without_memory/original/9/0",
+  "source_records_sha256": "8231421f0a46dea6fc3cc9e9fbb03a5c80eeb790bc65a0a3ba2032ae77d4bd7d",
+  "source_harness_protocol": "langmem_usefulness_ablation_v1",
+  "request_harness_protocol": "shared_early_json_v1",
+  "prompt_sha256": "4dee8567aeb732250ab7d92e5a11d876c7a518009b497ce537e2dcf366def584",
+  "prompt_characters": 28107,
+  "dimension_order": [
+    0,
+    1,
+    2
+  ],
+  "output_contract": {
+    "mode": "json_object",
+    "schema_sha256": "81b3701518751bcc09f641d5324a3cc21a48837258729360ef4118a35e513c79",
+    "validation": "local_json_schema",
+    "server_strict_schema": false
+  },
+  "provider_index": 1,
+  "model": "glm-4-flash-250414",
+  "temperature": 0,
+  "max_tokens": 8192,
+  "thinking": null,
+  "attempts": [
+    {
+      "slot": 0,
+      "status": "completed",
+      "raw": "{\"task_fulfillment_reasoning\":\"Total requirements: 3 (find log file, read log file, analyze log file). Met requirements: 1 (found directory but not the log file). Defect rate: (2/3) * 100% = 66.67%.\",\"grounding_reasoning\":\"Total claims: 2 (log file not found, possible reasons). Supported claims: 1 (log file not found). Unsupported claims: 1 (possible reasons). Defect rate: (1/2) * 100% = 50%.\",\"planning_efficiency_reasoning\":\"Total tool calls: 2. Redundant/unnecessary calls: 0. Defect rate: (0/2) * 100% = 0%.\",\"task_fulfillment\":4,\"grounding\":7,\"planning_and_efficiency\":10}",
+      "usage": {
+        "completion_tokens": 205,
+        "prompt_tokens": 6973,
+        "total_tokens": 7178,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": null
+      },
+      "finish_reason": "stop",
+      "result": {
+        "task_fulfillment_reasoning": "Total requirements: 3 (find log file, read log file, analyze log file). Met requirements: 1 (found directory but not the log file). Defect rate: (2/3) * 100% = 66.67%.",
+        "grounding_reasoning": "Total claims: 2 (log file not found, possible reasons). Supported claims: 1 (log file not found). Unsupported claims: 1 (possible reasons). Defect rate: (1/2) * 100% = 50%.",
+        "planning_efficiency_reasoning": "Total tool calls: 2. Redundant/unnecessary calls: 0. Defect rate: (0/2) * 100% = 0%.",
+        "task_fulfillment": 4,
+        "grounding": 7,
+        "planning_and_efficiency": 10
+      },
+      "elapsed_seconds": 7.37123019999126
+    }
+  ],
+  "status": "passed"
+}

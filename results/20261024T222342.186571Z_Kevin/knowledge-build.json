@@ -1,0 +1,29 @@
+{
+  "status": "accepted",
+  "method": "verified_trace_parameterization",
+  "templates": [
+    {
+      "tool_id": "@modelcontextprotocol/server-filesystem::search_files",
+      "arguments": {
+        "path": "${WORKSPACE}",
+        "pattern": "**/*${KEYWORD}*"
+      },
+      "evidence_call_ids": [
+        "practice-middle-2",
+        "practice-extension-2"
+      ]
+    },
+    {
+      "tool_id": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": {
+        "path": "${DISCOVERED_PATH}"
+      },
+      "evidence_call_ids": [
+        "practice-middle-3",
+        "practice-extension-3"
+      ]
+    }
+  ],
+  "requests": [],
+  "summary_source": "results/20261024T220523.893038Z_Kevin/frozen-rule.json"
+}

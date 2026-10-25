@@ -1,0 +1,285 @@
+{
+  "protocol": "verified_file_recovery_causal_v2",
+  "status": "completed",
+  "output_mode": "json_object",
+  "model": "glm-4-flash-250414",
+  "schema": {
+    "additionalProperties": false,
+    "description": "Transferable file discovery/recovery procedure grounded in observed calls.",
+    "properties": {
+      "tool_ids": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Tool Ids",
+        "type": "array"
+      },
+      "content": {
+        "description": "Concise general procedure; never copy practice filenames, keyword or file contents",
+        "minLength": 1,
+        "title": "Content",
+        "type": "string"
+      },
+      "applicability": {
+        "description": "Observable situation in which the procedure applies",
+        "minLength": 1,
+        "title": "Applicability",
+        "type": "string"
+      },
+      "failed_assumption": {
+        "description": "What failed, and why the observation does not establish file absence",
+        "minLength": 1,
+        "title": "Failed Assumption",
+        "type": "string"
+      },
+      "corrective_actions": {
+        "description": "Ordered general actions using current inputs and returned paths, not practice constants",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Corrective Actions",
+        "type": "array"
+      },
+      "verification": {
+        "description": "Observable successful-read criterion, not merely a final claim",
+        "minLength": 1,
+        "title": "Verification",
+        "type": "string"
+      },
+      "evidence_call_ids": {
+        "description": "IDs of the supplied real calls supporting both failure and successful correction",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 2,
+        "title": "Evidence Call Ids",
+        "type": "array"
+      }
+    },
+    "required": [
+      "tool_ids",
+      "content",
+      "applicability",
+      "failed_assumption",
+      "corrective_actions",
+      "verification",
+      "evidence_call_ids"
+    ],
+    "title": "FileRecovery",
+    "type": "object"
+  },
+  "evidence": {
+    "observed_calls": [
+      {
+        "tool_call_id": "probe-0",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+        "arguments": "{\"path\": \"${WORKSPACE}/missing.txt\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ENOENT: no such file or directory, open '${WORKSPACE}\\missing.txt'"
+            }
+          ],
+          "isError": true
+        }
+      },
+      {
+        "tool_call_id": "probe-1",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+        "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"*item_f76e90f0f2*\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "No matches found"
+            }
+          ],
+          "structuredContent": {
+            "content": "No matches found"
+          },
+          "isError": false
+        }
+      },
+      {
+        "tool_call_id": "probe-2",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+        "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*item_f76e90f0f2*\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "${WORKSPACE}\\shelf_f76e90f0f2\\item_f76e90f0f2.txt"
+            }
+          ],
+          "structuredContent": {
+            "content": "${WORKSPACE}\\shelf_f76e90f0f2\\item_f76e90f0f2.txt"
+          },
+          "isError": false
+        }
+      },
+      {
+        "tool_call_id": "probe-3",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+        "arguments": "{\"path\": \"${WORKSPACE}/shelf_f76e90f0f2/item_f76e90f0f2.txt\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1"
+            }
+          ],
+          "structuredContent": {
+            "content": "Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1"
+          },
+          "isError": false
+        }
+      }
+    ],
+    "program_verified": {
+      "success": true,
+      "verified_read_call_ids": [
+        "probe-3"
+      ],
+      "tool_errors": 1
+    },
+    "required_success_evidence_ids": [
+      "probe-3"
+    ],
+    "failed_observation_ids": [
+      "probe-0",
+      "probe-1"
+    ],
+    "scope": "Derive a reusable lookup/recovery rule. Do not retain practice paths, keyword or payload.",
+    "catalog": {
+      "@modelcontextprotocol/server-filesystem::search_files": {
+        "server": "@modelcontextprotocol/server-filesystem",
+        "name": "search_files",
+        "description": "Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' to match files in all subdirectories. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
+          "properties": {
+            "excludePatterns": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "path": {
+              "type": "string"
+            },
+            "pattern": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "pattern"
+          ],
+          "type": "object"
+        }
+      },
+      "@modelcontextprotocol/server-filesystem::read_text_file": {
+        "server": "@modelcontextprotocol/server-filesystem",
+        "name": "read_text_file",
+        "description": "Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
+          "properties": {
+            "head": {
+              "description": "If provided, returns only the first N lines of the file",
+              "type": "number"
+            },
+            "path": {
+              "type": "string"
+            },
+            "tail": {
+              "description": "If provided, returns only the last N lines of the file",
+              "type": "number"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "type": "object"
+        }
+      }
+    }
+  },
+  "versions": {
+    "openai": "3.37.0"
+  },
+  "requests": [
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Derive one reusable tool-recovery procedure from the observed failure and verified correction below. Explain the actual change that enabled success, rather than listing tool descriptions. Preserve failure and successful-read evidence IDs. Do not copy practice filenames, keyword, payload or private paths. Use current task inputs and tool-returned paths in the procedure.\nObserved practice evidence:\n{\"observed_calls\": [{\"tool_call_id\": \"probe-0\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/missing.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"ENOENT: no such file or directory, open '${WORKSPACE}\\\\missing.txt'\"}], \"isError\": true}}, {\"tool_call_id\": \"probe-1\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"*item_f76e90f0f2*\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"No matches found\"}], \"structuredContent\": {\"content\": \"No matches found\"}, \"isError\": false}}, {\"tool_call_id\": \"probe-2\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::search_files\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}\\\", \\\"pattern\\\": \\\"**/*item_f76e90f0f2*\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"${WORKSPACE}\\\\shelf_f76e90f0f2\\\\item_f76e90f0f2.txt\"}], \"structuredContent\": {\"content\": \"${WORKSPACE}\\\\shelf_f76e90f0f2\\\\item_f76e90f0f2.txt\"}, \"isError\": false}}, {\"tool_call_id\": \"probe-3\", \"semantic_identity\": \"@modelcontextprotocol/server-filesystem::read_text_file\", \"arguments\": \"{\\\"path\\\": \\\"${WORKSPACE}/shelf_f76e90f0f2/item_f76e90f0f2.txt\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1\"}], \"structuredContent\": {\"content\": \"Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1\"}, \"isError\": false}}], \"program_verified\": {\"success\": true, \"verified_read_call_ids\": [\"probe-3\"], \"tool_errors\": 1}, \"required_success_evidence_ids\": [\"probe-3\"], \"failed_observation_ids\": [\"probe-0\", \"probe-1\"], \"scope\": \"Derive a reusable lookup/recovery rule. Do not retain practice paths, keyword or payload.\", \"catalog\": {\"@modelcontextprotocol/server-filesystem::search_files\": {\"server\": \"@modelcontextprotocol/server-filesystem\", \"name\": \"search_files\", \"description\": \"Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' to match files in all subdirectories. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"excludePatterns\": {\"default\": [], \"items\": {\"type\": \"string\"}, \"type\": \"array\"}, \"path\": {\"type\": \"string\"}, \"pattern\": {\"type\": \"string\"}}, \"required\": [\"path\", \"pattern\"], \"type\": \"object\"}}, \"@modelcontextprotocol/server-filesystem::read_text_file\": {\"server\": \"@modelcontextprotocol/server-filesystem\", \"name\": \"read_text_file\", \"description\": \"Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"head\": {\"description\": \"If provided, returns only the first N lines of the file\", \"type\": \"number\"}, \"path\": {\"type\": \"string\"}, \"tail\": {\"description\": \"If provided, returns only the last N lines of the file\", \"type\": \"number\"}}, \"required\": [\"path\"], \"type\": \"object\"}}}}\nReturn one JSON DATA RECORD with these seven direct keys. Replace every placeholder using the observations. Do not return a JSON Schema; do not wrap values in properties, title, type or required. No Markdown or extra text. Record shape:\n{\"tool_ids\": [\"<exact ID from catalog>\"], \"content\": \"<general procedure>\", \"applicability\": \"<observable situation>\", \"failed_assumption\": \"<why the old attempt failed>\", \"corrective_actions\": [\"<general action using current inputs>\"], \"verification\": \"<observable successful read criterion>\", \"evidence_call_ids\": [\"<observed failure ID>\", \"<observed verified-read ID>\"]}"
+        }
+      ],
+      "response": {
+        "id": "202610250451014be13603bffe480a",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"tool_ids\":[\"@modelcontextprotocol/server-filesystem::search_files\",\"@modelcontextprotocol/server-filesystem::read_text_file\"],\"content\":\"First, recursively search the workspace for the item using a pattern that includes '**/' to ensure all subdirectories are searched. If the item is found, read the contents of the identified file. This procedure ensures the item exists and its contents can be accessed.\",\"applicability\":\"When attempting to read a file but encountering a 'file not found' error, and the exact file path is unknown but the file name or a pattern is known.\",\"failed_assumption\":\"Assuming the file exists at a known path without verifying its presence or location.\",\"corrective_actions\":[\"Use 'search_files' with '**/' in the pattern to locate the file within the workspace.\",\"Use 'read_text_file' with the full path returned by 'search_files' to read the file contents.\"],\"verification\":\"The file is successfully read and its contents are returned without errors.\",\"evidence_call_ids\":[\"probe-0\",\"probe-3\"]}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null
+            }
+          }
+        ],
+        "created": 1792875067,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 232,
+          "prompt_tokens": 1288,
+          "total_tokens": 1520,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "202610250451014be13603bffe480a"
+      }
+    }
+  ],
+  "memories": [
+    {
+      "id": "aee4f1ad0f03afe64d0d659b",
+      "value": {
+        "tool_ids": [
+          "@modelcontextprotocol/server-filesystem::search_files",
+          "@modelcontextprotocol/server-filesystem::read_text_file"
+        ],
+        "content": "First, recursively search the workspace for the item using a pattern that includes '**/' to ensure all subdirectories are searched. If the item is found, read the contents of the identified file. This procedure ensures the item exists and its contents can be accessed.",
+        "applicability": "When attempting to read a file but encountering a 'file not found' error, and the exact file path is unknown but the file name or a pattern is known.",
+        "failed_assumption": "Assuming the file exists at a known path without verifying its presence or location.",
+        "corrective_actions": [
+          "Use 'search_files' with '**/' in the pattern to locate the file within the workspace.",
+          "Use 'read_text_file' with the full path returned by 'search_files' to read the file contents."
+        ],
+        "verification": "The file is successfully read and its contents are returned without errors.",
+        "evidence_call_ids": [
+          "probe-0",
+          "probe-3"
+        ]
+      }
+    }
+  ]
+}

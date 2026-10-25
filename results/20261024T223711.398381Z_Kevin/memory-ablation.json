@@ -1,0 +1,1164 @@
+{
+  "protocol": "verified_recovery_usefulness_ablation_v1",
+  "status": "completed_with_failures",
+  "conditions": {
+    "without_memory": {
+      "planned": 51,
+      "scored": 50,
+      "exposed_trajectories": 0,
+      "selected_memory_ids": {
+        "9/0": [],
+        "24/0": [],
+        "117/0": [],
+        "416/0": [],
+        "267/0": [],
+        "271/0": [],
+        "273/0": [],
+        "274/0": [],
+        "278/0": [],
+        "386/0": [],
+        "389/0": [],
+        "390/0": [],
+        "394/0": [],
+        "403/0": [],
+        "410/0": [],
+        "411/0": [],
+        "425/0": [],
+        "9/1": [],
+        "24/1": [],
+        "117/1": [],
+        "416/1": [],
+        "267/1": [],
+        "271/1": [],
+        "273/1": [],
+        "274/1": [],
+        "278/1": [],
+        "386/1": [],
+        "389/1": [],
+        "390/1": [],
+        "394/1": [],
+        "403/1": [],
+        "410/1": [],
+        "411/1": [],
+        "425/1": [],
+        "9/2": [],
+        "24/2": [],
+        "117/2": [],
+        "416/2": [],
+        "267/2": [],
+        "271/2": [],
+        "273/2": [],
+        "274/2": [],
+        "278/2": [],
+        "386/2": [],
+        "389/2": [],
+        "390/2": [],
+        "394/2": [],
+        "403/2": [],
+        "410/2": [],
+        "411/2": [],
+        "425/2": []
+      },
+      "means": {
+        "task_fulfillment": 8.979,
+        "grounding": 9.863999999999999,
+        "planning_and_efficiency": 9.818
+      },
+      "judge_slots": 255,
+      "valid_judge_slots": 226,
+      "agent_requests": 131,
+      "execution_failures": 1,
+      "tool_calls": 80,
+      "tool_error_responses": 3
+    },
+    "with_memory": {
+      "planned": 51,
+      "scored": 47,
+      "exposed_trajectories": 48,
+      "selected_memory_ids": {
+        "9/0": [
+          "aee4f1ad0f03afe64d0d659b"
+        ],
+        "24/0": [
+          "aee4f1ad0f03afe64d0d659b",
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "117/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "416/0": [],
+        "267/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "271/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "273/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "274/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "278/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "386/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "389/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "390/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "394/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "403/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "410/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "411/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "425/0": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "9/1": [
+          "aee4f1ad0f03afe64d0d659b"
+        ],
+        "24/1": [
+          "aee4f1ad0f03afe64d0d659b",
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "117/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "416/1": [],
+        "267/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "271/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "273/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "274/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "278/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "386/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "389/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "390/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "394/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "403/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "410/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "411/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "425/1": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "9/2": [
+          "aee4f1ad0f03afe64d0d659b"
+        ],
+        "24/2": [
+          "aee4f1ad0f03afe64d0d659b",
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "117/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "416/2": [],
+        "267/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "271/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "273/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "274/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "278/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "386/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "389/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "390/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "394/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "403/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "410/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "411/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ],
+        "425/2": [
+          "b78fb1d5ddb522d5b6d1add8"
+        ]
+      },
+      "means": {
+        "task_fulfillment": 9.369148936170212,
+        "grounding": 9.830851063829787,
+        "planning_and_efficiency": 9.98404255319149
+      },
+      "judge_slots": 255,
+      "valid_judge_slots": 217,
+      "agent_requests": 119,
+      "execution_failures": 4,
+      "tool_calls": 68,
+      "tool_error_responses": 0
+    }
+  },
+  "pairs": [
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 2.4000000000000004,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 2.4000000000000004,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 9,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 4.4,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 4.4,
+        "grounding": 3.4000000000000004,
+        "planning_and_efficiency": 1.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 9,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 6.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 6.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 24,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 24,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 24,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 117,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 117,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 117,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 267,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.5999999999999996,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.5999999999999996,
+        "grounding": 1.8000000000000007,
+        "planning_and_efficiency": 0.40000000000000036
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 267,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 267,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -5.5,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -5.5,
+        "grounding": -6.75,
+        "planning_and_efficiency": -0.75
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 271,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 271,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": null,
+      "score_deltas_with_minus_without": null,
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 271,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 1.1999999999999993,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 1.1999999999999993,
+        "grounding": 1.5999999999999996,
+        "planning_and_efficiency": 1.4000000000000004
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 273,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 273,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 273,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 274,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 274,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 274,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 278,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 278,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": null,
+      "score_deltas_with_minus_without": null,
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 278,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": null,
+      "score_deltas_with_minus_without": null,
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 386,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 4.5,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 4.5,
+        "grounding": 0.0,
+        "planning_and_efficiency": 4.5
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 2,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 386,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 5.4,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 5.4,
+        "grounding": 0.0,
+        "planning_and_efficiency": 1.8000000000000007
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 386,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -2.4000000000000004,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -2.4000000000000004,
+        "grounding": -1.1999999999999993,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 389,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 389,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 389,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 9.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 9.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 1,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 390,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 390,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 1.1999999999999993,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 1.1999999999999993,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 390,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 394,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -0.5999999999999996,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -0.5999999999999996,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 394,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 394,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -0.40000000000000036,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -0.40000000000000036,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 403,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 403,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 403,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 410,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 410,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 410,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -0.40000000000000036,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -0.40000000000000036,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 411,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 411,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 411,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": null,
+      "score_deltas_with_minus_without": null,
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 416,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -3.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -3.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": false,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 416,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -0.25,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -0.25,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": false,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 416,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": -1.3499999999999996,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": -1.3499999999999996,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": false,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 425,
+      "repeat": 0,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.5999999999999996,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.5999999999999996,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 425,
+      "repeat": 1,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": 0.0,
+      "score_deltas_with_minus_without": {
+        "task_fulfillment": 0.0,
+        "grounding": 0.0,
+        "planning_and_efficiency": 0.0
+      },
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    },
+    {
+      "task_id": 425,
+      "repeat": 2,
+      "same_catalog": true,
+      "tf_delta_with_minus_without": null,
+      "score_deltas_with_minus_without": null,
+      "memory_exposed": true,
+      "tool_error_responses": {
+        "without_memory": 0,
+        "with_memory": 0
+      }
+    }
+  ],
+  "interpretation": "Frozen-knowledge Early-only comparison; model rubric scores do not certify task completion or evolution-method superiority.",
+  "paired": {
+    "all_tasks": {
+      "pairs": 46,
+      "mean_score_deltas_with_minus_without": {
+        "task_fulfillment": 0.4652173913043478,
+        "grounding": -0.02499999999999997,
+        "planning_and_efficiency": 0.18152173913043482
+      }
+    },
+    "memory_exposed": {
+      "pairs": 43,
+      "mean_score_deltas_with_minus_without": {
+        "task_fulfillment": 0.6046511627906976,
+        "grounding": -0.026744186046511596,
+        "planning_and_efficiency": 0.19418604651162794
+      }
+    }
+  },
+  "tasks": [
+    {
+      "task_id": 9,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 4.266666666666667,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 24,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 117,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 267,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": -1.6333333333333335,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 271,
+      "paired_repeats": 2,
+      "mean_tf_delta_with_minus_without": 0.5999999999999996,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 273,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 274,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 278,
+      "paired_repeats": 1,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 386,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 2.5,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 389,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 3.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 390,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 0.39999999999999974,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 394,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": -0.3333333333333333,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 403,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 410,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": -0.13333333333333344,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 411,
+      "paired_repeats": 2,
+      "mean_tf_delta_with_minus_without": 0.0,
+      "memory_exposed_repeats": 3
+    },
+    {
+      "task_id": 416,
+      "paired_repeats": 3,
+      "mean_tf_delta_with_minus_without": -1.5333333333333332,
+      "memory_exposed_repeats": 0
+    },
+    {
+      "task_id": 425,
+      "paired_repeats": 2,
+      "mean_tf_delta_with_minus_without": 0.2999999999999998,
+      "memory_exposed_repeats": 3
+    }
+  ]
+}

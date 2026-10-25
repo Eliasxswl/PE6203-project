@@ -1,0 +1,1039 @@
+{
+  "status": "superseded_without_model_task_runs",
+  "reason": "Keep the original 17 official tasks; expand and verify knowledge through independent synthetic practice instead.",
+  "drafts": {
+    "config/random-holdout.json": {
+      "selection_file": "config/subsets/random-holdout-selection.json",
+      "selection_seed": 20261025,
+      "task_source": "src/custom/data/test_cases/test_cases.json",
+      "candidate_source": "config/subsets/random-holdout-candidates.json",
+      "fixtures": "anotation_path",
+      "mode": "live",
+      "agent_repeats": 3,
+      "judge_attempts_per_trajectory": 5,
+      "agent_model": "glm-4-flash-250414",
+      "judge_model": "",
+      "agent_temperature": 0.2,
+      "judge_temperature": 0,
+      "agent_max_tokens": 8192,
+      "judge_max_tokens": 8192,
+      "round_policy": "early_tool_count_plus_one",
+      "judge_failure_top_up": false,
+      "automatic_api_retries": 0,
+      "stages": [
+        "original",
+        "iter3",
+        "iter5"
+      ],
+      "strategies": [
+        "no_update",
+        "full_rewrite",
+        "selective_patch"
+      ],
+      "strategy_plugins": [
+        "custom.experiment.selective_patch"
+      ],
+      "runtime": {
+        "configs": {
+          "original": "config/local/original.json",
+          "iter3": "config/local/iter3.json",
+          "iter5": "config/local/iter5.json"
+        },
+        "policies": {
+          "12306-mcp": {
+            "kind": "stateless",
+            "reviewed": true,
+            "reason": "Source exposes read-only train/station queries and process-local caches.",
+            "concurrency": "readonly"
+          },
+          "original_from_tina": {
+            "kind": "process_local",
+            "reviewed": true,
+            "reason": "Source implements a static catalog and simulated orders; no order HTTP request.",
+            "concurrency": "private"
+          },
+          "@remotion/mcp": {
+            "kind": "stateless",
+            "reviewed": true,
+            "reason": "Source performs read-only remote documentation fetches.",
+            "concurrency": "readonly"
+          },
+          "@opentofu/opentofu-mcp-server": {
+            "kind": "stateless",
+            "reviewed": true,
+            "reason": "Source performs registry/documentation reads.",
+            "concurrency": "readonly"
+          },
+          "@driflyte/mcp-server": {
+            "kind": "stateless",
+            "reviewed": true,
+            "reason": "Source exposes remote topic listing and search reads.",
+            "concurrency": "readonly"
+          },
+          "bazi-mcp": {
+            "kind": "process_local",
+            "reviewed": true,
+            "reason": "Source calculates Bazi data locally without persistent application state.",
+            "concurrency": "private"
+          },
+          "mcp-trends-hub": {
+            "kind": "stateless",
+            "reviewed": true,
+            "reason": "Source fetches public news/RSS; mutable cache is process-local.",
+            "concurrency": "readonly"
+          },
+          "mcp-server-commands": {
+            "kind": "workspace",
+            "reviewed": true,
+            "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory.",
+            "concurrency": "private"
+          },
+          "mcp-shrimp-task-manager": {
+            "kind": "workspace",
+            "reviewed": true,
+            "reason": "DATA_DIR points to private task/memory/template state.",
+            "env_paths": {
+              "DATA_DIR": "workspace/shrimp-data"
+            },
+            "concurrency": "private"
+          },
+          "mcp-tasks": {
+            "kind": "workspace",
+            "reviewed": true,
+            "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+            "env_paths": {
+              "SOURCES_PATH": "workspace/tasks-sources.json",
+              "WORKSPACE_FOLDER_PATHS": "workspace"
+            },
+            "concurrency": "private"
+          },
+          "@aiuluna/knowledge-graph-mcp": {
+            "kind": "workspace",
+            "reviewed": true,
+            "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+            "env_paths": {
+              "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+            },
+            "concurrency": "private"
+          }
+        },
+        "connect_timeout": 5,
+        "read_timeout": 60,
+        "tool_timeout": 60,
+        "startup_timeout": 45,
+        "shutdown_timeout": 10,
+        "model_timeout": 180,
+        "metadata_verified": false,
+        "evolution_files": {
+          "original": [],
+          "iter3": [],
+          "iter5": []
+        },
+        "catalog_source": "live"
+      },
+      "agent_thinking": null,
+      "judge_thinking": null,
+      "task_count": 5,
+      "request_policy": {
+        "minimum_interval": 0.2,
+        "overload_cooldown": 60,
+        "maximum_cooldown": 300,
+        "recovery_successes": 5,
+        "max_concurrency": 2,
+        "long_context_concurrency": 2,
+        "long_context_threshold": 8192
+      },
+      "providers": {
+        "agent": [
+          {
+            "api_key_env": "BIGMODEL_API_KEY",
+            "quota_group": "account_one"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_2",
+            "quota_group": "account_two"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_3",
+            "quota_group": "account_three"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_4",
+            "quota_group": "account_four"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_5",
+            "quota_group": "account_five"
+          }
+        ],
+        "judge": [
+          {
+            "api_key_env": "BIGMODEL_API_KEY",
+            "quota_group": "account_one"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_2",
+            "quota_group": "account_two"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_3",
+            "quota_group": "account_three"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_4",
+            "quota_group": "account_four"
+          },
+          {
+            "api_key_env": "BIGMODEL_API_KEY_5",
+            "quota_group": "account_five"
+          }
+        ]
+      },
+      "judge_output_mode": "json_object",
+      "agent_backend": "langchain",
+      "memory": {
+        "artifact": "results/20261024T222342.186571Z_Kevin/candidate-k0.json",
+        "source": "results/20261024T222342.186571Z_Kevin/candidate-evidence.json",
+        "inject": true,
+        "context_chars": 8000,
+        "model": "glm-4-flash-250414"
+      }
+    },
+    "config/subsets/random-holdout-candidates.json": {
+      "origin": "derived_from_upstream_candidates_without_modifying_tasks",
+      "upstream_candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+      "upstream_candidate_sha256": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
+      "excluded_selection": "config/subsets/selected_tasks.json",
+      "excluded_selection_sha256": "fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07",
+      "eligibility": "Existing reviewed private/readonly backend policies only; no outcome filtering. Live preflight follows sampling.",
+      "runtime_policy_sha256": "a63426efc863fa975b8e53db3fec971a50624f59ba70241cdaeb15cfe7a5d23d",
+      "samples": [
+        {
+          "idx": 29
+        },
+        {
+          "idx": 102
+        },
+        {
+          "idx": 107
+        },
+        {
+          "idx": 114
+        },
+        {
+          "idx": 157
+        },
+        {
+          "idx": 320
+        },
+        {
+          "idx": 356
+        },
+        {
+          "idx": 358
+        }
+      ]
+    },
+    "config/subsets/random-holdout-selection.json": {
+      "seed": 20261025,
+      "candidate_order": "ascending_numeric",
+      "candidate_sha256": "d0c0f43881da37461bc9d23dc7c1ba1b03b9b38bb4d83a5e7915fd22204bd588",
+      "samples": [
+        {
+          "idx": 356
+        },
+        {
+          "idx": 114
+        },
+        {
+          "idx": 102
+        },
+        {
+          "idx": 320
+        },
+        {
+          "idx": 358
+        }
+      ]
+    }
+  },
+  "preflight": {
+    "purpose": "preflight_only",
+    "catalog_source": "live",
+    "servers": {
+      "original/12306-mcp": {
+        "status": "failed",
+        "error": {
+          "type": "ExecutionFailure",
+          "message": "MCP startup timeout (TimeoutError)",
+          "unknown_outcome": false
+        }
+      },
+      "original/@driflyte/mcp-server": {
+        "status": "passed",
+        "tool_count": 2,
+        "catalog": {
+          "@driflyte/mcp-server::search": {
+            "server": "@driflyte/mcp-server",
+            "name": "search",
+            "description": "Given a list of topics and a user question, this tool retrieves the top-K most relevant documents from the crawled content. It is designed to help AI assistants surface the most contextually appropriate and up-to-date information for a specific topic and query. This enables more informed and accurate responses based on real-world, topic-tagged web content.",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "query": {
+                  "description": "The natural language query or question for which relevant information is being sought. This will be used to rank documents by semantic relevance.",
+                  "type": "string"
+                },
+                "topK": {
+                  "default": 10,
+                  "description": "The maximum number of relevant documents to return. Results are sorted by descending relevance score.",
+                  "maximum": 30,
+                  "minimum": 1,
+                  "type": "number"
+                },
+                "topics": {
+                  "description": "A list of one or more topic identifiers to constrain the search space. Only documents tagged with at least one of these topics will be considered.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "topics"
+              ],
+              "type": "object"
+            },
+            "remote_name": "_driflyte/mcp-serv_1mcp_04ea6fc483e4cd82562093c0baa5f458a194386b",
+            "outputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "documents": {
+                  "items": {
+                    "additionalProperties": false,
+                    "description": "Matched documents to the search query",
+                    "properties": {
+                      "content": {
+                        "description": "Related content (full or partial) of the matched document.",
+                        "type": "string"
+                      },
+                      "id": {
+                        "description": "Id of the matched document.",
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "additionalProperties": {},
+                        "description": "Metadata of the document and related content in key-value format.",
+                        "type": "object"
+                      },
+                      "score": {
+                        "description": "Similarity score (between 0 and 1) for the content of the document.",
+                        "maximum": 1,
+                        "minimum": 0,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "content",
+                      "metadata",
+                      "score"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "documents"
+              ],
+              "type": "object"
+            }
+          },
+          "@driflyte/mcp-server::list-topics": {
+            "server": "@driflyte/mcp-server",
+            "name": "list-topics",
+            "description": "Returns a list of topics for which resources (web pages, etc ...) have been crawled and content is available. This allows AI assistants to discover the most relevant and up-to-date subject areas currently indexed by the crawler.",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {},
+              "type": "object"
+            },
+            "remote_name": "_driflyte/mcp-serv_1mcp_ca122f46ab358b5fec7f62daa169994f73ddf0b9",
+            "outputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "topics": {
+                  "description": "List of the supported topics.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "topics"
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "original/@kazuph/mcp-taskmanager": {
+        "status": "passed",
+        "tool_count": 10,
+        "catalog": {
+          "@kazuph/mcp-taskmanager::approve_request_completion": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "approve_request_completion",
+            "description": "After all tasks are done and approved, this tool finalizes the entire request. The user must call this to confirm that the request is fully completed.\n\nA progress table showing the final status of all tasks will be displayed before requesting final approval.\n\nIf not approved, the user can add new tasks using 'request_planning' and continue the process.",
+            "inputSchema": {
+              "properties": {
+                "requestId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "requestId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_0984993a2479769ff0f997edd086ab74013c1956",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::list_requests": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "list_requests",
+            "description": "List all requests with their basic information and summary of tasks. This provides a quick overview of all requests in the system.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_0d3a370819ee17ab4d9b4a2ebc715fe4e3d5c0df",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::delete_task": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "delete_task",
+            "description": "Delete a specific task from a request. Only uncompleted tasks can be deleted.\n\nA progress table will be displayed showing the remaining tasks after deletion.",
+            "inputSchema": {
+              "properties": {
+                "requestId": {
+                  "type": "string"
+                },
+                "taskId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "requestId",
+                "taskId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_332031518b52a31f3495e6a2d4c01ef4cb3bfe08",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::mark_task_done": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "mark_task_done",
+            "description": "Mark a given task as done after you've completed it. Provide 'requestId' and 'taskId', and optionally 'completedDetails'.\n\nAfter marking a task as done, a progress table will be displayed showing the updated status of all tasks.\n\nAfter this, DO NOT proceed to 'get_next_task' again until the user has explicitly approved this completed task using 'approve_task_completion'.",
+            "inputSchema": {
+              "properties": {
+                "completedDetails": {
+                  "type": "string"
+                },
+                "requestId": {
+                  "type": "string"
+                },
+                "taskId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "requestId",
+                "taskId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_526da33d1c2bb2a591e142a29def3295d27af70b",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::approve_task_completion": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "approve_task_completion",
+            "description": "Once the assistant has marked a task as done using 'mark_task_done', the user must call this tool to approve that the task is genuinely completed. Only after this approval can you proceed to 'get_next_task' to move on.\n\nA progress table will be displayed before requesting approval, showing the current status of all tasks.\n\nIf the user does not approve, do not call 'get_next_task'. Instead, the user may request changes, or even re-plan tasks by using 'request_planning' again.",
+            "inputSchema": {
+              "properties": {
+                "requestId": {
+                  "type": "string"
+                },
+                "taskId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "requestId",
+                "taskId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_746e2e405173a1b9c40a641152e6b0d92f2f84b0",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::add_tasks_to_request": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "add_tasks_to_request",
+            "description": "Add new tasks to an existing request. This allows extending a request with additional tasks.\n\nA progress table will be displayed showing all tasks including the newly added ones.",
+            "inputSchema": {
+              "properties": {
+                "requestId": {
+                  "type": "string"
+                },
+                "tasks": {
+                  "items": {
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "description"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "requestId",
+                "tasks"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_81ef780108d72b52dc82d21d8d1ba30dc4189020",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::update_task": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "update_task",
+            "description": "Update an existing task's title and/or description. Only uncompleted tasks can be updated.\n\nA progress table will be displayed showing the updated task information.",
+            "inputSchema": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "requestId": {
+                  "type": "string"
+                },
+                "taskId": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "requestId",
+                "taskId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_8bdba2b23de7343a5efb80d92449cdb6cfe8dd98",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::request_planning": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "request_planning",
+            "description": "Register a new user request and plan its associated tasks. You must provide 'originalRequest' and 'tasks', and optionally 'splitDetails'.\n\nThis tool initiates a new workflow for handling a user's request. The workflow is as follows:\n1. Use 'request_planning' to register a request and its tasks.\n2. After adding tasks, you MUST use 'get_next_task' to retrieve the first task. A progress table will be displayed.\n3. Use 'get_next_task' to retrieve the next uncompleted task.\n4. **IMPORTANT:** After marking a task as done, the assistant MUST NOT proceed to another task without the user's approval. The user must explicitly approve the completed task using 'approve_task_completion'. A progress table will be displayed before each approval request.\n5. Once a task is approved, you can proceed to 'get_next_task' again to fetch the next pending task.\n6. Repeat this cycle until all tasks are done.\n7. After all tasks are completed (and approved), 'get_next_task' will indicate that all tasks are done and that the request awaits approval for full completion.\n8. The user must then approve the entire request's completion using 'approve_request_completion'. If the user does not approve and wants more tasks, you can again use 'request_planning' to add new tasks and continue the cycle.\n\nThe critical point is to always wait for user approval after completing each task and after all tasks are done, wait for request completion approval. Do not proceed automatically.",
+            "inputSchema": {
+              "properties": {
+                "originalRequest": {
+                  "type": "string"
+                },
+                "splitDetails": {
+                  "type": "string"
+                },
+                "tasks": {
+                  "items": {
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "description"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "originalRequest",
+                "tasks"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_dd2c32eaa0259f56cba6e2bfc054a1b007e73be3",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::get_next_task": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "get_next_task",
+            "description": "Given a 'requestId', return the next pending task (not done yet). If all tasks are completed, it will indicate that no more tasks are left and that you must wait for the request completion approval.\n\nA progress table showing the current status of all tasks will be displayed with each response.\n\nIf the same task is returned again or if no new task is provided after a task was marked as done but not yet approved, you MUST NOT proceed. In such a scenario, you must prompt the user for approval via 'approve_task_completion' before calling 'get_next_task' again. Do not skip the user's approval step.\nIn other words:\n- After calling 'mark_task_done', do not call 'get_next_task' again until 'approve_task_completion' is called by the user.\n- If 'get_next_task' returns 'all_tasks_done', it means all tasks have been completed. At this point, you must not start a new request or do anything else until the user decides to 'approve_request_completion' or possibly add more tasks via 'request_planning'.",
+            "inputSchema": {
+              "properties": {
+                "requestId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "requestId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_ddae579c4e887c941d7f1a4aa77c0dbefacb3d68",
+            "outputSchema": null
+          },
+          "@kazuph/mcp-taskmanager::open_task_details": {
+            "server": "@kazuph/mcp-taskmanager",
+            "name": "open_task_details",
+            "description": "Get details of a specific task by 'taskId'. This is for inspecting task information at any point.",
+            "inputSchema": {
+              "properties": {
+                "taskId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "taskId"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "_kazuph/mcp-taskma_1mcp_fd13e24251c539fbbb5c01046cf697279e1f8c51",
+            "outputSchema": null
+          }
+        }
+      },
+      "original/bazi-mcp": {
+        "status": "passed",
+        "tool_count": 3,
+        "catalog": {
+          "bazi-mcp::getBaziDetail": {
+            "server": "bazi-mcp",
+            "name": "getBaziDetail",
+            "description": "根据时间（公历或农历）、性别来获取八字信息。solarDatetime和lunarDatetime必须传且只传其中一个。",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "eightCharProviderSect": {
+                  "default": 2,
+                  "description": "早晚子时配置。传1表示23:00-23:59日干支为明天，传2表示23:00-23:59日干支为当天。",
+                  "type": "number"
+                },
+                "gender": {
+                  "description": "传0表示女性，传1表示男性。",
+                  "type": "number"
+                },
+                "lunarDatetime": {
+                  "description": "农历时间。例如农历2000年5月初五中午12点整表示为：`2000-5-5 12:00:00`。",
+                  "type": "string"
+                },
+                "solarDatetime": {
+                  "description": "用ISO时间格式表示的公历时间. 例如：`2008-03-01T13:00:00+08:00`。",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "gender"
+              ],
+              "type": "object"
+            },
+            "remote_name": "bazi-mcp_1mcp_getBaziDetail",
+            "outputSchema": null
+          },
+          "bazi-mcp::getChineseCalendar": {
+            "server": "bazi-mcp",
+            "name": "getChineseCalendar",
+            "description": "获取指定公历时间（默认今天）的黄历信息。",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "solarDatetime": {
+                  "description": "用ISO时间格式表示的公历时间. 例如：`2008-03-01T13:00:00+08:00`。",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "remote_name": "bazi-mcp_1mcp_getChineseCalendar",
+            "outputSchema": null
+          },
+          "bazi-mcp::getSolarTimes": {
+            "server": "bazi-mcp",
+            "name": "getSolarTimes",
+            "description": "根据八字获取公历时间列表。返回的时间格式为：YYYY-MM-DD hh:mm:ss。例如时间1998年7月31日下午2点整表示为：1998-07-31 14:00:00",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "bazi": {
+                  "description": "八字，按年柱、月柱、日柱、时柱顺序，用空格隔开。例如：戊寅 己未 己卯 辛未",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bazi"
+              ],
+              "type": "object"
+            },
+            "remote_name": "bazi-mcp_1mcp_getSolarTimes",
+            "outputSchema": null
+          }
+        }
+      },
+      "original/mcp-server-commands": {
+        "status": "passed",
+        "tool_count": 1,
+        "catalog": {
+          "mcp-server-commands::run_process": {
+            "server": "mcp-server-commands",
+            "name": "run_process",
+            "description": "Run a process on this win32 machine",
+            "inputSchema": {
+              "properties": {
+                "argv": {
+                  "description": "Executable and arguments. argv[0] is the executable. Required when mode='executable'. Forbidden when mode='shell'.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "command_line": {
+                  "description": "Shell command line. Required when mode='shell'. Forbidden when mode='executable'.",
+                  "type": "string"
+                },
+                "cwd": {
+                  "description": "Optional to set working directory",
+                  "type": "string"
+                },
+                "dry_run": {
+                  "description": "Optional explain what would run, defaults to False.",
+                  "type": "boolean"
+                },
+                "mode": {
+                  "description": "What are you running, two choices: 'shell' or 'executable' (required, no default)",
+                  "enum": [
+                    "shell",
+                    "executable"
+                  ]
+                },
+                "stdin": {
+                  "description": "Optional text written to STDIN (written fully, then closed). Useful for heredoc-style input or file contents.",
+                  "type": "string"
+                },
+                "timeout_ms": {
+                  "description": "Optional timeout in milliseconds, defaults to 30,000ms",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "mode"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "mcp-server-commands_1mcp_run_process",
+            "outputSchema": null
+          }
+        }
+      },
+      "original/mcp-tasks": {
+        "status": "passed",
+        "tool_count": 5,
+        "catalog": {
+          "mcp-tasks::tasks_add": {
+            "server": "mcp-tasks",
+            "name": "tasks_add",
+            "description": "Add new tasks with a specific status. It's faster and cheaper if you use this in batch. User can add atomically while AI works using the CLI add tool",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "index": {
+                  "description": "0-based index to place the tasks. e.g.:\n- 0 for \"Do this next\"\n- Omit to place at the end (\"Do this later\")",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "source_id": {
+                  "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "status": {
+                  "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+                  "enum": [
+                    "In Progress",
+                    "To Do",
+                    "Backlog",
+                    "Done",
+                    "Reminders",
+                    "Notes",
+                    "Deleted"
+                  ],
+                  "type": "string"
+                },
+                "texts": {
+                  "description": "Each text becomes a task",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "texts",
+                "status"
+              ],
+              "type": "object"
+            },
+            "remote_name": "mcp-tasks_1mcp_tasks_add",
+            "outputSchema": null
+          },
+          "mcp-tasks::tasks_search": {
+            "server": "mcp-tasks",
+            "name": "tasks_search",
+            "description": "Search tasks from specific statuses with optional text & ID filtering",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "ids": {
+                  "description": "Optional list of task IDs to search for",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "limit": {
+                  "description": "Maximum number of results (only for really large task lists)",
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "source_id": {
+                  "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "statuses": {
+                  "description": "Specific statuses to get. Gets all if omitted",
+                  "items": {
+                    "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+                    "enum": [
+                      "In Progress",
+                      "To Do",
+                      "Backlog",
+                      "Done",
+                      "Reminders",
+                      "Notes",
+                      "Deleted"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "terms": {
+                  "description": "Search terms to filter tasks by text or status (case-insensitive, OR logic, no regex or wildcards)",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "remote_name": "mcp-tasks_1mcp_tasks_search",
+            "outputSchema": null
+          },
+          "mcp-tasks::tasks_setup": {
+            "server": "mcp-tasks",
+            "name": "tasks_setup",
+            "description": "Initializes an source file from a path\n- Always call once per conversation when asked to use these tools\n- Ask the user to clarify the file path if not given, before calling this tool\n- Creates the file if it does not exist\n- Returns the source ID for further use\n- Use mcp-tasks tools when the user mentions new or updated tasks",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "source_path": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "workspace": {
+                  "description": "Workspace/project directory path (provided by the IDE or use $PWD)",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "source_path"
+              ],
+              "type": "object"
+            },
+            "remote_name": "mcp-tasks_1mcp_tasks_setup",
+            "outputSchema": null
+          },
+          "mcp-tasks::tasks_summary": {
+            "server": "mcp-tasks",
+            "name": "tasks_summary",
+            "description": "Get per-status task counts and the WIP task(s). Redundant right after tasks_add/tasks_update",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "source_id": {
+                  "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "remote_name": "mcp-tasks_1mcp_tasks_summary",
+            "outputSchema": null
+          },
+          "mcp-tasks::tasks_update": {
+            "server": "mcp-tasks",
+            "name": "tasks_update",
+            "description": "Update tasks in bulk by ID to a different status. Returns complete summary no need to call tasks_summary afterwards. Prevents AI accidentally rename or deleting tasks during mass updates, not even possible",
+            "inputSchema": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "ids": {
+                  "description": "The IDs of existing tasks",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "index": {
+                  "description": "0-based index to place the tasks. e.g.:\n- 0 for \"Do this next\"\n- Omit to place at the end (\"Do this later\")",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "source_id": {
+                  "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "status": {
+                  "anyOf": [
+                    {
+                      "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+                      "enum": [
+                        "In Progress",
+                        "To Do",
+                        "Backlog",
+                        "Done",
+                        "Reminders",
+                        "Notes",
+                        "Deleted"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "const": "Deleted",
+                      "type": "string"
+                    }
+                  ],
+                  "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes\n- \"Deleted\" when they want these removed\n- Updating tasks to In Progress moves others to To Do, finishing a In Progress task moves the first Done to In Progress"
+                }
+              },
+              "required": [
+                "ids",
+                "status"
+              ],
+              "type": "object"
+            },
+            "remote_name": "mcp-tasks_1mcp_tasks_update",
+            "outputSchema": null
+          }
+        }
+      },
+      "original/original_from_tina": {
+        "status": "passed",
+        "tool_count": 2,
+        "catalog": {
+          "original_from_tina::orderCoffee": {
+            "server": "original_from_tina",
+            "name": "orderCoffee",
+            "description": "根据商品名称和规格下单咖啡，返回价格和付款码",
+            "inputSchema": {
+              "properties": {
+                "productName": {
+                  "description": "咖啡商品名称，例如：云端美式",
+                  "type": "string"
+                },
+                "spec": {
+                  "description": "咖啡规格，例如：大杯/热",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "productName",
+                "spec"
+              ],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "original_from_tina_1mcp_orderCoffee",
+            "outputSchema": null
+          },
+          "original_from_tina::queryCafeAndProducts": {
+            "server": "original_from_tina",
+            "name": "queryCafeAndProducts",
+            "description": "咖啡的相关信息。包括店铺介绍、位置、营业时间、联系方式、特色服务以及所有咖啡商品的详细信息、价格和规格。可以回答关于咖啡店的各种问题。用户的具体问题或查询内容，例如：'店铺信息'、'商品列表'、'营业时间'、'在哪里'、'有什么咖啡'等",
+            "inputSchema": {
+              "properties": {},
+              "required": [],
+              "type": "object",
+              "$schema": "http://json-schema.org/draft-07/schema#"
+            },
+            "remote_name": "original_from_tina_1mcp_queryCafeAndProducts",
+            "outputSchema": null
+          }
+        }
+      }
+    },
+    "models": {
+      "status": "not_requested"
+    },
+    "status": "failed",
+    "report": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\experiments\\checks\\20261024T231742.733071Z.json"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "knowledge": [
+    {
+      "id": "12e6e26ad95c98cbef0b374d",
+      "value": {
+        "tool_ids": [
+          "@modelcontextprotocol/server-filesystem::search_files",
+          "@modelcontextprotocol/server-filesystem::read_text_file"
+        ],
+        "content": "When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.",
+        "applicability": "适用于在不知道文件确切路径，但知道文件名关键字的情况。",
+        "failed_assumption": "假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。",
+        "corrective_actions": [
+          "使用 'search_files' 工具根据文件名关键字查找文件路径",
+          "使用找到的文件路径调用 'read_text_file' 读取文件内容"
+        ],
+        "verification": "通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。",
+        "evidence_call_ids": [
+          "practice-middle-0",
+          "practice-middle-3",
+          "practice-extension-0",
+          "practice-extension-3",
+          "practice-known-0"
+        ],
+        "tool_call_templates": [
+          {
+            "tool_id": "@modelcontextprotocol/server-filesystem::search_files",
+            "arguments": {
+              "path": "${WORKSPACE}",
+              "pattern": "**/*${KEYWORD}*"
+            },
+            "evidence_call_ids": [
+              "practice-middle-2",
+              "practice-extension-2"
+            ]
+          },
+          {
+            "tool_id": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": {
+              "path": "${DISCOVERED_PATH}"
+            },
+            "evidence_call_ids": [
+              "practice-middle-3",
+              "practice-extension-3"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "sha256": "a706cf44f019d239326e83ec7b19443ecb107a81d55f47f4abb94ff10ddf9d24",
+  "rejection": null
+}

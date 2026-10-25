@@ -1,0 +1,457 @@
+{
+  "archived_at": "2026-10-24T22:31:47.634980+00:00",
+  "branch": "langmem-adaptation",
+  "revision": "d97ba58a44689e6c9098f05fd8798f5e074f6d00",
+  "dirty_source": true,
+  "main_unchanged": true,
+  "selective_patch_unchanged": true,
+  "source_unchanged_during_validation": true,
+  "fixtures_unchanged": true,
+  "targeted_tests_passed": 42,
+  "actual_agents": 96,
+  "judge_calls": 0,
+  "template_preparation_model_requests": 0,
+  "physical_template_replays": 2,
+  "candidate_loadable": true,
+  "production_renderer_matches_test_context": true,
+  "summary_text_unchanged": true,
+  "unrelated_knowledge_unchanged": true,
+  "candidate_automatically_promoted": false,
+  "runtime_versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "openai": "3.37.0",
+    "langchain": "1.4.7",
+    "langchain-openai": "1.7.2",
+    "langgraph": "1.2.17",
+    "mcp": "1.25.0"
+  },
+  "development_history": [
+    {
+      "experiment": "20261024T220523.893038Z_Kevin",
+      "outcome": "Expanded practice summarized into prose only: tied with no rule on 23 valid pairs."
+    },
+    {
+      "experiment": "20261024T221811.425318Z_Kevin",
+      "outcome": "Model-selected templates referenced unsuccessful searches; rejected before all held-out execution."
+    },
+    {
+      "experiment": "20261024T222342.186571Z_Kevin",
+      "outcome": "Successful parameters retained from verified traces; tested on fresh held-out keywords and payloads."
+    }
+  ],
+  "by_case": {
+    "test-suffix": {
+      "cohort": "discovery",
+      "filename": "archive-anchorage.txt",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "old_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 0
+        }
+      }
+    },
+    "test-middle-root": {
+      "cohort": "discovery",
+      "filename": "check-chestnut-final.md",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 1
+        },
+        "old_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 2
+        }
+      }
+    },
+    "test-prefix": {
+      "cohort": "discovery",
+      "filename": "seashell-note.ini",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "old_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 0
+        }
+      }
+    },
+    "test-csv": {
+      "cohort": "discovery",
+      "filename": "notes-report-riverbed.yaml",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "old_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 2,
+          "successful": 0
+        }
+      }
+    },
+    "test-json": {
+      "cohort": "discovery",
+      "filename": "v1-onyx-backup.json",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "old_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 0
+        }
+      }
+    },
+    "test-exact-name": {
+      "cohort": "discovery",
+      "filename": "zephyr.txt",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "old_rule": {
+          "completed": 2,
+          "successful": 0
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 0
+        }
+      }
+    },
+    "test-known": {
+      "cohort": "known_path",
+      "filename": "saved-maple.txt",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "old_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 3
+        }
+      }
+    },
+    "test-visible-tree": {
+      "cohort": "visible_tree",
+      "filename": "packet-safflower-memo.md",
+      "conditions": {
+        "no_rule": {
+          "completed": 3,
+          "successful": 0
+        },
+        "old_rule": {
+          "completed": 2,
+          "successful": 0
+        },
+        "new_rule": {
+          "completed": 3,
+          "successful": 3
+        },
+        "irrelevant_rule": {
+          "completed": 3,
+          "successful": 0
+        }
+      }
+    }
+  },
+  "conditions": {
+    "no_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 0,
+      "correct_reads": 4,
+      "completed_task_successes": 4
+    },
+    "old_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 2,
+      "correct_reads": 6,
+      "completed_task_successes": 6
+    },
+    "new_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 0,
+      "correct_reads": 24,
+      "completed_task_successes": 24
+    },
+    "irrelevant_rule": {
+      "planned": 24,
+      "executed": 24,
+      "execution_failures": 1,
+      "correct_reads": 5,
+      "completed_task_successes": 5
+    }
+  },
+  "paired": {
+    "no_rule": {
+      "all": {
+        "pairs": 24,
+        "new_successes": 24,
+        "other_successes": 4,
+        "wins": 20,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 18,
+        "new_successes": 18,
+        "other_successes": 1,
+        "wins": 17,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 6,
+        "new_successes": 6,
+        "other_successes": 3,
+        "wins": 3,
+        "losses": 0
+      }
+    },
+    "old_rule": {
+      "all": {
+        "pairs": 22,
+        "new_successes": 22,
+        "other_successes": 6,
+        "wins": 16,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 17,
+        "new_successes": 17,
+        "other_successes": 3,
+        "wins": 14,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 5,
+        "new_successes": 5,
+        "other_successes": 3,
+        "wins": 2,
+        "losses": 0
+      }
+    },
+    "irrelevant_rule": {
+      "all": {
+        "pairs": 23,
+        "new_successes": 23,
+        "other_successes": 5,
+        "wins": 18,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 17,
+        "new_successes": 17,
+        "other_successes": 2,
+        "wins": 15,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 6,
+        "new_successes": 6,
+        "other_successes": 3,
+        "wins": 3,
+        "losses": 0
+      }
+    }
+  },
+  "claim_limit": "Benefit demonstrated for independent synthetic file-location/read/report tasks with two exposed filesystem tools. Full 17-task benefit, all-version adaptation and Selective Patch superiority are untested.",
+  "files": {
+    "candidate-evidence.json": "da38e55ad4e2a877f7835682d9785b4a5fb43434aa13c1e3175c55bdeecb898d",
+    "candidate-k0.json": "a557bca9d9988eb97941ab26aa5a8dbb6e56f24bd2e3d3fc5830f5df1376810d",
+    "experiment.json": "02e46258c0ad2bb60a731e8e4686e6bdc4fb5abadd8d2fd80d0fe694f1f81357",
+    "fixtures/practice-extension/level-0/level-1/level-2/archive-marigold.md": "41f69203d421f96ba4a69bc58c43f3f10fffced883a0c1e40a873ec185cafc4b",
+    "fixtures/practice-extension/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/practice-known/quartz-memo.txt": "70cc437f48110b44f0e0eae53e14a6e813e4e5b8293204e98ae6842ae2236214",
+    "fixtures/practice-known/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/practice-middle/level-0/draft-cobalt-v2.txt": "663adb5770468eb8de465597ca0e98be1764e2440b6e7777f89ce4f2f5070e28",
+    "fixtures/practice-middle/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-csv/level-0/notes-report-riverbed.yaml": "f20a408329399a18f0809b37242a83a2c62ee225b35aa68ffa5328cd7efe43bd",
+    "fixtures/test-csv/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-exact-name/level-0/level-1/zephyr.txt": "1fdc74733ec44884b25d7826aa5980043ba1d48783809d9bc34b1bafb10c7699",
+    "fixtures/test-exact-name/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-json/level-0/level-1/level-2/v1-onyx-backup.json": "a0adf477356cfe22087b2b988ffaef43d9646e3b742ad1056131faacd8865967",
+    "fixtures/test-json/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-known/level-0/level-1/level-2/saved-maple.txt": "f03a97a520bed55e665af9eefa9ad3aa2795da64cb75e8564f8d69b56390fade",
+    "fixtures/test-known/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-middle-root/check-chestnut-final.md": "bc0ecfc1948a062a3a97ca5a98f84c78be6f715a7840d59d6c4524592b2ad576",
+    "fixtures/test-middle-root/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-prefix/level-0/level-1/level-2/level-3/seashell-note.ini": "f22c49edddc5a80162eb8fe08003d2a4fc9b5cc181bd2063a976df3ddf75be75",
+    "fixtures/test-prefix/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-suffix/level-0/level-1/archive-anchorage.txt": "40efdbc43ba865b9a07d456e2e6fea5d882b652cfcd97cfe59d0ba4927f8ce51",
+    "fixtures/test-suffix/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "fixtures/test-visible-tree/level-0/level-1/packet-safflower-memo.md": "57fdefc2090d09b2e485a8e494089f1157dc854a23252e905a18ab144f73c34f",
+    "fixtures/test-visible-tree/unrelated-note.txt": "bc9cd010fbc2946ebedaa274b2e1e1805a61b863fd2e4a422a4e9604916bf5f6",
+    "frozen-rule.json": "f2dd097968af64c07604b44c6f438829615142dd28b5773b3021ade1d3e08b5b",
+    "inputs/frozen-summary.json": "fc63c5daf74ab340e649d0d67fd3bde41bee5bac70eee7a439a8bd1742ae86a6",
+    "inputs/previous-evidence.json": "9964de679fc5e5f0626dba7e4de5007c34643ebb7c90d3281738e418534b41eb",
+    "inputs/previous-k0.json": "923dc1b2afb1db8acea11be8ac88a160429c38640e77456d4f53703a433927aa",
+    "knowledge-build.json": "eaf970034a7c0f0da8ed002908cd26940f3eb82a7c06fd35c3d34cc24157fd12",
+    "practice/practice-extension-template-replay.json": "fe0e472c0245fec53fab4ff76da807ca02a3354a6729fc15eee104ded6009af9",
+    "practice/practice-extension.json": "6b8c0c7ed00295e651b3c82d91f665383cc90ab552a58166424ec4bcd4ff5e13",
+    "practice/practice-known.json": "6eac461fb90c2b4a7e8caa1c60de03e1c728528322d823cd1806287b5fcfe098",
+    "practice/practice-middle-template-replay.json": "275f6db53c72d73a4f83eb464d476675d9ca033ed3e4dd39bd3e8bcee5d91f64",
+    "practice/practice-middle.json": "6d6f925c9013c7f0d953c6b2f5424519c215bf7e1d2efbf2072d9a1a3ea7dbd4",
+    "source.zip": "889c7845d78701dab548de35e6cf8bfffae2ebb3c19757c792113c6ffd1ef08a",
+    "transfer-summary.json": "c408703119fb964f489be03d4d5d6ca24a05ed1ed68dcb4753ea7e4c137ee163",
+    "trials/irrelevant_rule-test-csv-0.json": "320b7bd746de58eee39bdfc8634ad94b9c68375f7a3bdabe611918ad5e0e1143",
+    "trials/irrelevant_rule-test-csv-1.json": "f0f50c74d5c3883920fd858dc86f599e1a34a0268bcb0181d9e5401d0dce443f",
+    "trials/irrelevant_rule-test-csv-2.json": "40047d4416b387ac62bdd732dab2599cce08bfd15d3fbdf4c1ca69f295915d97",
+    "trials/irrelevant_rule-test-exact-name-0.json": "01938b8dac33280cb42f6e44f58a279afdd6e5284b133e5f20c7948fe5ea8ad6",
+    "trials/irrelevant_rule-test-exact-name-1.json": "271b498f3f37c039631e70ab96fc12ce6d0ad593bec182917277416b84541231",
+    "trials/irrelevant_rule-test-exact-name-2.json": "107add69e9c2aa22f58c1d5b6c69e4e385a45a9aa3cad6722fc6457d502fd86f",
+    "trials/irrelevant_rule-test-json-0.json": "2fd28222b6a322a6c418e2083898c0585f17787da0bdc645ddc7c360c6e15918",
+    "trials/irrelevant_rule-test-json-1.json": "0cf5ac065ded6e928361feea587dcb9c925ea8ddfe68e74c61351f8a5d752bee",
+    "trials/irrelevant_rule-test-json-2.json": "235400c5f9a05125f6e443b0870bbe9192e927475dfe5869be9c8af901ffdb4b",
+    "trials/irrelevant_rule-test-known-0.json": "467bd47be5e9b42a827de53c53c653332b5ce9ed8aef479c3f3db4ae5f703da0",
+    "trials/irrelevant_rule-test-known-1.json": "9dcb7865b4b4d2e8392d8ce4f53d3cc0784f8474a43ab90da2ea44d40138be5c",
+    "trials/irrelevant_rule-test-known-2.json": "40d15fa88832e66aa3a75d535e10f1bb52bd1f3f87be09494eb6d4e6aead149e",
+    "trials/irrelevant_rule-test-middle-root-0.json": "09b680241e17c71921411439967e069e0e42db21c7473b4c425264feb5c52253",
+    "trials/irrelevant_rule-test-middle-root-1.json": "4ff115787265f7942c029429411a2ebd37cf74b82585c2230a602524ac0bcd22",
+    "trials/irrelevant_rule-test-middle-root-2.json": "38847dd7d92e257d6c2e28afb0ee8c17172bec3ce9e60fa58b12640691464aa9",
+    "trials/irrelevant_rule-test-prefix-0.json": "8050e29d5c994b9911fa585f8287908c30eebeed854d49e5afb7f40ef7d3a654",
+    "trials/irrelevant_rule-test-prefix-1.json": "5f20c7ffaa8e07de898cdd81e42d70f187767e8d7dd9dcfb7547f2ad4d6c8dca",
+    "trials/irrelevant_rule-test-prefix-2.json": "a1107c28bfcf9e1e71ffda9085d29a44af601798d354a588e6f5a6c53dd94abe",
+    "trials/irrelevant_rule-test-suffix-0.json": "6d4c7f2ecdae26e79c5cab15665a15144d97ee4a89f1c1326e605d412abe95c0",
+    "trials/irrelevant_rule-test-suffix-1.json": "0f478c471caa6b2d593d3d1aa6ef94ca3a49dcc04104daa190707a86492bdf2c",
+    "trials/irrelevant_rule-test-suffix-2.json": "f4841450e0c44c61de31e11198e724b4944be807d84e923962eab5bf2ef69342",
+    "trials/irrelevant_rule-test-visible-tree-0.json": "9f826ec68602d0052ae592ab7e7ab55246199ddc86aa788fc6ad273b00a157c9",
+    "trials/irrelevant_rule-test-visible-tree-1.json": "cb5020c939455f0c34409a446b4cc0508f68b75d31f4c659d2e98c53fa5c237b",
+    "trials/irrelevant_rule-test-visible-tree-2.json": "86b62a7cfad86b755d7dff88e856ae89a506fabacee557f3b6fce9eb954a9213",
+    "trials/new_rule-test-csv-0.json": "910723acd510830986266aba95294b0780cf0c2839f9435c3361fd44ca743dc3",
+    "trials/new_rule-test-csv-1.json": "86f1d353ab422c75e9823c96ae3163e134893eda028a797c94de7cee7bb9a368",
+    "trials/new_rule-test-csv-2.json": "aa02018405bb9053c174703ccb703006e779e6b1984dbb1727b5121cc3c86fb0",
+    "trials/new_rule-test-exact-name-0.json": "246a7806ceda90d265265f7b1b4b8fe4e5cf73fc4ac905a5c3678b9265d1d9fc",
+    "trials/new_rule-test-exact-name-1.json": "f6633573de887976f3aee62d043357a02b3164c9d1445b2c761b91199fab7984",
+    "trials/new_rule-test-exact-name-2.json": "7bf6d5b4302a04eafdc424e76b78c050326687a26c36fe05bbe727f5d15ffe0e",
+    "trials/new_rule-test-json-0.json": "bc5c40750f07a18c785c0d32cf72bc6346468ccf1ab6da472ae797eeab1383e2",
+    "trials/new_rule-test-json-1.json": "f9b3c665f11e5df9cba410363a0376ceaa3825abe575261b19da3ac7a093d991",
+    "trials/new_rule-test-json-2.json": "e168eac457195e4966957f57fb2bd4373635bc0b8925e20570f57db32db57657",
+    "trials/new_rule-test-known-0.json": "8b26523da2a036ea0cba48a23aff664e252772235863bf838d03a09c924457f1",
+    "trials/new_rule-test-known-1.json": "13d0b9ca86ab3260671a4d041960568c85d14434821e1114464bd4721be7aa60",
+    "trials/new_rule-test-known-2.json": "d884a817cb48f2c3fbec97ddba3b4b45eba2e4c62877120032d318762e38b657",
+    "trials/new_rule-test-middle-root-0.json": "546af22cbbb375673125c4fc315e12ca820b147bc2ec352ecb3baacd4f47be32",
+    "trials/new_rule-test-middle-root-1.json": "8b4d5a5198e81f805c67c8f8f51ef0d2bb824f173340895dcf4bf6176025a420",
+    "trials/new_rule-test-middle-root-2.json": "8582a130c2e01c5ee3d2d8f22fa57f2311528b1a8a04a61f0079a9027f2ecfc3",
+    "trials/new_rule-test-prefix-0.json": "b1aa633bb818be8849c7dcaee46eb280ac3757949116a2126f194f1e39d571c6",
+    "trials/new_rule-test-prefix-1.json": "9c6907d7d7b4859a36ed28dc6b24fd7520ba88700968562036218b1b90af5f98",
+    "trials/new_rule-test-prefix-2.json": "eec68956cc63b89544db6dd358f07bbd837f8dcd8ad5065fcda12065d535d7fb",
+    "trials/new_rule-test-suffix-0.json": "208ccafdcf8b0bcff5f659e9eefba1754a6eb3cc871975271450e9dcea3168fe",
+    "trials/new_rule-test-suffix-1.json": "d0d3b85da2d407b76939f3e25b55d490a007292b3acdcf3ccf215d4a73e85750",
+    "trials/new_rule-test-suffix-2.json": "11fe757a596633c49437684c7eaf8224af9a4eb15e8f02d844b4ff75193a5f9b",
+    "trials/new_rule-test-visible-tree-0.json": "c62a57dd3cd88cd86ca07ff74b00e9c75f677d732b37517b66e9c481999b9f67",
+    "trials/new_rule-test-visible-tree-1.json": "2bd083f743fec9be306236ff7d1264f31ed060d2c8fd415fa52f15a069cb3c8c",
+    "trials/new_rule-test-visible-tree-2.json": "97df17386a4f0cfa37335a0066931e9b96dabe04532a68228b33f098b9dbe771",
+    "trials/no_rule-test-csv-0.json": "9896c8317edf7957a6235a952979ab15218544eddcc795679393998934134fa6",
+    "trials/no_rule-test-csv-1.json": "d527e709f60e7784382338542ffe8265a826cb8c9f3b02046169a2a7fc3c12ab",
+    "trials/no_rule-test-csv-2.json": "2078141dd498a91ddb48a3ba406237892b82ca966053a6e3430ca32575fcc89d",
+    "trials/no_rule-test-exact-name-0.json": "aa08031a433746b97f7bbf2ac5b59f14beacc4df2c6c8d1c007876b9d1e02e35",
+    "trials/no_rule-test-exact-name-1.json": "8f6a8521cf05ab9b254e61c20cd8673fdee068225ff088810c26e5c368ef7b72",
+    "trials/no_rule-test-exact-name-2.json": "bfec917bdd0d791bad9fc915b930ac3014a14b9d6bd3e1784ee42c03bc59d2bb",
+    "trials/no_rule-test-json-0.json": "49c131415910fed043db35340e8e55cbc2e1c079e158f77037d859fb80816755",
+    "trials/no_rule-test-json-1.json": "ece59e5a637731ab82563334f8dd8c03c975efbd77ef32440b96aebd1abd32b5",
+    "trials/no_rule-test-json-2.json": "f09464003bd71d2498c2115b2992a822af07bec49307184e4b13117fbc080e9c",
+    "trials/no_rule-test-known-0.json": "381da32218e76e6595d31728f1413837558dc520cbc6b43cdf18242e249f13cc",
+    "trials/no_rule-test-known-1.json": "d52e97b4cecb2f6896d362d7cb223d067cb6fc5677c876cb98c81cc0f03e7b5a",
+    "trials/no_rule-test-known-2.json": "57ecd3dca65eddf5ca32d436ceac8cddaa80fc841daa644c317e671c44d8ac7f",
+    "trials/no_rule-test-middle-root-0.json": "608eeb7d6a9ac4ec6a03b57320b741799e50fd415a46deab762bf42dfc4b5a41",
+    "trials/no_rule-test-middle-root-1.json": "f16a3e1864df6aad4c2a9ea79999a8d2dcf99dc6f9ea516d36510db6058d98f2",
+    "trials/no_rule-test-middle-root-2.json": "36e5aa93d29a900059568bc5058f31e5098a8b9d1d4014de60d9141fc39b1722",
+    "trials/no_rule-test-prefix-0.json": "d4389d66115929f5bd0bdc2bde1bea068a7db990dc4ee0a6be7cfc3df0dbb742",
+    "trials/no_rule-test-prefix-1.json": "90e42103218fce09231e6e8135da79045bdc494bffd7ec7114155181bb8552e0",
+    "trials/no_rule-test-prefix-2.json": "dccb66ea660e30cace8f45213d65762e142bfc13eaff5e24cd8b5bc46150c01c",
+    "trials/no_rule-test-suffix-0.json": "4d11f1d44a69acf8fc7c5ec73cd9fbff7a8a86dcb99b188083c232fdaac0b109",
+    "trials/no_rule-test-suffix-1.json": "2aa8f6baffaeb13dabc73cff9040a0b2f7acdc4514745f68054dbe4cb75f5202",
+    "trials/no_rule-test-suffix-2.json": "b833e58c276a581685893d79142e2c5d20a7c1ac758598321b517472b25811e1",
+    "trials/no_rule-test-visible-tree-0.json": "fffd20e6e5e2913ee69b69e16ff54be4683bd257c794fa2d608691edea728f1d",
+    "trials/no_rule-test-visible-tree-1.json": "bc2902237fa0031eb6fbd0c07c4235f281ade8413b37b0ca5b06153224283a4b",
+    "trials/no_rule-test-visible-tree-2.json": "0a8a3df51c52426196678521181585028b82dd0f5fc7878dacb8afb0f422cf4b",
+    "trials/old_rule-test-csv-0.json": "487d99114b332d9ba1e09d494cfb1dbd9103dd1e9bf6a05857166252369fe5e3",
+    "trials/old_rule-test-csv-1.json": "d7ca818c1b6d0a1b8115fc549ce4fe487267ee612d232b8e29ab466d2ef19b75",
+    "trials/old_rule-test-csv-2.json": "4591646fa0480556e2e0d093ded59525df2d896afd767dfa0cbae82724edf5a1",
+    "trials/old_rule-test-exact-name-0.json": "62b7c4a788751f1de64271fdbb3a7b52db8b9afb6e112628467f1e8ccd0bcb77",
+    "trials/old_rule-test-exact-name-1.json": "ee1ff05292198971d6a8661bfeb60347fdb7115f9fb73aa634ee2e678a515fce",
+    "trials/old_rule-test-exact-name-2.json": "0b73de1d3b7a3c00200a257d408894dde0fa5bb271bfaececb3ce380e8588bce",
+    "trials/old_rule-test-json-0.json": "d710574c0255f08a7bbc2f910ff73579772c8a4f440285fbd184bcc38c59b45f",
+    "trials/old_rule-test-json-1.json": "cd6b6d0f329cfead22d0e272225109707d986c69a32004b66c166c2bddce4fca",
+    "trials/old_rule-test-json-2.json": "7b35e888de24ce064ec4114682373a52eff4905497e70cd447f0c61decd2fd38",
+    "trials/old_rule-test-known-0.json": "9276de98cba644589241b1e5eafa503aedd6a66592d9854f55d930ce667eebe6",
+    "trials/old_rule-test-known-1.json": "e50c97b91a363432568ea7636a6ac92f5f76b9a7bd4b33e5068c8ac50854cfd1",
+    "trials/old_rule-test-known-2.json": "112eb0b7230a8288691fe82ee2b52a0e269b7c6d9e53fb95e2ccff00f68f5595",
+    "trials/old_rule-test-middle-root-0.json": "2b864200694cf5a5491ac39c9b72fec91758c91af60f7fedc792c2c46c90de8d",
+    "trials/old_rule-test-middle-root-1.json": "8ffb04933145108750e2cea6a872c18956b748e9ea4474b22a419827b5e0e192",
+    "trials/old_rule-test-middle-root-2.json": "748ea961d5636d802fa4e1a786fdb883cebcdad64b1a4799afc0834d8b3dded5",
+    "trials/old_rule-test-prefix-0.json": "d7eb9a551ebcf9a0709e04f034187c642dbb1fc5cf9f16ac2dd664b96a51c706",
+    "trials/old_rule-test-prefix-1.json": "79ed7ed699e31bbd2294eb1af36b168a63ac368872b0d4c78d08ceb970e0d25e",
+    "trials/old_rule-test-prefix-2.json": "576c21fb7db38fc00880b94a915561e9493f59eec20281a52448bd4831791cf4",
+    "trials/old_rule-test-suffix-0.json": "4466bf7273ea38d8a917bd696227dc7ed26f33e63a7f443b1e7fed0f2e8bbc14",
+    "trials/old_rule-test-suffix-1.json": "24cb147da2bee192adef01b11e6cb6bc1fcc99e885dacc8a0e287aef7594cd4c",
+    "trials/old_rule-test-suffix-2.json": "fb97ee1cee9bd10f52ce734983def452e861e77e959840f2a6ecdf2b7147a25e",
+    "trials/old_rule-test-visible-tree-0.json": "4804097d02ddd2ea068f1b0204ae4af89978fd88de3ee795ecad84e012a5a1ba",
+    "trials/old_rule-test-visible-tree-1.json": "46df70ca403336f4244d9dfd56af5cfedfd64a6ef861eb753d0e1226a3928b8a",
+    "trials/old_rule-test-visible-tree-2.json": "9523fd706ccab25e88dfc68eaeb4dffdbce41bcfb010dcfdce15e22a3510b569"
+  }
+}

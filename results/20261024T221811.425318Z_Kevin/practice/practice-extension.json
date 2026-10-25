@@ -1,0 +1,78 @@
+{
+  "case": "practice-extension",
+  "scenario": "Locate by a filename keyword; extension is not supplied.",
+  "observed_calls": [
+    {
+      "tool_call_id": "practice-extension-0",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": "{\"path\": \"${WORKSPACE}/marigold.txt\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "ENOENT: no such file or directory, open '${WORKSPACE}\\marigold.txt'"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "tool_call_id": "practice-extension-1",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+      "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*marigold*.txt\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "No matches found"
+          }
+        ],
+        "structuredContent": {
+          "content": "No matches found"
+        },
+        "isError": false
+      }
+    },
+    {
+      "tool_call_id": "practice-extension-2",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+      "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*marigold*\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "${WORKSPACE}\\level-0\\level-1\\level-2\\archive-marigold.md"
+          }
+        ],
+        "structuredContent": {
+          "content": "${WORKSPACE}\\level-0\\level-1\\level-2\\archive-marigold.md"
+        },
+        "isError": false
+      }
+    },
+    {
+      "tool_call_id": "practice-extension-3",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": "{\"path\": \"${WORKSPACE}/level-0/level-1/level-2/archive-marigold.md\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Payload: de781feb500b874d1d58a6626a8d6dc8520382cd295b718f86b55dff80be7a50"
+          }
+        ],
+        "structuredContent": {
+          "content": "Payload: de781feb500b874d1d58a6626a8d6dc8520382cd295b718f86b55dff80be7a50"
+        },
+        "isError": false
+      },
+      "verification": {
+        "kind": "exact_file_read",
+        "response_sha256": "4e0f2c91406c05d36f3ba475536ce0f7def01354643c233b710fac555396b6d5"
+      }
+    }
+  ],
+  "verified_read_call_ids": [
+    "practice-extension-3"
+  ]
+}

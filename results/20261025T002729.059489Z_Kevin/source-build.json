@@ -1,0 +1,422 @@
+{
+  "protocol": "verified_file_recovery_causal_v2",
+  "status": "completed",
+  "output_mode": "json_object",
+  "model": "glm-4-flash-250414",
+  "schema": {
+    "$defs": {
+      "ObservedCallTemplate": {
+        "additionalProperties": false,
+        "properties": {
+          "tool_id": {
+            "title": "Tool Id",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "evidence_call_ids": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Call Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tool_id",
+          "arguments",
+          "evidence_call_ids"
+        ],
+        "title": "ObservedCallTemplate",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "description": "Transferable recovery procedure grounded in observed failure and correction.",
+    "properties": {
+      "tool_ids": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Tool Ids",
+        "type": "array"
+      },
+      "content": {
+        "description": "Concise general procedure; never copy practice filenames, keyword or file contents",
+        "minLength": 1,
+        "title": "Content",
+        "type": "string"
+      },
+      "applicability": {
+        "description": "Observable situation in which the procedure applies",
+        "minLength": 1,
+        "title": "Applicability",
+        "type": "string"
+      },
+      "failed_assumption": {
+        "description": "What failed and what assumption the observation contradicts",
+        "minLength": 1,
+        "title": "Failed Assumption",
+        "type": "string"
+      },
+      "corrective_actions": {
+        "description": "Ordered general actions using current inputs and returned paths, not practice constants",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Corrective Actions",
+        "type": "array"
+      },
+      "verification": {
+        "description": "Observable successful correction criterion, not merely a final claim",
+        "minLength": 1,
+        "title": "Verification",
+        "type": "string"
+      },
+      "evidence_call_ids": {
+        "description": "IDs of the supplied real calls supporting both failure and verified correction",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 2,
+        "title": "Evidence Call Ids",
+        "type": "array"
+      },
+      "tool_call_templates": {
+        "items": {
+          "$ref": "#/$defs/ObservedCallTemplate"
+        },
+        "title": "Tool Call Templates",
+        "type": "array"
+      },
+      "template_variables": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Template Variables",
+        "type": "object"
+      }
+    },
+    "required": [
+      "tool_ids",
+      "content",
+      "applicability",
+      "failed_assumption",
+      "corrective_actions",
+      "verification",
+      "evidence_call_ids"
+    ],
+    "title": "ToolRecovery",
+    "type": "object"
+  },
+  "evidence": {
+    "observed_calls": [
+      {
+        "tool_call_id": "source-0:seed-directory-source",
+        "semantic_identity": "mcp-tasks::tasks_setup",
+        "arguments": "{\"source_path\": \"${WORKSPACE}\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml"
+            }
+          ],
+          "isError": true
+        },
+        "protocol_error": null
+      },
+      {
+        "tool_call_id": "source-0:seed-uninitialized-add",
+        "semantic_identity": "mcp-tasks::tasks_add",
+        "arguments": "{\"texts\": [\"museum telemetry component 1\", \"museum telemetry component 2\"], \"status\": \"To Do\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup."
+            }
+          ],
+          "isError": true
+        },
+        "protocol_error": null
+      },
+      {
+        "tool_call_id": "source-0:call_-7142424682174604848",
+        "name": "tasks_setup",
+        "semantic_identity": "mcp-tasks::tasks_setup",
+        "arguments": "{\"source_path\": \"${WORKSPACE}/practice-source-0.md\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-0.md\",\"id\":\"69Jw\"},\"In Progress\":0,\"To Do\":0,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":0,\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[]}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_source_and_added_items",
+          "response_sha256": "2c8ce0e118227991354a9bf67c7dbb06c10351a2a4f6ceecba29cce1fa2e157d"
+        }
+      },
+      {
+        "tool_call_id": "source-0:call_-7142424407296698216",
+        "name": "tasks_add",
+        "semantic_identity": "mcp-tasks::tasks_add",
+        "arguments": "{\"texts\": [\"museum telemetry component 1\", \"museum telemetry component 2\"], \"status\": \"To Do\", \"source_id\": \"69Jw\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-0.md\",\"id\":\"69Jw\"},\"In Progress\":0,\"To Do\":2,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":2,\"added\":[{\"id\":\"GrrA\",\"text\":\"museum telemetry component 1\",\"status\":\"To Do\",\"index\":0},{\"id\":\"aCpQ\",\"text\":\"museum telemetry component 2\",\"status\":\"To Do\",\"index\":1}],\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[]}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_source_and_added_items",
+          "response_sha256": "66af9f58c95e70e13297517163f384cf72e073e75a7127d4465977d25cb40e8b"
+        }
+      },
+      {
+        "tool_call_id": "source-1:seed-directory-source",
+        "semantic_identity": "mcp-tasks::tasks_setup",
+        "arguments": "{\"source_path\": \"${WORKSPACE}\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml"
+            }
+          ],
+          "isError": true
+        },
+        "protocol_error": null
+      },
+      {
+        "tool_call_id": "source-1:seed-uninitialized-add",
+        "semantic_identity": "mcp-tasks::tasks_add",
+        "arguments": "{\"texts\": [\"orchard irrigation component 1\", \"orchard irrigation component 2\"], \"status\": \"In Progress\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup."
+            }
+          ],
+          "isError": true
+        },
+        "protocol_error": null
+      },
+      {
+        "tool_call_id": "source-1:call_-7142422483151353415",
+        "name": "tasks_setup",
+        "semantic_identity": "mcp-tasks::tasks_setup",
+        "arguments": "{\"source_path\": \"${WORKSPACE}/practice-source-1.json\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-1.json\",\"id\":\"6VpA\"},\"In Progress\":0,\"To Do\":0,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":0,\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[]}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_source_and_added_items",
+          "response_sha256": "6c0b97830f211ee720767bdc01deb29f85ed8b328103aa6c3d5cafd041e029b6"
+        }
+      },
+      {
+        "tool_call_id": "source-1:call_-7142415233246553913",
+        "name": "tasks_add",
+        "semantic_identity": "mcp-tasks::tasks_add",
+        "arguments": "{\"source_id\": \"6VpA\", \"status\": \"In Progress\", \"texts\": [\"orchard irrigation component 1\", \"orchard irrigation component 2\"]}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-1.json\",\"id\":\"6VpA\"},\"In Progress\":2,\"To Do\":0,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":2,\"added\":[{\"id\":\"vwLQ\",\"text\":\"orchard irrigation component 1\",\"status\":\"In Progress\",\"index\":0},{\"id\":\"FaUw\",\"text\":\"orchard irrigation component 2\",\"status\":\"In Progress\",\"index\":1}],\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[{\"id\":\"vwLQ\",\"text\":\"orchard irrigation component 1\",\"status\":\"In Progress\",\"index\":0},{\"id\":\"FaUw\",\"text\":\"orchard irrigation component 2\",\"status\":\"In Progress\",\"index\":1}]}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_source_and_added_items",
+          "response_sha256": "1d6397220ae4acdb47bdbb6e31ebee75acd02ab754188662977a4234d5e17e2e"
+        }
+      }
+    ],
+    "required_evidence_call_ids": [
+      "source-0:seed-directory-source",
+      "source-0:seed-uninitialized-add",
+      "source-0:call_-7142424682174604848",
+      "source-0:call_-7142424407296698216",
+      "source-1:seed-directory-source",
+      "source-1:seed-uninitialized-add",
+      "source-1:call_-7142422483151353415",
+      "source-1:call_-7142415233246553913"
+    ],
+    "scope": "Summarize both independent repairs concisely (at most 120 words total). Preserve all supporting IDs. No official task data. Do not generalize current item count or IDs into constants.",
+    "catalog": {
+      "mcp-tasks::tasks_add": {
+        "server": "mcp-tasks",
+        "name": "tasks_add",
+        "description": "Add new tasks with a specific status. It's faster and cheaper if you use this in batch. User can add atomically while AI works using the CLI add tool",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
+          "properties": {
+            "index": {
+              "description": "0-based index to place the tasks. e.g.:\n- 0 for \"Do this next\"\n- Omit to place at the end (\"Do this later\")",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "source_id": {
+              "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+              "minLength": 1,
+              "type": "string"
+            },
+            "status": {
+              "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+              "enum": [
+                "In Progress",
+                "To Do",
+                "Backlog",
+                "Done",
+                "Reminders",
+                "Notes",
+                "Deleted"
+              ],
+              "type": "string"
+            },
+            "texts": {
+              "description": "Each text becomes a task",
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "texts",
+            "status"
+          ],
+          "type": "object"
+        }
+      },
+      "mcp-tasks::tasks_setup": {
+        "server": "mcp-tasks",
+        "name": "tasks_setup",
+        "description": "Initializes an source file from a path\n- Always call once per conversation when asked to use these tools\n- Ask the user to clarify the file path if not given, before calling this tool\n- Creates the file if it does not exist\n- Returns the source ID for further use\n- Use mcp-tasks tools when the user mentions new or updated tasks",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
+          "properties": {
+            "source_path": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "workspace": {
+              "description": "Workspace/project directory path (provided by the IDE or use $PWD)",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_path"
+          ],
+          "type": "object"
+        }
+      }
+    }
+  },
+  "versions": {
+    "openai": "3.37.0"
+  },
+  "requests": [
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Derive one reusable tool-recovery procedure from the observed failure and verified correction below. Explain the actual change that enabled success, rather than listing tool descriptions. Preserve failure and verified-success evidence IDs. Do not copy practice filenames, keyword, task text, record IDs, payload or private paths. Use current task inputs and tool-returned identifiers in the procedure.\nObserved practice evidence:\n{\"observed_calls\": [{\"tool_call_id\": \"source-0:seed-directory-source\", \"semantic_identity\": \"mcp-tasks::tasks_setup\", \"arguments\": \"{\\\"source_path\\\": \\\"${WORKSPACE}\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml\"}], \"isError\": true}, \"protocol_error\": null}, {\"tool_call_id\": \"source-0:seed-uninitialized-add\", \"semantic_identity\": \"mcp-tasks::tasks_add\", \"arguments\": \"{\\\"texts\\\": [\\\"museum telemetry component 1\\\", \\\"museum telemetry component 2\\\"], \\\"status\\\": \\\"To Do\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup.\"}], \"isError\": true}, \"protocol_error\": null}, {\"tool_call_id\": \"source-0:call_-7142424682174604848\", \"name\": \"tasks_setup\", \"semantic_identity\": \"mcp-tasks::tasks_setup\", \"arguments\": \"{\\\"source_path\\\": \\\"${WORKSPACE}/practice-source-0.md\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\\"source\\\":{\\\"path\\\":\\\"${WORKSPACE}/practice-source-0.md\\\",\\\"id\\\":\\\"69Jw\\\"},\\\"In Progress\\\":0,\\\"To Do\\\":0,\\\"Backlog\\\":0,\\\"Done\\\":0,\\\"Reminders\\\":0,\\\"Notes\\\":0,\\\"Deleted\\\":0,\\\"total\\\":0,\\\"instructions\\\":\\\"Use mcp-tasks tools when the user mentions new or updated tasks\\\",\\\"reminders\\\":[],\\\"inProgress\\\":[]}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_source_and_added_items\", \"response_sha256\": \"2c8ce0e118227991354a9bf67c7dbb06c10351a2a4f6ceecba29cce1fa2e157d\"}}, {\"tool_call_id\": \"source-0:call_-7142424407296698216\", \"name\": \"tasks_add\", \"semantic_identity\": \"mcp-tasks::tasks_add\", \"arguments\": \"{\\\"texts\\\": [\\\"museum telemetry component 1\\\", \\\"museum telemetry component 2\\\"], \\\"status\\\": \\\"To Do\\\", \\\"source_id\\\": \\\"69Jw\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\\"source\\\":{\\\"path\\\":\\\"${WORKSPACE}/practice-source-0.md\\\",\\\"id\\\":\\\"69Jw\\\"},\\\"In Progress\\\":0,\\\"To Do\\\":2,\\\"Backlog\\\":0,\\\"Done\\\":0,\\\"Reminders\\\":0,\\\"Notes\\\":0,\\\"Deleted\\\":0,\\\"total\\\":2,\\\"added\\\":[{\\\"id\\\":\\\"GrrA\\\",\\\"text\\\":\\\"museum telemetry component 1\\\",\\\"status\\\":\\\"To Do\\\",\\\"index\\\":0},{\\\"id\\\":\\\"aCpQ\\\",\\\"text\\\":\\\"museum telemetry component 2\\\",\\\"status\\\":\\\"To Do\\\",\\\"index\\\":1}],\\\"instructions\\\":\\\"Use mcp-tasks tools when the user mentions new or updated tasks\\\",\\\"reminders\\\":[],\\\"inProgress\\\":[]}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_source_and_added_items\", \"response_sha256\": \"66af9f58c95e70e13297517163f384cf72e073e75a7127d4465977d25cb40e8b\"}}, {\"tool_call_id\": \"source-1:seed-directory-source\", \"semantic_identity\": \"mcp-tasks::tasks_setup\", \"arguments\": \"{\\\"source_path\\\": \\\"${WORKSPACE}\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml\"}], \"isError\": true}, \"protocol_error\": null}, {\"tool_call_id\": \"source-1:seed-uninitialized-add\", \"semantic_identity\": \"mcp-tasks::tasks_add\", \"arguments\": \"{\\\"texts\\\": [\\\"orchard irrigation component 1\\\", \\\"orchard irrigation component 2\\\"], \\\"status\\\": \\\"In Progress\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup.\"}], \"isError\": true}, \"protocol_error\": null}, {\"tool_call_id\": \"source-1:call_-7142422483151353415\", \"name\": \"tasks_setup\", \"semantic_identity\": \"mcp-tasks::tasks_setup\", \"arguments\": \"{\\\"source_path\\\": \\\"${WORKSPACE}/practice-source-1.json\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\\"source\\\":{\\\"path\\\":\\\"${WORKSPACE}/practice-source-1.json\\\",\\\"id\\\":\\\"6VpA\\\"},\\\"In Progress\\\":0,\\\"To Do\\\":0,\\\"Backlog\\\":0,\\\"Done\\\":0,\\\"Reminders\\\":0,\\\"Notes\\\":0,\\\"Deleted\\\":0,\\\"total\\\":0,\\\"instructions\\\":\\\"Use mcp-tasks tools when the user mentions new or updated tasks\\\",\\\"reminders\\\":[],\\\"inProgress\\\":[]}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_source_and_added_items\", \"response_sha256\": \"6c0b97830f211ee720767bdc01deb29f85ed8b328103aa6c3d5cafd041e029b6\"}}, {\"tool_call_id\": \"source-1:call_-7142415233246553913\", \"name\": \"tasks_add\", \"semantic_identity\": \"mcp-tasks::tasks_add\", \"arguments\": \"{\\\"source_id\\\": \\\"6VpA\\\", \\\"status\\\": \\\"In Progress\\\", \\\"texts\\\": [\\\"orchard irrigation component 1\\\", \\\"orchard irrigation component 2\\\"]}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\\"source\\\":{\\\"path\\\":\\\"${WORKSPACE}/practice-source-1.json\\\",\\\"id\\\":\\\"6VpA\\\"},\\\"In Progress\\\":2,\\\"To Do\\\":0,\\\"Backlog\\\":0,\\\"Done\\\":0,\\\"Reminders\\\":0,\\\"Notes\\\":0,\\\"Deleted\\\":0,\\\"total\\\":2,\\\"added\\\":[{\\\"id\\\":\\\"vwLQ\\\",\\\"text\\\":\\\"orchard irrigation component 1\\\",\\\"status\\\":\\\"In Progress\\\",\\\"index\\\":0},{\\\"id\\\":\\\"FaUw\\\",\\\"text\\\":\\\"orchard irrigation component 2\\\",\\\"status\\\":\\\"In Progress\\\",\\\"index\\\":1}],\\\"instructions\\\":\\\"Use mcp-tasks tools when the user mentions new or updated tasks\\\",\\\"reminders\\\":[],\\\"inProgress\\\":[{\\\"id\\\":\\\"vwLQ\\\",\\\"text\\\":\\\"orchard irrigation component 1\\\",\\\"status\\\":\\\"In Progress\\\",\\\"index\\\":0},{\\\"id\\\":\\\"FaUw\\\",\\\"text\\\":\\\"orchard irrigation component 2\\\",\\\"status\\\":\\\"In Progress\\\",\\\"index\\\":1}]}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_source_and_added_items\", \"response_sha256\": \"1d6397220ae4acdb47bdbb6e31ebee75acd02ab754188662977a4234d5e17e2e\"}}], \"required_evidence_call_ids\": [\"source-0:seed-directory-source\", \"source-0:seed-uninitialized-add\", \"source-0:call_-7142424682174604848\", \"source-0:call_-7142424407296698216\", \"source-1:seed-directory-source\", \"source-1:seed-uninitialized-add\", \"source-1:call_-7142422483151353415\", \"source-1:call_-7142415233246553913\"], \"scope\": \"Summarize both independent repairs concisely (at most 120 words total). Preserve all supporting IDs. No official task data. Do not generalize current item count or IDs into constants.\", \"catalog\": {\"mcp-tasks::tasks_add\": {\"server\": \"mcp-tasks\", \"name\": \"tasks_add\", \"description\": \"Add new tasks with a specific status. It's faster and cheaper if you use this in batch. User can add atomically while AI works using the CLI add tool\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"index\": {\"description\": \"0-based index to place the tasks. e.g.:\\n- 0 for \\\"Do this next\\\"\\n- Omit to place at the end (\\\"Do this later\\\")\", \"minimum\": 0, \"type\": \"integer\"}, \"source_id\": {\"description\": \"Source ID from task_setup() response\\n- Defaults to most recent in the workspace if not provided\\n- Try to always provide it!\\n- If you don't have it, ask the user for a file path and call task_setup()\", \"minLength\": 1, \"type\": \"string\"}, \"status\": {\"description\": \"You might need to infer it from the context:\\n- \\\"To Do\\\" for tasks coming up next (e.g. \\\"Do X next\\\")\\n- \\\"In Progress\\\" for what you'll do now (e.g. \\\"First do X\\\")\\n- \\\"Reminders\\\" instructions for you (the AI) to be constantly reminded of\\n- \\\"Notes\\\" to collect non-actionable notes\", \"enum\": [\"In Progress\", \"To Do\", \"Backlog\", \"Done\", \"Reminders\", \"Notes\", \"Deleted\"], \"type\": \"string\"}, \"texts\": {\"description\": \"Each text becomes a task\", \"items\": {\"minLength\": 1, \"type\": \"string\"}, \"type\": \"array\"}}, \"required\": [\"texts\", \"status\"], \"type\": \"object\"}}, \"mcp-tasks::tasks_setup\": {\"server\": \"mcp-tasks\", \"name\": \"tasks_setup\", \"description\": \"Initializes an source file from a path\\n- Always call once per conversation when asked to use these tools\\n- Ask the user to clarify the file path if not given, before calling this tool\\n- Creates the file if it does not exist\\n- Returns the source ID for further use\\n- Use mcp-tasks tools when the user mentions new or updated tasks\", \"inputSchema\": {\"$schema\": \"http://json-schema.org/draft-07/schema#\", \"additionalProperties\": false, \"properties\": {\"source_path\": {\"minLength\": 1, \"type\": \"string\"}, \"workspace\": {\"description\": \"Workspace/project directory path (provided by the IDE or use $PWD)\", \"type\": \"string\"}}, \"required\": [\"source_path\"], \"type\": \"object\"}}}}\nReturn one JSON DATA RECORD with these seven direct keys. Replace every placeholder using the observations. Do not return a JSON Schema; do not wrap values in properties, title, type or required. No Markdown or extra text. Record shape:\n{\"tool_ids\": [\"<exact ID from catalog>\"], \"content\": \"<general procedure>\", \"applicability\": \"<observable situation>\", \"failed_assumption\": \"<why the old attempt failed>\", \"corrective_actions\": [\"<general action using current inputs>\"], \"verification\": \"<observable successful correction criterion>\", \"evidence_call_ids\": [\"source-0:seed-directory-source\", \"source-0:seed-uninitialized-add\", \"source-0:call_-7142424682174604848\", \"source-0:call_-7142424407296698216\", \"source-1:seed-directory-source\", \"source-1:seed-uninitialized-add\", \"source-1:call_-7142422483151353415\", \"source-1:call_-7142415233246553913\"]}"
+        }
+      ],
+      "response": {
+        "id": "20261025082802917e524af3934df8",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"tool_ids\":[\"mcp-tasks::tasks_setup\",\"mcp-tasks::tasks_add\"],\"content\":\"To add tasks, first initialize a source file using tasks_setup with a valid file path (md, , yml). Then, use tasks_add to specify the tasks, their status, and the source ID from the tasks_setup response.\",\"applicability\":\"When adding tasks and encountering file extension or path errors.\",\"failed_assumption\":\"Assuming a file path was valid or tasks could be added without prior setup.\",\"corrective_actions\":[\"Call tasks_setup with a valid source path before adding tasks.\",\"Use the source ID from tasks_setup in tasks_add arguments.\"],\"verification\":\"tasks_setup completes without error and tasks_add successfully adds tasks using the source ID.\",\"evidence_call_ids\":[\"source-0:seed-directory-source\",\"source-0:seed-uninitialized-add\",\"source-0:call_-7142424682174604848\",\"source-0:call_-7142424407296698216\",\"source-1:seed-directory-source\",\"source-1:seed-uninitialized-add\",\"source-1:call_-7142422483151353415\",\"source-1:call_-7142415233246553913\"]}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null
+            }
+          }
+        ],
+        "created": 1792888088,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 296,
+          "prompt_tokens": 2724,
+          "total_tokens": 3020,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "20261025082802917e524af3934df8"
+      }
+    }
+  ],
+  "memories": [
+    {
+      "id": "8347044d52960e14ab47cf53",
+      "value": {
+        "tool_ids": [
+          "mcp-tasks::tasks_setup",
+          "mcp-tasks::tasks_add"
+        ],
+        "content": "To add tasks, first initialize a source file using tasks_setup with a valid file path (md, , yml). Then, use tasks_add to specify the tasks, their status, and the source ID from the tasks_setup response.",
+        "applicability": "When adding tasks and encountering file extension or path errors.",
+        "failed_assumption": "Assuming a file path was valid or tasks could be added without prior setup.",
+        "corrective_actions": [
+          "Call tasks_setup with a valid source path before adding tasks.",
+          "Use the source ID from tasks_setup in tasks_add arguments."
+        ],
+        "verification": "tasks_setup completes without error and tasks_add successfully adds tasks using the source ID.",
+        "evidence_call_ids": [
+          "source-0:seed-directory-source",
+          "source-0:seed-uninitialized-add",
+          "source-0:call_-7142424682174604848",
+          "source-0:call_-7142424407296698216",
+          "source-1:seed-directory-source",
+          "source-1:seed-uninitialized-add",
+          "source-1:call_-7142422483151353415",
+          "source-1:call_-7142415233246553913"
+        ]
+      }
+    }
+  ]
+}

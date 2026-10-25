@@ -1,0 +1,113 @@
+{
+  "protocol": "file_recovery_transfer_templates_v1",
+  "status": "rejected_before_validation",
+  "judge_calls": 0,
+  "conditions": {
+    "no_rule": {
+      "planned": 24,
+      "executed": 0,
+      "execution_failures": 0,
+      "correct_reads": 0,
+      "completed_task_successes": 0
+    },
+    "old_rule": {
+      "planned": 24,
+      "executed": 0,
+      "execution_failures": 0,
+      "correct_reads": 0,
+      "completed_task_successes": 0
+    },
+    "new_rule": {
+      "planned": 24,
+      "executed": 0,
+      "execution_failures": 0,
+      "correct_reads": 0,
+      "completed_task_successes": 0
+    },
+    "irrelevant_rule": {
+      "planned": 24,
+      "executed": 0,
+      "execution_failures": 0,
+      "correct_reads": 0,
+      "completed_task_successes": 0
+    }
+  },
+  "paired": {
+    "no_rule": {
+      "all": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      }
+    },
+    "old_rule": {
+      "all": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      }
+    },
+    "irrelevant_rule": {
+      "all": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      },
+      "discovery": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      },
+      "easy_controls": {
+        "pairs": 0,
+        "new_successes": 0,
+        "other_successes": 0,
+        "wins": 0,
+        "losses": 0
+      }
+    }
+  },
+  "knowledge_rejection": {
+    "type": "ValueError",
+    "message": "Template does not reproduce cited successful practice arguments",
+    "unknown_outcome": false
+  },
+  "fixtures_unchanged": true,
+  "source_unchanged": true
+}

@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "calls": [
+    {
+      "tool_call_id": "replay-1",
+      "semantic_identity": "@kazuph/mcp-taskmanager::get_next_task",
+      "arguments": "{\"requestId\": \"req-1\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"next_task\",\n  \"task\": {\n    \"id\": \"task-1\",\n    \"title\": \"museum telemetry component 1\",\n    \"description\": \"Implement and validate component 1 for the independent museum telemetry prototype.\"\n  },\n  \"message\": \"Next task is ready. Task approval will be required after completion.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-1 | museum telemetry component 1 | Implement and validate component 1 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\n| task-2 | museum telemetry component 2 | Implement and validate component 2 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "protocol_error": null
+    }
+  ],
+  "proof": {
+    "kind": "persisted_request_and_returned_task",
+    "state": {
+      "requests": [
+        {
+          "requestId": "req-1",
+          "originalRequest": "Develop an independent museum telemetry prototype with clear validation and review stages.",
+          "splitDetails": "Develop an independent museum telemetry prototype with clear validation and review stages.",
+          "tasks": [
+            {
+              "id": "task-1",
+              "title": "museum telemetry component 1",
+              "description": "Implement and validate component 1 for the independent museum telemetry prototype.",
+              "done": false,
+              "approved": false,
+              "completedDetails": ""
+            },
+            {
+              "id": "task-2",
+              "title": "museum telemetry component 2",
+              "description": "Implement and validate component 2 for the independent museum telemetry prototype.",
+              "done": false,
+              "approved": false,
+              "completedDetails": ""
+            }
+          ],
+          "completed": false
+        }
+      ]
+    },
+    "request_id": "req-1"
+  }
+}

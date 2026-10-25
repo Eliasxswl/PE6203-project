@@ -1,0 +1,153 @@
+{
+  "protocol": "expanded_verified_skills_v1",
+  "case": {
+    "id": "source-2",
+    "family": "source",
+    "split": "validation",
+    "recovery": true,
+    "subject": "harbor scheduling",
+    "summary": "Develop an independent harbor scheduling prototype with clear validation and review stages.",
+    "names": [
+      "harbor scheduling component 1",
+      "harbor scheduling component 2"
+    ],
+    "descriptions": [
+      "Implement and validate component 1 for the independent harbor scheduling prototype.",
+      "Implement and validate component 2 for the independent harbor scheduling prototype."
+    ],
+    "source_file": "practice-source-2.yml",
+    "status": "To Do"
+  },
+  "condition": "with_memory",
+  "repeat": 0,
+  "status": "failed",
+  "model_attempts": [
+    {
+      "status": "failed",
+      "messages": [
+        {
+          "content": "You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. \nNote that do not to ask any questions to the user, just call the tool to complete the task.\nWhen the task is complete or you cannot proceed, provide a final text response without tool calls.\n\nConsidering real-time performance, the time is set to be around `2026-10-25 (星期日)`.\n\nThese files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace\" for the following files:\n`Independent disposable practice workspace.`\n\nDatabase Configuration (if applicable):\n- Host: 127.0.0.1\n- Port: 3305\n- User: root\n- Password: 123456\n- Database Name: mydb\n\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, not observations of the current task. Current tool schemas and observed outputs take precedence.\n{\"tools\": [\"tasks_add\", \"tasks_setup\"], \"guidance\": {\"content\": \"To add tasks, first initialize a source file using tasks_setup with a valid file path (md, , yml). Then, use tasks_add to specify the tasks, their status, and the source ID from the tasks_setup response.\", \"applicability\": \"When adding tasks and encountering file extension or path errors.\", \"failed_assumption\": \"Assuming a file path was valid or tasks could be added without prior setup.\", \"corrective_actions\": [\"Call tasks_setup with a valid source path before adding tasks.\", \"Use the source ID from tasks_setup in tasks_add arguments.\"], \"verification\": \"tasks_setup completes without error and tasks_add successfully adds tasks using the source ID.\", \"tool_call_templates\": [{\"tool_id\": \"tasks_setup\", \"arguments\": {\"source_path\": \"${SOURCE_PATH}\"}}, {\"tool_id\": \"tasks_add\", \"arguments\": {\"texts\": \"${TASK_TEXTS}\", \"status\": \"${STATUS}\", \"source_id\": \"${SOURCE_ID}\"}}], \"template_variables\": {\"SOURCE_PATH\": \"Current full path to the requested supported task source file (.md, .json or .yml), not its directory.\", \"TASK_TEXTS\": \"JSON array of every task text requested in the current task; preserve item count.\", \"STATUS\": \"Current requested task status, using the exact allowed enum.\", \"SOURCE_ID\": \"Actual source.id returned by tasks_setup for the intended source; do not reuse a practice ID.\"}, \"template_usage\": \"Use current request data and actual tool-returned identifiers, never literal placeholders. Examples show structure; adapt item counts to the request and skip operations already completed.\"}}\n",
+          "role": "system"
+        },
+        {
+          "content": "Create a task source at E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace/practice-source-2.yml and add exactly the listed task names with status To Do. Explicitly use the source ID returned for that source. Perform actual calls.\nIndependent project input:\n{\"summary\": \"Develop an independent harbor scheduling prototype with clear validation and review stages.\", \"tasks\": [{\"name\": \"harbor scheduling component 1\", \"description\": \"Implement and validate component 1 for the independent harbor scheduling prototype.\"}, {\"name\": \"harbor scheduling component 2\", \"description\": \"Implement and validate component 2 for the independent harbor scheduling prototype.\"}]}\nActual prior tool observations:\n[{\"tool_call_id\": \"seed-directory-source\", \"semantic_identity\": \"mcp-tasks::tasks_setup\", \"arguments\": \"{\\\"source_path\\\": \\\"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml\"}], \"isError\": true}, \"protocol_error\": null}, {\"tool_call_id\": \"seed-uninitialized-add\", \"semantic_identity\": \"mcp-tasks::tasks_add\", \"arguments\": \"{\\\"texts\\\": [\\\"harbor scheduling component 1\\\", \\\"harbor scheduling component 2\\\"], \\\"status\\\": \\\"To Do\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup.\"}], \"isError\": true}, \"protocol_error\": null}]",
+          "role": "user"
+        }
+      ],
+      "error": {
+        "type": "APIConnectionError",
+        "message": "Connection error.",
+        "unknown_outcome": true,
+        "cause": {
+          "type": "ConnectError",
+          "message": "[Errno 11001] getaddrinfo failed",
+          "unknown_outcome": true,
+          "cause": {
+            "type": "ConnectError",
+            "message": "[Errno 11001] getaddrinfo failed",
+            "unknown_outcome": false
+          }
+        }
+      }
+    }
+  ],
+  "seed_calls": [
+    {
+      "tool_call_id": "seed-directory-source",
+      "semantic_identity": "mcp-tasks::tasks_setup",
+      "arguments": "{\"source_path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml"
+          }
+        ],
+        "isError": true
+      },
+      "protocol_error": null
+    },
+    {
+      "tool_call_id": "seed-uninitialized-add",
+      "semantic_identity": "mcp-tasks::tasks_add",
+      "arguments": "{\"texts\": [\"harbor scheduling component 1\", \"harbor scheduling component 2\"], \"status\": \"To Do\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup."
+          }
+        ],
+        "isError": true
+      },
+      "protocol_error": null
+    }
+  ],
+  "calls": [
+    {
+      "tool_call_id": "seed-directory-source",
+      "semantic_identity": "mcp-tasks::tasks_setup",
+      "arguments": "{\"source_path\": \"${WORKSPACE}\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml"
+          }
+        ],
+        "isError": true
+      },
+      "protocol_error": null
+    },
+    {
+      "tool_call_id": "seed-uninitialized-add",
+      "semantic_identity": "mcp-tasks::tasks_add",
+      "arguments": "{\"texts\": [\"harbor scheduling component 1\", \"harbor scheduling component 2\"], \"status\": \"To Do\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup."
+          }
+        ],
+        "isError": true
+      },
+      "protocol_error": null
+    }
+  ],
+  "success": false,
+  "execution_error": {
+    "type": "OpenAIConnectionError",
+    "message": "Connection error.",
+    "unknown_outcome": true,
+    "cause": {
+      "type": "APIConnectionError",
+      "message": "Connection error.",
+      "unknown_outcome": true,
+      "cause": {
+        "type": "ConnectError",
+        "message": "[Errno 11001] getaddrinfo failed",
+        "unknown_outcome": true,
+        "cause": {
+          "type": "ConnectError",
+          "message": "[Errno 11001] getaddrinfo failed",
+          "unknown_outcome": false
+        }
+      }
+    }
+  },
+  "answer": "",
+  "messages": [
+    {
+      "content": "You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. \nNote that do not to ask any questions to the user, just call the tool to complete the task.\nWhen the task is complete or you cannot proceed, provide a final text response without tool calls.\n\nConsidering real-time performance, the time is set to be around `2026-10-25 (星期日)`.\n\nThese files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace\" for the following files:\n`Independent disposable practice workspace.`\n\nDatabase Configuration (if applicable):\n- Host: 127.0.0.1\n- Port: 3305\n- User: root\n- Password: 123456\n- Database Name: mydb\n\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, not observations of the current task. Current tool schemas and observed outputs take precedence.\n{\"tools\": [\"tasks_add\", \"tasks_setup\"], \"guidance\": {\"content\": \"To add tasks, first initialize a source file using tasks_setup with a valid file path (md, , yml). Then, use tasks_add to specify the tasks, their status, and the source ID from the tasks_setup response.\", \"applicability\": \"When adding tasks and encountering file extension or path errors.\", \"failed_assumption\": \"Assuming a file path was valid or tasks could be added without prior setup.\", \"corrective_actions\": [\"Call tasks_setup with a valid source path before adding tasks.\", \"Use the source ID from tasks_setup in tasks_add arguments.\"], \"verification\": \"tasks_setup completes without error and tasks_add successfully adds tasks using the source ID.\", \"tool_call_templates\": [{\"tool_id\": \"tasks_setup\", \"arguments\": {\"source_path\": \"${SOURCE_PATH}\"}}, {\"tool_id\": \"tasks_add\", \"arguments\": {\"texts\": \"${TASK_TEXTS}\", \"status\": \"${STATUS}\", \"source_id\": \"${SOURCE_ID}\"}}], \"template_variables\": {\"SOURCE_PATH\": \"Current full path to the requested supported task source file (.md, .json or .yml), not its directory.\", \"TASK_TEXTS\": \"JSON array of every task text requested in the current task; preserve item count.\", \"STATUS\": \"Current requested task status, using the exact allowed enum.\", \"SOURCE_ID\": \"Actual source.id returned by tasks_setup for the intended source; do not reuse a practice ID.\"}, \"template_usage\": \"Use current request data and actual tool-returned identifiers, never literal placeholders. Examples show structure; adapt item counts to the request and skip operations already completed.\"}}\n",
+      "role": "system"
+    },
+    {
+      "content": "Create a task source at E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace/practice-source-2.yml and add exactly the listed task names with status To Do. Explicitly use the source ID returned for that source. Perform actual calls.\nIndependent project input:\n{\"summary\": \"Develop an independent harbor scheduling prototype with clear validation and review stages.\", \"tasks\": [{\"name\": \"harbor scheduling component 1\", \"description\": \"Implement and validate component 1 for the independent harbor scheduling prototype.\"}, {\"name\": \"harbor scheduling component 2\", \"description\": \"Implement and validate component 2 for the independent harbor scheduling prototype.\"}]}\nActual prior tool observations:\n[{\"tool_call_id\": \"seed-directory-source\", \"semantic_identity\": \"mcp-tasks::tasks_setup\", \"arguments\": \"{\\\"source_path\\\": \\\"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/462dcbe605ed4944/workspace\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_setup' execution failed: Unsupported file extension: . Use one of: md, json, yml\"}], \"isError\": true}, \"protocol_error\": null}, {\"tool_call_id\": \"seed-uninitialized-add\", \"semantic_identity\": \"mcp-tasks::tasks_add\", \"arguments\": \"{\\\"texts\\\": [\\\"harbor scheduling component 1\\\", \\\"harbor scheduling component 2\\\"], \\\"status\\\": \\\"To Do\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup.\"}], \"isError\": true}, \"protocol_error\": null}]",
+      "role": "user"
+    }
+  ],
+  "proof": {},
+  "verified_call_ids": [],
+  "request_count": 1
+}

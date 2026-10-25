@@ -1,0 +1,68 @@
+{
+  "success": true,
+  "calls": [
+    {
+      "tool_call_id": "replay-1",
+      "semantic_identity": "@kazuph/mcp-taskmanager::get_next_task",
+      "arguments": "{\"requestId\": \"req-2\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"next_task\",\n  \"task\": {\n    \"id\": \"task-2\",\n    \"title\": \"orchard irrigation component 1\",\n    \"description\": \"Implement and validate component 1 for the independent orchard irrigation prototype.\"\n  },\n  \"message\": \"Next task is ready. Task approval will be required after completion.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-2 | orchard irrigation component 1 | Implement and validate component 1 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\n| task-3 | orchard irrigation component 2 | Implement and validate component 2 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "protocol_error": null
+    }
+  ],
+  "proof": {
+    "kind": "persisted_request_and_returned_task",
+    "state": {
+      "requests": [
+        {
+          "requestId": "req-1",
+          "originalRequest": "Unrelated placeholder 0",
+          "splitDetails": "Unrelated placeholder 0",
+          "tasks": [
+            {
+              "id": "task-1",
+              "title": "Placeholder 0",
+              "description": "Unrelated private setup state.",
+              "done": false,
+              "approved": false,
+              "completedDetails": ""
+            }
+          ],
+          "completed": false
+        },
+        {
+          "requestId": "req-2",
+          "originalRequest": "Develop an independent orchard irrigation prototype with clear validation and review stages.",
+          "splitDetails": "Develop an independent orchard irrigation prototype with clear validation and review stages.",
+          "tasks": [
+            {
+              "id": "task-2",
+              "title": "orchard irrigation component 1",
+              "description": "Implement and validate component 1 for the independent orchard irrigation prototype.",
+              "done": false,
+              "approved": false,
+              "completedDetails": ""
+            },
+            {
+              "id": "task-3",
+              "title": "orchard irrigation component 2",
+              "description": "Implement and validate component 2 for the independent orchard irrigation prototype.",
+              "done": false,
+              "approved": false,
+              "completedDetails": ""
+            }
+          ],
+          "completed": false
+        }
+      ]
+    },
+    "request_id": "req-2"
+  }
+}

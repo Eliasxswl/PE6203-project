@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "calls": [
+    {
+      "tool_call_id": "replay-0",
+      "semantic_identity": "mcp-tasks::tasks_setup",
+      "arguments": "{\"source_path\": \"${WORKSPACE}/practice-source-0.md\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-0.md\",\"id\":\"ALpg\"},\"In Progress\":0,\"To Do\":0,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":0,\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[]}"
+          }
+        ],
+        "isError": false
+      },
+      "protocol_error": null
+    },
+    {
+      "tool_call_id": "replay-1",
+      "semantic_identity": "mcp-tasks::tasks_add",
+      "arguments": "{\"texts\": [\"museum telemetry component 1\", \"museum telemetry component 2\"], \"status\": \"To Do\", \"source_id\": \"ALpg\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"source\":{\"path\":\"${WORKSPACE}/practice-source-0.md\",\"id\":\"ALpg\"},\"In Progress\":0,\"To Do\":2,\"Backlog\":0,\"Done\":0,\"Reminders\":0,\"Notes\":0,\"Deleted\":0,\"total\":2,\"added\":[{\"id\":\"GrrA\",\"text\":\"museum telemetry component 1\",\"status\":\"To Do\",\"index\":0},{\"id\":\"aCpQ\",\"text\":\"museum telemetry component 2\",\"status\":\"To Do\",\"index\":1}],\"instructions\":\"Use mcp-tasks tools when the user mentions new or updated tasks\",\"reminders\":[],\"inProgress\":[]}"
+          }
+        ],
+        "isError": false
+      },
+      "protocol_error": null
+    }
+  ],
+  "proof": {
+    "kind": "persisted_source_and_added_items",
+    "content": "# Tasks - Practice Source 0\n\n## In Progress\n\n\n## To Do\n\n- [ ] museum telemetry component 1\n- [ ] museum telemetry component 2\n\n## Backlog\n\n\n## Done\n",
+    "source_id": "ALpg"
+  }
+}

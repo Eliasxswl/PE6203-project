@@ -1,0 +1,293 @@
+{
+  "archived_at": "2026-10-24T21:51:20.644087+00:00",
+  "branch": "langmem-adaptation",
+  "base_revision": "d97ba58a44689e6c9098f05fd8798f5e074f6d00",
+  "dirty_source": true,
+  "inputs_unchanged": true,
+  "main_unchanged": true,
+  "selective_patch_unchanged": true,
+  "checks": {
+    "targeted_tests_passed": 34,
+    "official_loop_3_strategies_3_stages_offline": true,
+    "paired_recovery_integration_offline": true,
+    "judge_preflight_requests": 1,
+    "judge_preflight_valid": 1
+  },
+  "coverage": {
+    "planned_trajectories": 102,
+    "completed_agents": 90,
+    "failed_agents": 12,
+    "scored_trajectories": 90,
+    "planned_judge_slots": 510,
+    "dispatched_judge_slots": 450,
+    "valid_judge_slots": 431,
+    "failed_or_unknown_judge_slots": 19,
+    "not_attempted_judge_slots": 60,
+    "paired_task_repeats": 41,
+    "tasks_with_valid_pairs": 17
+  },
+  "paired_means": {
+    "without_memory": {
+      "task_fulfillment": 9.31219512195122,
+      "grounding": 9.769512195121951,
+      "planning_and_efficiency": 9.960975609756098
+    },
+    "with_memory": {
+      "task_fulfillment": 9.09471544715447,
+      "grounding": 9.946341463414635,
+      "planning_and_efficiency": 9.91219512195122
+    }
+  },
+  "paired_deltas": {
+    "all_tasks": {
+      "pairs": 41,
+      "mean_score_deltas_with_minus_without": {
+        "task_fulfillment": -0.21747967479674798,
+        "grounding": 0.17682926829268297,
+        "planning_and_efficiency": -0.04878048780487805
+      }
+    },
+    "memory_exposed": {
+      "pairs": 38,
+      "mean_score_deltas_with_minus_without": {
+        "task_fulfillment": -0.05570175438596494,
+        "grounding": 0.19078947368421056,
+        "planning_and_efficiency": -0.05263157894736842
+      }
+    }
+  },
+  "task_balanced_tf_delta": -0.16307189542483666,
+  "task_signs": {
+    "worse": 5,
+    "tied": 10,
+    "improved": 2
+  },
+  "mechanism": [
+    {
+      "case": "recursive-file-recovery",
+      "exposed_trajectories": 6,
+      "trajectories_using_any_dependent_tool": 6,
+      "dependent_tool_error_responses": 0
+    },
+    {
+      "case": "source-initialization",
+      "exposed_trajectories": 45,
+      "trajectories_using_any_dependent_tool": 3,
+      "dependent_tool_error_responses": 0
+    }
+  ],
+  "observed_tool_errors": [
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 425,
+        "repeat": 1
+      },
+      "tool": "mcp-shrimp-task-manager::split_tasks",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "schema_input_invalid"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 389,
+        "repeat": 2
+      },
+      "tool": "mcp-shrimp-task-manager::analyze_task",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "schema_input_invalid"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 425,
+        "repeat": 2
+      },
+      "tool": "mcp-shrimp-task-manager::split_tasks",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "schema_input_invalid"
+          }
+        ],
+        "isError": true
+      }
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 425,
+        "repeat": 2
+      },
+      "tool": "mcp-tasks::tasks_add",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Tool 'tasks_add' execution failed: You must request a file path from the user, make it absolute and call tasks_setup."
+          }
+        ],
+        "isError": true
+      }
+    }
+  ],
+  "task9": [
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 0
+      },
+      "search_arguments": [],
+      "read_calls": 0,
+      "score": {
+        "task_fulfillment": 6.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      }
+    },
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 0
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/d8041a67e7474d5e/workspace",
+          "pattern": "**/yesterday*.txt"
+        }
+      ],
+      "read_calls": 0,
+      "score": {
+        "task_fulfillment": 4.75,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      }
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 1
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/decaea96939b4fb2/workspace",
+          "pattern": "*yesterday*"
+        }
+      ],
+      "read_calls": 0,
+      "score": {
+        "task_fulfillment": 4.0,
+        "grounding": 5.75,
+        "planning_and_efficiency": 10.0
+      }
+    },
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 1
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/aa36f9c5ac8145eb/workspace",
+          "pattern": "**/yesterday*.txt"
+        }
+      ],
+      "read_calls": 0,
+      "score": {
+        "task_fulfillment": 3.4,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      }
+    },
+    {
+      "identity": {
+        "strategy": "without_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 2
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/9a58d7ed4a2940a1/workspace",
+          "pattern": "*yesterday*"
+        }
+      ],
+      "read_calls": 0,
+      "score": {
+        "task_fulfillment": 4.0,
+        "grounding": 8.2,
+        "planning_and_efficiency": 9.0
+      }
+    },
+    {
+      "identity": {
+        "strategy": "with_memory",
+        "stage": "original",
+        "task_id": 9,
+        "repeat": 2
+      },
+      "search_arguments": [
+        {
+          "path": "E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/8e60c5c621f543f4/workspace",
+          "pattern": "**/yesterday*.txt"
+        }
+      ],
+      "read_calls": 0,
+      "score": {
+        "task_fulfillment": 4.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      }
+    }
+  ],
+  "limitations": [
+    "Early-only, not a three-strategy evolution experiment.",
+    "Rubric scores are model judgments, not program-verified official task completion.",
+    "Exposure and dependent-tool use do not prove that the model followed the procedure.",
+    "Task 416 received no knowledge in either condition and still differed substantially; overall differences cannot all be attributed to memory.",
+    "Independent file practice varied directory depth, but its filenames began with the keyword; official log_yesterday.txt requires matching text before the keyword.",
+    "The generated task-source rule omitted JSON from its extension list; generated summaries were frozen without manual rewriting.",
+    "Both conditions lost six executions to network/provider failures; paired coverage is 41 of 51 planned pairs."
+  ],
+  "files": {
+    "experiment.json": "2857e91512bc17cd8f1c455f0b417e3c6a0a3d1c39acb7d1c8d38dc62811fc0c",
+    "inputs/frozen-k0.json": "923dc1b2afb1db8acea11be8ac88a160429c38640e77456d4f53703a433927aa",
+    "inputs/knowledge-build/file-practice-experiment.json": "c06c5f100189443e2dbef321f9e835cf93fe9b92d24d54193fba9d5bb3bd71b6",
+    "inputs/knowledge-build/file-practice-knowledge-build.json": "ccda49e0f9aea24373cccfa8c2c877a788c2b183a1438be0879cab46e90456c7",
+    "inputs/knowledge-build/file-practice-practice-probes.json": "46062b4f5cc211f6bac0df4ca55afcb9db1cd4d917ca96bc17abcd41dcc2f7fe",
+    "inputs/knowledge-build/judge-preflight.json": "eee070c753309c736fbbd80d9978d30d3b5390f409adae4c05b989cb6aeec2da",
+    "inputs/knowledge-build/source-initialization.build.json": "9cc6af2c167662c3b725d657a2f31d5a155de01c574743d76cf8b217b2b1f7d8",
+    "inputs/knowledge-build/task-practice.json": "f36281ef71750e7295c1572a030c06e901da5140575e9b4396a524ab3598c02a",
+    "inputs/practice-evidence.json": "9964de679fc5e5f0626dba7e4de5007c34643ebb7c90d3281738e418534b41eb",
+    "memory-ablation.json": "577dc35d25b069511191c899e570be984a0f38ce002cb8d355440f57b7924cb9",
+    "records.json": "3da07f9cdb4e3b9abf9a3989594f66c023dc74500035f73bffdb1aadd8cb11cf",
+    "source.zip": "6caa57bd74a97aee4a19aabc42805840fcf05e04538376968d103c5d16dd1812"
+  }
+}

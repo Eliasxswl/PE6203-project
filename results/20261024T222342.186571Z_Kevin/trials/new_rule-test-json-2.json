@@ -1,0 +1,338 @@
+{
+  "protocol": "file_recovery_transfer_retained_calls_v1",
+  "case": "test-json",
+  "repeat": 2,
+  "condition": "new_rule",
+  "status": "completed",
+  "model_attempts": [
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "content": "You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. \nNote that do not to ask any questions to the user, just call the tool to complete the task.\nWhen the task is complete or you cannot proceed, provide a final text response without tool calls.\n\nConsidering real-time performance, the time is set to be around `2026-10-25 (星期日)`.\n\nThese files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\" for the following files:\n`Discover files with tools; no file tree supplied.`\n\nDatabase Configuration (if applicable):\n- Host: 127.0.0.1\n- Port: 3305\n- User: root\n- Password: 123456\n- Database Name: mydb\n\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, not observations of the current task. Current tool schemas and observed outputs take precedence.\n{\"tools\": [\"search_files\", \"read_text_file\"], \"guidance\": {\"content\": \"When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.\", \"applicability\": \"适用于在不知道文件确切路径，但知道文件名关键字的情况。\", \"failed_assumption\": \"假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。\", \"corrective_actions\": [\"使用 'search_files' 工具根据文件名关键字查找文件路径\", \"使用找到的文件路径调用 'read_text_file' 读取文件内容\"], \"verification\": \"通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。\", \"tool_call_templates\": [{\"tool_id\": \"search_files\", \"arguments\": {\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*${KEYWORD}*\"}}, {\"tool_id\": \"read_text_file\", \"arguments\": {\"path\": \"${DISCOVERED_PATH}\"}}], \"template_variables\": {\"KEYWORD\": \"Filename keyword from the current request.\", \"DISCOVERED_PATH\": \"Actual absolute file path returned by the search tool.\"}, \"template_usage\": \"Substitute current inputs and observed output paths; never pass placeholder strings literally. Known exact paths can be read directly.\"}}\n",
+          "role": "system"
+        },
+        {
+          "content": "Locate the UTF-8 file whose filename contains the keyword onyx. Read it using the tool, then return its contents. Do not guess its path or contents.",
+          "role": "user"
+        }
+      ],
+      "response": {
+        "id": "2026102506265249733cd9a8e6423c",
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": null,
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": [
+                {
+                  "id": "call_-7142424991412251382",
+                  "function": {
+                    "arguments": "{\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*onyx*\"}",
+                    "name": "search_files"
+                  },
+                  "type": "function",
+                  "index": 0
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1792880814,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 61,
+          "prompt_tokens": 1113,
+          "total_tokens": 1174,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "2026102506265249733cd9a8e6423c"
+      }
+    },
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "content": "You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. \nNote that do not to ask any questions to the user, just call the tool to complete the task.\nWhen the task is complete or you cannot proceed, provide a final text response without tool calls.\n\nConsidering real-time performance, the time is set to be around `2026-10-25 (星期日)`.\n\nThese files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\" for the following files:\n`Discover files with tools; no file tree supplied.`\n\nDatabase Configuration (if applicable):\n- Host: 127.0.0.1\n- Port: 3305\n- User: root\n- Password: 123456\n- Database Name: mydb\n\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, not observations of the current task. Current tool schemas and observed outputs take precedence.\n{\"tools\": [\"search_files\", \"read_text_file\"], \"guidance\": {\"content\": \"When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.\", \"applicability\": \"适用于在不知道文件确切路径，但知道文件名关键字的情况。\", \"failed_assumption\": \"假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。\", \"corrective_actions\": [\"使用 'search_files' 工具根据文件名关键字查找文件路径\", \"使用找到的文件路径调用 'read_text_file' 读取文件内容\"], \"verification\": \"通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。\", \"tool_call_templates\": [{\"tool_id\": \"search_files\", \"arguments\": {\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*${KEYWORD}*\"}}, {\"tool_id\": \"read_text_file\", \"arguments\": {\"path\": \"${DISCOVERED_PATH}\"}}], \"template_variables\": {\"KEYWORD\": \"Filename keyword from the current request.\", \"DISCOVERED_PATH\": \"Actual absolute file path returned by the search tool.\"}, \"template_usage\": \"Substitute current inputs and observed output paths; never pass placeholder strings literally. Known exact paths can be read directly.\"}}\n",
+          "role": "system"
+        },
+        {
+          "content": "Locate the UTF-8 file whose filename contains the keyword onyx. Read it using the tool, then return its contents. Do not guess its path or contents.",
+          "role": "user"
+        },
+        {
+          "content": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "type": "function",
+              "id": "call_-7142424991412251382",
+              "function": {
+                "name": "search_files",
+                "arguments": "{\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*onyx*\"}"
+              }
+            }
+          ]
+        },
+        {
+          "content": "{\"content\": [{\"text\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\", \"type\": \"text\"}], \"isError\": false, \"structuredContent\": {\"content\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}}",
+          "role": "tool",
+          "tool_call_id": "call_-7142424991412251382"
+        }
+      ],
+      "response": {
+        "id": "2026102506265432af0016eb6945c9",
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": null,
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": [
+                {
+                  "id": "call_-7142417432269811636",
+                  "function": {
+                    "arguments": "{\"path\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}",
+                    "name": "read_text_file"
+                  },
+                  "type": "function",
+                  "index": 0
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1792880815,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 79,
+          "prompt_tokens": 1344,
+          "total_tokens": 1423,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "2026102506265432af0016eb6945c9"
+      }
+    },
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "content": "You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. \nNote that do not to ask any questions to the user, just call the tool to complete the task.\nWhen the task is complete or you cannot proceed, provide a final text response without tool calls.\n\nConsidering real-time performance, the time is set to be around `2026-10-25 (星期日)`.\n\nThese files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\" for the following files:\n`Discover files with tools; no file tree supplied.`\n\nDatabase Configuration (if applicable):\n- Host: 127.0.0.1\n- Port: 3305\n- User: root\n- Password: 123456\n- Database Name: mydb\n\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, not observations of the current task. Current tool schemas and observed outputs take precedence.\n{\"tools\": [\"search_files\", \"read_text_file\"], \"guidance\": {\"content\": \"When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.\", \"applicability\": \"适用于在不知道文件确切路径，但知道文件名关键字的情况。\", \"failed_assumption\": \"假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。\", \"corrective_actions\": [\"使用 'search_files' 工具根据文件名关键字查找文件路径\", \"使用找到的文件路径调用 'read_text_file' 读取文件内容\"], \"verification\": \"通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。\", \"tool_call_templates\": [{\"tool_id\": \"search_files\", \"arguments\": {\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*${KEYWORD}*\"}}, {\"tool_id\": \"read_text_file\", \"arguments\": {\"path\": \"${DISCOVERED_PATH}\"}}], \"template_variables\": {\"KEYWORD\": \"Filename keyword from the current request.\", \"DISCOVERED_PATH\": \"Actual absolute file path returned by the search tool.\"}, \"template_usage\": \"Substitute current inputs and observed output paths; never pass placeholder strings literally. Known exact paths can be read directly.\"}}\n",
+          "role": "system"
+        },
+        {
+          "content": "Locate the UTF-8 file whose filename contains the keyword onyx. Read it using the tool, then return its contents. Do not guess its path or contents.",
+          "role": "user"
+        },
+        {
+          "content": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "type": "function",
+              "id": "call_-7142424991412251382",
+              "function": {
+                "name": "search_files",
+                "arguments": "{\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*onyx*\"}"
+              }
+            }
+          ]
+        },
+        {
+          "content": "{\"content\": [{\"text\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\", \"type\": \"text\"}], \"isError\": false, \"structuredContent\": {\"content\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}}",
+          "role": "tool",
+          "tool_call_id": "call_-7142424991412251382"
+        },
+        {
+          "content": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "type": "function",
+              "id": "call_-7142417432269811636",
+              "function": {
+                "name": "read_text_file",
+                "arguments": "{\"path\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}"
+              }
+            }
+          ]
+        },
+        {
+          "content": "{\"content\": [{\"text\": \"Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\", \"type\": \"text\"}], \"isError\": false, \"structuredContent\": {\"content\": \"Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\"}}",
+          "role": "tool",
+          "tool_call_id": "call_-7142417432269811636"
+        }
+      ],
+      "response": {
+        "id": "20261025062656107f224f193e44d5",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "The contents of the UTF-8 file containing the keyword \"onyx\" are as follows:\n\n```\nPayload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\n```",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null
+            }
+          }
+        ],
+        "created": 1792880817,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 70,
+          "prompt_tokens": 1545,
+          "total_tokens": 1615,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "20261025062656107f224f193e44d5"
+      }
+    }
+  ],
+  "rule_sha256": "fb29288ce384107ba7342f7b6c217d2602d0dd0a80f0f025c8772a34a9e450c3",
+  "rule_characters": 1301,
+  "outcome": {
+    "success": true,
+    "verified_read_call_ids": [
+      "call_-7142417432269811636"
+    ],
+    "tool_errors": 0,
+    "task_success": true
+  },
+  "answer": "The contents of the UTF-8 file containing the keyword \"onyx\" are as follows:\n\n```\nPayload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\n```",
+  "trajectory_messages": [
+    {
+      "role": "system",
+      "content": "You are an AI agent connected to the MCP (Model Context Protocol) server. Based on the user's request, select and invoke tools to fulfill the task accurately and efficiently. \nNote that do not to ask any questions to the user, just call the tool to complete the task.\nWhen the task is complete or you cannot proceed, provide a final text response without tool calls.\n\nConsidering real-time performance, the time is set to be around `2026-10-25 (星期日)`.\n\nThese files are stored in the local file system and serve as relevant resources for tool utilization. Use the absolute workspace prefix \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\" for the following files:\n`Discover files with tools; no file tree supplied.`\n\nDatabase Configuration (if applicable):\n- Host: 127.0.0.1\n- Port: 3305\n- User: root\n- Password: 123456\n- Database Name: mydb\n\n\nTool-use knowledge learned from independent past practice. Treat this as fallible reference, not observations of the current task. Current tool schemas and observed outputs take precedence.\n{\"tools\": [\"search_files\", \"read_text_file\"], \"guidance\": {\"content\": \"When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.\", \"applicability\": \"适用于在不知道文件确切路径，但知道文件名关键字的情况。\", \"failed_assumption\": \"假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。\", \"corrective_actions\": [\"使用 'search_files' 工具根据文件名关键字查找文件路径\", \"使用找到的文件路径调用 'read_text_file' 读取文件内容\"], \"verification\": \"通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。\", \"tool_call_templates\": [{\"tool_id\": \"search_files\", \"arguments\": {\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*${KEYWORD}*\"}}, {\"tool_id\": \"read_text_file\", \"arguments\": {\"path\": \"${DISCOVERED_PATH}\"}}], \"template_variables\": {\"KEYWORD\": \"Filename keyword from the current request.\", \"DISCOVERED_PATH\": \"Actual absolute file path returned by the search tool.\"}, \"template_usage\": \"Substitute current inputs and observed output paths; never pass placeholder strings literally. Known exact paths can be read directly.\"}}\n"
+    },
+    {
+      "role": "user",
+      "content": "Locate the UTF-8 file whose filename contains the keyword onyx. Read it using the tool, then return its contents. Do not guess its path or contents."
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "type": "function",
+          "id": "call_-7142424991412251382",
+          "function": {
+            "name": "search_files",
+            "arguments": "{\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*onyx*\"}"
+          }
+        }
+      ],
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "name": "search_files",
+      "tool_call_id": "call_-7142424991412251382",
+      "content": "{\"content\": [{\"text\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\", \"type\": \"text\"}], \"isError\": false, \"structuredContent\": {\"content\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}}"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "type": "function",
+          "id": "call_-7142417432269811636",
+          "function": {
+            "name": "read_text_file",
+            "arguments": "{\"path\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}"
+          }
+        }
+      ],
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "name": "read_text_file",
+      "tool_call_id": "call_-7142417432269811636",
+      "content": "{\"content\": [{\"text\": \"Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\", \"type\": \"text\"}], \"isError\": false, \"structuredContent\": {\"content\": \"Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\"}}"
+    },
+    {
+      "role": "assistant",
+      "content": "The contents of the UTF-8 file containing the keyword \"onyx\" are as follows:\n\n```\nPayload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813\n```"
+    }
+  ],
+  "raw_tool_trace": [
+    {
+      "tool_call_id": "call_-7142424991412251382",
+      "name": "search_files",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+      "arguments": "{\"path\": \"E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/a8f69f8c0c1b452c/workspace\", \"pattern\": \"**/*onyx*\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\a8f69f8c0c1b452c\\workspace\\level-0\\level-1\\level-2\\v1-onyx-backup.json"
+          }
+        ],
+        "structuredContent": {
+          "content": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\a8f69f8c0c1b452c\\workspace\\level-0\\level-1\\level-2\\v1-onyx-backup.json"
+        },
+        "isError": false
+      },
+      "protocol_error": null
+    },
+    {
+      "tool_call_id": "call_-7142417432269811636",
+      "name": "read_text_file",
+      "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+      "arguments": "{\"path\": \"E:\\\\NTU Learn\\\\PE6203\\\\part2\\\\MCPEvol-Bench\\\\.runtime\\\\langmem-adaptation\\\\.runtime\\\\r\\\\a8f69f8c0c1b452c\\\\workspace\\\\level-0\\\\level-1\\\\level-2\\\\v1-onyx-backup.json\"}",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813"
+          }
+        ],
+        "structuredContent": {
+          "content": "Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813"
+        },
+        "isError": false
+      },
+      "protocol_error": null
+    }
+  ],
+  "request_count": 3,
+  "stop_reason": "final_response",
+  "target_relative_path": "level-0/level-1/level-2/v1-onyx-backup.json",
+  "expected_content_sha256": "5b849057744f8631116319dc5f5d833b1d11ef3dbcd77d60eec28ea152e2067f",
+  "execution_error": null,
+  "cohort": "discovery"
+}

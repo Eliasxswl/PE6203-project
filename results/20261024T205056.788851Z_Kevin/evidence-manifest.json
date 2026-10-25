@@ -1,0 +1,103 @@
+{
+  "archived_at": "2026-10-24T20:56:28.875793+00:00",
+  "branch": "langmem-adaptation",
+  "base_revision": "d97ba58a44689e6c9098f05fd8798f5e074f6d00",
+  "source_dirty": true,
+  "source_sha256": "a456a36385e81ee559851573399559b5177ee2d50cfa200b432c02efd5eed337",
+  "source_unchanged_during_run": true,
+  "fixtures_unchanged_during_run": true,
+  "selective_patch_source_unchanged_from_base": true,
+  "targeted_tests": {
+    "test_langchain_agent": 7,
+    "test_causal": 11,
+    "test_langmem_integration": 8,
+    "passed": 26
+  },
+  "offline_acceptance": {
+    "logical_conditions": 9,
+    "actual_trajectories": 7,
+    "judge_slots": 35,
+    "provider": "fake",
+    "strategies": 3,
+    "stages": 3
+  },
+  "observed": {
+    "no_rule": {
+      "planned": 9,
+      "completed": 9,
+      "successful_reads": 0,
+      "successful_reads_in_completed": 0,
+      "api_failures": 0
+    },
+    "verified_rule": {
+      "planned": 9,
+      "completed": 8,
+      "successful_reads": 8,
+      "successful_reads_in_completed": 8,
+      "api_failures": 1
+    },
+    "generated_rule": {
+      "planned": 9,
+      "completed": 7,
+      "successful_reads": 6,
+      "successful_reads_in_completed": 5,
+      "api_failures": 2
+    },
+    "irrelevant_rule": {
+      "planned": 9,
+      "completed": 9,
+      "successful_reads": 0,
+      "successful_reads_in_completed": 0,
+      "api_failures": 0
+    }
+  },
+  "claim_limit": "Tests transfer of one file-recovery skill, not general memory benefit or server evolution.",
+  "failed_reads_and_provider_failures_not_retried": true,
+  "files": {
+    "causal-summary.json": "54a925209a5315c208e95c72142c74b1bb8e9572d636eec7d14bdd9a2e89e3d0",
+    "experiment.json": "c06c5f100189443e2dbef321f9e835cf93fe9b92d24d54193fba9d5bb3bd71b6",
+    "fixtures/shelf_375d88977e/shelf_375d88977e/shelf_375d88977e/shelf_375d88977e/item_375d88977e.txt": "704841e9e491d5ccc7f3c20f7acef37b596e04eef8377fa31f87f99371abaf35",
+    "fixtures/shelf_aab77e6747/shelf_aab77e6747/item_aab77e6747.txt": "2cb39011ac54a02b3d3c7e717c301778f8f01450c96e22160ae1eba17d447204",
+    "fixtures/shelf_ee391bcb8b/shelf_ee391bcb8b/shelf_ee391bcb8b/item_ee391bcb8b.txt": "0ecf398eb412f7c691ed88520ad0e4309b4c9415dcac02ea0fb91f73c97e5952",
+    "fixtures/shelf_f76e90f0f2/item_f76e90f0f2.txt": "ec2a9ef9a9fb3427c06351e51e441e0fe8eb8bf1c05e65e2797411dc61296d86",
+    "knowledge-build.json": "ccda49e0f9aea24373cccfa8c2c877a788c2b183a1438be0879cab46e90456c7",
+    "practice-probes.json": "46062b4f5cc211f6bac0df4ca55afcb9db1cd4d917ca96bc17abcd41dcc2f7fe",
+    "source.zip": "aad8257398df24e37c8a6fc850c6424f982ae53766b6913bf77b5f733b7a9f01",
+    "trials/generated_rule-heldout-1-0.json": "83e44c3a357ec8ec264aac8e1108c7ef8b5ac4e9f94c36907028cc7de50ad526",
+    "trials/generated_rule-heldout-1-1.json": "5647786146094cd0c05fd373957b9fb108288b1618134dbe429c64ab89aad98a",
+    "trials/generated_rule-heldout-1-2.json": "dac2e4ffa98d003d711dabf795dbaec0dfb70f27a1d106b91e091fff70a3005a",
+    "trials/generated_rule-heldout-2-0.json": "082317adf1b1d967115e9f17a0c5d437ea5cf48b060fad36dd05965f90c8df56",
+    "trials/generated_rule-heldout-2-1.json": "d0ffb7a07475930f7fa7155a2b2dbf97ad42f0c6847ff0d66730c92eb52f5650",
+    "trials/generated_rule-heldout-2-2.json": "823388750d56edfc7cecd5aa31742f58daa2435608f9b4f0dbf261aace493a68",
+    "trials/generated_rule-heldout-3-0.json": "f484ab95f6f379e58e03fbd0efe71e1d428e9568b90b0ba851770e3999d99d36",
+    "trials/generated_rule-heldout-3-1.json": "c4d2e6c10f0da4279bdf9f429ba4f7a31ed554d723a8e7dfd03d2df8d3725f48",
+    "trials/generated_rule-heldout-3-2.json": "8dcfa6e16918c2daf740b68ba6db33858cb8a5c3a106ce5af71e51b0d07c5905",
+    "trials/irrelevant_rule-heldout-1-0.json": "65b07fc09d2ae8f344687b684a30c6b5d28cc8eee8a31af7be6413244d151801",
+    "trials/irrelevant_rule-heldout-1-1.json": "2c1d836d26522bb4d57cb02c0a20ad1d06e91bc1e5352cf59006bfad21f73581",
+    "trials/irrelevant_rule-heldout-1-2.json": "560b56e7100d81f8df87f36a14a073a04f7af8e082096a4fc0b2273d32226ff1",
+    "trials/irrelevant_rule-heldout-2-0.json": "d6220ca5f0f7552972bbc54a95908ea044d2af1c298505fab46885b0c1c7219a",
+    "trials/irrelevant_rule-heldout-2-1.json": "14e02c021484a2a186f47c4417c1ed8653bf2fb90b6bf7c76b939a4d73370e8a",
+    "trials/irrelevant_rule-heldout-2-2.json": "393e6a79be58ee4ecbb34c48e50d332ae2fef47c0e5ee112963b7855f7d098e6",
+    "trials/irrelevant_rule-heldout-3-0.json": "569bdefc72a0faadaabdd8bbd30db8a984a7a3fc1014d406ee7831f3e6e79798",
+    "trials/irrelevant_rule-heldout-3-1.json": "5638a596306a619fc6bda2f778270afe12f5df91b9012b2f12b3b1872df2b43e",
+    "trials/irrelevant_rule-heldout-3-2.json": "086cf4887e108f6bc6c78892b57cc712fdb1f47c19594cc006d7fad2470686c3",
+    "trials/no_rule-heldout-1-0.json": "1c511c3afcd251d1d8dce56bb76407a3d2449f4de1ebed5a00d157cbf76d8db6",
+    "trials/no_rule-heldout-1-1.json": "962d2f0abd765f8581981d77051cf5dfa07f1ebff8a5a6b1e9a6b92d84403bc5",
+    "trials/no_rule-heldout-1-2.json": "5b38623df715e051bd2fcd27bda62cb4ac3512f049d8f711e35213b7848f242d",
+    "trials/no_rule-heldout-2-0.json": "95afc2a6855b509e5cb69c95ee5074efdf5d8e295ed98f769a35cb9ada80f243",
+    "trials/no_rule-heldout-2-1.json": "b10970a4c64d8b88aae015eb1085fc53da1b0a389198a7aba672729fe2f3a3dd",
+    "trials/no_rule-heldout-2-2.json": "1a7200a88e3ba0c895194b5028da53db6a6c9f4e77c5b23f5bf26ec3cd54dfa4",
+    "trials/no_rule-heldout-3-0.json": "ecb15833aa92f1b7aef15854de07f77bdd60664b63ce87f64975965a9b462c16",
+    "trials/no_rule-heldout-3-1.json": "a79854174bd8f4392e1b0fab6fca4a24d4f85f040958a8d6a882f9b1c6e2a5b6",
+    "trials/no_rule-heldout-3-2.json": "e975242926817cb34c8ce1a94b227b6da165c5969a12aff757810a67738d137d",
+    "trials/verified_rule-heldout-1-0.json": "5886dc6f6a1682f4ef0ed997e6b16fe9298df1b4f9ecae910e259cad330474b5",
+    "trials/verified_rule-heldout-1-1.json": "54c11e8240447b049481b3a61b5730a2963049dfff0df395f5c14390f754ba52",
+    "trials/verified_rule-heldout-1-2.json": "c62305606fdf0564bc3282867ae97bf5d5c4c55f0289ef1dcbb623f63a6a9656",
+    "trials/verified_rule-heldout-2-0.json": "2bcb5ba57cbaf808068419b08882f130fe534555006fc1f631c76e68b3302ebd",
+    "trials/verified_rule-heldout-2-1.json": "fb6a3bbc3d0a15856733244fe3129088b7a45de1ab60a68eef97af8d75544fc1",
+    "trials/verified_rule-heldout-2-2.json": "657b77978ad98c51bb9279740598f8482e4238d9fb3bd3df66b2b6fbc03463e5",
+    "trials/verified_rule-heldout-3-0.json": "bf43bd46fd5265ca9db9895fe5d0ae4343f7bf64af4c0764f742d9608dd7541a",
+    "trials/verified_rule-heldout-3-1.json": "e37176570cc81d5b011bbf0fdb71a5c9fb2a94183a0be82c51a134c5b45e4bc3",
+    "trials/verified_rule-heldout-3-2.json": "3db0ac07128ac856a1321cc1eb74a37df3b8b9100c08a88f74141087c37cda0e"
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "protocol": "file_recovery_transfer_templates_v1",
+  "status": "rejected_before_validation",
+  "cases": [
+    {
+      "id": "practice-middle",
+      "split": "practice",
+      "keyword": "cobalt",
+      "cohort": "discovery",
+      "relative_path": "level-0/draft-cobalt-v2.txt",
+      "content": "Payload: de15418081ba2066ca289ad62692381e42acaf8b619616c1e05d91152c7ce8a9"
+    },
+    {
+      "id": "practice-extension",
+      "split": "practice",
+      "keyword": "marigold",
+      "cohort": "discovery",
+      "relative_path": "level-0/level-1/level-2/archive-marigold.md",
+      "content": "Payload: de781feb500b874d1d58a6626a8d6dc8520382cd295b718f86b55dff80be7a50"
+    },
+    {
+      "id": "practice-known",
+      "split": "practice",
+      "keyword": "quartz",
+      "cohort": "known_path",
+      "relative_path": "quartz-memo.txt",
+      "content": "Payload: f207495226555674cd996f64a406e3ecb3c373f15a2b412436fa3bc40188eeb8"
+    },
+    {
+      "id": "test-suffix",
+      "split": "heldout",
+      "keyword": "anchorage",
+      "cohort": "discovery",
+      "relative_path": "level-0/level-1/archive-anchorage.txt",
+      "content": "Payload: e693911a7e7f143858729cf6d5fbc0936d764c3f51bdcbaec5897000a6b9f68f"
+    },
+    {
+      "id": "test-middle-root",
+      "split": "heldout",
+      "keyword": "chestnut",
+      "cohort": "discovery",
+      "relative_path": "check-chestnut-final.md",
+      "content": "Payload: 2232c3ac304ca1360624fbe29d6ec4301d4ee8d743ad2f842d7d99e3ed5bd66f"
+    },
+    {
+      "id": "test-prefix",
+      "split": "heldout",
+      "keyword": "seashell",
+      "cohort": "discovery",
+      "relative_path": "level-0/level-1/level-2/level-3/seashell-note.ini",
+      "content": "Payload: 8dbda2e4e22f1187dae337e89c73e3d5bf00f2e68961aefe8740cc6410eaf063"
+    },
+    {
+      "id": "test-csv",
+      "split": "heldout",
+      "keyword": "riverbed",
+      "cohort": "discovery",
+      "relative_path": "level-0/notes-report-riverbed.yaml",
+      "content": "Payload: 17eb8d14a9435b49f77cc11b784c8d6e3fa77c9348f39dde68ead1540eb582e2"
+    },
+    {
+      "id": "test-json",
+      "split": "heldout",
+      "keyword": "onyx",
+      "cohort": "discovery",
+      "relative_path": "level-0/level-1/level-2/v1-onyx-backup.json",
+      "content": "Payload: 726652d4787a8a20638d27b7cb891eb379383cc509d33168f363e39435c21813"
+    },
+    {
+      "id": "test-exact-name",
+      "split": "heldout",
+      "keyword": "zephyr",
+      "cohort": "discovery",
+      "relative_path": "level-0/level-1/zephyr.txt",
+      "content": "Payload: a6c9ac06ac7a7a99d1268e10ba7c97a4df62f4d16641123ba9450f1e48620e05"
+    },
+    {
+      "id": "test-known",
+      "split": "heldout",
+      "keyword": "maple",
+      "cohort": "known_path",
+      "relative_path": "level-0/level-1/level-2/saved-maple.txt",
+      "content": "Payload: 4659fc76885df4ba79fb772a08e3589ab4fcab5ec199f5be0796c04362c3d846"
+    },
+    {
+      "id": "test-visible-tree",
+      "split": "heldout",
+      "keyword": "safflower",
+      "cohort": "visible_tree",
+      "relative_path": "level-0/level-1/packet-safflower-memo.md",
+      "content": "Payload: 7ec1ec921ec3cfea2e1fb55bf1916b80ce676cfe640e2225af6dbe8d7910d299"
+    }
+  ],
+  "settings": {
+    "selection_file": "config/subsets/selected_tasks.json",
+    "selection_seed": 6203,
+    "task_source": "src/custom/data/test_cases/test_cases.json",
+    "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+    "fixtures": "anotation_path",
+    "mode": "live",
+    "agent_repeats": 3,
+    "judge_attempts_per_trajectory": 5,
+    "agent_model": "glm-4-flash-250414",
+    "judge_model": "",
+    "agent_temperature": 0.2,
+    "judge_temperature": 0,
+    "agent_max_tokens": 8192,
+    "judge_max_tokens": 8192,
+    "round_policy": "early_tool_count_plus_one",
+    "judge_failure_top_up": false,
+    "automatic_api_retries": 0,
+    "stages": [
+      "original",
+      "iter3",
+      "iter5"
+    ],
+    "strategies": [
+      "no_update",
+      "full_rewrite",
+      "selective_patch"
+    ],
+    "strategy_plugins": [
+      "custom.experiment.selective_patch"
+    ],
+    "runtime": {
+      "configs": {
+        "original": "config/local/original.json",
+        "iter3": "config/local/iter3.json",
+        "iter5": "config/local/iter5.json"
+      },
+      "policies": {
+        "12306-mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes read-only train/station queries and process-local caches.",
+          "concurrency": "readonly"
+        },
+        "original_from_tina": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source implements a static catalog and simulated orders; no order HTTP request.",
+          "concurrency": "private"
+        },
+        "@remotion/mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs read-only remote documentation fetches.",
+          "concurrency": "readonly"
+        },
+        "@opentofu/opentofu-mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs registry/documentation reads.",
+          "concurrency": "readonly"
+        },
+        "@driflyte/mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes remote topic listing and search reads.",
+          "concurrency": "readonly"
+        },
+        "bazi-mcp": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source calculates Bazi data locally without persistent application state.",
+          "concurrency": "private"
+        },
+        "mcp-trends-hub": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source fetches public news/RSS; mutable cache is process-local.",
+          "concurrency": "readonly"
+        },
+        "mcp-server-commands": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory.",
+          "concurrency": "private"
+        },
+        "mcp-shrimp-task-manager": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "DATA_DIR points to private task/memory/template state.",
+          "env_paths": {
+            "DATA_DIR": "workspace/shrimp-data"
+          },
+          "concurrency": "private"
+        },
+        "mcp-tasks": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+          "env_paths": {
+            "SOURCES_PATH": "workspace/tasks-sources.json",
+            "WORKSPACE_FOLDER_PATHS": "workspace"
+          },
+          "concurrency": "private"
+        },
+        "@aiuluna/knowledge-graph-mcp": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+          "env_paths": {
+            "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+          },
+          "concurrency": "private"
+        }
+      },
+      "connect_timeout": 5,
+      "read_timeout": 60,
+      "tool_timeout": 60,
+      "startup_timeout": 45,
+      "shutdown_timeout": 10,
+      "model_timeout": 180,
+      "metadata_verified": false,
+      "evolution_files": {
+        "original": [],
+        "iter3": [],
+        "iter5": []
+      },
+      "catalog_source": "live"
+    },
+    "agent_thinking": null,
+    "judge_thinking": null,
+    "task_count": 17,
+    "request_policy": {
+      "minimum_interval": 0.2,
+      "overload_cooldown": 60,
+      "maximum_cooldown": 300,
+      "recovery_successes": 5,
+      "max_concurrency": 2,
+      "long_context_concurrency": 2,
+      "long_context_threshold": 8192
+    },
+    "providers": {
+      "agent": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ],
+      "judge": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ]
+    },
+    "judge_output_mode": "json_object",
+    "agent_backend": "langchain"
+  },
+  "workers": 10,
+  "repeats": 3,
+  "conditions": [
+    "no_rule",
+    "old_rule",
+    "new_rule",
+    "irrelevant_rule"
+  ],
+  "request_limit": 4,
+  "judge_calls": 0,
+  "source_sha256": "b03fd571824b36061626ff5925befd5c44cc595de5229754e92b282534f9ef71",
+  "fixtures_sha256": "6d6ef1279c4b39e7989bf8d8c5f268bd11e77163eacc271e55abca24307e904f",
+  "old_artifact_sha256": "923dc1b2afb1db8acea11be8ac88a160429c38640e77456d4f53703a433927aa",
+  "success_criterion": "Correct target read with exact bytes AND payload returned in final answer; provider failures excluded from paired comparisons.",
+  "claim_limit": "Independent synthetic transfer check developed after observing a benchmark weakness; not a fresh estimate of full benchmark performance.",
+  "summary_artifact_sha256": "fc63c5daf74ab340e649d0d67fd3bde41bee5bac70eee7a439a8bd1742ae86a6",
+  "condition_meanings": {
+    "no_rule": "No knowledge",
+    "old_rule": "Frozen summary only",
+    "new_rule": "Identical summary plus model-extracted, physically verified call templates",
+    "irrelevant_rule": "Matched irrelevant reference"
+  },
+  "knowledge_rejection": {
+    "type": "ValueError",
+    "message": "Template does not reproduce cited successful practice arguments",
+    "unknown_outcome": false
+  }
+}

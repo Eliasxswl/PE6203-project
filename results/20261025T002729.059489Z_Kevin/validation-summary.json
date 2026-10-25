@@ -1,0 +1,198 @@
+{
+  "protocol": "expanded_verified_skills_v1",
+  "judge_calls": 0,
+  "families": {
+    "analysis": {
+      "conditions": {
+        "without_memory": {
+          "planned": 6,
+          "observed": 0,
+          "completed": 0,
+          "successes": 0
+        },
+        "with_memory": {
+          "planned": 6,
+          "observed": 0,
+          "completed": 0,
+          "successes": 0
+        }
+      },
+      "paired": {
+        "all": {
+          "pairs": 0,
+          "with_successes": 0,
+          "without_successes": 0,
+          "wins": 0,
+          "losses": 0
+        },
+        "recovery": {
+          "pairs": 0,
+          "with_successes": 0,
+          "without_successes": 0,
+          "wins": 0,
+          "losses": 0
+        },
+        "clean": {
+          "pairs": 0,
+          "with_successes": 0,
+          "without_successes": 0,
+          "wins": 0,
+          "losses": 0
+        }
+      }
+    },
+    "split": {
+      "conditions": {
+        "without_memory": {
+          "planned": 6,
+          "observed": 0,
+          "completed": 0,
+          "successes": 0
+        },
+        "with_memory": {
+          "planned": 6,
+          "observed": 0,
+          "completed": 0,
+          "successes": 0
+        }
+      },
+      "paired": {
+        "all": {
+          "pairs": 0,
+          "with_successes": 0,
+          "without_successes": 0,
+          "wins": 0,
+          "losses": 0
+        },
+        "recovery": {
+          "pairs": 0,
+          "with_successes": 0,
+          "without_successes": 0,
+          "wins": 0,
+          "losses": 0
+        },
+        "clean": {
+          "pairs": 0,
+          "with_successes": 0,
+          "without_successes": 0,
+          "wins": 0,
+          "losses": 0
+        }
+      }
+    },
+    "source": {
+      "conditions": {
+        "without_memory": {
+          "planned": 6,
+          "observed": 6,
+          "completed": 4,
+          "successes": 4
+        },
+        "with_memory": {
+          "planned": 6,
+          "observed": 6,
+          "completed": 3,
+          "successes": 3
+        }
+      },
+      "paired": {
+        "all": {
+          "pairs": 3,
+          "with_successes": 3,
+          "without_successes": 3,
+          "wins": 0,
+          "losses": 0
+        },
+        "recovery": {
+          "pairs": 2,
+          "with_successes": 2,
+          "without_successes": 2,
+          "wins": 0,
+          "losses": 0
+        },
+        "clean": {
+          "pairs": 1,
+          "with_successes": 1,
+          "without_successes": 1,
+          "wins": 0,
+          "losses": 0
+        }
+      }
+    },
+    "request": {
+      "conditions": {
+        "without_memory": {
+          "planned": 6,
+          "observed": 6,
+          "completed": 5,
+          "successes": 5
+        },
+        "with_memory": {
+          "planned": 6,
+          "observed": 6,
+          "completed": 5,
+          "successes": 5
+        }
+      },
+      "paired": {
+        "all": {
+          "pairs": 4,
+          "with_successes": 4,
+          "without_successes": 4,
+          "wins": 0,
+          "losses": 0
+        },
+        "recovery": {
+          "pairs": 2,
+          "with_successes": 2,
+          "without_successes": 2,
+          "wins": 0,
+          "losses": 0
+        },
+        "clean": {
+          "pairs": 2,
+          "with_successes": 2,
+          "without_successes": 2,
+          "wins": 0,
+          "losses": 0
+        }
+      }
+    }
+  },
+  "status": "completed",
+  "builds": [
+    {
+      "family": "analysis",
+      "status": "rejected",
+      "error": {
+        "type": "ValueError",
+        "message": "Both declared practice repairs must succeed; no retry or invented fallback",
+        "unknown_outcome": false
+      }
+    },
+    {
+      "family": "split",
+      "status": "rejected",
+      "error": {
+        "type": "ValueError",
+        "message": "Both declared practice repairs must succeed; no retry or invented fallback",
+        "unknown_outcome": false
+      }
+    },
+    {
+      "family": "source",
+      "status": "accepted",
+      "summary_requests": 1,
+      "physical_replays": 2
+    },
+    {
+      "family": "request",
+      "status": "accepted",
+      "summary_requests": 1,
+      "physical_replays": 2
+    }
+  ],
+  "candidate_sha256": "349705f574a1cdad0d99e01c18ca9af1b3c2948b0d58333f25065474f38b99d0",
+  "source_unchanged": true,
+  "old_file_entry_unchanged": true
+}

@@ -1,0 +1,337 @@
+{
+  "protocol": "verified_file_recovery_causal_v2",
+  "status": "completed_with_rejected_knowledge",
+  "cases": [
+    {
+      "id": "practice",
+      "keyword": "item_f76e90f0f2",
+      "relative_path": "shelf_f76e90f0f2/item_f76e90f0f2.txt",
+      "content": "Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1"
+    },
+    {
+      "id": "heldout-1",
+      "keyword": "item_aab77e6747",
+      "relative_path": "shelf_aab77e6747/shelf_aab77e6747/item_aab77e6747.txt",
+      "content": "Observed file payload: a5dca55a2bbb951a826326a53b3dcd3e2df80c96a18077e4da749ab79577dcbe"
+    },
+    {
+      "id": "heldout-2",
+      "keyword": "item_ee391bcb8b",
+      "relative_path": "shelf_ee391bcb8b/shelf_ee391bcb8b/shelf_ee391bcb8b/item_ee391bcb8b.txt",
+      "content": "Observed file payload: 3a4f9b76fcd331d99db2265a8ee2fa9272a2994b440e06bf53d6b8a8e23981fb"
+    },
+    {
+      "id": "heldout-3",
+      "keyword": "item_375d88977e",
+      "relative_path": "shelf_375d88977e/shelf_375d88977e/shelf_375d88977e/shelf_375d88977e/item_375d88977e.txt",
+      "content": "Observed file payload: 252959ffd92a35a325467aa3c87b7190b25307339cc1d7f6ac91286158f9ec01"
+    }
+  ],
+  "repeats": 3,
+  "workers": 10,
+  "conditions": [
+    "no_rule",
+    "verified_rule",
+    "generated_rule",
+    "irrelevant_rule"
+  ],
+  "settings": {
+    "selection_file": "config/subsets/selected_tasks.json",
+    "selection_seed": 6203,
+    "task_source": "src/custom/data/test_cases/test_cases.json",
+    "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+    "fixtures": "results/20261024T204703.205390Z_Kevin/fixtures",
+    "mode": "live",
+    "agent_repeats": 3,
+    "judge_attempts_per_trajectory": 5,
+    "agent_model": "glm-4-flash-250414",
+    "judge_model": "",
+    "agent_temperature": 0.2,
+    "judge_temperature": 0,
+    "agent_max_tokens": 8192,
+    "judge_max_tokens": 8192,
+    "round_policy": "early_tool_count_plus_one",
+    "judge_failure_top_up": false,
+    "automatic_api_retries": 0,
+    "stages": [
+      "original",
+      "iter3",
+      "iter5"
+    ],
+    "strategies": [
+      "no_update",
+      "full_rewrite",
+      "selective_patch"
+    ],
+    "strategy_plugins": [
+      "custom.experiment.selective_patch"
+    ],
+    "runtime": {
+      "configs": {
+        "original": "config/local/original.json",
+        "iter3": "config/local/iter3.json",
+        "iter5": "config/local/iter5.json"
+      },
+      "policies": {
+        "12306-mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes read-only train/station queries and process-local caches.",
+          "concurrency": "readonly"
+        },
+        "original_from_tina": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source implements a static catalog and simulated orders; no order HTTP request.",
+          "concurrency": "private"
+        },
+        "@remotion/mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs read-only remote documentation fetches.",
+          "concurrency": "readonly"
+        },
+        "@opentofu/opentofu-mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs registry/documentation reads.",
+          "concurrency": "readonly"
+        },
+        "@driflyte/mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes remote topic listing and search reads.",
+          "concurrency": "readonly"
+        },
+        "bazi-mcp": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source calculates Bazi data locally without persistent application state.",
+          "concurrency": "private"
+        },
+        "mcp-trends-hub": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source fetches public news/RSS; mutable cache is process-local.",
+          "concurrency": "readonly"
+        },
+        "mcp-server-commands": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory.",
+          "concurrency": "private"
+        },
+        "mcp-shrimp-task-manager": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "DATA_DIR points to private task/memory/template state.",
+          "env_paths": {
+            "DATA_DIR": "workspace/shrimp-data"
+          },
+          "concurrency": "private"
+        },
+        "mcp-tasks": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+          "env_paths": {
+            "SOURCES_PATH": "workspace/tasks-sources.json",
+            "WORKSPACE_FOLDER_PATHS": "workspace"
+          },
+          "concurrency": "private"
+        },
+        "@aiuluna/knowledge-graph-mcp": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+          "env_paths": {
+            "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+          },
+          "concurrency": "private"
+        }
+      },
+      "connect_timeout": 5,
+      "read_timeout": 60,
+      "tool_timeout": 60,
+      "startup_timeout": 45,
+      "shutdown_timeout": 10,
+      "model_timeout": 180,
+      "metadata_verified": false,
+      "evolution_files": {
+        "original": [],
+        "iter3": [],
+        "iter5": []
+      },
+      "catalog_source": "live"
+    },
+    "agent_thinking": null,
+    "judge_thinking": null,
+    "task_count": 17,
+    "request_policy": {
+      "minimum_interval": 0.2,
+      "overload_cooldown": 60,
+      "maximum_cooldown": 300,
+      "recovery_successes": 5,
+      "max_concurrency": 2,
+      "long_context_concurrency": 2,
+      "long_context_threshold": 8192
+    },
+    "providers": {
+      "agent": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ],
+      "judge": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ]
+    },
+    "judge_output_mode": "json_object",
+    "agent_backend": "langchain"
+  },
+  "fixture_sha256": "7095a8f827f462c6787be422aee96a7127c108f8f7475c26e37c48d1196032ce",
+  "judge_calls": 0,
+  "request_limit": 4,
+  "task_source": "Independent synthetic diagnostic; official tasks unchanged",
+  "knowledge_output_mode": "json_object_plus_local_schema; one request; no repair",
+  "source_sha256": "ed859b88f8682af9f380d3b2260e32470543badb1caaa103c7adbcd7bce94b65",
+  "claim_limit": "Tests transfer of one file-recovery skill, not general memory benefit or server evolution.",
+  "knowledge": [],
+  "knowledge_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "practice_evidence": {
+    "observed_calls": [
+      {
+        "tool_call_id": "probe-0",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+        "arguments": "{\"path\": \"${WORKSPACE}/missing.txt\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ENOENT: no such file or directory, open '${WORKSPACE}\\missing.txt'"
+            }
+          ],
+          "isError": true
+        }
+      },
+      {
+        "tool_call_id": "probe-1",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+        "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"*item_f76e90f0f2*\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "No matches found"
+            }
+          ],
+          "structuredContent": {
+            "content": "No matches found"
+          },
+          "isError": false
+        }
+      },
+      {
+        "tool_call_id": "probe-2",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::search_files",
+        "arguments": "{\"path\": \"${WORKSPACE}\", \"pattern\": \"**/*item_f76e90f0f2*\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "${WORKSPACE}\\shelf_f76e90f0f2\\item_f76e90f0f2.txt"
+            }
+          ],
+          "structuredContent": {
+            "content": "${WORKSPACE}\\shelf_f76e90f0f2\\item_f76e90f0f2.txt"
+          },
+          "isError": false
+        }
+      },
+      {
+        "tool_call_id": "probe-3",
+        "semantic_identity": "@modelcontextprotocol/server-filesystem::read_text_file",
+        "arguments": "{\"path\": \"${WORKSPACE}/shelf_f76e90f0f2/item_f76e90f0f2.txt\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1"
+            }
+          ],
+          "structuredContent": {
+            "content": "Observed file payload: 0b86631a9390c1a75342dff4f0e9b5ad74bbaba7b04f303d58b9a74da5c4a1e1"
+          },
+          "isError": false
+        }
+      }
+    ],
+    "program_verified": {
+      "success": true,
+      "verified_read_call_ids": [
+        "probe-3"
+      ],
+      "tool_errors": 1
+    },
+    "required_success_evidence_ids": [
+      "probe-3"
+    ],
+    "failed_observation_ids": [
+      "probe-0",
+      "probe-1"
+    ],
+    "scope": "Derive a reusable lookup/recovery rule. Do not retain practice paths, keyword or payload."
+  },
+  "builder_versions": null,
+  "rules": {
+    "no_rule": "",
+    "verified_rule": "When a file must be located below a directory, search_files matches paths relative to that directory. A pattern without **/ need not match nested files. For a filename keyword use **/*KEYWORD*, substituting the current keyword. Read the exact absolute path returned by the search. ENOENT only means the attempted path failed: discover the actual path rather than guessing filenames or declaring that no matching file exists. Completion requires a successful read of the located file.",
+    "generated_rule": null,
+    "irrelevant_rule": "Reference: archive labels use lowercase letters; document colors and display themes are cosmetic. Reference: archive labels use lowercase letters; document colors and display themes are cosmetic. Reference: archive labels use lowercase letters; document colors and display themes are cosmetic. Reference: archive labels use lowercase letters; document colors and display themes are cosmetic. Reference: archive labels use lowercase letters; document colors and display themes are cos"
+  },
+  "knowledge_generation": {
+    "status": "rejected",
+    "rejection": {
+      "type": "ValidationError",
+      "message": "12 validation errors for FileRecovery\ntool_ids\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\ncontent\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\napplicability\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nfailed_assumption\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\ncorrective_actions\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nverification\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nevidence_call_ids\n  Field required [type=missing, input_value={'description': 'Transfer...very', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\ndescription\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Transferable file discov...nded in observed calls.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\nproperties\n  Extra inputs are not permitted [type=extra_forbidden, input_value={'tool_ids': ['@modelcont..., 'probe-2', 'probe-3']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\nrequired\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['tool_ids', 'content', '...n', 'evidence_call_ids'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ntitle\n  Extra inputs are not permitted [type=extra_forbidden, input_value='FileRecovery', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ntype\n  Extra inputs are not permitted [type=extra_forbidden, input_value='object', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden",
+      "unknown_outcome": false
+    }
+  },
+  "control_length": "Irrelevant reference character-matches generated reference, or verified rule if generation was rejected; not token matched"
+}

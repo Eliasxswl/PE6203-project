@@ -1,0 +1,396 @@
+{
+  "protocol": "verified_file_recovery_causal_v2",
+  "status": "completed",
+  "output_mode": "json_object",
+  "model": "glm-4-flash-250414",
+  "schema": {
+    "$defs": {
+      "ObservedCallTemplate": {
+        "additionalProperties": false,
+        "properties": {
+          "tool_id": {
+            "title": "Tool Id",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "evidence_call_ids": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Call Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tool_id",
+          "arguments",
+          "evidence_call_ids"
+        ],
+        "title": "ObservedCallTemplate",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "description": "Transferable recovery procedure grounded in observed failure and correction.",
+    "properties": {
+      "tool_ids": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Tool Ids",
+        "type": "array"
+      },
+      "content": {
+        "description": "Concise general procedure; never copy practice filenames, keyword or file contents",
+        "minLength": 1,
+        "title": "Content",
+        "type": "string"
+      },
+      "applicability": {
+        "description": "Observable situation in which the procedure applies",
+        "minLength": 1,
+        "title": "Applicability",
+        "type": "string"
+      },
+      "failed_assumption": {
+        "description": "What failed and what assumption the observation contradicts",
+        "minLength": 1,
+        "title": "Failed Assumption",
+        "type": "string"
+      },
+      "corrective_actions": {
+        "description": "Ordered general actions using current inputs and returned paths, not practice constants",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Corrective Actions",
+        "type": "array"
+      },
+      "verification": {
+        "description": "Observable successful correction criterion, not merely a final claim",
+        "minLength": 1,
+        "title": "Verification",
+        "type": "string"
+      },
+      "evidence_call_ids": {
+        "description": "IDs of the supplied real calls supporting both failure and verified correction",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 2,
+        "title": "Evidence Call Ids",
+        "type": "array"
+      },
+      "tool_call_templates": {
+        "items": {
+          "$ref": "#/$defs/ObservedCallTemplate"
+        },
+        "title": "Tool Call Templates",
+        "type": "array"
+      },
+      "template_variables": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Template Variables",
+        "type": "object"
+      }
+    },
+    "required": [
+      "tool_ids",
+      "content",
+      "applicability",
+      "failed_assumption",
+      "corrective_actions",
+      "verification",
+      "evidence_call_ids"
+    ],
+    "title": "ToolRecovery",
+    "type": "object"
+  },
+  "evidence": {
+    "observed_calls": [
+      {
+        "tool_call_id": "request-0:seed-register",
+        "semantic_identity": "@kazuph/mcp-taskmanager::request_planning",
+        "arguments": "{\"originalRequest\": \"Develop an independent museum telemetry prototype with clear validation and review stages.\", \"tasks\": [{\"title\": \"museum telemetry component 1\", \"description\": \"Implement and validate component 1 for the independent museum telemetry prototype.\"}, {\"title\": \"museum telemetry component 2\", \"description\": \"Implement and validate component 2 for the independent museum telemetry prototype.\"}]}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"planned\",\n  \"requestId\": \"req-1\",\n  \"totalTasks\": 2,\n  \"tasks\": [\n    {\n      \"id\": \"task-1\",\n      \"title\": \"museum telemetry component 1\",\n      \"description\": \"Implement and validate component 1 for the independent museum telemetry prototype.\"\n    },\n    {\n      \"id\": \"task-2\",\n      \"title\": \"museum telemetry component 2\",\n      \"description\": \"Implement and validate component 2 for the independent museum telemetry prototype.\"\n    }\n  ],\n  \"message\": \"Tasks have been successfully added. Please use 'get_next_task' to retrieve the first task.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-1 | museum telemetry component 1 | Implement and validate component 1 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\n| task-2 | museum telemetry component 2 | Implement and validate component 2 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_request_and_returned_task",
+          "response_sha256": "a187de3c09d651a7cef326972e868c8a36ec09d7eba668cfb3c649ed1862aef8"
+        }
+      },
+      {
+        "tool_call_id": "request-0:seed-wrong-id",
+        "semantic_identity": "@kazuph/mcp-taskmanager::get_next_task",
+        "arguments": "{\"requestId\": \"task-1\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"error\",\n  \"message\": \"Request not found\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "failure_evidence": {
+          "kind": "tool_reported_error",
+          "response_sha256": "305a3fb5963cec667f5361298844d35b879ef0093b0dfb3170335953a30287f5"
+        }
+      },
+      {
+        "tool_call_id": "request-0:call_-7142422002115014937",
+        "name": "get_next_task",
+        "semantic_identity": "@kazuph/mcp-taskmanager::get_next_task",
+        "arguments": "{\"requestId\": \"req-1\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"next_task\",\n  \"task\": {\n    \"id\": \"task-1\",\n    \"title\": \"museum telemetry component 1\",\n    \"description\": \"Implement and validate component 1 for the independent museum telemetry prototype.\"\n  },\n  \"message\": \"Next task is ready. Task approval will be required after completion.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-1 | museum telemetry component 1 | Implement and validate component 1 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\n| task-2 | museum telemetry component 2 | Implement and validate component 2 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_request_and_returned_task",
+          "response_sha256": "4e9b12c18de0ce3579e3a8a797fc9183834211261963c52833dcb556e1aebd7a"
+        }
+      },
+      {
+        "tool_call_id": "request-1:seed-dummy-0",
+        "semantic_identity": "@kazuph/mcp-taskmanager::request_planning",
+        "arguments": "{\"originalRequest\": \"Unrelated placeholder 0\", \"tasks\": [{\"title\": \"Placeholder 0\", \"description\": \"Unrelated private setup state.\"}]}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"planned\",\n  \"requestId\": \"req-1\",\n  \"totalTasks\": 1,\n  \"tasks\": [\n    {\n      \"id\": \"task-1\",\n      \"title\": \"Placeholder 0\",\n      \"description\": \"Unrelated private setup state.\"\n    }\n  ],\n  \"message\": \"Tasks have been successfully added. Please use 'get_next_task' to retrieve the first task.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-1 | Placeholder 0 | Unrelated private setup state. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null
+      },
+      {
+        "tool_call_id": "request-1:seed-register",
+        "semantic_identity": "@kazuph/mcp-taskmanager::request_planning",
+        "arguments": "{\"originalRequest\": \"Develop an independent orchard irrigation prototype with clear validation and review stages.\", \"tasks\": [{\"title\": \"orchard irrigation component 1\", \"description\": \"Implement and validate component 1 for the independent orchard irrigation prototype.\"}, {\"title\": \"orchard irrigation component 2\", \"description\": \"Implement and validate component 2 for the independent orchard irrigation prototype.\"}]}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"planned\",\n  \"requestId\": \"req-2\",\n  \"totalTasks\": 2,\n  \"tasks\": [\n    {\n      \"id\": \"task-2\",\n      \"title\": \"orchard irrigation component 1\",\n      \"description\": \"Implement and validate component 1 for the independent orchard irrigation prototype.\"\n    },\n    {\n      \"id\": \"task-3\",\n      \"title\": \"orchard irrigation component 2\",\n      \"description\": \"Implement and validate component 2 for the independent orchard irrigation prototype.\"\n    }\n  ],\n  \"message\": \"Tasks have been successfully added. Please use 'get_next_task' to retrieve the first task.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-2 | orchard irrigation component 1 | Implement and validate component 1 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\n| task-3 | orchard irrigation component 2 | Implement and validate component 2 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_request_and_returned_task",
+          "response_sha256": "a02eb0d2f597cde062ab078a2ca99521d9e9bf79854ce1b3f5453fe97cdb5181"
+        }
+      },
+      {
+        "tool_call_id": "request-1:seed-wrong-id",
+        "semantic_identity": "@kazuph/mcp-taskmanager::get_next_task",
+        "arguments": "{\"requestId\": \"task-2\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"error\",\n  \"message\": \"Request not found\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "failure_evidence": {
+          "kind": "tool_reported_error",
+          "response_sha256": "305a3fb5963cec667f5361298844d35b879ef0093b0dfb3170335953a30287f5"
+        }
+      },
+      {
+        "tool_call_id": "request-1:call_-7142418944098299696",
+        "name": "get_next_task",
+        "semantic_identity": "@kazuph/mcp-taskmanager::get_next_task",
+        "arguments": "{\"requestId\": \"req-2\"}",
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"status\": \"next_task\",\n  \"task\": {\n    \"id\": \"task-2\",\n    \"title\": \"orchard irrigation component 1\",\n    \"description\": \"Implement and validate component 1 for the independent orchard irrigation prototype.\"\n  },\n  \"message\": \"Next task is ready. Task approval will be required after completion.\\n\\nProgress Status:\\n| Task ID | Title | Description | Status | Approval |\\n|----------|----------|------|------|----------|\\n| task-2 | orchard irrigation component 1 | Implement and validate component 1 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\n| task-3 | orchard irrigation component 2 | Implement and validate component 2 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\n\"\n}"
+            }
+          ],
+          "isError": false
+        },
+        "protocol_error": null,
+        "verification": {
+          "kind": "persisted_request_and_returned_task",
+          "response_sha256": "6910ee668d00a4453c4ecb025e5e1fe16f89e21b505e49f595559d6489ff9efe"
+        }
+      }
+    ],
+    "required_evidence_call_ids": [
+      "request-0:seed-register",
+      "request-0:seed-wrong-id",
+      "request-0:call_-7142422002115014937",
+      "request-1:seed-register",
+      "request-1:seed-wrong-id",
+      "request-1:call_-7142418944098299696"
+    ],
+    "scope": "Summarize both independent repairs concisely (at most 120 words total). Preserve all supporting IDs. No official task data. Do not generalize current item count or IDs into constants.",
+    "catalog": {
+      "@kazuph/mcp-taskmanager::request_planning": {
+        "server": "@kazuph/mcp-taskmanager",
+        "name": "request_planning",
+        "description": "Register a new user request and plan its associated tasks. You must provide 'originalRequest' and 'tasks', and optionally 'splitDetails'.\n\nThis tool initiates a new workflow for handling a user's request. The workflow is as follows:\n1. Use 'request_planning' to register a request and its tasks.\n2. After adding tasks, you MUST use 'get_next_task' to retrieve the first task. A progress table will be displayed.\n3. Use 'get_next_task' to retrieve the next uncompleted task.\n4. **IMPORTANT:** After marking a task as done, the assistant MUST NOT proceed to another task without the user's approval. The user must explicitly approve the completed task using 'approve_task_completion'. A progress table will be displayed before each approval request.\n5. Once a task is approved, you can proceed to 'get_next_task' again to fetch the next pending task.\n6. Repeat this cycle until all tasks are done.\n7. After all tasks are completed (and approved), 'get_next_task' will indicate that all tasks are done and that the request awaits approval for full completion.\n8. The user must then approve the entire request's completion using 'approve_request_completion'. If the user does not approve and wants more tasks, you can again use 'request_planning' to add new tasks and continue the cycle.\n\nThe critical point is to always wait for user approval after completing each task and after all tasks are done, wait for request completion approval. Do not proceed automatically.",
+        "inputSchema": {
+          "properties": {
+            "originalRequest": {
+              "type": "string"
+            },
+            "splitDetails": {
+              "type": "string"
+            },
+            "tasks": {
+              "items": {
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "description"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "originalRequest",
+            "tasks"
+          ],
+          "type": "object",
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      "@kazuph/mcp-taskmanager::get_next_task": {
+        "server": "@kazuph/mcp-taskmanager",
+        "name": "get_next_task",
+        "description": "Given a 'requestId', return the next pending task (not done yet). If all tasks are completed, it will indicate that no more tasks are left and that you must wait for the request completion approval.\n\nA progress table showing the current status of all tasks will be displayed with each response.\n\nIf the same task is returned again or if no new task is provided after a task was marked as done but not yet approved, you MUST NOT proceed. In such a scenario, you must prompt the user for approval via 'approve_task_completion' before calling 'get_next_task' again. Do not skip the user's approval step.\nIn other words:\n- After calling 'mark_task_done', do not call 'get_next_task' again until 'approve_task_completion' is called by the user.\n- If 'get_next_task' returns 'all_tasks_done', it means all tasks have been completed. At this point, you must not start a new request or do anything else until the user decides to 'approve_request_completion' or possibly add more tasks via 'request_planning'.",
+        "inputSchema": {
+          "properties": {
+            "requestId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "requestId"
+          ],
+          "type": "object",
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      }
+    }
+  },
+  "versions": {
+    "openai": "3.37.0"
+  },
+  "requests": [
+    {
+      "status": "completed",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Derive one reusable tool-recovery procedure from the observed failure and verified correction below. Explain the actual change that enabled success, rather than listing tool descriptions. Preserve failure and verified-success evidence IDs. Do not copy practice filenames, keyword, task text, record IDs, payload or private paths. Use current task inputs and tool-returned identifiers in the procedure.\nObserved practice evidence:\n{\"observed_calls\": [{\"tool_call_id\": \"request-0:seed-register\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::request_planning\", \"arguments\": \"{\\\"originalRequest\\\": \\\"Develop an independent museum telemetry prototype with clear validation and review stages.\\\", \\\"tasks\\\": [{\\\"title\\\": \\\"museum telemetry component 1\\\", \\\"description\\\": \\\"Implement and validate component 1 for the independent museum telemetry prototype.\\\"}, {\\\"title\\\": \\\"museum telemetry component 2\\\", \\\"description\\\": \\\"Implement and validate component 2 for the independent museum telemetry prototype.\\\"}]}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"planned\\\",\\n  \\\"requestId\\\": \\\"req-1\\\",\\n  \\\"totalTasks\\\": 2,\\n  \\\"tasks\\\": [\\n    {\\n      \\\"id\\\": \\\"task-1\\\",\\n      \\\"title\\\": \\\"museum telemetry component 1\\\",\\n      \\\"description\\\": \\\"Implement and validate component 1 for the independent museum telemetry prototype.\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"task-2\\\",\\n      \\\"title\\\": \\\"museum telemetry component 2\\\",\\n      \\\"description\\\": \\\"Implement and validate component 2 for the independent museum telemetry prototype.\\\"\\n    }\\n  ],\\n  \\\"message\\\": \\\"Tasks have been successfully added. Please use 'get_next_task' to retrieve the first task.\\\\n\\\\nProgress Status:\\\\n| Task ID | Title | Description | Status | Approval |\\\\n|----------|----------|------|------|----------|\\\\n| task-1 | museum telemetry component 1 | Implement and validate component 1 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\\\n| task-2 | museum telemetry component 2 | Implement and validate component 2 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\\\n\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_request_and_returned_task\", \"response_sha256\": \"a187de3c09d651a7cef326972e868c8a36ec09d7eba668cfb3c649ed1862aef8\"}}, {\"tool_call_id\": \"request-0:seed-wrong-id\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::get_next_task\", \"arguments\": \"{\\\"requestId\\\": \\\"task-1\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"error\\\",\\n  \\\"message\\\": \\\"Request not found\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null, \"failure_evidence\": {\"kind\": \"tool_reported_error\", \"response_sha256\": \"305a3fb5963cec667f5361298844d35b879ef0093b0dfb3170335953a30287f5\"}}, {\"tool_call_id\": \"request-0:call_-7142422002115014937\", \"name\": \"get_next_task\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::get_next_task\", \"arguments\": \"{\\\"requestId\\\": \\\"req-1\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"next_task\\\",\\n  \\\"task\\\": {\\n    \\\"id\\\": \\\"task-1\\\",\\n    \\\"title\\\": \\\"museum telemetry component 1\\\",\\n    \\\"description\\\": \\\"Implement and validate component 1 for the independent museum telemetry prototype.\\\"\\n  },\\n  \\\"message\\\": \\\"Next task is ready. Task approval will be required after completion.\\\\n\\\\nProgress Status:\\\\n| Task ID | Title | Description | Status | Approval |\\\\n|----------|----------|------|------|----------|\\\\n| task-1 | museum telemetry component 1 | Implement and validate component 1 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\\\n| task-2 | museum telemetry component 2 | Implement and validate component 2 for the independent museum telemetry prototype. | 🔄 In Progress | ⏳ Pending |\\\\n\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_request_and_returned_task\", \"response_sha256\": \"4e9b12c18de0ce3579e3a8a797fc9183834211261963c52833dcb556e1aebd7a\"}}, {\"tool_call_id\": \"request-1:seed-dummy-0\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::request_planning\", \"arguments\": \"{\\\"originalRequest\\\": \\\"Unrelated placeholder 0\\\", \\\"tasks\\\": [{\\\"title\\\": \\\"Placeholder 0\\\", \\\"description\\\": \\\"Unrelated private setup state.\\\"}]}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"planned\\\",\\n  \\\"requestId\\\": \\\"req-1\\\",\\n  \\\"totalTasks\\\": 1,\\n  \\\"tasks\\\": [\\n    {\\n      \\\"id\\\": \\\"task-1\\\",\\n      \\\"title\\\": \\\"Placeholder 0\\\",\\n      \\\"description\\\": \\\"Unrelated private setup state.\\\"\\n    }\\n  ],\\n  \\\"message\\\": \\\"Tasks have been successfully added. Please use 'get_next_task' to retrieve the first task.\\\\n\\\\nProgress Status:\\\\n| Task ID | Title | Description | Status | Approval |\\\\n|----------|----------|------|------|----------|\\\\n| task-1 | Placeholder 0 | Unrelated private setup state. | 🔄 In Progress | ⏳ Pending |\\\\n\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null}, {\"tool_call_id\": \"request-1:seed-register\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::request_planning\", \"arguments\": \"{\\\"originalRequest\\\": \\\"Develop an independent orchard irrigation prototype with clear validation and review stages.\\\", \\\"tasks\\\": [{\\\"title\\\": \\\"orchard irrigation component 1\\\", \\\"description\\\": \\\"Implement and validate component 1 for the independent orchard irrigation prototype.\\\"}, {\\\"title\\\": \\\"orchard irrigation component 2\\\", \\\"description\\\": \\\"Implement and validate component 2 for the independent orchard irrigation prototype.\\\"}]}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"planned\\\",\\n  \\\"requestId\\\": \\\"req-2\\\",\\n  \\\"totalTasks\\\": 2,\\n  \\\"tasks\\\": [\\n    {\\n      \\\"id\\\": \\\"task-2\\\",\\n      \\\"title\\\": \\\"orchard irrigation component 1\\\",\\n      \\\"description\\\": \\\"Implement and validate component 1 for the independent orchard irrigation prototype.\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"task-3\\\",\\n      \\\"title\\\": \\\"orchard irrigation component 2\\\",\\n      \\\"description\\\": \\\"Implement and validate component 2 for the independent orchard irrigation prototype.\\\"\\n    }\\n  ],\\n  \\\"message\\\": \\\"Tasks have been successfully added. Please use 'get_next_task' to retrieve the first task.\\\\n\\\\nProgress Status:\\\\n| Task ID | Title | Description | Status | Approval |\\\\n|----------|----------|------|------|----------|\\\\n| task-2 | orchard irrigation component 1 | Implement and validate component 1 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\\\n| task-3 | orchard irrigation component 2 | Implement and validate component 2 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\\\n\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_request_and_returned_task\", \"response_sha256\": \"a02eb0d2f597cde062ab078a2ca99521d9e9bf79854ce1b3f5453fe97cdb5181\"}}, {\"tool_call_id\": \"request-1:seed-wrong-id\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::get_next_task\", \"arguments\": \"{\\\"requestId\\\": \\\"task-2\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"error\\\",\\n  \\\"message\\\": \\\"Request not found\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null, \"failure_evidence\": {\"kind\": \"tool_reported_error\", \"response_sha256\": \"305a3fb5963cec667f5361298844d35b879ef0093b0dfb3170335953a30287f5\"}}, {\"tool_call_id\": \"request-1:call_-7142418944098299696\", \"name\": \"get_next_task\", \"semantic_identity\": \"@kazuph/mcp-taskmanager::get_next_task\", \"arguments\": \"{\\\"requestId\\\": \\\"req-2\\\"}\", \"response\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n  \\\"status\\\": \\\"next_task\\\",\\n  \\\"task\\\": {\\n    \\\"id\\\": \\\"task-2\\\",\\n    \\\"title\\\": \\\"orchard irrigation component 1\\\",\\n    \\\"description\\\": \\\"Implement and validate component 1 for the independent orchard irrigation prototype.\\\"\\n  },\\n  \\\"message\\\": \\\"Next task is ready. Task approval will be required after completion.\\\\n\\\\nProgress Status:\\\\n| Task ID | Title | Description | Status | Approval |\\\\n|----------|----------|------|------|----------|\\\\n| task-2 | orchard irrigation component 1 | Implement and validate component 1 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\\\n| task-3 | orchard irrigation component 2 | Implement and validate component 2 for the independent orchard irrigation prototype. | 🔄 In Progress | ⏳ Pending |\\\\n\\\"\\n}\"}], \"isError\": false}, \"protocol_error\": null, \"verification\": {\"kind\": \"persisted_request_and_returned_task\", \"response_sha256\": \"6910ee668d00a4453c4ecb025e5e1fe16f89e21b505e49f595559d6489ff9efe\"}}], \"required_evidence_call_ids\": [\"request-0:seed-register\", \"request-0:seed-wrong-id\", \"request-0:call_-7142422002115014937\", \"request-1:seed-register\", \"request-1:seed-wrong-id\", \"request-1:call_-7142418944098299696\"], \"scope\": \"Summarize both independent repairs concisely (at most 120 words total). Preserve all supporting IDs. No official task data. Do not generalize current item count or IDs into constants.\", \"catalog\": {\"@kazuph/mcp-taskmanager::request_planning\": {\"server\": \"@kazuph/mcp-taskmanager\", \"name\": \"request_planning\", \"description\": \"Register a new user request and plan its associated tasks. You must provide 'originalRequest' and 'tasks', and optionally 'splitDetails'.\\n\\nThis tool initiates a new workflow for handling a user's request. The workflow is as follows:\\n1. Use 'request_planning' to register a request and its tasks.\\n2. After adding tasks, you MUST use 'get_next_task' to retrieve the first task. A progress table will be displayed.\\n3. Use 'get_next_task' to retrieve the next uncompleted task.\\n4. **IMPORTANT:** After marking a task as done, the assistant MUST NOT proceed to another task without the user's approval. The user must explicitly approve the completed task using 'approve_task_completion'. A progress table will be displayed before each approval request.\\n5. Once a task is approved, you can proceed to 'get_next_task' again to fetch the next pending task.\\n6. Repeat this cycle until all tasks are done.\\n7. After all tasks are completed (and approved), 'get_next_task' will indicate that all tasks are done and that the request awaits approval for full completion.\\n8. The user must then approve the entire request's completion using 'approve_request_completion'. If the user does not approve and wants more tasks, you can again use 'request_planning' to add new tasks and continue the cycle.\\n\\nThe critical point is to always wait for user approval after completing each task and after all tasks are done, wait for request completion approval. Do not proceed automatically.\", \"inputSchema\": {\"properties\": {\"originalRequest\": {\"type\": \"string\"}, \"splitDetails\": {\"type\": \"string\"}, \"tasks\": {\"items\": {\"properties\": {\"description\": {\"type\": \"string\"}, \"title\": {\"type\": \"string\"}}, \"required\": [\"title\", \"description\"], \"type\": \"object\"}, \"type\": \"array\"}}, \"required\": [\"originalRequest\", \"tasks\"], \"type\": \"object\", \"$schema\": \"http://json-schema.org/draft-07/schema#\"}}, \"@kazuph/mcp-taskmanager::get_next_task\": {\"server\": \"@kazuph/mcp-taskmanager\", \"name\": \"get_next_task\", \"description\": \"Given a 'requestId', return the next pending task (not done yet). If all tasks are completed, it will indicate that no more tasks are left and that you must wait for the request completion approval.\\n\\nA progress table showing the current status of all tasks will be displayed with each response.\\n\\nIf the same task is returned again or if no new task is provided after a task was marked as done but not yet approved, you MUST NOT proceed. In such a scenario, you must prompt the user for approval via 'approve_task_completion' before calling 'get_next_task' again. Do not skip the user's approval step.\\nIn other words:\\n- After calling 'mark_task_done', do not call 'get_next_task' again until 'approve_task_completion' is called by the user.\\n- If 'get_next_task' returns 'all_tasks_done', it means all tasks have been completed. At this point, you must not start a new request or do anything else until the user decides to 'approve_request_completion' or possibly add more tasks via 'request_planning'.\", \"inputSchema\": {\"properties\": {\"requestId\": {\"type\": \"string\"}}, \"required\": [\"requestId\"], \"type\": \"object\", \"$schema\": \"http://json-schema.org/draft-07/schema#\"}}}}\nReturn one JSON DATA RECORD with these seven direct keys. Replace every placeholder using the observations. Do not return a JSON Schema; do not wrap values in properties, title, type or required. No Markdown or extra text. Record shape:\n{\"tool_ids\": [\"<exact ID from catalog>\"], \"content\": \"<general procedure>\", \"applicability\": \"<observable situation>\", \"failed_assumption\": \"<why the old attempt failed>\", \"corrective_actions\": [\"<general action using current inputs>\"], \"verification\": \"<observable successful correction criterion>\", \"evidence_call_ids\": [\"request-0:seed-register\", \"request-0:seed-wrong-id\", \"request-0:call_-7142422002115014937\", \"request-1:seed-register\", \"request-1:seed-wrong-id\", \"request-1:call_-7142418944098299696\"]}"
+        }
+      ],
+      "response": {
+        "id": "202610250828164634bce7f00141d3",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"tool_ids\":[\"@kazuph/mcp-taskmanager::request_planning\",\"@kazuph/mcp-taskmanager::get_next_task\"],\"content\":\"To retrieve the next task, use 'get_next_task' with the correct 'requestId'. Always verify the 'requestId' before making the call to avoid errors.\",\"applicability\":\"When a task request has been planned and the initial 'get_next_task' with a wrong 'requestId' fails.\",\"failed_assumption\":\"Assuming the 'requestId' provided to 'get_next_task' is correct without prior verification.\",\"corrective_actions\":[\"Use 'request_planning' to register the request and plan tasks.\",\"Verify the 'requestId' returned from 'request_planning' before using it in 'get_next_task'.\",\"Use the correct 'requestId' in 'get_next_task' to retrieve the next task.\"],\"verification\":\"The 'get_next_task' response contains the next task without an error message.\",\"evidence_call_ids\":[\"request-0:seed-register\",\"request-0:seed-wrong-id\",\"request-0:call_-7142422002115014937\",\"request-1:seed-register\",\"request-1:seed-wrong-id\",\"request-1:call_-7142418944098299696\"]}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null
+            }
+          }
+        ],
+        "created": 1792888103,
+        "model": "glm-4-flash-250414",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": null,
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 309,
+          "prompt_tokens": 3540,
+          "total_tokens": 3849,
+          "completion_tokens_details": null,
+          "prompt_tokens_details": null
+        },
+        "request_id": "202610250828164634bce7f00141d3"
+      }
+    }
+  ],
+  "memories": [
+    {
+      "id": "f32df2485ef1f7059062005d",
+      "value": {
+        "tool_ids": [
+          "@kazuph/mcp-taskmanager::request_planning",
+          "@kazuph/mcp-taskmanager::get_next_task"
+        ],
+        "content": "To retrieve the next task, use 'get_next_task' with the correct 'requestId'. Always verify the 'requestId' before making the call to avoid errors.",
+        "applicability": "When a task request has been planned and the initial 'get_next_task' with a wrong 'requestId' fails.",
+        "failed_assumption": "Assuming the 'requestId' provided to 'get_next_task' is correct without prior verification.",
+        "corrective_actions": [
+          "Use 'request_planning' to register the request and plan tasks.",
+          "Verify the 'requestId' returned from 'request_planning' before using it in 'get_next_task'.",
+          "Use the correct 'requestId' in 'get_next_task' to retrieve the next task."
+        ],
+        "verification": "The 'get_next_task' response contains the next task without an error message.",
+        "evidence_call_ids": [
+          "request-0:seed-register",
+          "request-0:seed-wrong-id",
+          "request-0:call_-7142422002115014937",
+          "request-1:seed-register",
+          "request-1:seed-wrong-id",
+          "request-1:call_-7142418944098299696"
+        ]
+      }
+    }
+  ]
+}
