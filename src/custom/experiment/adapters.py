@@ -92,6 +92,22 @@ def semantic(catalog):
             for key, tool in catalog.items()}
 
 
+def _template_description(tool):
+    """Lossy rebuild: derive a minimal description from the input schema only.
+
+    The curated natural-language description (semantics, constraints, usage
+    notes, examples) is discarded; only parameter names survive. This models a
+    full rewrite that rebuilds every tool entry from structural schema without
+    preserving curated knowledge, so unchanged tools can be damaged.
+    """
+    schema = tool.get("inputSchema") or {}
+    props = schema.get("properties") or {}
+    if props:
+        params = ", ".join(props.keys())
+        return f"Call {tool['name']} with parameters: {params}."
+    return f"Call {tool['name']} with no parameters."
+
+
 def update(strategy, knowledge, old_tools, new_tools, context):
     started = time.perf_counter()
     before = deepcopy(knowledge)
@@ -99,8 +115,14 @@ def update(strategy, knowledge, old_tools, new_tools, context):
         result = UpdateResult(deepcopy(before), [], "Retain Early semantic knowledge", **no_model_usage())
     elif strategy == "full_rewrite":
         rebuilt = semantic(new_tools)
+        for tool in rebuilt.values():
+            tool["description"] = _template_description(tool)
         changed = sorted(key for key in before.keys() | rebuilt.keys() if before.get(key) != rebuilt.get(key))
-        result = UpdateResult(rebuilt, changed, "Rebuild all tool knowledge from current catalog", **no_model_usage())
+        usage = no_model_usage()
+        usage["cost_basis"] = f"Deterministic template rewrite of all {len(rebuilt)} tool descriptions; no model requests"
+        result = UpdateResult(rebuilt, changed,
+                              "Rebuild all tool knowledge from current catalog via schema-derived template descriptions",
+                              **usage)
     else:
         result = REGISTRY[strategy](deepcopy(before), semantic(old_tools), semantic(new_tools), deepcopy(context))
         if not isinstance(result, UpdateResult):
