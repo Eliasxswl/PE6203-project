@@ -13,12 +13,14 @@ RECOVERY_CONDITIONS = ('without_memory', 'file_only', 'error_triggered')
 PILOT_CONDITIONS = ('full_memory',)
 
 
-def report_pilot(store):
+def report_pilot(store, entries=None):
     import re
     from custom.agents.tool_feedback import reported_error
     rows = list(store.records['trajectories'].values())
     metrics = ('task_fulfillment', 'grounding', 'planning_and_efficiency')
     scored = [r for r in rows if r.get('score') is not None]
+    from .selection import read_json
+    if entries is None:entries=read_json(store.path/'inputs/frozen-k0.json')['memories']
     output = {'protocol': 'complete_memory_task_pilot_v1', 'status': store.records['status'],
         'purpose': 'Development inspection on the unchanged selected tasks, not a memory-benefit or strategy comparison.',
         'planned': len(rows), 'completed_agents': sum(r['agent_status'] == 'completed' for r in rows),
@@ -26,6 +28,8 @@ def report_pilot(store):
         'means': {m: sum(r['score'][m] for r in scored) / len(scored) if scored else None for m in metrics}, 'tasks': []}
     for row in sorted(rows, key=lambda r: (r['identity']['task_id'], r['identity']['repeat'])):
         calls = row['raw_tool_trace']
+        used={c.get('semantic_identity') for c in calls}
+        related=[e['id'] for e in entries if used & set(e['value']['tool_ids'])]
         errors = []
         for index, call in enumerate(calls):
             if reported_error(call.get('semantic_identity'), call['response']):
@@ -38,12 +42,15 @@ def report_pilot(store):
             'agent_status': row['agent_status'], 'score': row.get('score'), 'stop_reason': row.get('stop_reason'),
             'requests': row.get('request_count'), 'request_limit': row.get('request_limit'),
             'selected_memory_ids': exposure.get('selected_ids', []),
+            'related_memory_ids_by_tool_overlap':related,
             'complete_library_visible': bool(exposure.get('total_library_entries')) and
                 len(exposure.get('selected_ids', [])) == exposure['total_library_entries'],
             'tool_errors': errors, 'unrecovered_tool_errors': sum(not e['later_successful_same_tool_call'] for e in errors),
             'schema_feedback_calls': sum(bool(c.get('harness_schema_feedback')) for c in calls),
             'textual_tool_call_without_execution': textual_call,
             'review_required': bool(errors) or textual_call or row['agent_status'] != 'completed'})
+    output['related_tool_coverage']={'tasks':sum(bool(t['related_memory_ids_by_tool_overlap']) for t in output['tasks']),
+        'planned':len(rows),'interpretation':'Observed tool overlap only; not causal adoption of knowledge or task success.'}
     return output
 
 
@@ -211,10 +218,10 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
                 'error_triggered': {'inject': True, 'profile': 'error_triggered'}}
             atomic_json(path / 'experiment.json', store.manifest)
         inputs = path / 'inputs'
-        inputs.mkdir()
-        atomic_json(inputs / 'frozen-k0.json', artifact)
-        from .selection import read_json
-        atomic_json(inputs / 'practice-evidence.json', read_json(ROOT / config['memory']['source']))
+        inputs.mkdir(exist_ok=True)
+        import shutil
+        for key,name in [('artifact','frozen-k0.json'),('source','practice-evidence.json')]:
+            if not (inputs/name).exists():shutil.copyfile(ROOT/config['memory'][key],inputs/name)
         store.save()
         print('LangMem diagnostic: ' + str(path), flush=True)
         try:
@@ -237,6 +244,7 @@ def run(config, task_list, task_ids, parallel=False, workers=1):
                         jobs.append({'config': effective, 'tasks': task_list, 'task': task,
                             'stage': 'original', 'strategy': condition, 'repeat': repeat,
                             'snapshot': deepcopy(snapshot), 'knowledge': deepcopy(snapshot['knowledge']),
+                            'experience_state':deepcopy(snapshot.get('experience_state')),
                             'records': rows, 'initial_snapshot': snapshot, 'prompt_time': store.manifest['prompt_time']})
             if parallel:
                 from .parallel import supervise_stage

@@ -1,0 +1,148 @@
+{
+  "protocol": "prior_memory_evidence_review_v1",
+  "historical_source": "results\\20261025T102105.901652Z_Kevin",
+  "scores": {
+    "planned": 17,
+    "completed_agents": 15,
+    "scored": 15,
+    "valid_judge_slots": 71,
+    "means": {
+      "task_fulfillment": 9.083333333333334,
+      "grounding": 9.426666666666668,
+      "planning_and_efficiency": 9.733333333333333
+    }
+  },
+  "historical_without_memory_reference": {
+    "kind": "Descriptive historical regression reference, different run/protocol; not a paired strategy or memory-benefit test.",
+    "historical_run": "results/20261025T015921.317328Z_Kevin",
+    "matching_scored_task_count": 15,
+    "task_equal_historical_without_memory_tf": 9.016666666666667,
+    "current_tf": 9.083333333333334
+  },
+  "injection_coverage": {
+    "visible": 17,
+    "planned": 17
+  },
+  "observed_related_tool_coverage": {
+    "tasks": 2,
+    "planned": 17,
+    "completed_agents": 15
+  },
+  "limitations": [
+    "Not a paired comparison for the current complete-library profile.",
+    "No causal claim of model memory use; only actual overlapping tool calls are counted.",
+    "Judge TF scores are not program-verified end-state accuracy."
+  ],
+  "tasks": [
+    {
+      "task_id": 9,
+      "agent_status": "completed",
+      "related_tools_called": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@modelcontextprotocol/server-filesystem::read_text_file",
+        "@modelcontextprotocol/server-filesystem::search_files"
+      ],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 24,
+      "agent_status": "failed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 117,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 416,
+      "agent_status": "completed",
+      "related_tools_called": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 267,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 271,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 273,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 274,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 278,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 386,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 389,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 390,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 394,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 403,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 410,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 411,
+      "agent_status": "completed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    },
+    {
+      "task_id": 425,
+      "agent_status": "failed",
+      "related_tools_called": [],
+      "interpretation": "Tool overlap is observable; it does not prove causal adoption of memory."
+    }
+  ]
+}

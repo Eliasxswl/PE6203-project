@@ -1,0 +1,538 @@
+{
+  "protocol": "complete_memory_task_pilot_v1",
+  "status": "completed",
+  "purpose": "Development inspection on the unchanged selected tasks, not a memory-benefit or strategy comparison.",
+  "planned": 17,
+  "completed_agents": 17,
+  "scored": 17,
+  "valid_judge_slots": 82,
+  "means": {
+    "task_fulfillment": 9.117647058823529,
+    "grounding": 9.735294117647058,
+    "planning_and_efficiency": 10.0
+  },
+  "tasks": [
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 24,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 4,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "3d22d2b1602bb8ad846879f9"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 117,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 267,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 271,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 273,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 274,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 278,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 1,
+      "request_limit": 13,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 386,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 389,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 1.0,
+        "grounding": 5.5,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [
+        {
+          "tool_call_id": "call_-7142414305533623708",
+          "tool": "mcp-shrimp-task-manager::analyze_task",
+          "later_successful_same_tool_call": false
+        }
+      ],
+      "unrecovered_tool_errors": 1,
+      "schema_feedback_calls": 1,
+      "textual_tool_call_without_execution": false,
+      "review_required": true
+    },
+    {
+      "task_id": 390,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 394,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 403,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 410,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 411,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 416,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 4.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 3,
+      "request_limit": 15,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    },
+    {
+      "task_id": 425,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": {
+        "task_fulfillment": 10.0,
+        "grounding": 10.0,
+        "planning_and_efficiency": 10.0
+      },
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false
+    }
+  ],
+  "related_tool_coverage": {
+    "tasks": 8,
+    "planned": 17,
+    "interpretation": "Observed tool overlap only; not causal adoption of knowledge or task success."
+  }
+}

@@ -1,0 +1,1536 @@
+{
+  "protocol": "verified_tool_recovery_k0_v1",
+  "source_sha256": "40abec2b01161c06670f8f1c58962dea2a715acfe4513b0e9121c4fda6a5af61",
+  "catalog": {
+    "@kazuph/mcp-taskmanager::approve_request_completion": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "approve_request_completion",
+      "description": "After all tasks are done and approved, this tool finalizes the entire request. The user must call this to confirm that the request is fully completed.\n\nA progress table showing the final status of all tasks will be displayed before requesting final approval.\n\nIf not approved, the user can add new tasks using 'request_planning' and continue the process.",
+      "inputSchema": {
+        "properties": {
+          "requestId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::list_requests": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "list_requests",
+      "description": "List all requests with their basic information and summary of tasks. This provides a quick overview of all requests in the system.",
+      "inputSchema": {
+        "properties": {},
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::delete_task": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "delete_task",
+      "description": "Delete a specific task from a request. Only uncompleted tasks can be deleted.\n\nA progress table will be displayed showing the remaining tasks after deletion.",
+      "inputSchema": {
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "taskId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId",
+          "taskId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::mark_task_done": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "mark_task_done",
+      "description": "Mark a given task as done after you've completed it. Provide 'requestId' and 'taskId', and optionally 'completedDetails'.\n\nAfter marking a task as done, a progress table will be displayed showing the updated status of all tasks.\n\nAfter this, DO NOT proceed to 'get_next_task' again until the user has explicitly approved this completed task using 'approve_task_completion'.",
+      "inputSchema": {
+        "properties": {
+          "completedDetails": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "taskId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId",
+          "taskId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::approve_task_completion": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "approve_task_completion",
+      "description": "Once the assistant has marked a task as done using 'mark_task_done', the user must call this tool to approve that the task is genuinely completed. Only after this approval can you proceed to 'get_next_task' to move on.\n\nA progress table will be displayed before requesting approval, showing the current status of all tasks.\n\nIf the user does not approve, do not call 'get_next_task'. Instead, the user may request changes, or even re-plan tasks by using 'request_planning' again.",
+      "inputSchema": {
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "taskId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId",
+          "taskId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::add_tasks_to_request": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "add_tasks_to_request",
+      "description": "Add new tasks to an existing request. This allows extending a request with additional tasks.\n\nA progress table will be displayed showing all tasks including the newly added ones.",
+      "inputSchema": {
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "tasks": {
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "requestId",
+          "tasks"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::update_task": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "update_task",
+      "description": "Update an existing task's title and/or description. Only uncompleted tasks can be updated.\n\nA progress table will be displayed showing the updated task information.",
+      "inputSchema": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "taskId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId",
+          "taskId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::request_planning": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "request_planning",
+      "description": "Register a new user request and plan its associated tasks. You must provide 'originalRequest' and 'tasks', and optionally 'splitDetails'.\n\nThis tool initiates a new workflow for handling a user's request. The workflow is as follows:\n1. Use 'request_planning' to register a request and its tasks.\n2. After adding tasks, you MUST use 'get_next_task' to retrieve the first task. A progress table will be displayed.\n3. Use 'get_next_task' to retrieve the next uncompleted task.\n4. **IMPORTANT:** After marking a task as done, the assistant MUST NOT proceed to another task without the user's approval. The user must explicitly approve the completed task using 'approve_task_completion'. A progress table will be displayed before each approval request.\n5. Once a task is approved, you can proceed to 'get_next_task' again to fetch the next pending task.\n6. Repeat this cycle until all tasks are done.\n7. After all tasks are completed (and approved), 'get_next_task' will indicate that all tasks are done and that the request awaits approval for full completion.\n8. The user must then approve the entire request's completion using 'approve_request_completion'. If the user does not approve and wants more tasks, you can again use 'request_planning' to add new tasks and continue the cycle.\n\nThe critical point is to always wait for user approval after completing each task and after all tasks are done, wait for request completion approval. Do not proceed automatically.",
+      "inputSchema": {
+        "properties": {
+          "originalRequest": {
+            "type": "string"
+          },
+          "splitDetails": {
+            "type": "string"
+          },
+          "tasks": {
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "originalRequest",
+          "tasks"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::get_next_task": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "get_next_task",
+      "description": "Given a 'requestId', return the next pending task (not done yet). If all tasks are completed, it will indicate that no more tasks are left and that you must wait for the request completion approval.\n\nA progress table showing the current status of all tasks will be displayed with each response.\n\nIf the same task is returned again or if no new task is provided after a task was marked as done but not yet approved, you MUST NOT proceed. In such a scenario, you must prompt the user for approval via 'approve_task_completion' before calling 'get_next_task' again. Do not skip the user's approval step.\nIn other words:\n- After calling 'mark_task_done', do not call 'get_next_task' again until 'approve_task_completion' is called by the user.\n- If 'get_next_task' returns 'all_tasks_done', it means all tasks have been completed. At this point, you must not start a new request or do anything else until the user decides to 'approve_request_completion' or possibly add more tasks via 'request_planning'.",
+      "inputSchema": {
+        "properties": {
+          "requestId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@kazuph/mcp-taskmanager::open_task_details": {
+      "server": "@kazuph/mcp-taskmanager",
+      "name": "open_task_details",
+      "description": "Get details of a specific task by 'taskId'. This is for inspecting task information at any point.",
+      "inputSchema": {
+        "properties": {
+          "taskId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ],
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::create_directory": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "create_directory",
+      "description": "Create a new directory or ensure a directory exists. Can create multiple nested directories in one operation. If the directory already exists, this operation will succeed silently. Perfect for setting up directory structures for projects or ensuring required paths exist. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::write_file": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "write_file",
+      "description": "Create a new file or completely overwrite an existing file with new content. Use with caution as it will overwrite existing files without warning. Handles text content with proper encoding. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "content"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::edit_file": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "edit_file",
+      "description": "Make line-based edits to a text file. Each edit replaces exact line sequences with new content. Returns a git-style diff showing the changes made. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "dryRun": {
+            "default": false,
+            "description": "Preview changes using git-style diff format",
+            "type": "boolean"
+          },
+          "edits": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "newText": {
+                  "description": "Text to replace with",
+                  "type": "string"
+                },
+                "oldText": {
+                  "description": "Text to search for - must match exactly",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "oldText",
+                "newText"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "edits"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::get_file_info": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "get_file_info",
+      "description": "Retrieve detailed metadata about a file or directory. Returns comprehensive information including size, creation time, last modified time, permissions, and type. This tool is perfect for understanding file characteristics without reading the actual content. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::list_allowed_directories": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "list_allowed_directories",
+      "description": "Returns the list of directories that this server is allowed to access. Subdirectories within these allowed directories are also accessible. Use this to understand which directories and their nested paths are available before trying to access files.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "properties": {},
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::read_multiple_files": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "read_multiple_files",
+      "description": "Read the contents of multiple files simultaneously. This is more efficient than reading files one by one when you need to analyze or compare multiple files. Each file's content is returned with its path as a reference. Failed reads for individual files won't stop the entire operation. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "paths": {
+            "description": "Array of file paths to read. Each path must be a string pointing to a valid file within allowed directories.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "paths"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::read_media_file": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "read_media_file",
+      "description": "Read an image or audio file. Returns the base64 encoded data and MIME type. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::search_files": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "search_files",
+      "description": "Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' to match files in all subdirectories. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "excludePatterns": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "path": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "pattern"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::read_file": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "read_file",
+      "description": "Read the complete contents of a file as text. DEPRECATED: Use read_text_file instead.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "head": {
+            "description": "If provided, returns only the first N lines of the file",
+            "type": "number"
+          },
+          "path": {
+            "type": "string"
+          },
+          "tail": {
+            "description": "If provided, returns only the last N lines of the file",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::read_text_file": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "read_text_file",
+      "description": "Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use the 'head' parameter to read only the first N lines of a file, or the 'tail' parameter to read only the last N lines of a file. Operates on the file as text regardless of extension. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "head": {
+            "description": "If provided, returns only the first N lines of the file",
+            "type": "number"
+          },
+          "path": {
+            "type": "string"
+          },
+          "tail": {
+            "description": "If provided, returns only the last N lines of the file",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::directory_tree": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "directory_tree",
+      "description": "Get a recursive tree view of files and directories as a JSON structure. Each entry includes 'name', 'type' (file/directory), and 'children' for directories. Files have no children array, while directories always have a children array (which may be empty). The output is formatted with 2-space indentation for readability. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "excludePatterns": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::list_directory": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "list_directory",
+      "description": "Get a detailed listing of all files and directories in a specified path. Results clearly distinguish between files and directories with [FILE] and [DIR] prefixes. This tool is essential for understanding directory structure and finding specific files within a directory. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::list_directory_with_sizes": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "list_directory_with_sizes",
+      "description": "Get a detailed listing of all files and directories in a specified path, including sizes. Results clearly distinguish between files and directories with [FILE] and [DIR] prefixes. This tool is useful for understanding directory structure and finding specific files within a directory. Only works within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sortBy": {
+            "default": "name",
+            "description": "Sort entries by name or size",
+            "enum": [
+              "name",
+              "size"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-filesystem::move_file": {
+      "server": "@modelcontextprotocol/server-filesystem",
+      "name": "move_file",
+      "description": "Move or rename files and directories. Can move files between directories and rename them in a single operation. If the destination exists, the operation will fail. Works across different directories and can be used for simple renaming within the same directory. Both source and destination must be within allowed directories.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "destination": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "destination"
+        ],
+        "type": "object"
+      }
+    },
+    "@modelcontextprotocol/server-sequential-thinking::sequentialthinking": {
+      "server": "@modelcontextprotocol/server-sequential-thinking",
+      "name": "sequentialthinking",
+      "description": "A detailed tool for dynamic and reflective problem-solving through thoughts.\nThis tool helps analyze problems through a flexible thinking process that can adapt and evolve.\nEach thought can build on, question, or revise previous insights as understanding deepens.\n\nWhen to use this tool:\n- Breaking down complex problems into steps\n- Planning and design with room for revision\n- Analysis that might need course correction\n- Problems where the full scope might not be clear initially\n- Problems that require a multi-step solution\n- Tasks that need to maintain context over multiple steps\n- Situations where irrelevant information needs to be filtered out\n\nKey features:\n- You can adjust total_thoughts up or down as you progress\n- You can question or revise previous thoughts\n- You can add more thoughts even after reaching what seemed like the end\n- You can express uncertainty and explore alternative approaches\n- Not every thought needs to build linearly - you can branch or backtrack\n- Generates a solution hypothesis\n- Verifies the hypothesis based on the Chain of Thought steps\n- Repeats the process until satisfied\n- Provides a correct answer\n\nParameters explained:\n- thought: Your current thinking step, which can include:\n  * Regular analytical steps\n  * Revisions of previous thoughts\n  * Questions about previous decisions\n  * Realizations about needing more analysis\n  * Changes in approach\n  * Hypothesis generation\n  * Hypothesis verification\n- nextThoughtNeeded: True if you need more thinking, even if at what seemed like the end\n- thoughtNumber: Current number in sequence (can go beyond initial total if needed)\n- totalThoughts: Current estimate of thoughts needed (can be adjusted up/down)\n- isRevision: A boolean indicating if this thought revises previous thinking\n- revisesThought: If is_revision is true, which thought number is being reconsidered\n- branchFromThought: If branching, which thought number is the branching point\n- branchId: Identifier for the current branch (if any)\n- needsMoreThoughts: If reaching end but realizing more thoughts needed\n\nYou should:\n1. Start with an initial estimate of needed thoughts, but be ready to adjust\n2. Feel free to question or revise previous thoughts\n3. Don't hesitate to add more thoughts if needed, even at the \"end\"\n4. Express uncertainty when present\n5. Mark thoughts that revise previous thinking or branch into new paths\n6. Ignore information that is irrelevant to the current step\n7. Generate a solution hypothesis when appropriate\n8. Verify the hypothesis based on the Chain of Thought steps\n9. Repeat the process until satisfied with the solution\n10. Provide a single, ideally correct answer as the final output\n11. Only set nextThoughtNeeded to false when truly done and a satisfactory answer is reached",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "branchFromThought": {
+            "description": "Branching point thought number",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "branchId": {
+            "description": "Branch identifier",
+            "type": "string"
+          },
+          "isRevision": {
+            "description": "Whether this revises previous thinking",
+            "type": "boolean"
+          },
+          "needsMoreThoughts": {
+            "description": "If more thoughts are needed",
+            "type": "boolean"
+          },
+          "nextThoughtNeeded": {
+            "description": "Whether another thought step is needed",
+            "type": "boolean"
+          },
+          "revisesThought": {
+            "description": "Which thought is being reconsidered",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "thought": {
+            "description": "Your current thinking step",
+            "type": "string"
+          },
+          "thoughtNumber": {
+            "description": "Current thought number (numeric value, e.g., 1, 2, 3)",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "totalThoughts": {
+            "description": "Estimated total thoughts needed (numeric value, e.g., 5, 10)",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "thought",
+          "nextThoughtNeeded",
+          "thoughtNumber",
+          "totalThoughts"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::analyze_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "analyze_task",
+      "description": "Deeply analyze task requirements and systematically examine the codebase, assess technical feasibility and potential risks, if code needs to be provided use pseudocode format and only provide high-level logic flow and key steps avoiding complete code\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "initialConcept": {
+            "description": "最少50個字符的初步解答構想，包含技術方案、架構設計和實施策略，如果需要提供程式碼請使用 pseudocode 格式且僅提供高級邏輯流程和關鍵步驟避免完整代碼",
+            "minLength": 50,
+            "type": "string"
+          },
+          "previousAnalysis": {
+            "description": "前次迭代的分析結果，用於持續改進方案（僅在重新分析時需提供）",
+            "type": "string"
+          },
+          "summary": {
+            "description": "結構化的任務摘要，包含任務目標、範圍與關鍵技術挑戰，最少10個字符",
+            "minLength": 10,
+            "type": "string"
+          }
+        },
+        "required": [
+          "summary",
+          "initialConcept"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::clear_all_tasks": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "clear_all_tasks",
+      "description": "Clear incomplete tasks and reset the task list\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "confirm": {
+            "description": "確認刪除所有未完成的任務（此操作不可逆）",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "confirm"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::delete_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "delete_task",
+      "description": "Delete incomplete tasks, but does not allow deleting completed tasks, ensuring the integrity of system records\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "taskId": {
+            "description": "待刪除任務的唯一標識符，必須是系統中存在且未完成的任務ID",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::execute_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "execute_task",
+      "description": "Retrieve the instructional guidance for a specific task. You will complete the programming task based on this guidance. You must strictly follow the feedback and instructions provided by the tool — it is designed to **guide you toward perfect task completion, not to execute the task for you**. Severe Warning: Calling the executeTask tool does not mean you have completed the task. You must follow the step-by-step guidance returned by the tool to complete the task properly.\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "taskId": {
+            "description": "待執行任務的唯一標識符，必須是系統中存在的有效任務ID",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::get_task_detail": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "get_task_detail",
+      "description": "Retrieve complete detailed information of a task based on task ID, including untruncated implementation guides and verification criteria\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "taskId": {
+            "description": "欲檢視詳情的任務ID",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::init_project_rules": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "init_project_rules",
+      "description": "Initialize project standards, call this tool when the user requests to generate or initialize a project standards document, also call this tool if the user requests to change or update project standards\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {},
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::list_tasks": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "list_tasks",
+      "description": "Generate structured task lists, including complete status tracking, priorities, and dependencies\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "description": "要列出的任務狀態，可選擇 'all' 列出所有任務，或指定具體狀態",
+            "enum": [
+              "all",
+              "pending",
+              "in_progress",
+              "completed"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::plan_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "plan_task",
+      "description": "When you need to plan tasks or construct complex features, you can use this tool to receive task planning guidance. You are expected to strictly follow the step-by-step instructions provided by the tool when organizing your tasks. You may optionally choose to reference existing tasks for extended planning.\n\n**Critical Warning**: All forms of `assumptions`, `guesses`, and `imagination` are strictly prohibited. You must use every `available tool` at your disposal to `gather real information`.\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "description": "完整詳細的任務問題描述，應包含任務目標、背景及預期成果",
+            "minLength": 10,
+            "type": "string"
+          },
+          "existingTasksReference": {
+            "default": false,
+            "description": "是否參考現有任務作為規劃基礎，用於任務調整和延續性規劃",
+            "type": "boolean"
+          },
+          "requirements": {
+            "description": "任務的特定技術要求、業務約束條件或品質標準（選填）",
+            "type": "string"
+          }
+        },
+        "required": [
+          "description"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::process_thought": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "process_thought",
+      "description": "Conduct flexible and evolvable thinking processes, progressively deepen understanding and generate effective solutions through establishing, questioning, verifying, and correcting ideas. When encountering situations requiring data collection, analysis, or research, prioritize reviewing project-related code; if relevant code does not exist, query the web rather than speculate. Set nextThoughtNeeded to false when thinking is sufficient, otherwise adjust total_thoughts to extend the process\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "assumptions_challenged": {
+            "description": "挑戰的假設，是一個陣列字串",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "axioms_used": {
+            "description": "使用的公理，是一個陣列字串",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "next_thought_needed": {
+            "description": "是否需要下一步思維",
+            "type": "boolean"
+          },
+          "stage": {
+            "description": "Thinking stage. Available stages include: Problem Definition, Information Gathering, Research, Analysis, Synthesis, Conclusion, Critical Questioning, and Planning.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "tags": {
+            "description": "思維標籤，是一個陣列字串",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "thought": {
+            "description": "思維內容",
+            "minLength": 1,
+            "type": "string"
+          },
+          "thought_number": {
+            "description": "當前思維編號",
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          "total_thoughts": {
+            "description": "預計總思維數量，如果需要更多的思考可以隨時變更",
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "thought",
+          "thought_number",
+          "total_thoughts",
+          "next_thought_needed",
+          "stage"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::query_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "query_task",
+      "description": "Search for tasks based on keywords or ID, display abbreviated task information\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "isId": {
+            "default": false,
+            "description": "指定是否為ID查詢模式，默認為否（關鍵字模式）",
+            "type": "boolean"
+          },
+          "page": {
+            "default": 1,
+            "description": "分頁頁碼，默認為第1頁",
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          "pageSize": {
+            "default": 5,
+            "description": "每頁顯示的任務數量，默認為5筆，最大20筆",
+            "exclusiveMinimum": 0,
+            "maximum": 20,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "query": {
+            "description": "搜尋查詢文字，可以是任務ID或多個關鍵字（空格分隔）",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::reflect_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "reflect_task",
+      "description": "Critically review analysis results, assess solution completeness and identify optimization opportunities, ensure solutions conform to best practices, if code needs to be provided use pseudocode format and only provide high-level logic flow and key steps avoiding complete code\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "analysis": {
+            "description": "完整詳盡的技術分析結果，包括所有技術細節、依賴組件和實施方案，如果需要提供程式碼請使用 pseudocode 格式且僅提供高級邏輯流程和關鍵步驟避免完整代碼",
+            "minLength": 100,
+            "type": "string"
+          },
+          "summary": {
+            "description": "結構化的任務摘要，保持與分析階段一致以確保連續性",
+            "minLength": 10,
+            "type": "string"
+          }
+        },
+        "required": [
+          "summary",
+          "analysis"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::research_mode": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "research_mode",
+      "description": "When you need to conduct in-depth research on programming-related topics, you can use this tool to enter a specialized research mode. This tool will guide you on how to use web search and code search tools to systematically research technical topics, ensuring research depth and breadth while avoiding topic deviation. Suitable for technical research, best practice exploration, solution comparison, and other scenarios.\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "currentState": {
+            "description": "當前 Agent 主要該執行的內容，例如使用網路工具搜尋某些關鍵字或分析特定程式碼，研究完畢後請呼叫 research_mode 來記錄狀態並與之前的`previousState`整合，這將幫助你更好的保存與執行研究內容",
+            "type": "string"
+          },
+          "nextSteps": {
+            "description": "後續的計劃、步驟或研究方向，用來約束 Agent 不偏離主題或走錯方向，如果研究過程中發現需要調整研究方向，請更新此欄位",
+            "type": "string"
+          },
+          "previousState": {
+            "default": "",
+            "description": "之前的研究狀態和內容摘要，第一次執行時為空，後續會包含之前詳細且關鍵的研究成果，這將幫助後續的研究",
+            "type": "string"
+          },
+          "topic": {
+            "description": "要研究的程式編程主題內容，應該明確且具體",
+            "minLength": 5,
+            "type": "string"
+          }
+        },
+        "required": [
+          "topic",
+          "currentState",
+          "nextSteps"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::split_tasks": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "split_tasks",
+      "description": "Break down complex tasks into independent subtasks, establishing dependencies and priorities.\n\n## 1. **Granularity Control (Required Reading)**\n\n- ### **Minimum Viable Task**\n\n  Each subtask should be completable and verifiable by a single developer within **1–2 working days** (approximately 8–16 hours).\n\n- ### **Maximum Complexity Limitation**\n\n  A single subtask should not span multiple technical domains such as **frontend**, **backend**, and **database**.  \n  If cross-domain work is required, split it into multiple subtasks.\n\n- ### **Recommended Number of Tasks**\n\n  Avoid splitting into more than **10 subtasks** at once.  \n  If more are needed, submit them in prioritized batches (6–8 tasks per batch).\n\n- ### **Recommended Task Length**\n\n  Each split should not exceed **5,000 characters**.  \n  If it does, divide and submit in multiple batches.\n\n- ### **Depth Limitation**\n  The task tree should not exceed **3 levels**:\n  - **Level 1**: Functional Modules\n  - **Level 2**: Main Processes\n  - **Level 3**: Key Steps\n\n## 2. **Task Splitting Example**\n\n- Identify **core functionality points**, and create a subtask for each.\n- Annotate each subtask with:\n  - **Input/Output**\n  - **Acceptance Criteria**\n- If needed, provide **pseudocode**:\n  - Only outline high-level logic and key steps.\n  - Avoid providing complete source code.\n- Check **dependencies** between subtasks and specify them in the `dependencies` field.\n- If the task involves interface design, always provide a complete and consistent definition, including:\n\n  - Function/class/schema definitions (including names, parameters, return values)\n  - Data types, usage descriptions, and optional/required status for each item\n  - Error handling methods and expected exception scenarios\n  - Dependency and naming conventions (if any)\n  - Sample data and usage examples\n\n  This ensures consistency, readability, and development precision between tasks.\n\n## 3. **Dependencies and Prioritization**\n\n- Mark each subtask with its `dependencies` list.\n- Automatically compute and enforce execution order based on the dependency graph to prioritize the **critical path**.\n\n## 4. **Update Mode Explanation (`updateMode`)**\n\nWhen you need to create a new task that is not related to the current task list, be sure to use `clearAllTasks` to avoid task confusion.\n\n- `append`: Keep existing unfinished tasks and add new ones.\n- `overwrite`: Delete all unfinished tasks, keep completed ones.\n- `selective`: Smart-match and update tasks by name.\n- `clearAllTasks`: Clear all tasks and automatically back up the current list.\n\n---\n\n## 5. **Strict JSON Rules**\n\n- ### **No Comments Allowed**\n\n  JSON does not support comments.  \n  Any use of `#` or `//` will cause parsing failures.\n\n- ### **Proper Escaping Required**\n  All special characters (e.g., double quotes `\\\"`, backslashes `\\\\`) must be properly escaped,  \n  or they will be considered invalid.\n\n## 6. **Important Notes**\n\nThese tasks will be executed by low-intelligence models, so please follow the guidelines below:\n\n- `Clear and Explicit Instructions`: This prevents the model from producing incorrect or inconsistent architecture/code styles. Provide clear commands or specifications.\n- `Encapsulated Interfaces`: Each task runs independently. Define the interfaces clearly — such as function names, parameters, return values — so that other task-executing models can easily understand how to interact with or integrate these functions.\n- `Dependencies`: If there are dependencies between tasks, define the interaction interfaces first. Tasks do not need to know each other's implementation, but must know how to interact with one another.\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "globalAnalysisResult": {
+            "description": "任務最終目標，來自之前分析適用於所有任務的通用部分",
+            "type": "string"
+          },
+          "tasksRaw": {
+            "description": "結構化的任務清單，每個任務應保持原子性且有明確的完成標準，避免過於簡單的任務，簡單修改可與其他任務整合，避免任務過多，範例：[{name: '簡潔明確的任務名稱，應能清晰表達任務目的', description: '詳細的任務描述，包含實施要點、技術細節和驗收標準', implementationGuide: '此特定任務的具體實現方法和步驟，請參考之前的分析結果提供精簡pseudocode', notes: '補充說明、特殊處理要求或實施建議（選填）', dependencies: ['此任務依賴的前置任務完整名稱'], relatedFiles: [{path: '文件路徑', type: '文件類型 (TO_MODIFY: 待修改, REFERENCE: 參考資料, CREATE: 待建立, DEPENDENCY: 依賴文件, OTHER: 其他)', description: '文件描述', lineStart: 1, lineEnd: 100}], verificationCriteria: '此特定任務的驗證標準和檢驗方法'}, {name: '任務2', description: '任務2描述', implementationGuide: '任務2實現方法', notes: '補充說明、特殊處理要求或實施建議（選填）', dependencies: ['任務1'], relatedFiles: [{path: '文件路徑', type: '文件類型 (TO_MODIFY: 待修改, REFERENCE: 參考資料, CREATE: 待建立, DEPENDENCY: 依賴文件, OTHER: 其他)', description: '文件描述', lineStart: 1, lineEnd: 100}], verificationCriteria: '此特定任務的驗證標準和檢驗方法'}]",
+            "type": "string"
+          },
+          "updateMode": {
+            "description": "任務更新模式選擇：'append'(保留所有現有任務並添加新任務)、'overwrite'(清除所有未完成任務並完全替換，保留已完成任務)、'selective'(智能更新：根據任務名稱匹配更新現有任務，保留不在列表中的任務，推薦用於任務微調)、'clearAllTasks'(清除所有任務並創建備份)。\n預設為'clearAllTasks'模式，只有用戶要求變更或修改計劃內容才使用其他模式",
+            "enum": [
+              "append",
+              "overwrite",
+              "selective",
+              "clearAllTasks"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "updateMode",
+          "tasksRaw"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::update_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "update_task",
+      "description": "Update task content, including name, description and notes, dependent tasks, related files, implementation guide, and verification criteria, completed tasks only allow updating summary and related files\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "dependencies": {
+            "description": "任務的新依賴關係（選填）",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "description": {
+            "description": "任務的新描述內容（選填）",
+            "type": "string"
+          },
+          "implementationGuide": {
+            "description": "任務的新實現指南（選填）",
+            "type": "string"
+          },
+          "name": {
+            "description": "任務的新名稱（選填）",
+            "type": "string"
+          },
+          "notes": {
+            "description": "任務的新補充說明（選填）",
+            "type": "string"
+          },
+          "relatedFiles": {
+            "description": "與任務相關的文件列表，用於記錄與任務相關的代碼文件、參考資料、要建立的檔案等（選填）",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "description": "文件的補充描述（選填）",
+                  "type": "string"
+                },
+                "lineEnd": {
+                  "description": "相關代碼區塊的結束行（選填）",
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                "lineStart": {
+                  "description": "相關代碼區塊的起始行（選填）",
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                "path": {
+                  "description": "文件路徑，可以是相對於項目根目錄的路徑或絕對路徑",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": {
+                  "description": "文件與任務的關係類型 (TO_MODIFY, REFERENCE, CREATE, DEPENDENCY, OTHER)",
+                  "enum": [
+                    "TO_MODIFY",
+                    "REFERENCE",
+                    "CREATE",
+                    "DEPENDENCY",
+                    "OTHER"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "type"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "taskId": {
+            "description": "待更新任務的唯一標識符，必須是系統中存在且未完成的任務ID",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
+            "type": "string"
+          },
+          "verificationCriteria": {
+            "description": "任務的新驗證標準（選填）",
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-shrimp-task-manager::verify_task": {
+      "server": "mcp-shrimp-task-manager",
+      "name": "verify_task",
+      "description": "## Verify Task\n\nPlease comprehensively check and score according to the requirements in verificationCriteria,\nIf you are missing or have forgotten the verificationCriteria content, please use `get_task_detail` to obtain it.\n\nPlease score according to the following rules:\n\n### Verification Standards\n\n1. **Requirements Compliance(30%)** - Functionality completeness, constraint adherence, edge case handling\n2. **Technical Quality(30%)** - Architectural consistency, code robustness, implementation elegance\n3. **Integration Compatibility(20%)** - System integration, interoperability, compatibility maintenance\n4. **Performance Scalability(20%)** - Performance optimization, load adaptability, resource management\n\n### score Parameter Guidelines\n\nProvide overall score and rating, assessment of each standard, issues and suggestions, and final conclusion.\n\n**Must use the following format to provide scoring results (for system parsing):**\n\n```Scoring\nscore: [number from 0-100]\n```\n\n### summary Parameter Guidelines\n\nIf the score is equal to or greater than 80 points, please provide a task summary\n\n```\nsummary: 'Task completion summary, concise description of implementation results and important decisions'\n```\n\nIf the score is less than 80 points, please provide correction suggestions\n\n```\nsummary: 'List task issues and correction suggestions'\n```\n",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "score": {
+            "description": "針對任務的評分，當評分等於或超過80分時自動完成任務",
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          "summary": {
+            "description": "當分數高於或等於 80分時代表任務完成摘要，簡潔描述實施結果和重要決策，當分數低於 80分時代表缺失或需要修正的部分說明，最少30個字",
+            "minLength": 30,
+            "type": "string"
+          },
+          "taskId": {
+            "description": "待驗證任務的唯一標識符，必須是系統中存在的有效任務ID",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId",
+          "summary",
+          "score"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-tasks::tasks_add": {
+      "server": "mcp-tasks",
+      "name": "tasks_add",
+      "description": "Add new tasks with a specific status. It's faster and cheaper if you use this in batch. User can add atomically while AI works using the CLI add tool",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "description": "0-based index to place the tasks. e.g.:\n- 0 for \"Do this next\"\n- Omit to place at the end (\"Do this later\")",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "source_id": {
+            "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+            "enum": [
+              "In Progress",
+              "To Do",
+              "Backlog",
+              "Done",
+              "Reminders",
+              "Notes",
+              "Deleted"
+            ],
+            "type": "string"
+          },
+          "texts": {
+            "description": "Each text becomes a task",
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "texts",
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-tasks::tasks_search": {
+      "server": "mcp-tasks",
+      "name": "tasks_search",
+      "description": "Search tasks from specific statuses with optional text & ID filtering",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "ids": {
+            "description": "Optional list of task IDs to search for",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "limit": {
+            "description": "Maximum number of results (only for really large task lists)",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "source_id": {
+            "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+            "minLength": 1,
+            "type": "string"
+          },
+          "statuses": {
+            "description": "Specific statuses to get. Gets all if omitted",
+            "items": {
+              "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+              "enum": [
+                "In Progress",
+                "To Do",
+                "Backlog",
+                "Done",
+                "Reminders",
+                "Notes",
+                "Deleted"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "terms": {
+            "description": "Search terms to filter tasks by text or status (case-insensitive, OR logic, no regex or wildcards)",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "mcp-tasks::tasks_setup": {
+      "server": "mcp-tasks",
+      "name": "tasks_setup",
+      "description": "Initializes an source file from a path\n- Always call once per conversation when asked to use these tools\n- Ask the user to clarify the file path if not given, before calling this tool\n- Creates the file if it does not exist\n- Returns the source ID for further use\n- Use mcp-tasks tools when the user mentions new or updated tasks",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "source_path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workspace": {
+            "description": "Workspace/project directory path (provided by the IDE or use $PWD)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_path"
+        ],
+        "type": "object"
+      }
+    },
+    "mcp-tasks::tasks_summary": {
+      "server": "mcp-tasks",
+      "name": "tasks_summary",
+      "description": "Get per-status task counts and the WIP task(s). Redundant right after tasks_add/tasks_update",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "mcp-tasks::tasks_update": {
+      "server": "mcp-tasks",
+      "name": "tasks_update",
+      "description": "Update tasks in bulk by ID to a different status. Returns complete summary no need to call tasks_summary afterwards. Prevents AI accidentally rename or deleting tasks during mass updates, not even possible",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "ids": {
+            "description": "The IDs of existing tasks",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "index": {
+            "description": "0-based index to place the tasks. e.g.:\n- 0 for \"Do this next\"\n- Omit to place at the end (\"Do this later\")",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "source_id": {
+            "description": "Source ID from task_setup() response\n- Defaults to most recent in the workspace if not provided\n- Try to always provide it!\n- If you don't have it, ask the user for a file path and call task_setup()",
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes",
+                "enum": [
+                  "In Progress",
+                  "To Do",
+                  "Backlog",
+                  "Done",
+                  "Reminders",
+                  "Notes",
+                  "Deleted"
+                ],
+                "type": "string"
+              },
+              {
+                "const": "Deleted",
+                "type": "string"
+              }
+            ],
+            "description": "You might need to infer it from the context:\n- \"To Do\" for tasks coming up next (e.g. \"Do X next\")\n- \"In Progress\" for what you'll do now (e.g. \"First do X\")\n- \"Reminders\" instructions for you (the AI) to be constantly reminded of\n- \"Notes\" to collect non-actionable notes\n- \"Deleted\" when they want these removed\n- Updating tasks to In Progress moves others to To Do, finishing a In Progress task moves the first Done to In Progress"
+          }
+        },
+        "required": [
+          "ids",
+          "status"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "memories": [
+    {
+      "id": "aee4f1ad0f03afe64d0d659b",
+      "value": {
+        "tool_ids": [
+          "@modelcontextprotocol/server-filesystem::search_files",
+          "@modelcontextprotocol/server-filesystem::read_text_file"
+        ],
+        "content": "When a file is not found directly by its name without extension, use 'search_files' to locate it using a pattern that includes the filename keyword. Once the file path is identified, use 'read_text_file' to read its contents.",
+        "applicability": "适用于在不知道文件确切路径，但知道文件名关键字的情况。",
+        "failed_assumption": "假设文件存在且路径已知，直接使用 'read_text_file' 进行读取。",
+        "corrective_actions": [
+          "使用 'search_files' 工具根据文件名关键字查找文件路径",
+          "使用找到的文件路径调用 'read_text_file' 读取文件内容"
+        ],
+        "verification": "通过 'search_files' 获取的文件路径能够成功被 'read_text_file' 读取，且读取的内容与预期一致。",
+        "evidence_call_ids": [
+          "practice-middle-0",
+          "practice-middle-3",
+          "practice-extension-0",
+          "practice-extension-3",
+          "practice-known-0"
+        ],
+        "tool_call_templates": [
+          {
+            "tool_id": "@modelcontextprotocol/server-filesystem::search_files",
+            "arguments": {
+              "path": "${WORKSPACE}",
+              "pattern": "**/*${KEYWORD}*"
+            },
+            "evidence_call_ids": [
+              "practice-middle-2",
+              "practice-extension-2"
+            ]
+          },
+          {
+            "tool_id": "@modelcontextprotocol/server-filesystem::read_text_file",
+            "arguments": {
+              "path": "${DISCOVERED_PATH}"
+            },
+            "evidence_call_ids": [
+              "practice-middle-3",
+              "practice-extension-3"
+            ]
+          }
+        ]
+      },
+      "case_id": "expanded-file-recovery"
+    },
+    {
+      "id": "3d22d2b1602bb8ad846879f9",
+      "value": {
+        "tool_ids": [
+          "mcp-tasks::tasks_add",
+          "mcp-tasks::tasks_setup"
+        ],
+        "content": "To add tasks, first initialize a source file using tasks_setup with a valid file path (md, , yml). Then, use tasks_add to specify the tasks, their status, and the source ID from the tasks_setup response.",
+        "applicability": "When adding tasks and encountering file extension or path errors.",
+        "failed_assumption": "Assuming a file path was valid or tasks could be added without prior setup.",
+        "corrective_actions": [
+          "Call tasks_setup with a valid source path before adding tasks.",
+          "Use the source ID from tasks_setup in tasks_add arguments."
+        ],
+        "verification": "tasks_setup completes without error and tasks_add successfully adds tasks using the source ID.",
+        "evidence_call_ids": [
+          "source-0:seed-directory-source",
+          "source-0:seed-uninitialized-add",
+          "source-0:call_-7142424682174604848",
+          "source-0:call_-7142424407296698216",
+          "source-1:seed-directory-source",
+          "source-1:seed-uninitialized-add",
+          "source-1:call_-7142422483151353415",
+          "source-1:call_-7142415233246553913"
+        ],
+        "tool_call_templates": [
+          {
+            "tool_id": "mcp-tasks::tasks_setup",
+            "arguments": {
+              "source_path": "${SOURCE_PATH}"
+            },
+            "evidence_call_ids": [
+              "source-0:call_-7142424682174604848",
+              "source-1:call_-7142422483151353415"
+            ]
+          },
+          {
+            "tool_id": "mcp-tasks::tasks_add",
+            "arguments": {
+              "texts": [
+                "${TASK_TEXT_1}",
+                "${TASK_TEXT_2}"
+              ],
+              "status": "${STATUS}",
+              "source_id": "${SOURCE_ID}"
+            },
+            "evidence_call_ids": [
+              "source-0:call_-7142424407296698216",
+              "source-1:call_-7142415233246553913"
+            ]
+          }
+        ],
+        "template_variables": {
+          "SOURCE_PATH": "Current full path to the requested supported task source file (.md, .json or .yml), not its directory.",
+          "STATUS": "Current requested task status, using the exact allowed enum.",
+          "SOURCE_ID": "Opaque source.id from the actual tasks_setup response; a file path is not a source ID.",
+          "TASK_TEXT_1": "Current task item as a plain string. Adapt the number of array items to the request; do not pass objects.",
+          "TASK_TEXT_2": "Current task item as a plain string. Adapt the number of array items to the request; do not pass objects."
+        }
+      },
+      "case_id": "verified-source-workflow"
+    },
+    {
+      "id": "36ddedfe9c6be8a691b4fd40",
+      "value": {
+        "tool_ids": [
+          "@kazuph/mcp-taskmanager::get_next_task",
+          "@kazuph/mcp-taskmanager::request_planning"
+        ],
+        "content": "To retrieve the next task, use 'get_next_task' with the correct 'requestId'. Always verify the 'requestId' before making the call to avoid errors.",
+        "applicability": "When a task request has been planned and the initial 'get_next_task' with a wrong 'requestId' fails.",
+        "failed_assumption": "Assuming the 'requestId' provided to 'get_next_task' is correct without prior verification.",
+        "corrective_actions": [
+          "Use 'request_planning' to register the request and plan tasks.",
+          "Verify the 'requestId' returned from 'request_planning' before using it in 'get_next_task'.",
+          "Use the correct 'requestId' in 'get_next_task' to retrieve the next task."
+        ],
+        "verification": "The 'get_next_task' response contains the next task without an error message.",
+        "evidence_call_ids": [
+          "request-0:seed-register",
+          "request-0:seed-wrong-id",
+          "request-0:call_-7142422002115014937",
+          "request-1:seed-register",
+          "request-1:seed-wrong-id",
+          "request-1:call_-7142418944098299696"
+        ],
+        "tool_call_templates": [
+          {
+            "tool_id": "@kazuph/mcp-taskmanager::request_planning",
+            "arguments": {
+              "originalRequest": "${REQUEST}",
+              "tasks": [
+                {
+                  "title": "${TASK_1_TITLE}",
+                  "description": "${TASK_1_DESCRIPTION}"
+                },
+                {
+                  "title": "${TASK_2_TITLE}",
+                  "description": "${TASK_2_DESCRIPTION}"
+                }
+              ]
+            },
+            "evidence_call_ids": [
+              "request-0:seed-register",
+              "request-1:seed-register"
+            ]
+          },
+          {
+            "tool_id": "@kazuph/mcp-taskmanager::get_next_task",
+            "arguments": {
+              "requestId": "${REQUEST_ID}"
+            },
+            "evidence_call_ids": [
+              "request-0:call_-7142422002115014937",
+              "request-1:call_-7142418944098299696"
+            ]
+          }
+        ],
+        "template_variables": {
+          "REQUEST": "Current original request.",
+          "REQUEST_ID": "Actual requestId returned by request_planning; task IDs are not request IDs. Reuse an existing request when already planned.",
+          "TASK_1_TITLE": "Current item 1 title, a string. Adapt the array length to the request.",
+          "TASK_1_DESCRIPTION": "Current item 1 description, a string. Adapt the array length to the request.",
+          "TASK_2_TITLE": "Current item 2 title, a string. Adapt the array length to the request.",
+          "TASK_2_DESCRIPTION": "Current item 2 description, a string. Adapt the array length to the request."
+        }
+      },
+      "case_id": "verified-request-workflow"
+    }
+  ],
+  "memory_sha256": "201be7a448c2530451e90a8eef4814f354a9677c99f5970dfcce7d2ea8625e8d",
+  "builds": [
+    {
+      "family": "analysis",
+      "status": "rejected",
+      "error": {
+        "type": "ValueError",
+        "message": "Both declared practice repairs must succeed; no retry or invented fallback",
+        "unknown_outcome": false
+      }
+    },
+    {
+      "family": "split",
+      "status": "rejected",
+      "error": {
+        "type": "ValueError",
+        "message": "Both declared practice repairs must succeed; no retry or invented fallback",
+        "unknown_outcome": false
+      }
+    },
+    {
+      "family": "source",
+      "status": "accepted",
+      "summary_requests": 1,
+      "physical_replays": 2
+    },
+    {
+      "family": "request",
+      "status": "accepted",
+      "summary_requests": 1,
+      "physical_replays": 2
+    }
+  ],
+  "builder_model": "glm-4-flash-250414",
+  "no_online_learning": true,
+  "status": "frozen_for_fixed_task_development",
+  "parent_memory_sha256": "201be7a448c2530451e90a8eef4814f354a9677c99f5970dfcce7d2ea8625e8d",
+  "template_revision": {
+    "method": "Preserve JSON container and item types from cited verified successful calls; replace business strings with variables.",
+    "changed_cases": [
+      "verified-source-workflow",
+      "verified-request-workflow"
+    ],
+    "model_requests": 0
+  },
+  "source_serialization": "UTF-8 LF"
+}

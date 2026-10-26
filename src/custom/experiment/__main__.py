@@ -37,6 +37,9 @@ def validate(config):
         for role in ("agent", "judge"):
             for provider in provider_options(config, role):
                 model_config.role_api_key(role, provider)
+        if config.get('memory', {}).get('update_provider'):
+            from .update_provider import credentials
+            credentials(config['memory']['update_provider'])
         if set(config["runtime"].get("configs", {})) != set(STAGES):
             raise ValueError("Provide a local configuration for every stage")
         for stage, name in config["runtime"]["configs"].items():
@@ -73,7 +76,8 @@ def specifications(store, config, task_list):
                 continue
             specs.append({"config": config, "tasks": task_list, "strategy": strategy, "repeat": repeat,
                           "episode": store.records["episodes"][eid], "records": rows, "prompt_time": prompt_time,
-                          "initial_snapshot": store.records["initial_snapshot"]})
+                          "initial_snapshot": store.records["initial_snapshot"],
+                          'update_budget_path': str(store.path / 'update-budget.json')})
     return specs
 
 
@@ -105,6 +109,16 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
         print(f"Experiment: {experiment}", flush=True)
         try:
             specs = specifications(store, config, task_list)
+            from .experience_state import enabled as experience_enabled
+            if experience_enabled(config):
+                # Prepare isolated strategy snapshots before dispatching any benchmark task.
+                # This avoids spending trajectories on a failed knowledge-generation checkpoint.
+                for spec in specs:
+                    run_episode({**spec,'prepare_only':True}, store.apply, dispatch=lambda jobs:None)
+                    stages=store.records['episodes'][spec['strategy']+'/'+str(spec['repeat'])]['stages']
+                    if any(s['status']!='ready' for s in stages.values()):
+                        raise RuntimeError('Experience snapshot preparation failed; benchmark tasks were not dispatched')
+                specs=specifications(store,config,task_list)
             if parallel:
                 from .parallel import supervise
                 supervise(specs, store, workers, config["runtime"]["shutdown_timeout"])
@@ -144,10 +158,12 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run the fixed MCPEvol experiment protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check", "memory-pilot"):
+    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "prepare-knowledge", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check", "memory-pilot"):
         command = subparsers.add_parser(name)
         command.add_argument("--config", default="config/experiment.json")
         command.add_argument("--offline", action="store_true", help="Use deterministic providers without network/model calls")
+        if name == 'prepare-knowledge':
+            command.add_argument('--output',default='config/practice/shrimp-k0.json')
         if name in ('expand-memory', 'recovery-check'):
             command.add_argument('--workers', type=int, default=10)
         if name == 'memory-pilot':
@@ -197,6 +213,16 @@ def main(argv=None):
         config = load_config(ROOT / args.config)
         if args.offline:
             config["mode"] = "offline"
+        if args.command == 'prepare-knowledge':
+            if config.get('mode') != 'live' or not config.get('memory',{}).get('update_provider'):
+                raise ValueError('Verified knowledge preparation requires live tools and the bounded updater')
+            validate(config)
+            from .knowledge_practice import prepare
+            path,result=prepare(config,args.output)
+            print(json.dumps({'experiment':str(path),'status':result['status'],
+                'entries':result['entries'],'memory_sha256':result['memory_sha256'],
+                'output':result['output'],'profile':result['profile']},indent=2))
+            return 0
         if args.command == 'expand-memory':
             from .skills import run as expand_memory
             validate(config)
@@ -221,7 +247,7 @@ def main(argv=None):
                 path, result = causal_check(config, args.workers)
             print(json.dumps({'experiment': str(path), 'result': result}, indent=2))
             return 0 if result['status'] == 'completed' else 2
-        if args.command == 'run' and 'memory' in config:
+        if args.command == 'run' and 'memory' in config and not config['memory'].get('evolution'):
             raise ValueError('LangMem is currently a usefulness diagnostic only; use memory-ablation, not a formal evolution run')
         if args.command == 'prepare-recovery-memory':
             if config.get('mode') == 'offline' or config.get('agent_backend') != 'langchain':

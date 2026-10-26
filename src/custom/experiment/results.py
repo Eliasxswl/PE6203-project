@@ -12,7 +12,7 @@ import subprocess
 import time
 import uuid
 
-from .selection import ROOT, STAGES, annotations, digest, read_json
+from .selection import ROOT, STAGES, annotations, digest, file_hash, read_json
 
 PROTOCOL = "shared_early_json_v1"
 SCHEMA = 1
@@ -178,6 +178,25 @@ def create(config, task_list, fingerprints, parallel=False, workers=1, warnings=
                 "shared_early": {"owner_strategy": owner, "scope": "task_and_repeat", "judge_slots_per_source": 5},
                 "logical_conditions": [r["identity"] for r in records["trajectories"].values()],
                 "planned_jobs": [r["identity"] for r in records["trajectories"].values() if not r.get("shared_from")]}
+    if config.get('memory',{}).get('evolution'):
+        from .memory import load as load_memory
+        import shutil
+        import zipfile
+        artifact=load_memory(config)
+        inputs=experiment/'inputs';inputs.mkdir()
+        shutil.copyfile(ROOT/config['memory']['artifact'],inputs/'frozen-k0.json')
+        shutil.copyfile(ROOT/config['memory']['source'],inputs/'practice-evidence.json')
+        with zipfile.ZipFile(inputs/'source.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
+            files=list((ROOT/'src/custom').rglob('*.py'))+list((ROOT/'src/custom/experiment').glob('*.mjs'))
+            files+=list((ROOT/'scripts').glob('*.py'))+list((ROOT/'scripts').glob('*.ps1'))
+            files+=[ROOT/'requirements-api.txt',ROOT/'requirements-memory.txt']
+            for source in sorted(set(files)):archive.write(source,source.relative_to(ROOT).as_posix())
+        manifest.update(harness_protocol='experience_evolution_v1',purpose='strategy_owned_catalog_and_experience_comparison',
+            experience_protocol={'initial_memory_sha256':artifact['memory_sha256'],'injection':'complete strategy/version snapshot',
+                'dependency_selection':'whole semantic contract of referenced tools; unavailable entries watch their server catalog',
+                'update_inputs':'previous experience and old/new tool contracts only; no benchmark trajectories or Judge scores',
+                'rebuild_validation':'provenance and target JSON Schema; no claim of target behavior verification'},
+            source_archive_sha256=file_hash(inputs/'source.zip'))
     atomic_json(experiment / "experiment.json", manifest)
     atomic_json(experiment / "records.json", records)
     return experiment
@@ -208,7 +227,8 @@ class Store:
                     or source_ident["stage"] != STAGES[0]
                     or any(ident[field] != source_ident[field] for field in ("task_id", "repeat"))):
                 raise ValueError("Invalid shared Early source")
-            for field in ("status", "agent_status", "score", "score_exclusion_reason", "knowledge_sha256"):
+            for field in ("status", "agent_status", "score", "score_exclusion_reason", "knowledge_sha256",
+                          'experience_state_sha256','experience_memory_sha256','experience_knowledge_stage','harness_knowledge_sha256'):
                 if field in source:
                     row[field] = deepcopy(source[field])
                 else:

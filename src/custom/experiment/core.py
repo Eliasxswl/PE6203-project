@@ -88,6 +88,11 @@ def initial_snapshot(config, task_list, emit):
                     changed_entries=sorted(snapshot["catalog"]),
                     explanation="Shared frozen Early knowledge; each episode receives a defensive copy",
                     elapsed_seconds=0.0, **adapters.no_model_usage())
+    from .experience_state import enabled as experience_enabled, initialize as initialize_experience
+    if experience_enabled(config):
+        if snapshot['errors']:
+            raise ExecutionFailure('Cannot initialize experience evolution with an incomplete Early catalog')
+        snapshot['experience_state'] = initialize_experience(config, snapshot['knowledge'])
     emit({"kind": "initial_snapshot", "snapshot": snapshot})
     return snapshot
 
@@ -99,7 +104,7 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
     snapshots = deepcopy(spec["episode"]["stages"])
     rows = deepcopy(spec["records"])
     adapters.load_plugins(config)
-    knowledge, previous = {}, {}
+    knowledge, previous, experience = {}, {}, None
 
     def check_cancel():
         if cancel and cancel.is_set():
@@ -119,7 +124,7 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
         row["updated_at"] = utc_now()
         send({"kind": "trajectory", "key": key, "record": row})
 
-    send({"kind": "episode", "episode": eid, "status": "running"})
+    send({"kind": "episode", "episode": eid, "status": "preparing" if spec.get('prepare_only') else "running"})
     for stage in STAGES:
         check_cancel()
         snapshot = snapshots.get(stage)
@@ -150,6 +155,22 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
                 else:
                     result = adapters.update(strategy, knowledge, previous, snapshot["catalog"],
                                              {"stage": stage, "repeat": repeat})
+                    from .experience_state import enabled as experience_enabled, evolve as evolve_experience
+                    if experience_enabled(config):
+                        if snapshot['errors']:
+                            raise ExecutionFailure('Cannot update experience against an incomplete target catalog')
+                        next_experience, audit = evolve_experience(config, strategy, experience, previous,
+                            snapshot['catalog'], {'stage':stage,'repeat':repeat,
+                                'budget_path':spec.get('update_budget_path')}, send)
+                        result.update(experience_state=next_experience, experience_update=audit)
+                        for field in ('elapsed_seconds','api_calls','input_tokens','output_tokens'):
+                            left,right=result.get(field),audit.get(field)
+                            result[field]=left+right if left is not None and right is not None else None
+                        result.update(api_cost=audit['api_cost'],cost_currency=audit['cost_currency'],
+                                      cost_basis='Catalog and experience update: '+audit['cost_basis'])
+                        if next_experience is None:
+                            snapshot.update(result)
+                            raise ExecutionFailure('Experience update failed; no partial knowledge checkpoint committed')
                 snapshot.update(status="ready", **result)
             except Exception as exc:
                 snapshot.update(status="failed", error=safe_error(exc))
@@ -158,6 +179,21 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
         if snapshot["status"] == "ready":
             knowledge = deepcopy(snapshot["knowledge"])
             previous = deepcopy(snapshot["catalog"])
+            experience = deepcopy(snapshot.get('experience_state'))
+            if spec.get('prepare_only') and experience is not None:
+                from .experience_state import as_artifact as experience_artifact
+                from .memory import render as render_memory
+                from .selection import ROOT
+                artifact = experience_artifact(experience, knowledge)
+                sizes=[]
+                for task in task_list:
+                    required={ALIASES.get(s,s) for s in task['servers']}
+                    tools,_=adapters.agent_tools(knowledge,snapshot['catalog'],required)
+                    context,_=render_memory(config,knowledge,required,ROOT/'.runtime/r/0000000000000000/workspace',
+                        api_names={t['meta']['benchmark_semantic_identity']:t['name'] for t in tools},artifact=artifact)
+                    sizes.append(len(context))
+                snapshot['experience_context_check']={'tasks':len(sizes),'maximum_characters':max(sizes,default=0)}
+                send({'kind':'stage','episode':eid,'stage':stage,'snapshot':snapshot})
         else:
             # Never silently reuse or substitute a failed strategy update.
             for task in task_list:
@@ -175,14 +211,14 @@ def run_episode(spec, emit, cancel=None, dispatch=None):
                 send({"kind": "stage", "episode": eid, "stage": later, "snapshot": snapshots[later]})
             continue
         jobs = [{**spec, "task": task, "stage": stage, "snapshot": deepcopy(snapshot),
-                 "knowledge": deepcopy(knowledge), "records": rows} for task in task_list
+                 "knowledge": deepcopy(knowledge), "experience_state": deepcopy(experience), "records": rows} for task in task_list
                 if not rows[identity(strategy, stage, task["idx"], repeat)].get("shared_from")]
         if dispatch is None:
             for job in jobs:
                 run_trajectory(job, send, cancel)
         else:
             dispatch(jobs)
-    send({"kind": "episode", "episode": eid, "status": "completed"})
+    send({"kind": "episode", "episode": eid, "status": "prepared" if spec.get('prepare_only') else "completed"})
 
 
 def run_trajectory(spec, emit, cancel=None):
@@ -296,8 +332,18 @@ def run_trajectory(spec, emit, cancel=None):
                     row['agent_dependency_versions'] = agent.dependency_versions
                 if 'memory' in config:
                     from .memory import render as render_memory
+                    from .experience_state import enabled as experience_enabled, as_artifact as experience_artifact
+                    artifact = None
+                    if experience_enabled(config):
+                        if spec.get('experience_state') is None:
+                            raise ExecutionFailure('Missing strategy-owned experience snapshot')
+                        artifact = experience_artifact(spec['experience_state'], knowledge)
+                        row.update(experience_state_sha256=digest(spec['experience_state']),
+                            experience_memory_sha256=artifact['memory_sha256'],
+                            experience_knowledge_stage=spec['experience_state']['knowledge_stage'],
+                            harness_knowledge_sha256=digest({'catalog':knowledge,'experience':spec['experience_state']}))
                     context, exposure = render_memory(config, knowledge, required, runtime.workspace,
-                        api_names={tool['meta']['benchmark_semantic_identity']: tool['name'] for tool in tools})
+                        api_names={tool['meta']['benchmark_semantic_identity']: tool['name'] for tool in tools}, artifact=artifact)
                     row['memory_exposure'] = exposure
                     agent.messages[0]['content'] += context
                     if config.get('memory', {}).get('profile') == 'error_triggered':

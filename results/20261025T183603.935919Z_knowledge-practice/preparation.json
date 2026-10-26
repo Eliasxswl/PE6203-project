@@ -1,0 +1,280 @@
+{
+  "protocol": "verified_tool_knowledge_k0_v2",
+  "status": "superseded_after_review",
+  "created_at": "2026-10-25T18:36:03.935919+00:00",
+  "builds": [
+    {
+      "family": "analysis",
+      "kind": "procedure",
+      "status": "accepted",
+      "entry_id": "cf934baebcd6d849f31a269e",
+      "independently_verified_cases": [
+        "shrimp-analysis-0",
+        "shrimp-analysis-1"
+      ],
+      "response": {
+        "id": "gen-1792953382-KSFcPNKS9EHC3KOj1uVp",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\"content\":\"Use task analysis and reflection tools as design-review aids: analyze a sufficiently specified task, then reflect on the resulting analysis when a critical review is useful. Treat their responses as guidance, not as evidence that code was changed or work was completed.\",\"applicability\":\"For requests involving technical planning, architecture, feasibility, risks, or review of a proposed solution. The two operations need not be used together for every request.\",\"actions\":[\"Provide a concise, structured task summary of at least 10 characters and an initial technical approach of at least 50 characters to the analysis operation.\",\"Use the analysis response to refine the design; consult repository-inspection tools separately if actual codebase details must be established.\",\"When further critique is useful, submit the same task summary and a substantive analysis of at least 100 characters to the reflection operation.\",\"Apply relevant recommendations to the plan or implementation yourself; do not report tool guidance as completed implementation.\"],\"verification\":\"Observed calls returned analysis and reflection guidance. These checks establish tool effects only; they do not establish general software correctness or implementation completion.\"}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null,
+              "reasoning": null
+            },
+            "native_finish_reason": "completed"
+          }
+        ],
+        "created": 1792953382,
+        "model": "openai/gpt-6-luna",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": "default",
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 223,
+          "prompt_tokens": 2266,
+          "total_tokens": 2489,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": null,
+            "text_tokens": null,
+            "image_tokens": 0
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 2263,
+            "cached_tokens": 0,
+            "image_tokens": null,
+            "text_tokens": null,
+            "video_tokens": 0
+          },
+          "cost": 0.000394675,
+          "is_byok": false,
+          "cost_details": {
+            "upstream_inference_cost": 0.000394675,
+            "upstream_inference_prompt_cost": 0.000283175,
+            "upstream_inference_completions_cost": 0.0001115
+          }
+        },
+        "provider": "OpenAI"
+      }
+    },
+    {
+      "family": "lifecycle",
+      "kind": "procedure",
+      "status": "accepted",
+      "entry_id": "5486c4158d034f06abc24f37",
+      "independently_verified_cases": [
+        "shrimp-lifecycle-0",
+        "shrimp-lifecycle-1"
+      ],
+      "response": {
+        "id": "gen-1792953387-6f9ygWB93aO09nTA2ElL",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\n  \"content\": \"Use the task manager to organize and inspect planned work, not to implement it. Create or decompose tasks with the splitting operation when planning is needed; encode its task list as a valid JSON string, escaping embedded quotes and backslashes. Express each dependency as the exact name of a prerequisite task in the task input; readbacks may represent the resulting relationship by prerequisite task ID. Choose an update mode that matches whether existing work should be retained or replaced. List tasks when an overview or status check is useful, update only the requested fields of an existing task, and retrieve task details when full guidance or verification criteria are needed. After a change, inspect the relevant list or detail readback to confirm the task-management state.\",\n  \"applicability\": \"Use when creating, refining, updating, or reviewing tracked tasks; skip operations that are unnecessary for the request.\",\n  \"actions\": [\n    \"Decompose requested work into clear, independently verifiable tasks only when planning is appropriate.\",\n    \"Pass task collections as correctly escaped JSON text and use prerequisite task names in dependency lists.\",\n    \"Select the update mode deliberately to preserve, revise, replace, or clear existing plans as intended.\",\n    \"Use task listing for status overviews, task detail retrieval for complete records, and task updates for targeted edits.\",\n    \"Verify relevant readbacks after task changes, including dependency relationships where relevant.\"\n  ],\n  \"verification\": \"Observed readbacks reflected created tasks, their dependency links, and a targeted notes update; full detail retrieval showed the updated note alongside the retained dependency and guidance. These checks confirm task-manager effects only, not implementation of the described work or general software correctness.\"\n}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null,
+              "reasoning": null
+            },
+            "native_finish_reason": "completed"
+          }
+        ],
+        "created": 1792953387,
+        "model": "openai/gpt-6-luna",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": "default",
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 347,
+          "prompt_tokens": 7591,
+          "total_tokens": 7938,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": null,
+            "text_tokens": null,
+            "image_tokens": 0
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 7588,
+            "cached_tokens": 0,
+            "image_tokens": null,
+            "text_tokens": null,
+            "video_tokens": 0
+          },
+          "cost": 0.0011223,
+          "is_byok": false,
+          "cost_details": {
+            "upstream_inference_cost": 0.0011223,
+            "upstream_inference_prompt_cost": 0.0009488,
+            "upstream_inference_completions_cost": 0.0001735
+          }
+        },
+        "provider": "OpenAI"
+      }
+    },
+    {
+      "family": "lifecycle",
+      "kind": "constraint",
+      "status": "accepted",
+      "entry_id": "362c16c0789fe6f4a139bd6d",
+      "independently_verified_cases": [
+        "shrimp-lifecycle-0-constraint",
+        "shrimp-lifecycle-1-constraint"
+      ],
+      "response": {
+        "id": "gen-1792953398-Z4ADIcgjovi2bi9ufxLb",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\n  \"content\": \"The task-list argument is itself a JSON-encoded string, not a JSON array value. Encode it as valid JSON, escaping quotes, backslashes, and other required characters; do not include comments. In each task’s dependencies array, reference prerequisite task names exactly, not task IDs. Use an empty array when there are no prerequisites.\",\n  \"applicability\": \"When calling the task-splitting operation, especially when task descriptions contain JSON-special characters or tasks depend on one another.\",\n  \"actions\": [\n    \"Construct the task list as valid JSON, then serialize that JSON as the string value for the task-list argument.\",\n    \"Escape characters according to JSON string rules and omit comments.\",\n    \"Represent each dependency by the exact name of its prerequisite task.\"\n  ],\n  \"verification\": \"Readbacks showed dependencies supplied as task names were stored and displayed as references to the corresponding task IDs. Confirm the resulting task details show the intended prerequisite links; this verifies task-manager effects, not the correctness of the planned or implemented software.\"\n}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null,
+              "reasoning": null
+            },
+            "native_finish_reason": "completed"
+          }
+        ],
+        "created": 1792953398,
+        "model": "openai/gpt-6-luna",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": "default",
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 222,
+          "prompt_tokens": 6654,
+          "total_tokens": 6876,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": null,
+            "text_tokens": null,
+            "image_tokens": 0
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 6651,
+            "cached_tokens": 0,
+            "image_tokens": null,
+            "text_tokens": null,
+            "video_tokens": 0
+          },
+          "cost": 0.000942675,
+          "is_byok": false,
+          "cost_details": {
+            "upstream_inference_cost": 0.000942675,
+            "upstream_inference_prompt_cost": 0.000831675,
+            "upstream_inference_completions_cost": 0.000111
+          }
+        },
+        "provider": "OpenAI"
+      }
+    },
+    {
+      "family": "effect",
+      "kind": "effect_boundary",
+      "status": "accepted",
+      "entry_id": "dd6cd02d73b76067ee0dbe77",
+      "independently_verified_cases": [
+        "shrimp-effect-0",
+        "shrimp-effect-1"
+      ],
+      "response": {
+        "id": "gen-1792953410-X1EMGSOZsUO6V2z9LxlP",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "content": "{\n  \"content\": \"The execution operation returns task guidance and changes the task's recorded status from pending to in progress; it does not implement the requested work. Detailed task lookup provides task information but does not establish that implementation or verification has occurred.\",\n  \"applicability\": \"When using task-management tools, interpret execution responses as guidance and workflow state, not as evidence that code or other requested artifacts were produced.\",\n  \"actions\": [\n    \"Read the returned guidance and use it to carry out the requested work separately.\",\n    \"Inspect the task details when more context or verification criteria are needed.\",\n    \"Check the actual artifact and perform relevant tests before claiming implementation is complete.\"\n  ],\n  \"verification\": \"Observed task status changed to in progress after execution guidance was retrieved, while the checked artifact remained absent. These checks establish the tools' observed effects only; they do not establish general software correctness.\"\n}",
+              "refusal": null,
+              "role": "assistant",
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": null,
+              "reasoning": null
+            },
+            "native_finish_reason": "completed"
+          }
+        ],
+        "created": 1792953410,
+        "model": "openai/gpt-6-luna",
+        "object": "chat.completion",
+        "metadata": null,
+        "moderation": null,
+        "service_tier": "default",
+        "system_fingerprint": null,
+        "usage": {
+          "completion_tokens": 190,
+          "prompt_tokens": 4087,
+          "total_tokens": 4277,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": null,
+            "text_tokens": null,
+            "image_tokens": 0
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 4084,
+            "cached_tokens": 0,
+            "image_tokens": null,
+            "text_tokens": null,
+            "video_tokens": 0
+          },
+          "cost": 0.0006058,
+          "is_byok": false,
+          "cost_details": {
+            "upstream_inference_cost": 0.0006058,
+            "upstream_inference_prompt_cost": 0.0005108,
+            "upstream_inference_completions_cost": 9.5e-05
+          }
+        },
+        "provider": "OpenAI"
+      }
+    }
+  ],
+  "memory_sha256": "526dd7dc985a13205f2a42cf34523fa043d07193a50cee1ac661d9398e621d39",
+  "entries": 7,
+  "output": "config/practice/shrimp-k0.json",
+  "profile": "config/knowledge-evolution.json",
+  "review_note": "Generated name-only dependency restriction was unsupported; source permits names and IDs. No benchmark experiment used this candidate."
+}

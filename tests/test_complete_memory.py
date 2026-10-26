@@ -68,11 +68,14 @@ class CompleteMemoryTests(unittest.TestCase):
         good={'tool_call_id':'good','semantic_identity':bad['semantic_identity'],'response':{'isError':False,'content':[]}}
         row={'identity':{'task_id':386,'repeat':0},'raw_tool_trace':[bad,good],'agent_status':'completed','score':None,
              'judge_attempts':[],'memory_exposure':{'total_library_entries':3,'selected_ids':['a','b','c']}}
-        report=report_pilot(SimpleNamespace(records={'status':'completed_with_failures','trajectories':{'one':row}}))
+        report=report_pilot(SimpleNamespace(records={'status':'completed_with_failures','trajectories':{'one':row}}),
+            entries=[{'id':'a','value':{'tool_ids':[bad['semantic_identity']]}}])
         self.assertEqual(report['planned'],1)
         self.assertTrue(report['tasks'][0]['complete_library_visible'])
         self.assertTrue(report['tasks'][0]['tool_errors'][0]['later_successful_same_tool_call'])
         self.assertEqual(report['tasks'][0]['unrecovered_tool_errors'],0)
+        self.assertEqual(report['tasks'][0]['related_memory_ids_by_tool_overlap'],['a'])
+        self.assertEqual(report['related_tool_coverage']['tasks'],1)
 
     def test_retained_template_container_types_bind_to_native_schemas(self):
         from custom.experiment.skills import bind
@@ -103,7 +106,7 @@ class CompleteMemoryTests(unittest.TestCase):
         from custom.experiment.memory_ablation import report_pilot
         row={'identity':{'task_id':425,'repeat':0},'raw_tool_trace':[],'agent_status':'completed',
              'answer':'search_files\n{"path":"current"}','score':{'task_fulfillment':10,'grounding':10,'planning_and_efficiency':10},'judge_attempts':[]}
-        result=report_pilot(SimpleNamespace(records={'status':'completed','trajectories':{'one':row}}))
+        result=report_pilot(SimpleNamespace(records={'status':'completed','trajectories':{'one':row}}),entries=[])
         self.assertTrue(result['tasks'][0]['textual_tool_call_without_execution'])
         self.assertTrue(result['tasks'][0]['review_required'])
 

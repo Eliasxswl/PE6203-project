@@ -70,6 +70,8 @@ def load_config(path):
         validate_options(config['memory'])
     if config.get('agent_backend', 'legacy') not in ('legacy', 'langchain'):
         raise ValueError('agent_backend must be legacy or langchain')
+    if config.get('memory', {}).get('evolution') and config.get('agent_backend') != 'langchain':
+        raise ValueError('Experience evolution requires the official LangChain loop')
     if config.get("mode", "live") not in ("live", "offline"):
         raise ValueError("mode must be live or offline")
     if config.get("judge_output_mode", "text") not in ("text", "json_object"):
@@ -238,6 +240,10 @@ def fingerprints(config):
         for role in ("agent", "judge"):
             for index, provider in enumerate(provider_options(config, role)):
                 source[f"provider_endpoint:{role}:{index}"] = digest(model_config.role_base_url(role, provider))
+        if config.get('memory', {}).get('update_provider'):
+            from .update_provider import credentials
+            endpoint, _ = credentials(config['memory']['update_provider'])
+            source['provider_endpoint:experience_update'] = digest(endpoint)
         for stage, name in config["runtime"]["configs"].items():
             source[f"local_config:{stage}"] = file_hash(ROOT / name)
             local = read_json(ROOT / name)["mcpServers"]

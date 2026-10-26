@@ -113,3 +113,21 @@ class OfflineClient:
 
     def close(self):
         pass
+
+
+def rewrite_experience(entry, catalog):
+    """Explicit offline fixture for evolution tests; never a live fallback."""
+    result=deepcopy(entry)
+    mapping={}
+    for old in result['value']['tool_ids']:
+        server,name=old.split('::',1)
+        target=old if old in catalog else server+'::renamed_'+name
+        if target not in catalog:
+            result['adaptation']={'status':'unavailable','reason':'Offline fixture has no corresponding tool'}
+            return result
+        mapping[old]=target
+    value=json.dumps(result['value'])
+    for old,new in mapping.items():value=value.replace(old,new)
+    result['value']=json.loads(value)
+    result['adaptation']={'status':'active','reason':'Explicit deterministic offline contract fixture'}
+    return result

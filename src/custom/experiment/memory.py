@@ -47,7 +47,7 @@ def schema():
 
 def validate_options(options):
     required = {'artifact', 'source', 'inject', 'context_chars'}
-    if not isinstance(options, dict) or not required <= set(options) or set(options) - required - {'model', 'profile', 'comparison'}:
+    if not isinstance(options, dict) or not required <= set(options) or set(options) - required - {'model', 'profile', 'comparison', 'evolution', 'update_provider'}:
         raise ValueError('memory requires artifact, source, inject and context_chars')
     if 'model' in options and (not isinstance(options['model'], str) or not options['model']):
         raise ValueError('Invalid memory model')
@@ -55,6 +55,15 @@ def validate_options(options):
         raise ValueError('Invalid memory profile')
     if options.get('comparison', 'two_arm') not in ('two_arm', 'three_arm', 'full_pilot'):
         raise ValueError('Invalid memory comparison')
+    if 'evolution' in options and type(options['evolution']) is not bool:
+        raise ValueError('Invalid memory evolution flag')
+    if options.get('evolution') and (not options['inject'] or options.get('profile') != 'complete'):
+        raise ValueError('Experience evolution requires complete-library injection')
+    if 'update_provider' in options:
+        from .update_provider import validate_options as validate_update_provider
+        validate_update_provider(options['update_provider'])
+        if not options.get('evolution') or not options.get('model'):
+            raise ValueError('Independent update provider requires experience evolution and an explicit model')
     if type(options['inject']) is not bool or type(options['context_chars']) is not int or options['context_chars'] < 1:
         raise ValueError('Invalid memory injection options')
     for key in ('artifact', 'source'):
@@ -204,7 +213,7 @@ def prepare(config):
 
 def load(config):
     artifact = read_json(ROOT / config['memory']['artifact'])
-    if (artifact.get('protocol') not in (PROTOCOL, 'verified_tool_recovery_k0_v1') or digest(artifact['memories']) != artifact['memory_sha256']
+    if (artifact.get('protocol') not in (PROTOCOL, 'verified_tool_recovery_k0_v1', 'verified_tool_knowledge_k0_v2') or digest(artifact['memories']) != artifact['memory_sha256']
             or file_hash(ROOT / config['memory']['source']) != artifact['source_sha256']):
         raise ValueError('LangMem artifact/source fingerprint mismatch')
     seen = set()
@@ -218,18 +227,26 @@ def load(config):
     if artifact['protocol'] == 'verified_tool_recovery_k0_v1':
         from .recovery_memory import validate_artifact
         validate_artifact(artifact, read_json(ROOT / config['memory']['source']))
+    elif artifact['protocol'] == 'verified_tool_knowledge_k0_v2':
+        from .tool_knowledge import validate_artifact
+        validate_artifact(artifact, read_json(ROOT / config['memory']['source']))
     return artifact
+
+
+def template_variables(value):
+    return value.get('template_variables') or {'KEYWORD': 'Filename keyword from the current request.',
+            'DISCOVERED_PATH': 'Actual absolute file path returned by the search tool.'}
 
 
 def guidance_line(item, api_names, workspace, structured=True):
     value = item['value']
-    content = {field: value[field] for field in ('content', 'applicability', 'failed_assumption',
-               'corrective_actions', 'verification')} if structured else value['content']
+    fields = ('kind','content','applicability','actions','verification') if 'kind' in value else (
+        'content','applicability','failed_assumption','corrective_actions','verification')
+    content = {field:value[field] for field in fields} if structured else value['content']
     if structured and value.get('tool_call_templates'):
         content['tool_call_templates'] = [{k: v for k, v in template.items() if k != 'evidence_call_ids'}
                                         for template in value['tool_call_templates']]
-        content['template_variables'] = value.get('template_variables') or {'KEYWORD': 'Filename keyword from the current request.',
-            'DISCOVERED_PATH': 'Actual absolute file path returned by the search tool.'}
+        content['template_variables'] = template_variables(value)
         content['template_usage'] = ('Substitute current inputs and observed output paths; never pass placeholder strings literally. Known exact paths can be read directly.'
             if all(k.startswith('@modelcontextprotocol/server-filesystem::') for k in value['tool_ids']) else
             'Use current request data and actual tool-returned identifiers, never literal placeholders. Examples show structure; adapt item counts to the request and skip operations already completed.')
@@ -239,9 +256,9 @@ def guidance_line(item, api_names, workspace, structured=True):
     return line.replace('${WORKSPACE}', workspace.as_posix()) + '\n'
 
 
-def render(config, catalog, required, workspace, api_names=None):
+def render(config, catalog, required, workspace, api_names=None, artifact=None):
     options = config['memory']
-    artifact = load(config)
+    artifact = load(config) if artifact is None else artifact
     ids = {key for key, value in catalog.items() if value['server'] in required}
     api_names = api_names if api_names is not None else {key: value.get('name', key.split('::')[-1])
                                                        for key, value in catalog.items()}
@@ -251,14 +268,19 @@ def render(config, catalog, required, workspace, api_names=None):
     if options['inject']:
         for item in sorted(artifact['memories'], key=lambda m: m['id']):
             if complete:
-                names = {k: api_names.get(k, k) for k in artifact['catalog']}
+                names = {k: api_names.get(k, k) for k in set(artifact['catalog']) | set(item['value']['tool_ids'])}
                 data = json.loads(guidance_line(item, names, workspace, structured=artifact['protocol'] != PROTOCOL))
                 data['current_tool_bindings'] = [{'knowledge_tool': k, 'callable_name': api_names.get(k)} for k in item['value']['tool_ids']]
                 data['all_dependencies_available'] = set(item['value']['tool_ids']) <= set(api_names)
+                data['experience_status'] = item.get('adaptation', {}).get('status', 'active')
+                if item.get('adaptation'):
+                    if item['adaptation']['status'] == 'unavailable':
+                        data['all_dependencies_available'] = False
+                        data['execution_status'] = 'reference_only_unavailable_experience'
                 if not data['all_dependencies_available']:
                     data['knowledge_tool_ids'] = list(item['value']['tool_ids'])
                     data['tools'] = [api_names[k] for k in item['value']['tool_ids'] if k in api_names]
-                    data['execution_status'] = 'reference_only_missing_dependencies'
+                    data.setdefault('execution_status', 'reference_only_missing_dependencies')
                 line = json.dumps(data, ensure_ascii=False) + '\n'
                 if len(prefix) + characters + len(line) > options['context_chars']:
                     raise ValueError('Complete library exceeds memory.context_chars; no entries were silently dropped')

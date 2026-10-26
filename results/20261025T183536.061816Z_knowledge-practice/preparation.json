@@ -1,0 +1,11 @@
+{
+  "protocol": "verified_tool_knowledge_k0_v2",
+  "status": "failed",
+  "created_at": "2026-10-25T18:35:36.062821+00:00",
+  "builds": [],
+  "error": {
+    "type": "ImportError",
+    "message": "cannot import name 'reported_error' from 'custom.agents.tool_results' (E:\\NTU Learn\\PE6203\\part2\\.runtime\\shrimp-dev\\src\\custom\\agents\\tool_results.py)",
+    "unknown_outcome": false
+  }
+}
