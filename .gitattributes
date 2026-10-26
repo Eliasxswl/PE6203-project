@@ -1,2 +1,4 @@
 # Frozen research JSON must keep identical bytes across Windows/macOS clones.
 /config/practice/*.json text eol=lf
+# Archived inputs are checksummed as exact copied bytes, including legacy CRLF.
+/results/**/inputs/*.json -text
