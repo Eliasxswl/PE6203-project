@@ -1,0 +1,34 @@
+{
+  "purpose": "Local persistence replay; no task execution or model calls",
+  "source": "results\\20261026T084527.010290Z_Kevin",
+  "source_records_bytes": 54251366,
+  "events": 20,
+  "baseline_revision": "29463f0",
+  "runs": {
+    "baseline": {
+      "seconds": 34.005790999974124,
+      "events_per_second": 0.5881351208685374
+    },
+    "incremental": {
+      "seconds": 1.9761614999733865,
+      "events_per_second": 10.120630323113442
+    }
+  },
+  "speedup": 17.208001977789817,
+  "scope": "Persistence-only local replay of 20 small events plus final snapshot; not an end-to-end model speedup.",
+  "implementation_hashes": {
+    "src/custom/experiment/results.py": "3d00f79602eff85872c3ab3e50f8faee2c40273010fe12128fef18e47830eeef",
+    "src/custom/experiment/checkpoint.py": "6cf81fc35fed57a1480d2f32f9426ca2522a2445dfc2c83feeb42ea7abb9a7c5",
+    "src/custom/experiment/parallel.py": "c8e1cd6c58adf5ed713b1e08f4e304215184952a063081552e350ffbc258bae8"
+  },
+  "validation": {
+    "offline_tests_passed": 117,
+    "model_calls": 0,
+    "tool_calls": 0,
+    "single_writer": true,
+    "acknowledgement": "SQLite synchronous FULL commit before worker acknowledgement",
+    "snapshot_interval_seconds": 10,
+    "prepared_schedule": "shared Early wave, then independent evolved jobs"
+  },
+  "python": "3.12.14"
+}

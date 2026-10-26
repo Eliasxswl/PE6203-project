@@ -9,6 +9,7 @@ from .core import run_episode, run_trajectory
 from .errors import Cancelled, CheckpointFailure
 from .results import episode_id, identity, safe_error
 from .runtime import OwnedJob, reap_orphans
+from .selection import STAGES
 
 
 def episode_worker(connection, cancel, ready):
@@ -45,9 +46,38 @@ def episode_worker(connection, cancel, ready):
 
 
 def supervise(specs, store, workers, shutdown_timeout):
+    if specs and all(all(spec['episode']['stages'].get(stage, {}).get('status') == 'ready'
+                         for stage in STAGES) for spec in specs):
+        return supervise_prepared(specs, store, workers, shutdown_timeout)
     for spec in specs:
         run_episode(spec, store.apply, dispatch=lambda jobs: supervise_stage(
             jobs, store, workers, shutdown_timeout))
+
+
+def supervise_prepared(specs, store, workers, shutdown_timeout):
+    """Frozen states need no trajectory-to-trajectory learning; only shared Early is a barrier."""
+    early, evolved = [], []
+    for spec in specs:
+        eid = episode_id(spec['strategy'], spec['repeat'])
+        store.apply({'kind': 'episode', 'episode': eid, 'status': 'running'})
+        for stage in STAGES:
+            snapshot = spec['episode']['stages'][stage]
+            for task in spec['tasks']:
+                key = identity(spec['strategy'], stage, task['idx'], spec['repeat'])
+                if store.records['trajectories'][key].get('shared_from'):
+                    continue
+                job = {**spec, 'task': task, 'stage': stage, 'snapshot': snapshot,
+                       'knowledge': snapshot['knowledge'],
+                       'experience_state': snapshot.get('experience_state')}
+                (early if stage == STAGES[0] else evolved).append(job)
+    store.event('parallel_schedule', mode='frozen_snapshots_two_waves',
+                early_jobs=len(early), evolved_jobs=len(evolved), workers=workers)
+    supervise_stage(early, store, workers, shutdown_timeout)
+    store.save()  # Publish the common Early outcomes before all independent evolved trajectories.
+    supervise_stage(evolved, store, workers, shutdown_timeout)
+    for spec in specs:
+        store.apply({'kind': 'episode', 'episode': episode_id(spec['strategy'], spec['repeat']),
+                     'status': 'completed'})
 
 
 def supervise_stage(specs, store, workers, shutdown_timeout):

@@ -13,3 +13,5 @@ __pycache__/
 .env.*
 !.env.example
 bigmodel-openai-doc.md
+# In-flight durable checkpoints; completed exports remain in records.json.
+/results/**/.checkpoint.sqlite3*

@@ -203,16 +203,51 @@ def create(config, task_list, fingerprints, parallel=False, workers=1, warnings=
 
 
 class Store:
+    SNAPSHOT_SECONDS = 10
+
     def __init__(self, experiment):
         self.path = Path(experiment).resolve()
         self.manifest = read_json(self.path / "experiment.json")
-        self.records = read_json(self.path / "records.json")
+        from . import checkpoint
+        self.journal_path = self.path / checkpoint.NAME
+        # A live reader can race a snapshot publication followed by journal pruning.
+        for retry in range(3):
+            self.records = read_json(self.path / "records.json")
+            self.sequence = self.records.get("checkpoint_sequence", 0)
+            try:
+                frames = checkpoint.replay(self.journal_path, self.sequence)
+                break
+            except ValueError:
+                if retry == 2:
+                    raise
         if self.records["schema_version"] != SCHEMA or self.manifest["schema_version"] != SCHEMA:
             raise ValueError("Unsupported result schema")
+        for sequence, frame in frames:
+            self._apply(frame["event"])
+            self.records["status"] = frame["status"]
+            self.sequence = sequence
+        self.sync_shared()
+        self._last_snapshot = time.monotonic()
 
     def save(self):
         self.sync_shared()
+        self.records["checkpoint_sequence"] = self.sequence
         atomic_json(self.path / "records.json", self.records)
+        from .checkpoint import prune
+        prune(self.journal_path, self.sequence)
+        self._last_snapshot = time.monotonic()
+
+    def _commit(self, event):
+        from .checkpoint import append
+        # Only this small event is redacted/encoded; the full history is already clean.
+        event = redact(event)
+        event.setdefault("time", utc_now())
+        sequence = append(self.journal_path, self.sequence,
+                          {"event": event, "status": self.records["status"]})
+        self._apply(event)
+        self.sequence = sequence
+        if time.monotonic() - self._last_snapshot >= self.SNAPSHOT_SECONDS:
+            self.save()
 
     def sync_shared(self):
         """Publish source outcomes atomically, including partial/failure states."""
@@ -235,22 +270,25 @@ class Store:
                     row.pop(field, None)
 
     def event(self, kind, **data):
-        self.records["events"].append({"kind": kind, "time": utc_now(), **redact(data)})
-        self.save()
+        self._commit({"kind": kind, "time": utc_now(), **data})
 
     def apply(self, event):
+        self._commit(event)
+
+    def _apply(self, event):
         kind = event["kind"]
         if kind == "trajectory":
-            self.records["trajectories"][event["key"]] = deepcopy(redact(event["record"]))
+            self.records["trajectories"][event["key"]] = deepcopy(event["record"])
         elif kind == "stage":
-            self.records["episodes"][event["episode"]]["stages"][event["stage"]] = deepcopy(redact(event["snapshot"]))
+            self.records["episodes"][event["episode"]]["stages"][event["stage"]] = deepcopy(event["snapshot"])
         elif kind == "episode":
             self.records["episodes"][event["episode"]]["status"] = event["status"]
         elif kind == "initial_snapshot":
-            self.records["initial_snapshot"] = deepcopy(redact(event["snapshot"]))
+            self.records["initial_snapshot"] = deepcopy(event["snapshot"])
         else:
-            self.records["events"].append({"time": utc_now(), **redact(event)})
-        self.save()
+            self.records["events"].append({"time": utc_now(), **event})
+        if kind == "trajectory" and event["record"]["identity"]["stage"] == STAGES[0]:
+            self.sync_shared()
 
     def recover(self, episode=None, reason="unclean_stop", trajectory=None):
         changed = False
@@ -287,6 +325,7 @@ class Store:
                     changed = True
         if changed:
             self.event("recovery", episode=episode, reason=reason)
+            self.save()  # Recovery mutates several rows outside the incremental event reducer.
         return changed
 
     def summarize(self):

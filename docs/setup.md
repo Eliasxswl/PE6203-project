@@ -135,7 +135,7 @@ This makes one Judge request by default (up to five when explicitly selected), s
 
 The current GLM endpoint accepted a `json_schema` request but returned fields that violated its required fields and enums in a synthetic capability probe. Therefore the configured mode is explicitly **JSON-object output plus local Schema validation**, not strict server-side Schema enforcement. The Schema requires the original three integer scores (1–10) and three reasoning strings, rejects extra/missing fields, and retains the original integer-only rule. Duplicate keys, malformed JSON, refusals and incomplete responses are rejected without repair, fallback or extra calls. The request appends a serialization-only contract to the unchanged upstream rubric. New manifests and Judge attempts record the mode and Schema hash; diagnostics hash the actual sent prompt. JSON validity does not certify grading accuracy.
 
-Workers execute independent tasks within a version, then queue scoring jobs in the same bounded pool. Agent turns and tool calls remain sequential within each trajectory. Every version finishes before the next knowledge update. Each trajectory receives fresh inputs, backend state, services, and conversation; one parent writes checkpoints.
+Workers execute independent Agent and scoring jobs in the same bounded pool. Agent turns and tool calls remain sequential within each trajectory. When all strategy/version snapshots are already frozen, parallel execution uses two pools: all shared Early sources first, then independent Middle/Late jobs across strategies and repeats. Mutable knowledge is never shared between workers. Runs that still need catalog updates keep the ordered version pipeline. Each trajectory receives fresh inputs, backend state, services, and conversation; one parent writes checkpoints.
 
 Do not edit code, configuration, task selection, inputs, or generated local configs while running. Changes require a new experiment; source drift invalidates scores. Live catalogs from the three supplied tool snapshots are used; unverified mutation overlays are not applied.
 
@@ -146,6 +146,8 @@ results/<UTC-microseconds>_<git-user-name>/
     experiment.json
     records.json
 ```
+
+The parent commits each redacted event to a local SQLite checkpoint with full synchronous durability before acknowledging a worker. It publishes `records.json` roughly every ten seconds and at completion. `Store` reads the latest snapshot plus committed events, including after a crash. The temporary `.checkpoint.sqlite3` files are ignored by Git; preserve them alongside the JSON files when moving an interrupted run. Completed JSON exports are self-contained. The original single-writer lock, failure handling and no-replay rules still apply.
 
 The manifest preserves settings, source/code fingerprints, task definitions/classifications, actual Python/Node/platform versions and SHA-256 hashes of available bundle archives. Missing archives are explicit. Archive hashes identify downloaded bytes; they do not certify extraction equivalence. Local tool entry files remain fingerprinted separately. Records contain trajectories, raw tool traces, knowledge updates, attempt statuses, usage, timings, scores, and failures. `planned_jobs` lists actual executions; `logical_conditions` includes shared Early references. Diagnostics stay under ignored `.runtime/experiments/checks/`.
 
