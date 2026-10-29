@@ -2,3 +2,5 @@
 /config/practice/*.json text eol=lf
 # Archived inputs are checksummed as exact copied bytes, including legacy CRLF.
 /results/**/inputs/*.json -text
+# Preserve the final case evidence as exact producer bytes on every platform.
+/results/20261029T113248.805747Z_Kevin/** -text

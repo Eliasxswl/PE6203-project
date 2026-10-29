@@ -1,0 +1,22 @@
+{
+  "active_runs": {
+    "catalog_baseline": "results/20261019T234451.269257Z_Kevin",
+    "knowledge_strategy_comparison": "results/20261026T084527.010290Z_Kevin",
+    "task9_over_update_case": "results/20261029T113248.805747Z_Kevin"
+  },
+  "historical_archives": "Previously committed experiments remain available for provenance and existing member/test references; use active_runs for handoff.",
+  "cleanup": {
+    "removed_exploratory_bytes": 223500421,
+    "selection_disclosure": "Task 9 and its source snapshot were selected after exploratory screening. The retained ten-group confirmation was fixed before dispatch. It is a local case study, not a random benchmark sample.",
+    "removed_features": [
+      "Synthetic effect/dependency probes",
+      "Task-403 draft runner",
+      "Anchored greedy replays",
+      "Record/field/sentence localization",
+      "Optional direct-only connection retries"
+    ],
+    "removed_uncommitted_exploratory_runs": 50
+  },
+  "case_review": "results/20261029T113248.805747Z_Kevin/task-9-confirmation-review.json",
+  "scope": "The final case uses original Task 9, frozen FR snapshot repeat 2, temperature 0.2, and ten new private workspaces. Original formal scores are unchanged."
+}

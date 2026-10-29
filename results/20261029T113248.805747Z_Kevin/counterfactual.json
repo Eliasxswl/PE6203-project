@@ -1,0 +1,946 @@
+{
+  "protocol": "frozen_memory_counterfactual_v1",
+  "status": "completed",
+  "conditions": {
+    "fr_all": {
+      "planned": 10,
+      "scored": 0,
+      "means": {
+        "task_fulfillment": null,
+        "grounding": null,
+        "planning_and_efficiency": null
+      },
+      "completed_agents": 10,
+      "agents_with_tool_calls": 10,
+      "valid_judge_slots": 0,
+      "tool_error_responses": 0,
+      "unsupported_tags_calls": 0,
+      "workspace_observations": 10
+    },
+    "fr_changed_only": {
+      "planned": 10,
+      "scored": 0,
+      "means": {
+        "task_fulfillment": null,
+        "grounding": null,
+        "planning_and_efficiency": null
+      },
+      "completed_agents": 10,
+      "agents_with_tool_calls": 10,
+      "valid_judge_slots": 0,
+      "tool_error_responses": 0,
+      "unsupported_tags_calls": 0,
+      "workspace_observations": 10
+    },
+    "fr_order_only": {
+      "planned": 10,
+      "scored": 0,
+      "means": {
+        "task_fulfillment": null,
+        "grounding": null,
+        "planning_and_efficiency": null
+      },
+      "completed_agents": 10,
+      "agents_with_tool_calls": 10,
+      "valid_judge_slots": 0,
+      "tool_error_responses": 0,
+      "unsupported_tags_calls": 0,
+      "workspace_observations": 10
+    }
+  },
+  "rows": [
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 0,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 1,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 1,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 1,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 2,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 2,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 2,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 3,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 3,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 3,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 4,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 4,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 4,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 5,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 5,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 5,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 6,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 6,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 6,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 7,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 7,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 7,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 8,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 8,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 8,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 9,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_all"
+    },
+    {
+      "task_id": 9,
+      "repeat": 9,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 5,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b",
+        "36ddedfe9c6be8a691b4fd40"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_changed_only"
+    },
+    {
+      "task_id": 9,
+      "repeat": 9,
+      "agent_status": "completed",
+      "score": null,
+      "stop_reason": "final_response",
+      "requests": 2,
+      "request_limit": 11,
+      "selected_memory_ids": [
+        "2322985788659b3487d3b0ff",
+        "2f1905b241c99bb6930cbd70",
+        "36ddedfe9c6be8a691b4fd40",
+        "3d22d2b1602bb8ad846879f9",
+        "7fbfc03420f5d2abfec229b5",
+        "aee4f1ad0f03afe64d0d659b",
+        "ffd1b8e05692d9370b52ed48"
+      ],
+      "related_memory_ids_by_tool_overlap": [
+        "aee4f1ad0f03afe64d0d659b"
+      ],
+      "complete_library_visible": true,
+      "tool_errors": [],
+      "unrecovered_tool_errors": 0,
+      "schema_feedback_calls": 0,
+      "textual_tool_call_without_execution": false,
+      "review_required": false,
+      "condition": "fr_order_only"
+    }
+  ],
+  "interpretation": "Exploratory frozen-snapshot intervention on selected regressions. No automatic causal label or population claim.",
+  "matched_triples": [],
+  "fully_judged_matched_triples": [],
+  "same_callable_tools": true,
+  "runtime_ids": [
+    "54dbdfca84914b8e",
+    "42a1bdc5a0fa42c6",
+    "8ac3a78691504db7",
+    "8ac3a78691504db7",
+    "8ac3a78691504db7",
+    "4cdef565e6bc4256",
+    "4cdef565e6bc4256",
+    "4cdef565e6bc4256",
+    "d2f5c95f34d941e5",
+    "d2f5c95f34d941e5",
+    "d2f5c95f34d941e5",
+    "008d909163e74356",
+    "008d909163e74356",
+    "008d909163e74356",
+    "ae0a4379ac2e4f45",
+    "ae0a4379ac2e4f45",
+    "ae0a4379ac2e4f45",
+    "581d115304ca4256",
+    "581d115304ca4256",
+    "581d115304ca4256",
+    "4f1db4b5135545dd",
+    "4f1db4b5135545dd",
+    "4f1db4b5135545dd",
+    "08864377cf3d480f",
+    "08864377cf3d480f",
+    "08864377cf3d480f",
+    "cfd5493038c1465b",
+    "cfd5493038c1465b",
+    "cfd5493038c1465b",
+    "4f4572e2ef1f4d42",
+    "4f4572e2ef1f4d42",
+    "4f4572e2ef1f4d42"
+  ],
+  "distinct_runtime_ids": false,
+  "evaluation": "Actor-only diagnostic; no Judge calls or replacement benchmark scores."
+}

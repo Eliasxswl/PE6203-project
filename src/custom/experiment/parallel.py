@@ -143,7 +143,7 @@ def supervise_stage(specs, store, workers, shutdown_timeout):
         if kind == "done":
             spec = item["spec"]
             row = store.records["trajectories"][spec["key"]]
-            if spec["phase"] == "agent" and row["agent_status"] == "completed":
+            if spec["phase"] == "agent" and row["agent_status"] == "completed" and not spec.get('actor_only'):
                 pending.append({**spec, "records": {spec["key"]: row}, "phase": "judge"})
             reap_orphans(item["events"])
             item["spec"] = None

@@ -48,6 +48,34 @@ class LangChainAgentTests(unittest.TestCase):
         self.assertEqual(agent.request_count, 2)
         self.assertEqual(len(agent.raw_tool_trace), 1)
 
+    def test_empty_terminal_response_is_preserved_but_not_completed(self):
+        agent, requests, calls, events = self.agent()
+        def empty(**kwargs):
+            requests.append(deepcopy(kwargs))
+            return Response(Message(''))
+        agent.client.chat.completions.create = empty
+        agent.run_with_server('Read the notes.')
+        self.assertIsNotNone(agent.execution_error)
+        self.assertIn('empty assistant response', agent.execution_error['message'])
+        self.assertEqual(len(requests), 1)
+        self.assertEqual(calls, [])
+        self.assertEqual(sum(k == 'model_completed' for k, _ in events), 1)
+
+    def test_empty_final_after_a_tool_does_not_erase_the_actual_execution(self):
+        agent, requests, calls, events = self.agent()
+        original = agent.client.chat.completions.create
+        def final_empty(**kwargs):
+            result = original(**kwargs)
+            if len(requests) > 1:
+                result.choices[0].message.content = ''
+            return result
+        agent.client.chat.completions.create = final_empty
+        agent.run_with_server('Read the notes.')
+        self.assertIsNotNone(agent.execution_error)
+        self.assertEqual(len(requests), 2)
+        self.assertEqual(len(agent.raw_tool_trace), 1)
+        self.assertEqual(calls, [('transport-read', {'path': 'notes.txt'})])
+
     def test_request_limit_prevents_an_extra_model_dispatch(self):
         agent, requests, calls, events = self.agent(limit=1)
         answer, transcript, _, exceeded = agent.run_with_server('Read the notes.')

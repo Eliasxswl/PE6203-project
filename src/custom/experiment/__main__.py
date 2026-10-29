@@ -158,12 +158,18 @@ def execute(config, task_list, experiment=None, parallel=False, workers=1, warni
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run the fixed MCPEvol experiment protocol")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "prepare-knowledge", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check", "memory-pilot"):
+    for name in ("select", "validate", "check", "run", "memory-check", "prepare-memory", "prepare-recovery-memory", "prepare-knowledge", "memory-ablation", "memory-causal-check", "expand-memory", "recovery-check", "memory-pilot", "counterfactual-check"):
         command = subparsers.add_parser(name)
-        command.add_argument("--config", default="config/experiment.json")
+        command.add_argument("--config", default="config/knowledge-evolution-formal.json" if name == 'counterfactual-check' else "config/experiment.json")
         command.add_argument("--offline", action="store_true", help="Use deterministic providers without network/model calls")
         if name == 'prepare-knowledge':
             command.add_argument('--output',default='config/practice/shrimp-k0.json')
+        if name == 'counterfactual-check':
+            command.add_argument('--source-experiment',type=Path,required=True)
+            command.add_argument('--task-id',type=int,required=True)
+            command.add_argument('--snapshot-repeat',type=int,default=2)
+            command.add_argument('--repeats',type=int,choices=[1,3,10],default=10)
+            command.add_argument('--order-control',action='store_true',help='Add an equal-length JSON key-order control')
         if name in ('expand-memory', 'recovery-check'):
             command.add_argument('--workers', type=int, default=10)
         if name == 'memory-pilot':
@@ -213,6 +219,13 @@ def main(argv=None):
         config = load_config(ROOT / args.config)
         if args.offline:
             config["mode"] = "offline"
+        if args.command == 'counterfactual-check':
+            from .counterfactual import run as counterfactual
+            task_list,_=validate(config)
+            path,result=counterfactual(config,task_list,args.source_experiment,args.task_id,
+                args.snapshot_repeat,args.repeats,args.order_control)
+            print(json.dumps({'experiment':str(path),**result},indent=2))
+            return 0 if result['status']=='completed' else 2
         if args.command == 'prepare-knowledge':
             if config.get('mode') != 'live' or not config.get('memory',{}).get('update_provider'):
                 raise ValueError('Verified knowledge preparation requires live tools and the bounded updater')

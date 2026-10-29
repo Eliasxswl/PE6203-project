@@ -19,7 +19,7 @@ class ChatModel:
     """Keep the experiment contract while delegating the entire loop to create_agent."""
     def __init__(self, model_name, client, tools, max_round=15, tool_caller=None,
                  event_callback=None, workspace_root=None, file_exists='', prompt_time=None,
-                 temperature=0.2, max_new_tokens=4096, thinking=None, **unused):
+                 temperature=0.2, max_new_tokens=4096, thinking=None, record_requests=False, **unused):
         self.client, self.tool_caller = client, tool_caller
         self.model_name, self.max_round = model_name, max_round
         self.event_callback = event_callback or (lambda *args: None)
@@ -34,6 +34,7 @@ class ChatModel:
         self.recovery = None
         self.tool_definitions = deepcopy(tools)
         self.temperature, self.max_new_tokens, self.thinking = temperature, max_new_tokens, thinking
+        self.record_requests = record_requests
 
     @property
     def with_raw_response(self):
@@ -48,7 +49,10 @@ class ChatModel:
         if self.request_count >= self.max_round:
             raise RuntimeError('Official agent exceeded its fixed provider request budget')
         self.messages = deepcopy(kwargs['messages'])
-        self.event_callback('model_start', {'round': self.request_count, 'messages': self.messages})
+        payload = {'round': self.request_count, 'messages': self.messages}
+        if self.record_requests:
+            payload['request'] = deepcopy(kwargs)
+        self.event_callback('model_start', payload)
         self.request_count += 1
         try:
             response = self.client.chat.completions.create(**kwargs)
@@ -56,6 +60,10 @@ class ChatModel:
                 self.model_usage.append(response.usage.model_dump())
             self.last_finish_reason = response.choices[0].finish_reason
             self.event_callback('model_completed', response.model_dump(mode='json'))
+            message = response.choices[0].message
+            if not ((message.content or '').strip() or message.tool_calls
+                    or getattr(message, 'function_call', None) or getattr(message, 'refusal', None)):
+                raise ExecutionFailure('Provider returned an empty assistant response with no answer, tool call or refusal')
             return response
         except Exception as exc:
             self.event_callback('model_failed', safe_error(exc))

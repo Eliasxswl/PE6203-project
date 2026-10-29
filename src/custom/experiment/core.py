@@ -20,6 +20,24 @@ def runtime_for(config, stage, servers, task_list, cancel, owner_callback=None):
     return LiveRuntime(config, stage, servers, cancel, owner_callback)
 
 
+def workspace_observation(workspace):
+    """Optional diagnostic evidence; never expose these readbacks to the agent."""
+    from .selection import file_hash
+    files = {}
+    for path in sorted(workspace.rglob('*')):
+        if not path.is_file():
+            continue
+        name = path.relative_to(workspace).as_posix()
+        item = {'sha256': file_hash(path), 'bytes': path.stat().st_size}
+        if path.suffix.lower() in ('.json', '.md', '.txt', '.yml', '.yaml') and item['bytes'] <= 262144:
+            try:
+                item['text'] = path.read_text(encoding='utf-8')
+            except UnicodeError:
+                pass
+        files[name] = item
+    return files
+
+
 def make_client(config, key, cancel=None, emit=None, role="agent"):
     if config.get("mode") == "offline":
         from .testing import OfflineClient
@@ -256,6 +274,8 @@ def run_trajectory(spec, emit, cancel=None):
         return
     client = None
     agent = None
+    controlled_directory = None
+    runtime_context = None
     started = time.perf_counter()
     try:
         if row["agent_status"] != "completed":
@@ -270,8 +290,21 @@ def run_trajectory(spec, emit, cancel=None):
                 raise ExecutionFailure("Unavailable task servers: " + ", ".join(sorted(unavailable)))
             row["phase"] = "runtime_startup"
             startup_at = time.perf_counter()
-            with runtime_for(config, stage, required, task_list, cancel, send) as runtime:
+            runtime_context = runtime_for(config, stage, required, task_list, cancel, send)
+            if spec.get('controlled_runtime_directory'):
+                from pathlib import Path
+                from .selection import ROOT
+                directory = Path(spec['controlled_runtime_directory']).resolve()
+                if directory.parent != (ROOT / '.runtime/r').resolve() or directory.exists():
+                    raise ExecutionFailure('Controlled diagnostic directory must be a fresh direct runtime child')
+                runtime_context.directory = directory
+                if hasattr(runtime_context, 'workspace'):
+                    runtime_context.workspace = directory / 'workspace'
+                controlled_directory = directory
+            with runtime_context as runtime:
                 row["runtime_startup_seconds"] = time.perf_counter() - startup_at
+                if spec.get('observe_workspace'):
+                    row['workspace_observations'] = [workspace_observation(runtime.workspace)]
                 # Reject catalog drift between stage discovery and trajectory reset.
                 expected = {k: v for k, v in snapshot["catalog"].items() if v["server"] in required}
                 current = adapters.stage_catalog(runtime.catalog, config, stage)
@@ -289,6 +322,8 @@ def run_trajectory(spec, emit, cancel=None):
                         row["phase"] = "agent_model"
                         row["trajectory_messages"] = deepcopy(payload["messages"])
                         row["agent_attempts"].append({"status": "started", "started_at": utc_now()})
+                        if spec.get('observe_workspace') and payload.get('request'):
+                            row['agent_attempts'][-1]['request'] = deepcopy(payload['request'])
                     elif kind == "model_completed":
                         row["agent_attempts"][-1].update(status="completed", response=payload, completed_at=utc_now())
                     elif kind == "model_failed":
@@ -297,6 +332,8 @@ def run_trajectory(spec, emit, cancel=None):
                     elif kind == "tool_completed":
                         row.update(deepcopy(payload))
                         row["tool_attempts"][-1].update(status="completed", completed_at=utc_now())
+                        if spec.get('observe_workspace'):
+                            row['workspace_observations'].append(workspace_observation(runtime.workspace))
                     elif kind == "tool_start":
                         row["phase"] = "tool"
                         row["trajectory_messages"] = deepcopy(payload["messages"])
@@ -326,7 +363,9 @@ def run_trajectory(spec, emit, cancel=None):
                                   prompt_time=spec["prompt_time"], temperature=config["agent_temperature"],
                                   max_new_tokens=config["agent_max_tokens"], tool_caller=runtime.call,
                                   event_callback=on_agent_event, mcp_server_url=runtime.url,
-                                  thinking=config.get("agent_thinking"))
+                                  thinking=config.get("agent_thinking"),
+                                  **({'record_requests':True} if spec.get('observe_workspace') and
+                                     config.get('agent_backend')=='langchain' else {}))
                 row['agent_backend'] = config.get('agent_backend', 'legacy')
                 if hasattr(agent, 'dependency_versions'):
                     row['agent_dependency_versions'] = agent.dependency_versions
@@ -353,6 +392,8 @@ def run_trajectory(spec, emit, cancel=None):
                         agent.recovery = configure_recovery(config, tools, runtime.workspace, len(context), on_agent_event)
                     save_row(key, row)
                 answer, messages, stop, exceeded = agent.run_with_server(task["question"])
+                if spec.get('observe_workspace'):
+                    row['workspace_observations'].append(workspace_observation(runtime.workspace))
                 row.update(answer=answer, trajectory_messages=messages, raw_tool_trace=agent.raw_tool_trace,
                            stop=stop, exceeded=exceeded, stop_reason=agent.stop_reason,
                            agent_usage=agent.model_usage, request_count=agent.request_count,
@@ -364,6 +405,10 @@ def run_trajectory(spec, emit, cancel=None):
             row["judge_catalog"] = deepcopy(expected)
             save_row(key, row)
         if spec.get("phase") == "agent":
+            if spec.get('actor_only'):
+                row['status'] = 'completed'
+                for attempt in row['judge_attempts']:
+                    attempt['status'] = 'not_attempted_diagnostic'
             row["elapsed_seconds"] = row.get("elapsed_seconds", 0) + time.perf_counter() - started
             save_row(key, row)
             return
@@ -410,10 +455,26 @@ def run_trajectory(spec, emit, cancel=None):
             if attempt["status"] == "pending":
                 attempt["status"] = "not_attempted"
     finally:
+        if controlled_directory is not None and controlled_directory.exists():
+            # Live runtimes retain small service diagnostics after state cleanup.
+            # Move only this stopped owned directory so the paired arm can build
+            # the exact same visible path from fresh fixtures.
+            import uuid
+            proc = getattr(runtime_context, 'proc', None)
+            if getattr(runtime_context, 'registered', False) or (proc is not None and proc.poll() is None):
+                row['errors'].append({'phase':'paired_runtime_archive','message':'Refused to move a live runtime'})
+            else:
+                target = controlled_directory.with_name(uuid.uuid4().hex[:16])
+                if target.parent.resolve() != controlled_directory.parent.resolve() or target.exists():
+                    raise ExecutionFailure('Invalid paired diagnostic archive path')
+                controlled_directory.rename(target)
+                row['runtime_diagnostics_directory'] = str(target)
         if client is not None:
             try:
                 client.close()
             except Exception as exc:
                 row["errors"].append({"phase": "client_cleanup", **safe_error(exc)})
+        if controlled_directory is not None:
+            save_row(key, row)
     row["elapsed_seconds"] = row.get("elapsed_seconds", 0) + time.perf_counter() - started
     save_row(key, row)

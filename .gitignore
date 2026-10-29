@@ -8,6 +8,7 @@ config/local/
 logs/
 results/baseline/
 __pycache__/
+.pytest_cache/
 *.pyc
 .env
 .env.*

@@ -39,10 +39,6 @@ class RequestGate:
     def lock(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.path.with_suffix(".lock").open("a+b") as stream:
-            stream.seek(0, 2)
-            if stream.tell() == 0:
-                stream.write(b"0")
-                stream.flush()
             while True:
                 self.check_cancel()
                 stream.seek(0)
@@ -59,6 +55,12 @@ class RequestGate:
                         raise
                     self.pause(.2)
             try:
+                # Initialize only after ownership: another Windows process may
+                # already hold byte zero when a new file still appears empty.
+                stream.seek(0, 2)
+                if stream.tell() == 0:
+                    stream.write(b"0")
+                    stream.flush()
                 yield
             finally:
                 stream.seek(0)

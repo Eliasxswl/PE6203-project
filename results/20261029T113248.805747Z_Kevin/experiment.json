@@ -1,0 +1,933 @@
+{
+  "schema_version": 1,
+  "harness_protocol": "frozen_memory_counterfactual_v1",
+  "operator": "Kevin",
+  "created_at": "2026-10-29T11:32:48.859096+00:00",
+  "revision": "8aa6ff3128bca00229416367f8808896900f70a6",
+  "dirty_source": true,
+  "environment": {
+    "python": {
+      "version": "3.12.14",
+      "implementation": "CPython"
+    },
+    "platform": {
+      "system": "Windows",
+      "release": "11",
+      "machine": "AMD64"
+    },
+    "node": {
+      "version": "v24.21.0"
+    },
+    "tool_bundles": {
+      "original": {
+        "path": "servers/downloads/original_servers.zip",
+        "status": "missing"
+      },
+      "iter3": {
+        "path": "servers/downloads/iter3_servers.zip",
+        "status": "missing"
+      },
+      "iter5": {
+        "path": "servers/downloads/iter5_servers.zip",
+        "status": "missing"
+      }
+    },
+    "bundle_source_reference": "https://huggingface.co/datasets/anonymous2233/evol-servers/tree/main",
+    "bundle_scope": "Archive bytes only; local entry files are fingerprinted separately. Extraction equivalence is not certified."
+  },
+  "judge_output_contract": {
+    "mode": "json_object",
+    "schema_sha256": "81b3701518751bcc09f641d5324a3cc21a48837258729360ef4118a35e513c79",
+    "validation": "local_json_schema",
+    "server_strict_schema": false
+  },
+  "preparation": {
+    "revision": "8aa6ff3128bca00229416367f8808896900f70a6",
+    "dirty_source": true,
+    "classification_pending_ids": [],
+    "bundle_archives_present": {
+      "original": false,
+      "iter3": false,
+      "iter5": false
+    },
+    "backend_policy_warnings": [],
+    "formal_acceptance": "not_assessed",
+    "remaining_review": [
+      "Role 3 protocol/coverage/repeats approval",
+      "Selected backends on the target machine",
+      "Actual-trajectory Judge compatibility and scoring limitations"
+    ],
+    "mode": "live"
+  },
+  "task_definitions": [
+    {
+      "idx": 9,
+      "question": "I need help reviewing yesterday’s application activity logs.  \n    First, find yesterday’s log file somewhere under my MCP directory (it should have “yesterday” in the filename), then read its contents so we can understand what’s inside.  \n    After that, please set up a structured plan of tasks for analyzing the log, summarizing key events, and preparing a short report for me.",
+      "servers": {
+        "@modelcontextprotocol/server-filesystem": [
+          "search_files",
+          "read_text_file"
+        ],
+        "@kazuph/mcp-taskmanager": [
+          "request_planning"
+        ]
+      }
+    }
+  ],
+  "task_annotations": {},
+  "fingerprints": {
+    "config": "c9fd50a36b6114eae67c706972f744057332c481e0a146b77b04ee40c3002d97",
+    "sources": {
+      "src/custom/data/test_cases/test_cases.json": "1370d7f9ee4ec8f8635dd6af3a6e7e41e790b4be86d0e3de4990774ac99fbae2",
+      "src/custom/data/test_cases/chosen_idx.json": "de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe",
+      "config/subsets/selected_tasks.json": "fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07",
+      "config/practice/shrimp-k0.json": "99d6e6bc21e1c9ad901638ccad59f7412d1376f377a60a2c0a468a0e733ae6f2",
+      "config/practice/shrimp-k0.evidence.json": "78b67fb2f812b1277dee8aba3cf9b4d70efec337909c49c641909b8565af4784",
+      "requirements-memory.txt": "a465fb148e3f12f044370c274d846b6ba65d4e796ae084f6ddc78f24cc83a7b0",
+      "src/custom/data/mutation/HYBRID/evolution.json": "2e656f38506f6b5107fa8286a2a396a3b69fef890d082187c47c8405cce2a9dd",
+      "src/custom/data/mutation/HYBRID/HYBRID/evolution.json": "9c1457123f1e79b642707e526f9727bd9edd21f13e1d19827a53e5bf9dd1a8b4",
+      "src/custom/data/mutation/HYBRID/HYBRID/HYBRID/evolution.json": "1e95354a65dac662d3cdb0e13a0860befbe39b5c554b760ec30ecdb2cff01777",
+      "src/custom/data/mutation/HYBRID/HYBRID/HYBRID/HYBRID/evolution.json": "a5bba8ab5f3cb3ea617f5c4954f8ec51141d9f5bdb2970d6395e4798b6e2c6ba",
+      "servers/1mcp_config/original/mcp.json": "0cb5cce358c3c9aacf071c8dbac9a0106bca1d95f5d84c3e799c211a99087576",
+      "servers/1mcp_config/iter3/mcp.json": "11d45c6cdc418c315638423f8e183481b30a66dec767240ff83cfc9ca4ca36a1",
+      "servers/1mcp_config/iter5/mcp.json": "8ff8da2a9f7916109c85acf86c39835b004cdfe30c2b81c069dc921540cb0175",
+      "fixtures": "6534dd6c9d7d1fca6e0419b0cc45acb6335922dbc85f5fd12ae9cb2cc09b9420",
+      "provider_endpoint:agent:0": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:1": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:2": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:3": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:agent:4": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:0": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:1": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:2": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:3": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:judge:4": "99d56f9dd588b28192c4f59b08ba0c1bc3cbb05930d53d5a3cb609e2db2499af",
+      "provider_endpoint:experience_update": "e08186e0c8c6074c97ee0f4211ebd491d6848f2f12f4b761fb51ce23ad641cfa",
+      "local_config:original": "5dfe5da9d970f3e3a83718b06033f5980ee45e80d2f977477e92b4ea3bc58f66",
+      "tool_entry:original:@kazuph/mcp-taskmanager:index.js": "4043569cd544a680168aa41b3a9a2c570eb24ca4e1ed5ca2905f13040b793566",
+      "tool_entry:original:@modelcontextprotocol/server-filesystem:index.js": "c2f3126214742c10f6cb25297e3b89465f894b62a4df8dd042ea3d0e2d033652",
+      "tool_entry:original:@modelcontextprotocol/server-sequential-thinking:index.js": "81986868f123134e5d1661140fd69a77d50b4c57d1dbab59eb73b922dfe3c43f",
+      "tool_entry:original:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:original:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      "local_config:iter3": "231354ebd0b29f9828992596a7f5cc607423906f58078b062e5cf408cfa91c45",
+      "tool_entry:iter3:@kazuph/mcp-taskmanager:index.js": "9e724f19204380db8de315d227411e8565a5283f0ef3b3fc50bc943aa3de6070",
+      "tool_entry:iter3:@modelcontextprotocol/server-filesystem:index.js": "d31538776b622f750fcda37854574d325b460bf07fcc1680238b99ab4d8e1692",
+      "tool_entry:iter3:@modelcontextprotocol/server-sequential-thinking:index.js": "defb818d5e896b0e49142e0134f531b0302c23bdbe9a2ad543a223633b737faf",
+      "tool_entry:iter3:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:iter3:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      "local_config:iter5": "30026911c6de3c50d7ec9d313335811a61e993532fe17a273f44e48937ccce07",
+      "tool_entry:iter5:@kazuph/mcp-taskmanager:index.js": "ee9ddc830eb8394ff0d2727c961eaa93105b406a95696b5c45151001548bd67c",
+      "tool_entry:iter5:@modelcontextprotocol/server-filesystem:index.js": "1f0af4858dc8ca14c7048ca75660ac3c6bef523758adad830dbec0684a1190c8",
+      "tool_entry:iter5:@modelcontextprotocol/server-sequential-thinking:index.js": "88a42960c3fcb5ca23d87e2a5cea2f4203d6f5351744009fd2967fe699af0bd7",
+      "tool_entry:iter5:mcp-shrimp-task-manager:index.js": "f6863711e62a131db76cd7b4b30a5517f0d95f2bedd5feeadcf958bf2d8d567a",
+      "tool_entry:iter5:mcp-tasks:index.js": "19a16be37051360fb10931ef783df9beea7adbfee7ea3abdb37e26494d06a54a",
+      ".runtime/node_modules/@1mcp/agent/package.json": "bec573a0fdce42cd816b81ef92e5b9b345048ccd58aecf5c69de65c475c2eab5"
+    },
+    "code": "b4b22f5a831ded1199cefd4285c41d85da1494d6e3f60513076f9d16fc224a64"
+  },
+  "settings": {
+    "selection_file": "config/subsets/selected_tasks.json",
+    "selection_seed": 6203,
+    "task_source": "src/custom/data/test_cases/test_cases.json",
+    "candidate_source": "src/custom/data/test_cases/chosen_idx.json",
+    "fixtures": "anotation_path",
+    "mode": "live",
+    "agent_repeats": 10,
+    "judge_attempts_per_trajectory": 5,
+    "agent_model": "glm-4-flash-250414",
+    "judge_model": "",
+    "agent_temperature": 0.2,
+    "judge_temperature": 0,
+    "agent_max_tokens": 8192,
+    "judge_max_tokens": 8192,
+    "round_policy": "early_tool_count_plus_one",
+    "judge_failure_top_up": false,
+    "automatic_api_retries": 0,
+    "stages": [
+      "original",
+      "iter3",
+      "iter5"
+    ],
+    "strategies": [
+      "no_update"
+    ],
+    "strategy_plugins": [
+      "custom.experiment.selective_patch"
+    ],
+    "runtime": {
+      "configs": {
+        "original": "config/local/original.json",
+        "iter3": "config/local/iter3.json",
+        "iter5": "config/local/iter5.json"
+      },
+      "policies": {
+        "12306-mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes read-only train/station queries and process-local caches.",
+          "concurrency": "readonly"
+        },
+        "original_from_tina": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source implements a static catalog and simulated orders; no order HTTP request.",
+          "concurrency": "private"
+        },
+        "@remotion/mcp": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs read-only remote documentation fetches.",
+          "concurrency": "readonly"
+        },
+        "@opentofu/opentofu-mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source performs registry/documentation reads.",
+          "concurrency": "readonly"
+        },
+        "@driflyte/mcp-server": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source exposes remote topic listing and search reads.",
+          "concurrency": "readonly"
+        },
+        "bazi-mcp": {
+          "kind": "process_local",
+          "reviewed": true,
+          "reason": "Source calculates Bazi data locally without persistent application state.",
+          "concurrency": "private"
+        },
+        "mcp-trends-hub": {
+          "kind": "stateless",
+          "reviewed": true,
+          "reason": "Source fetches public news/RSS; mutable cache is process-local.",
+          "concurrency": "readonly"
+        },
+        "mcp-server-commands": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "Commands run in a fresh copied fixture workspace; state is per trajectory.",
+          "concurrency": "private"
+        },
+        "mcp-shrimp-task-manager": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "DATA_DIR points to private task/memory/template state.",
+          "env_paths": {
+            "DATA_DIR": "workspace/shrimp-data"
+          },
+          "concurrency": "private"
+        },
+        "mcp-tasks": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "SOURCES_PATH redirects package-relative source registry into private state.",
+          "env_paths": {
+            "SOURCES_PATH": "workspace/tasks-sources.json",
+            "WORKSPACE_FOLDER_PATHS": "workspace"
+          },
+          "concurrency": "private"
+        },
+        "@aiuluna/knowledge-graph-mcp": {
+          "kind": "workspace",
+          "reviewed": true,
+          "reason": "KNOWLEDGE_GRAPH_DIR places graph data in the private workspace.",
+          "env_paths": {
+            "KNOWLEDGE_GRAPH_DIR": "workspace/knowledge_graph"
+          },
+          "concurrency": "private"
+        }
+      },
+      "connect_timeout": 5,
+      "read_timeout": 60,
+      "tool_timeout": 60,
+      "startup_timeout": 45,
+      "shutdown_timeout": 10,
+      "model_timeout": 180,
+      "metadata_verified": false,
+      "evolution_files": {
+        "original": [],
+        "iter3": [],
+        "iter5": []
+      },
+      "catalog_source": "live"
+    },
+    "agent_thinking": null,
+    "judge_thinking": null,
+    "task_count": 17,
+    "request_policy": {
+      "minimum_interval": 0.2,
+      "overload_cooldown": 60,
+      "maximum_cooldown": 300,
+      "recovery_successes": 5,
+      "max_concurrency": 1,
+      "long_context_concurrency": 1,
+      "long_context_threshold": 8192
+    },
+    "providers": {
+      "agent": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ],
+      "judge": [
+        {
+          "api_key_env": "BIGMODEL_API_KEY",
+          "quota_group": "account_one"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_2",
+          "quota_group": "account_two"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_3",
+          "quota_group": "account_three"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_4",
+          "quota_group": "account_four"
+        },
+        {
+          "api_key_env": "BIGMODEL_API_KEY_5",
+          "quota_group": "account_five"
+        }
+      ]
+    },
+    "judge_output_mode": "json_object",
+    "agent_backend": "langchain",
+    "memory": {
+      "artifact": "config/practice/shrimp-k0.json",
+      "source": "config/practice/shrimp-k0.evidence.json",
+      "inject": true,
+      "context_chars": 24000,
+      "model": "openai/gpt-6-luna",
+      "update_provider": {
+        "api_key_env": "OPENROUTE_API_KEY",
+        "base_url_env": "OPENROUTE_BASE_URL",
+        "budget_usd": 1,
+        "prompt_usd_per_million": 0.1,
+        "completion_usd_per_million": 0.5,
+        "reasoning_effort": "none"
+      },
+      "evolution": true,
+      "profile": "complete"
+    }
+  },
+  "selected_ids": [
+    9
+  ],
+  "execution": {
+    "parallel": false,
+    "workers": 9
+  },
+  "analysis": {
+    "comparison": "Frozen FR versus exact restoration of unchanged-tool records versus equal-length JSON key-order control; no Judge or ECS."
+  },
+  "shared_early": null,
+  "logical_conditions": [
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 1
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 1
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 1
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 2
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 2
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 2
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 3
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 3
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 3
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 4
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 4
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 4
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 5
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 5
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 5
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 6
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 6
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 6
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 7
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 7
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 7
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 8
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 8
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 8
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 9
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 9
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 9
+    }
+  ],
+  "planned_jobs": [
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 0
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 1
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 1
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 1
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 2
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 2
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 2
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 3
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 3
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 3
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 4
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 4
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 4
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 5
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 5
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 5
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 6
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 6
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 6
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 7
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 7
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 7
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 8
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 8
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 8
+    },
+    {
+      "strategy": "fr_all",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 9
+    },
+    {
+      "strategy": "fr_changed_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 9
+    },
+    {
+      "strategy": "fr_order_only",
+      "stage": "iter5",
+      "task_id": 9,
+      "repeat": 9
+    }
+  ],
+  "purpose": "frozen_late_memory_counterfactual",
+  "experience_protocol": {
+    "initial_memory_sha256": "a2f8e2d9249d7d80e7a2eef24946ed563911a00525178b4020f305ea363aaa43",
+    "injection": "complete strategy/version snapshot",
+    "dependency_selection": "whole semantic contract of referenced tools; unavailable entries watch their server catalog",
+    "update_inputs": "previous experience and old/new tool contracts only; no benchmark trajectories or Judge scores",
+    "rebuild_validation": "provenance and target JSON Schema; no claim of target behavior verification"
+  },
+  "source_archive_sha256": "937e28841d6081b9ed443d17436cadbf4b9b2e2863011104c558ae2d6e8f0159",
+  "prompt_time": "2026-10-29 (星期四)",
+  "diagnostic": {
+    "source_experiment": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\results\\20261026T084527.010290Z_Kevin",
+    "source_records_sha256": "0daa558d54583fdd0b3cac8d44a1964dce8e4e9bb63b6a789fc008a3738fac3a",
+    "snapshot_repeat": 2,
+    "stage": "iter5",
+    "conditions": [
+      "fr_all",
+      "fr_changed_only",
+      "fr_order_only"
+    ],
+    "task_ids": [
+      9
+    ],
+    "scoped_memory": false,
+    "trajectory_repeats": 10,
+    "visible_memory_inputs": {
+      "9": {
+        "fr_all": {
+          "context_sha256": "398f4dffc19b1dd72a42ee161672f6947ae5d23f29e8c8b183294bb28d22e710",
+          "selected_ids": [
+            "2322985788659b3487d3b0ff",
+            "2f1905b241c99bb6930cbd70",
+            "36ddedfe9c6be8a691b4fd40",
+            "3d22d2b1602bb8ad846879f9",
+            "7fbfc03420f5d2abfec229b5",
+            "aee4f1ad0f03afe64d0d659b",
+            "ffd1b8e05692d9370b52ed48"
+          ]
+        },
+        "fr_changed_only": {
+          "context_sha256": "8a89142cd95a38b6df04ee32cbfe45857f9a2005826f24664638970fe2960139",
+          "selected_ids": [
+            "2322985788659b3487d3b0ff",
+            "2f1905b241c99bb6930cbd70",
+            "36ddedfe9c6be8a691b4fd40",
+            "3d22d2b1602bb8ad846879f9",
+            "7fbfc03420f5d2abfec229b5",
+            "aee4f1ad0f03afe64d0d659b",
+            "ffd1b8e05692d9370b52ed48"
+          ]
+        },
+        "fr_order_only": {
+          "context_sha256": "9807da028784778ad241fdc99f60fe56031516895c1f43b2497bfede8cc65b7e",
+          "selected_ids": [
+            "2322985788659b3487d3b0ff",
+            "2f1905b241c99bb6930cbd70",
+            "36ddedfe9c6be8a691b4fd40",
+            "3d22d2b1602bb8ad846879f9",
+            "7fbfc03420f5d2abfec229b5",
+            "aee4f1ad0f03afe64d0d659b",
+            "ffd1b8e05692d9370b52ed48"
+          ]
+        }
+      }
+    },
+    "actor_only": true,
+    "observe_workspace": true,
+    "restored_entry_ids": null,
+    "paired_runtime_directories": {
+      "9/0": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\8ac3a78691504db7",
+      "9/1": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\4cdef565e6bc4256",
+      "9/2": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\d2f5c95f34d941e5",
+      "9/3": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\008d909163e74356",
+      "9/4": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\ae0a4379ac2e4f45",
+      "9/5": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\581d115304ca4256",
+      "9/6": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\4f1db4b5135545dd",
+      "9/7": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\08864377cf3d480f",
+      "9/8": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\cfd5493038c1465b",
+      "9/9": "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\4f4572e2ef1f4d42"
+    },
+    "input_anchor": null,
+    "input_anchor_manifest_sha256": null,
+    "anchor_trajectory": null,
+    "input_anchor_records_sha256": null,
+    "archived_stopped_metadata": null,
+    "order_control": "Reverse JSON object keys only; equal content, equal character length, unchanged list order",
+    "greedy_confirmation": false,
+    "source_actor_temperature": 0.2,
+    "pre_http_connect_retries": 0,
+    "clock": "current batch start",
+    "fixed_original_selection": [
+      9,
+      24,
+      117,
+      416,
+      267,
+      271,
+      273,
+      274,
+      278,
+      386,
+      389,
+      390,
+      394,
+      403,
+      410,
+      411,
+      425
+    ],
+    "affected_entry_ids": [
+      "36ddedfe9c6be8a691b4fd40",
+      "aee4f1ad0f03afe64d0d659b"
+    ],
+    "paid_update_calls": 0,
+    "probe_only": false,
+    "entry_dependencies": [
+      {
+        "id": "aee4f1ad0f03afe64d0d659b",
+        "value": {
+          "tool_ids": [
+            "@modelcontextprotocol/server-filesystem::search_files",
+            "@modelcontextprotocol/server-filesystem::read_text_file"
+          ]
+        }
+      },
+      {
+        "id": "3d22d2b1602bb8ad846879f9",
+        "value": {
+          "tool_ids": [
+            "mcp-tasks::tasks_setup",
+            "mcp-tasks::tasks_add"
+          ]
+        }
+      },
+      {
+        "id": "36ddedfe9c6be8a691b4fd40",
+        "value": {
+          "tool_ids": [
+            "@kazuph/mcp-taskmanager::request_planning",
+            "@kazuph/mcp-taskmanager::get_next_task"
+          ]
+        }
+      },
+      {
+        "id": "ffd1b8e05692d9370b52ed48",
+        "value": {
+          "tool_ids": [
+            "mcp-shrimp-task-manager::analyze_task",
+            "mcp-shrimp-task-manager::reflect_task"
+          ]
+        }
+      },
+      {
+        "id": "7fbfc03420f5d2abfec229b5",
+        "value": {
+          "tool_ids": [
+            "mcp-shrimp-task-manager::get_task_detail",
+            "mcp-shrimp-task-manager::list_tasks",
+            "mcp-shrimp-task-manager::split_tasks",
+            "mcp-shrimp-task-manager::update_task"
+          ]
+        }
+      },
+      {
+        "id": "2f1905b241c99bb6930cbd70",
+        "value": {
+          "tool_ids": [
+            "mcp-shrimp-task-manager::split_tasks"
+          ]
+        }
+      },
+      {
+        "id": "2322985788659b3487d3b0ff",
+        "value": {
+          "tool_ids": [
+            "mcp-shrimp-task-manager::execute_task",
+            "mcp-shrimp-task-manager::get_task_detail"
+          ]
+        }
+      }
+    ],
+    "condition_hashes": {
+      "fr_all": {
+        "memory_sha256": "f795c3c9fd49aa58f42327a54309f1d6a3904a3460d81984e70718d6eaa92e97",
+        "reference_catalog_sha256": "f1942fc9328e08a1c15a8d666760a81f42a4e27230ba678744bb36716bbcab6f"
+      },
+      "fr_changed_only": {
+        "memory_sha256": "2b3bee1909bdd9cfaeea583461a0331f7e0c9b2a7784e0416c046268f6c7f206",
+        "reference_catalog_sha256": "f1942fc9328e08a1c15a8d666760a81f42a4e27230ba678744bb36716bbcab6f"
+      },
+      "fr_order_only": {
+        "memory_sha256": "f795c3c9fd49aa58f42327a54309f1d6a3904a3460d81984e70718d6eaa92e97",
+        "reference_catalog_sha256": "f1942fc9328e08a1c15a8d666760a81f42a4e27230ba678744bb36716bbcab6f"
+      }
+    },
+    "order": "Rotate leading condition per task and repeat; all use the same account assignment."
+  },
+  "isolation": {
+    "status": "passed",
+    "workspace_paths": [
+      "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\54dbdfca84914b8e\\workspace",
+      "E:\\NTU Learn\\PE6203\\part2\\MCPEvol-Bench\\.runtime\\langmem-adaptation\\.runtime\\r\\42a1bdc5a0fa42c6\\workspace"
+    ],
+    "endpoints": [
+      "http://127.0.0.1:62640/mcp",
+      "http://127.0.0.1:62653/mcp"
+    ],
+    "distinct_workspaces": true,
+    "distinct_endpoints": true,
+    "write_visible_only_to_owner": true,
+    "probe_response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully wrote to E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/54dbdfca84914b8e/workspace/.counterfactual-isolation.md"
+        }
+      ],
+      "structuredContent": {
+        "content": "Successfully wrote to E:/NTU Learn/PE6203/part2/MCPEvol-Bench/.runtime/langmem-adaptation/.runtime/r/54dbdfca84914b8e/workspace/.counterfactual-isolation.md"
+      },
+      "isError": false
+    },
+    "scope": "Private task-source workspace/process/port isolation; not an OS security sandbox."
+  },
+  "fixture_unchanged": true
+}

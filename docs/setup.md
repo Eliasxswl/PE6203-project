@@ -1,79 +1,37 @@
 # Setup and execution
 
-Run commands from the repository root. Use Python 3.11+ and Node.js 24. Windows has been tested; real macOS/Linux checks remain pending.
+Run commands from the repository root. Use Python 3.11+ and Node.js 24. Windows is tested; real macOS/Linux tool-runtime checks remain pending.
 
-## 1. Install dependencies
+## 1. Environment
 
-Create and activate a virtual environment using your installed Python command (`python`, `python3`, or Windows `py`).
+Create `.venv` using your installed command (`python`, `python3`, or Windows `py`). Activate it with `.\.venv\Scripts\Activate.ps1` on PowerShell or `source .venv/bin/activate` on macOS/Linux. Use `python` after activation.
 
-Windows PowerShell:
+Choose one dependency profile per environment:
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
+| Profile | Dependencies | Configuration |
+| --- | --- | --- |
+| Current knowledge experiment | `requirements-memory.txt` | `config/knowledge-evolution-formal.json` |
+| Catalog-only pipeline | `requirements-api.txt` | `config/experiment.json` |
+| Original upstream environment | `requirements.txt` | See upstream instructions |
 
-macOS/Linux:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-Once activated, use `python` on all platforms:
+The memory environment is standalone and pins a different OpenAI SDK. Do not install it over the API environment.
 
 ```text
-python -m pip install -r requirements-api.txt
+python -m pip install -r requirements-memory.txt
 npm install --prefix .runtime @1mcp/agent@0.39.1
 ```
 
-Skip creation if `.venv` already exists. `requirements.txt` is the larger upstream environment; our API workflow uses `requirements-api.txt`.
+Copy `.env.example` to `.env`; it loads automatically and is ignored by Git. Fill the credential variables referenced by the selected profile. The current formal knowledge profile references five independent BigModel accounts (`BIGMODEL_API_KEY` through `_5`). Multiple keys from one account share its quota. Reduce both provider lists for fewer accounts and preserve the same `quota_group` for the same account.
 
-## 2. Configure API access
+BigModel uses `BIGMODEL_BASE_URL=https://open.bigmodel.cn/api/paas/v4/`. Model IDs in the JSON profile control formal runs; standalone `.env` model variables do not override them. Actor and Judge default to `glm-4-flash-250414`. An empty configured Judge model uses the Actor model.
 
-Copy `.env.example` to `.env` and fill in the three independent account keys:
+Knowledge generation uses `OPENROUTE_API_KEY`, `OPENROUTE_BASE_URL=https://openrouter.ai/api/v1`, and the configured `memory.model`. Both FR and SP use `openai/gpt-6-luna` with the same builder and a $1 update budget per experiment. Credential checks still follow the selected profile when replaying frozen knowledge, but the case command makes no update requests.
 
-```ini
-BIGMODEL_API_KEY=your-first-account-key
-BIGMODEL_API_KEY_2=your-second-account-key
-BIGMODEL_API_KEY_3=your-third-account-key
-BIGMODEL_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
-BIGMODEL_MODEL=glm-4-flash-250414
-BIGMODEL_JUDGE_MODEL=
-BENCH_JUDGE_RUNS=5
-PYTHONUTF8=1
-```
+If Python does not inherit an existing Windows system proxy, set `HTTP_PROXY` and `HTTPS_PROXY` in the local environment or `.env`, with `NO_PROXY=localhost,127.0.0.1` for private tool services. Do not commit proxy credentials or disable certificate validation. There are no automatic model retries or Judge top-ups.
 
-`.env` loads automatically and stays out of Git. Quotes are optional; existing environment variables take precedence.
+## 2. Tool bundles
 
-Formal settings come from `config/experiment.json`:
-
-| Setting | Purpose |
-| --- | --- |
-| `agent_model`, `judge_model` | Execution and scoring models; a blank judge model uses the Agent model |
-| `judge_output_mode` | `json_object` requests JSON and validates the six-field output locally; `text` preserves the legacy parser |
-| `agent_repeats`, temperatures, token limits | Experiment parameters, fixed across compared strategies |
-| `providers.agent`, `providers.judge` | Account pools using environment variable names and public quota-group labels |
-| `request_policy` | Per-account/model concurrency, dispatch spacing, and overload cooldown |
-
-The current profile uses `glm-4-flash-250414` for both roles across three independent accounts. Each account allows two simultaneous requests, including long contexts; six workers can therefore use up to six in total. A 0.2-second dispatch interval smooths requests without sleeping after every response. HTTP 429 reduces capacity and adds shared cooldown. Calls are never retried or judge slots topped up.
-
-The same account must always use the same `quota_group`, even across different keys or roles. Tasks are assigned by frozen list position/repeat, preserving the account across strategies and versions. For one-account use, replace both provider lists with their first entry. For a separate judge account, change the judge provider entries to reference its key variable and quota group. Explicit `api_key_env`/`base_url_env` entries override fallback judge variables. Model variables in `.env` apply to standalone diagnostics, not formal runs.
-
-Check your account's [model limits](https://bigmodel.cn/usercenter/proj-mgmt/rate-limits) before changing models. More keys do not guarantee availability during platform overload.
-
-## 3. Prepare tasks and tools
-
-| Location | Contents |
-| --- | --- |
-| `src/custom/data/test_cases/test_cases.json` | Official tasks |
-| `src/custom/data/test_cases/chosen_idx.json` | Candidate task IDs |
-| `config/subsets/selected_tasks.json` | The single frozen task selection |
-| `anotation_path/` | Original task inputs |
-| `config/experiment.json` | Experiment configuration |
-| `config/local/` | Generated machine-specific MCP configurations |
-
-Download `original_servers.zip`, `iter3_servers.zip`, and `iter5_servers.zip` from [the upstream tool bundles](https://huggingface.co/datasets/anonymous2233/evol-servers/tree/main) into `servers/downloads/`, then run:
+Download `original_servers.zip`, `iter3_servers.zip` and `iter5_servers.zip` from the [tool bundle repository](https://huggingface.co/datasets/anonymous2233/evol-servers/tree/main) into `servers/downloads/`.
 
 ```text
 python scripts/extract_servers.py original
@@ -82,158 +40,73 @@ python scripts/extract_servers.py iter5
 python scripts/prepare_local_config.py
 ```
 
-These versions correspond to Early, Middle, and Late. Every teammate generates local configs on their own machine. Downloads, extracted tools, and local configs stay ignored. Selected servers must use frozen local executables; downloading launchers such as npx/uvx are rejected. Other tasks may need additional services or OS dependencies.
+The extractor preserves the downloaded bundles and prepares portable local package paths. Generated `config/local/` files are machine-specific; generate them on each machine. Early maps to `original`, Middle to `iter3`, and Late to the supplied `iter5` snapshot. Use these actual snapshots rather than inferring additional mutations from the directory name.
 
-Role 3 edits the ID list, optional classifications in that same file, and matching `task_count` before a new experiment. Keep original tasks and inputs unchanged. The current selection is Role 3's frozen **17-task core set**, with confirmed classifications; it is not a representative random sample. Keep the frozen selection bytes unchanged; Role 3 records its SHA-256 in the task list and protocol. Tasks 29 and 157 remain in the archived 19-task pilot only. A selection change does not alter archived runs.
+Tasks are in `src/custom/data/test_cases/test_cases.json`; official candidate IDs are in `chosen_idx.json`. Role 3's frozen 17-task selection is `config/subsets/selected_tasks.json`; fixture files are in `anotation_path/`. Select IDs without changing original questions, inputs or labels.
 
-Read actual saved catalog differences without changing an experiment:
-
-```text
-python -m custom.experiment catalog-diff --experiment results/<id>
-```
-
-Evidence separates tool additions/removals, structural parameter changes and description changes, including nested schemas. Per-task evidence covers required tools. Unchanged definitions do not certify unchanged behavior; catalog failures never count as retention evidence. Role 3 can add this optional object to an existing `samples` entry (illustrative candidate, not an approved control):
-
-```json
-{
-  "idx": 273,
-  "classification": {
-    "status": "draft",
-    "transitions": {
-      "iter3": {"cohort": "retention", "change_types": [], "rationale": "Candidate; behavior review pending"},
-      "iter5": {"cohort": "retention", "change_types": [], "rationale": "Candidate; behavior review pending"}
-    }
-  }
-}
-```
-
-Classification names are destinations relative to Early: `iter3` means Early → Middle; `iter5` means Early → Late. For affected tasks use `cohort: changed` and the observed `change_types` (`tool`, `parameter`, `description`; multiple labels allowed). Confirmation requires `status: confirmed`, `reviewed_by: <name>`, and a rationale for each comparison. Labels stay outside Agent inputs. Unconfirmed, unavailable or conflicting evidence is excluded from cohort comparisons with a reason. Strategy updates still compare adjacent catalogs (Early → Middle → Late). Selection quotas and protocol approval remain Role 3 decisions.
-
-## 4. Validate and run
+## 3. Validate and run
 
 ```text
-python -m custom.experiment validate --config config/experiment.json
-python -m custom.experiment check --config config/experiment.json
-python -m custom.experiment run --config config/experiment.json --parallel --workers 6
+python -m custom.experiment validate --config config/knowledge-evolution-formal.json
+python -m custom.experiment check --config config/knowledge-evolution-formal.json
+python -m custom.experiment run --config config/knowledge-evolution-formal.json --parallel --workers 10
 ```
 
-- `validate` checks configuration without model requests and reports dirty source, pending classifications, archive presence and backend-policy warnings. It does not approve a formal experiment or prove backend availability.
-- `check` starts private tools and verifies model tool calling, tool feedback, and scoring JSON. Successful model checking uses three requests and currently checks the first provider in each role. Check added account keys separately before a full run. Use `--skip-models`, `--server <name>`, or `--stage original` to narrow diagnostics.
-- `run` owns tool startup, task execution, and scoring. No separate server or scoring script is needed. Omit `--parallel --workers 6` for serial execution.
+`validate` checks configuration and provenance without model calls. `check` tests the configured tools and models; use `--skip-models` for tool-only checks. The same `run` entry point supports serial execution by omitting `--parallel --workers 10`.
 
-All 17 selected tasks passed the [local preflight](../results/verification/role3-preflight-20261017T063246.892278Z_Kevin.json) checks applicable to their dependencies, and both model accounts passed synthetic tool-calling and scoring checks. Passing preflight does not establish whole-task completion. Recheck dependencies on the intended host before running.
+The formal knowledge profile fixes 17 tasks, three versions, three Agent repeats and five Judge slots. Early is executed once per task/repeat and shared by all strategies: **459 logical conditions, 357 actual trajectories, 1,785 planned Judge slots**. Each trajectory has fresh files, services, backend state and conversation. Unknown stateful backends require reviewed isolation/reset policies before execution.
 
-The current configuration compares `no_update`, `full_rewrite`, and `selective_patch` on 17 tasks with one repeat: **153 logical conditions, 119 actual trajectories and 595 judge slots**. Early is executed once per task/repeat with five judge slots; all strategies reference that same result. With S strategies, N tasks and R repeats, actual trajectories = `(1 + 2S) × N × R`; judge slots = five times that count. Three strategies therefore need seven actual trajectories per task/repeat. Repeats remain independent: three repeats require three Early executions per task. Role 1's plugin is registered via `strategy_plugins`. Preflight does not start this experiment. For the six-task integration trial (9, 24, 117, 416, 273, 403), use `python -m custom.experiment run --config config/strategy-smoke.json --parallel --workers 6`: 42 actual trajectories and 210 judge slots. The frozen 17-task selection is unchanged.
+One parent writes durable checkpoints while workers execute independent Agent and Judge jobs. Frozen snapshots use shared Early first, then independent Middle/Late jobs across strategies and repeats. Agent turns and tool calls remain sequential within one trajectory. Shared account/model gates control concurrency and overload cooldown; successful responses have no fixed post-response sleep.
 
-For an explicit scoring compatibility check, choose a completed Agent trajectory key from an archived `records.json`:
+Do not edit source, configurations, selected tasks, fixtures or local server routes while a run is active. Drift invalidates the result. Environment/provider failures and invalid Judge outputs remain missing rather than being repaired or silently replayed. Empty terminal provider responses are execution errors; original responses and any completed tool calls remain recorded.
 
-```text
-python -m custom.experiment judge-check --config config/experiment.json --experiment results/<id> --trajectory no_update/original/9/0 --attempts 1 --provider-index 0
-```
+The LangChain backend delegates the agent loop to official `create_agent`. Harness knowledge consists of tool contracts plus a frozen, independently practiced library. No Update retains it, FR rebuilds all records, and SP rebuilds records whose referenced tool contracts changed. FR/SP share the same update model, prompt format and validator. Updates see previous knowledge and old/new tool contracts, without benchmark questions, trajectories or scores. JSON validation checks syntax/contracts, not behavioral correctness.
 
-This makes one Judge request by default (up to five when explicitly selected), starts no tools and never changes the archived experiment. It uses the current branch's formal Judge prompt/request/parser and current Judge configuration. Raw replies, usage and source/request protocols are saved under ignored `.runtime/experiments/checks/`. Provider index selects the configured Judge account; check each account separately. Passing confirms request/format compatibility, not semantic grading accuracy. Failed diagnostic attempts are not replaced.
+The original Judge rubric and TF/PE/ECS calculations are retained. JSON-object output plus local Schema validation constrains the three scores and reasoning fields; it does not guarantee judging accuracy. Five attempts are averaged over valid outputs, with coverage reported. Shared Early references and common-sample comparisons must not be counted as independent executions.
 
-The current GLM endpoint accepted a `json_schema` request but returned fields that violated its required fields and enums in a synthetic capability probe. Therefore the configured mode is explicitly **JSON-object output plus local Schema validation**, not strict server-side Schema enforcement. The Schema requires the original three integer scores (1–10) and three reasoning strings, rejects extra/missing fields, and retains the original integer-only rule. Duplicate keys, malformed JSON, refusals and incomplete responses are rejected without repair, fallback or extra calls. The request appends a serialization-only contract to the unchanged upstream rubric. New manifests and Judge attempts record the mode and Schema hash; diagnostics hash the actual sent prompt. JSON validity does not certify grading accuracy.
+## 4. Results and member interfaces
 
-Workers execute independent Agent and scoring jobs in the same bounded pool. Agent turns and tool calls remain sequential within each trajectory. When all strategy/version snapshots are already frozen, parallel execution uses two pools: all shared Early sources first, then independent Middle/Late jobs across strategies and repeats. Mutable knowledge is never shared between workers. Runs that still need catalog updates keep the ordered version pipeline. Each trajectory receives fresh inputs, backend state, services, and conversation; one parent writes checkpoints.
+Use [../results/index.json](../results/index.json) for the final handoff entries:
 
-Do not edit code, configuration, task selection, inputs, or generated local configs while running. Changes require a new experiment; source drift invalidates scores. Live catalogs from the three supplied tool snapshots are used; unverified mutation overlays are not applied.
+- Catalog-only 17-task experiment: `results/20261019T234451.269257Z_Kevin`.
+- Knowledge-strategy 17-task experiment and frozen donor: `results/20261026T084527.010290Z_Kevin`.
+- Final Task 9 case: `results/20261029T113248.805747Z_Kevin`.
 
-## 5. Results and recovery
+Each run preserves `experiment.json` and `records.json`; knowledge runs also freeze inputs and source archives. Keep these files together. Original absolute runtime paths describe the producing machine; use the repository-relative run paths above on another machine. Historical committed runs remain for provenance and existing member/test references. Superseded uncommitted probes and sentence-level attempts were removed; their selected-case history is disclosed in the final case review.
 
 ```text
-results/<UTC-microseconds>_<git-user-name>/
-    experiment.json
-    records.json
-```
-
-The parent commits each redacted event to a local SQLite checkpoint with full synchronous durability before acknowledging a worker. It publishes `records.json` roughly every ten seconds and at completion. `Store` reads the latest snapshot plus committed events, including after a crash. The temporary `.checkpoint.sqlite3` files are ignored by Git; preserve them alongside the JSON files when moving an interrupted run. Completed JSON exports are self-contained. The original single-writer lock, failure handling and no-replay rules still apply.
-
-The manifest preserves settings, source/code fingerprints, task definitions/classifications, actual Python/Node/platform versions and SHA-256 hashes of available bundle archives. Missing archives are explicit. Archive hashes identify downloaded bytes; they do not certify extraction equivalence. Local tool entry files remain fingerprinted separately. Records contain trajectories, raw tool traces, knowledge updates, attempt statuses, usage, timings, scores, and failures. `planned_jobs` lists actual executions; `logical_conditions` includes shared Early references. Diagnostics stay under ignored `.runtime/experiments/checks/`.
-
-Early's source owner is `no_update` when selected, otherwise the first configured strategy. Its episodes run first in serial and parallel modes. Other Early rows contain `shared_from` with the source trajectory key, synchronized scores/status and empty attempt lists; inspect the source for traces, failed slots, usage and timing. These rows are references, not independent samples. Failure or resume never creates replacement Early executions or extra judge slots. `completion` counts actual trajectories/slots and reports logical conditions separately; per-strategy tables include the common Early score.
-
-```text
-python -m custom.experiment run --config config/experiment.json --resume <experiment-directory>
+python -m custom.experiment run --config config/knowledge-evolution-formal.json --resume <experiment-directory>
 python -m custom.experiment summarize --experiment <experiment-directory>
+python -m custom.experiment catalog-diff --experiment <experiment-directory>
 ```
 
-Resume preserves the original mode/worker count and continues only unstarted work. Completed, failed, or ambiguous requests are not replayed. Environment/provider failures skip scoring; operational Agent mistakes remain scored. Failed judge slots consume their slot without replacement; averages use valid scores and report coverage.
+Resume requires identical inputs/mode and continues only unstarted work. `summarize` rewrites aggregates, so inspect a copy of immutable archives. `aggregate.paired_ecs` compares common valid task/repeat pairs; coverage and excluded conditions remain explicit. Recovery/retention uses same-version paired TF differences against No Update, classified relative to Early. Completion status does not certify task completion or formal acceptance.
 
-`aggregate.ecs` retains per-strategy ECS. Compare strategies with `aggregate.paired_ecs`: its task/repeat pairs have valid scores for every compared strategy and all three versions. Per-version comparisons remain under `paired`. Excluded common-ECS pairs list missing conditions and reasons. Recovery/retention requires confirmed, catalog-consistent labels relative to Early and valid same-version scores for every compared strategy. `mean_tf_delta_vs_no_update` is the mean of paired `TF_strategy − TF_NoUpdate`: on changed tasks it measures adaptation benefit; on retention tasks a negative value indicates harm. It is a TF-point difference, not a success rate. No normalized recovery ratio is required or generated. Missing labels, evidence, scores or No Update are reported explicitly; `not_configured` or `pending` is not a zero score. Update costs are counted once per episode transition under `update_costs`, with reported/unreported counts and currency separation.
+Role 1's catalog contract is `update(knowledge, old_tools, new_tools, context) -> UpdateResult`, registered in `custom.experiment.adapters` and listed under `strategy_plugins`. Inputs are defensive copies; context supplies stage/repeat. Report actual update calls, token usage, time and currency-qualified cost; missing usage stays unknown. Experience updates are implemented in `experience_state.py`. With exact complete catalog copying, deterministic FR/SP can yield identical catalog knowledge; the independently maintained library is the additional update surface.
 
-`completion` reports operational status and coverage. Run exit codes: **0** = all trajectories scored (possibly `completed_with_warnings` for invalid Judge slots); **3** = incomplete work or trajectories without usable scores; **2** = error/invalidation; **130** = interruption. Existing five-slot averaging remains unchanged. Formal acceptance is always `not_assessed`: the group must approve its protocol and coverage policy. `summarize` explicitly rewrites the aggregate in `records.json`; use a copy when inspecting an immutable archive. Older manifests lack new provenance/classifications and are not retroactively certified.
+Role 3 maintains selection/classifications in `config/subsets/selected_tasks.json`; [experimental_protocol.md](experimental_protocol.md) and [benchmark_task_list.md](benchmark_task_list.md) record the reviewed definitions. Keep questions and fixture inputs frozen.
 
-Before a formal run, freeze code/configuration in an authorized commit, resolve Role 3 preparation items, check the selected tools on the target machine, and run the explicit Judge compatibility check. Diagnostic pilots may use dirty source; preserve that fact. Do not edit old manifests to turn a pilot into a clean run. Current macOS/Linux runtime checks remain pending.
-
-Keep each manifest and records file together. Upload completed result directories separately from code; avoid concurrent edits to the same run. Credentials, local configs, downloads, runtime logs, and temporary state stay ignored. Commit or push only when authorized.
-
-Stopped tool runtimes automatically remove their copied `workspace`, private `home` and `tmp`; small service logs and generated configurations remain under `.runtime/r/`. This also applies to startup failures. For file-state debugging, explicitly add `"keep_workspaces": true` inside the experiment's `runtime` settings before starting a new run. Cleanup errors are logged without changing scores. Hard-killed processes can leave copies behind; inspect only after the relevant experiment has stopped. Original fixtures, tool bundles and archived results are unaffected.
-
-## 6. Development and member interfaces
+## 5. Reproduce the final case
 
 ```text
-python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 6
+python -m custom.experiment counterfactual-check --source-experiment results/20261026T084527.010290Z_Kevin --task-id 9 --snapshot-repeat 2 --repeats 10 --order-control
+```
+
+This optional Late-only diagnostic reuses the exact archived FR snapshot and the normal agent loop. It compares FR, FR with only five unchanged-tool records restored from K0, and an equal-length JSON key-order control. Affected records and callable contracts remain fixed. Each group uses matched visible paths and a completely reset private backend; paths differ across groups and leading conditions rotate. The batch clock is fixed. It makes no Judge or updater calls, and never replaces formal scores. Repeats may be 1, 3 or 10; use a fresh result for changed settings.
+
+The retained batch has 30 valid executions at temperature 0.2: FR **3/10**, restoration **10/10**, and key-order control **0/10** for actual log reading and plan creation. Seven pairs improved under restoration and none reversed (two-sided paired exact p=0.015625). The interpretation is restricted to original Task 9, complete-library injection and this frozen snapshot. Task/snapshot selection followed exploratory screening; this is not benchmark-wide evidence or localization to a unique sentence. Log reading is the primary observable; backend plan creation is supplementary because a textual plan may satisfy the question. These are not replacement TF labels.
+
+`task-9-confirmation-review.json` contains input checks, per-trial tool returns and limitations. `counterfactual.json` from a new run reports case-level observations; `records.json` retains complete requests, responses and workspace observations. Recorded source ZIPs preserve the code used at execution time, including retired diagnostic code; the maintained CLI exposes only the final case-level workflow.
+
+The final case is byte-preserved through `.gitattributes`. Its review also records the donor's producer-byte, committed-blob and semantic hashes: the historical donor differs only by Git CRLF/LF normalization, without changing parsed content.
+
+## 6. Development and maintenance
+
+```text
+python -m custom.experiment run --config config/experiment.json --offline --parallel --workers 2
 python -m unittest discover -s tests -v
 ```
 
-Offline execution uses fake models/tools and writes under `.runtime/experiments/offline-results/`; it is not benchmark evidence.
+Offline providers are deterministic development fixtures, not benchmark evidence. Temporary state and logs stay under ignored `.runtime/` and `logs/`; completed JSON exports are self-contained. Stopped services remove copied workspaces, homes and temporary data. Set `runtime.keep_workspaces=true` before a new debugging run if file-state retention is needed.
 
-**Role 1:** register `update(knowledge, old_tools, new_tools, context) -> UpdateResult` through `custom.experiment.adapters.register`, then list the module in `strategy_plugins`. Knowledge is keyed by `server::tool`; descriptions/schemas are separate from routes. Inputs are defensive copies; context supplies stage/repeat. The pipeline measures elapsed time. Plugins additionally report `api_calls` (dispatched requests, including failed calls), `input_tokens`, `output_tokens`, `api_cost`, `cost_currency` and `cost_basis`. Use actual provider usage and a stated pricing/invoice basis; leave unavailable values `None`. Positive money amounts require a currency; free calls may report zero with an explicit basis. Old plugins remain compatible but unreported usage stays unknown. Both deterministic baselines report zero model usage. Agent/Judge usage is separate and never substitutes for update cost.
-
-**Backend isolation:** parallel policies declare `concurrency: private`, `readonly`, or `exclusive`. Exclusive resources require common `shared_resources` names such as `tcp:3000`; OS locks serialize access. Workspace state may be redirected through `env_paths`. Mutable remote services require an implemented reset/private namespace and are otherwise rejected. These controls are not a security sandbox for arbitrary commands.
-
-See [fixed-plan.md](fixed-plan.md) for protocol decisions and validation history. Default documentation is maintained here and in the root README.
-
-New runs use `shared_early_json_v1`: JSON-object Judge output and local Schema validation alongside shared Early executions, classification relative to Early, and same-version comparisons against No Update. Existing execution repairs remain: nonempty text without tool calls ends the Agent turn; a finish marker never suppresses structured tool calls. Tool results retain MCP content, structured data, and error flags; Agent-visible results have an explicit 32,000-character limit with truncation metadata, while raw results remain complete. Provider/runtime failures remain execution failures. The upstream rubric, scoring rules, five attempts, TF/PE/ECS formulas, models and repeats are unchanged; the Judge request adds output-format instructions and a response-format parameter. The current selection is Role 3's frozen 17-task core set. Old runs cannot resume under changed source fingerprints; historical scores and independent Early executions are preserved. Scores from different protocols must not be pooled. Experimental Judge changes and ten-task pilots remain on `harness-repair`.
-
-Selective Patch compares adjacent catalogs and patches changed fields locally, without model calls. With complete initial catalog knowledge and exact deterministic updates, its resulting knowledge equals Full Rewrite; observed score differences between them cannot establish an adaptation-method advantage. Patch audit work and unchanged-field preservation can still be inspected.
-
-## Experience research workflow
-
-The `langmem-adaptation` branch is separate from the core experiment on `main`. The current goal is maintaining usable harness knowledge for comparing update strategies. Memory/no-memory and synthetic-practice runs under `results/` are historical diagnostics.
-
-Use a separate virtual environment and install `requirements-memory.txt`. The optional `agent_backend: langchain` delegates the model/tool loop to official `create_agent`; existing MCP tools, isolation, budgets and Judge remain external. Configure `.env` and local tool paths as above. `config/recovery-ablation.json` uses five independent accounts (`BIGMODEL_API_KEY` through `_5`) and up to ten workers. The current development profile permits one in-flight model request per account to reduce connection pressure. Reduce both provider pools when fewer accounts are available.
-
-```text
-python -m custom.experiment memory-pilot --config config/recovery-ablation.json --parallel --workers 10
-```
-
-This quick development pass uses **all original 17 selected tasks, one Agent repeat, and five Judge slots**: 17 trajectories / 85 slots. Normal request budgets are unchanged. Every task sees the complete frozen experience library. Entries retain their original evidence; current callable names or unavailable dependencies are marked separately. Oversized complete context fails rather than dropping knowledge silently. `recovery-check` aliases this fixed-task pass; it no longer starts different synthetic tasks.
-
-Inspect each task in `results/<run>/task-review.json`, with full messages, original tool results, exposed memory IDs and schema feedback in `records.json`. Schema hints explain declared argument constraints; they do not rewrite calls or create extra requests. Review errors and actual recovery, not only the average score. API failures and invalid Judge slots remain missing, without retry or top-up. Model rubric scores do not certify complete task execution.
-
-Keep `config/subsets/selected_tasks.json` and original questions unchanged. Develop and repair adaptation on these fixed tasks, then freeze code and initial knowledge before the update-strategy comparison. Full experiments retain three Agent repeats and five Judge slots. The development pilot is Early-only; the original registered catalog Selective Patch implementation is untouched.
-
-The frozen artifact/source are configured by `memory.artifact` and `memory.source`. They must match their checksums; create a new artifact to revise learned knowledge. The active `config/practice/typed-k0-portable.json` preserves array/object types from cited successful calls and uses the same memory entries as `typed-k0.json`. Its evidence is `typed-evidence.json`; both use UTF-8/LF pinned by `.gitattributes` for identical Windows/macOS checksums. The research renderer adds generic workflow/path-binding guidance and explicit tool availability without changing frozen records. Earlier ablation and synthetic-practice CLI commands remain available for archive reproduction, but are not the current validation workflow. Do not edit code, configuration, fixtures or memory while a run is active. Commit and push only when authorized.
-
-## Strategy-owned experience evolution
-
-```text
-python -m custom.experiment run --config config/experience-evolution.json --parallel --workers 10
-```
-
-This research profile compares No Update, Full Rewrite and Selective Patch on the same original 17 tasks and Early/Middle/Late versions. Each strategy/repeat starts from an independent copy of the same K0. No Update retains it; Full Rewrite rebuilds all experience entries; Selective Patch rebuilds entries whose referenced tool contracts changed. Unavailable entries watch their server catalog for restoration. Selection is conservative at tool level, including descriptions and schemas. The original catalog strategies remain in use; a separate experience layer adds no transport routes to knowledge.
-
-Full Rewrite and Selective Patch call exactly the same builder and contract validator. The builder sees only previous experience and old/new tool contracts, with fixed original-practice provenance. It receives no benchmark question, answer, execution trace or Judge score. Each update requests one JSON object with fixed named call slots and typed arguments. The harness preserves immutable evidence bindings and original variable meanings, and derives new placeholder descriptions from their actual target argument paths. The model rebuilds the procedure and call arguments, or declares it unavailable. Missing calls, malformed JSON and new variables without a target-contract binding are rejected. Updated procedures are contract-checked, not claimed to be behavior-verified in the new version. Failures remain failures; no API retries, output repair, partial-library fallback or Judge top-up occur.
-
-This profile fixes `memory.model=openai/gpt-6-luna` for both updating strategies. Actor and Judge remain `glm-4-flash-250414`. In the local `.env`, set `OPENROUTE_API_KEY` and `OPENROUTE_BASE_URL=https://openrouter.ai/api/v1`. `memory.update_provider` selects this separate updating service, reasoning effort, token price ceilings and a **$1 per-experiment update budget**. The update model is shared by Full Rewrite and Selective Patch; changing it requires a fresh run.
-
-`update-budget.json` records exact paid requests, provider-reported costs and conservative reservations before dispatch. Reservations persist across failures and resume. Input/output caps and OpenRouter price ceilings bound each request; SDK retries, model/provider fallback and paid tools are disabled. Missing usage costs remain unknown. This budget covers only this experiment's updates and does not change the platform-wide API key credit limit. Preparation is serial under the existing experiment lock; task execution retains optional parallel workers.
-
-All version checkpoints are prepared before benchmark dispatch. Every task's complete experience input comes from its strategy/version snapshot, not a reloaded fixed K0. `records.json` stores dependency hashes, unchanged-entry hashes, actual update requests/usage and per-trajectory snapshot hashes. `inputs/` preserves K0, evidence and a source ZIP; dirty-source runs remain development evidence. Existing task workspace isolation and shared Early scores remain unchanged.
-
-The supplied profile has one repeat: 153 logical conditions, 119 actual trajectories and 595 Judge slots. A separately frozen three-repeat run has 459 logical conditions, 357 actual trajectories and 1785 slots. Missing observations are reported by the existing completion and common-sample aggregates; no protocol approval is implied by operational completion.
-
-## Successful Shrimp knowledge
-
-`prepare-knowledge` adds successful procedures, calling constraints and tool-effect boundaries to the existing recovery library. It uses independent private Shrimp practice, state readbacks and a bounded GPT-6 Luna extraction pass; no official task question, answer or execution trace is supplied. The current preparation budget is $0.10. Each new entry retains evidence from two different practice inputs, relevant tool IDs and typed call templates. Normal success knowledge does not require a failure record.
-
-```text
-python -m custom.experiment prepare-knowledge --config config/experience-evolution.json --output config/practice/shrimp-k0.json
-python -m custom.experiment memory-pilot --config config/knowledge-evolution.json --parallel --workers 10
-```
-
-Preparation refuses to overwrite frozen inputs and creates `config/knowledge-evolution.json`. The seven-entry candidate library includes analysis/reflection, task creation/update/readback, JSON-string encoding and the distinction between execution guidance and implemented work. The pilot keeps all original 17 tasks and runs each once with five Judge slots. Entries being visible or their tools being called does not prove causal memory use; Judge TF does not independently verify complete task outcomes. Run the three-strategy profile only after reviewing this pilot. Legacy recovery artifacts remain supported; versioned updates preserve knowledge kind and practice provenance.
-
-The knowledge updater uses `json_schema_named_calls_v2`: a system instruction plus one JSON input document, and a strict response Schema with a single `result` field. Named call slots and target tool IDs are constrained. Optional arguments use explicit null as an omission marker only when the actual tool Schema disallows null; native nullable arguments retain null. JSON-encoded string arguments such as Shrimp `tasksRaw` remain strings. The harness validates the response and target contracts locally, rejects duplicate keys and concatenated objects, and never salvages partial JSON or retries malformed updates. Provider support for strict output is required; there is no fallback to JSON mode.
+Maintain English code/documentation. Original benchmark text, frozen knowledge, historical responses and exact tool-error matching retain their source languages to avoid changing the experimental inputs. Existing Role 3/Role 1 documents remain in place. Credentials, tools, generated routes and temporary checkpoints remain ignored. Commit or push only with explicit authorization.
