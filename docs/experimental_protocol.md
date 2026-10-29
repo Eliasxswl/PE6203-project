@@ -1,8 +1,8 @@
-# Experimental Protocol (v0.4, Frozen 2026-10-17) — Group Project 4, Role 3
+# Experimental Protocol (v0.5, Updated 2026-10-29) — Group Project 4, Role 3
 
-Status legend: **[FIXED]** frozen in the repo or verified against primary sources; **[PROPOSED]** recommendation needing group sign-off; **[TBD]** needs verification or another role's action. Task subset frozen at commit 60013b9 (17 tasks, SHA-256 `fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07`); candidate pool hash `de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe`. Remaining open items: 1-run vs 3-run decision, Role 2 merge of `codex/selective-patch` + clean rerun.
+Status legend: **[FIXED]** frozen in the repo or verified against primary sources; **[PROPOSED]** recommendation needing group sign-off; **[TBD]** needs verification or another role's action. Task subset frozen at commit 60013b9 (17 tasks, SHA-256 `fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07`); candidate pool hash `de89ef288f16677bc946851ee92739279ab38d94de900045685cdde011c474fe`. Formal run: `results/20261026T084527.010290Z_Kevin`. Remaining open items: clean-source rerun (`dirty_source: True`), bundle archive checksums, update-cost pricing date.
 
-Changes from v0.3: §2 stage mapping verified against the paper and upstream artifacts (was [TBD]); iter5 resolved as a five-round server snapshot, not a fifth mutation layer; bundle inventory and reproducibility limits documented; §5 extension status updated (all eight extension servers already have isolation policies; tasks 29 and 114 provably changed today); §6 timing refreshed from the 2026-10-17 pilot observations; §8 preflight made concrete; judge fallback confirmed in code.
+Changes from v0.4: §3 records that `selective_patch` is registered and that the strategy distinction now lives in the experience layer, not in the catalog; §4 repeats set to 3; §6 replaced projections with measured cost; §7 and §8 closed with the formal run and the Task 9 case; §9 adds the failure taxonomy and its controlled test; §10 and §12 updated to the residual gaps. §1, §2 and §5 are unchanged: their evidence chain and frozen subset still hold.
 
 ## 1. Purpose
 Test whether a *selective patch* of tool-related harness knowledge recovers performance on changed tools while preserving tasks that should stay solvable, versus *no update* and *full rewrite*. Only the harness update may vary between strategies.
@@ -30,11 +30,20 @@ Early = `original`, Middle = `iter3`, Late = `iter5`. Evidence chain:
 ### 2.4 Other fixed benchmark facts
 Fork starts at upstream commit `888c779a0fe735f612ca62bdd1fdd7c9e6bf8701`; a separate upstream snapshot was byte-identical for `test_cases.json` and the four record files. Pool: 201 candidate tasks (`chosen_idx.json`) from 393 entries; task content, tools, fixtures and rubric unmodified.
 
-## 3. Strategies [FIXED, except selective_patch]
-`no_update`, `full_rewrite`, `selective_patch`, set through `strategies` in `config/experiment.json`. Knowledge is an in-memory dictionary keyed `server::tool` (name, description, schema) built from the stage catalog (`adapters.py`); transport routing is excluded. All strategies start from independent copies of the same Early catalog and evolve Early → Middle → Late. `selective_patch` is not yet registered (`strategy_plugins` empty, Role 1); adding it requires a new, separately frozen experiment. [TBD] Confirm whether `full_rewrite` calls the model during rebuild (needed for the update-cost comparison; currently its token cost cannot be assumed zero).
+## 3. Strategies [FIXED 2026-10-29]
+`no_update`, `full_rewrite`, `selective_patch`, set through `strategies` in `config/experiment.json`; `strategy_plugins` lists `custom.experiment.selective_patch`. Tool knowledge is an in-memory dictionary keyed `server::tool` (name, description, schema) built from the stage catalog (`adapters.py`); transport routing is excluded. All strategies start from independent copies of the same Early catalog and evolve Early → Middle → Late. [FIXED 2026-10-29]
+
+Two properties of the implemented strategies must be stated in the report, because they bound every score difference:
+
+1. **Catalog knowledge is identical between Full Rewrite and Selective Patch.** Full Rewrite rebuilds through `semantic(new_tools)`; Selective Patch patches only differing fields. Since the knowledge record is built from the same catalog, both produce byte-identical catalog knowledge — verified by `knowledge_sha256` on 153 of 153 strategy pairs. Selective Patch instead exceeds Full Rewrite only where an unchanged tool is untouched; where a tool changed, both write the same value.
+2. **The strategies diverge in the experience layer, not the catalog.** The adapters' deterministic rebuild has no model cost. The differentiating update is the experience/knowledge layer maintained by the strategy owner (`experience_state.py`, seeded from `config/practice/shrimp-k0.json`): Full Rewrite asks the updater to rewrite every entry, Selective Patch rewrites only entries whose source tool changed. This is what the update-cost figures in §7 measure, and it is verified by `experience_state_sha256` differing on 102 of 153 pairs while `knowledge_sha256` stays equal.
+
+Consequence: a score difference between the two strategies is attributable to which experience entries were rewritten, never to catalog content. The Task 9 case in §9 tests exactly that mechanism.
 
 ## 4. Controlled variables [FIXED]
-Same model (`glm-4-flash-250414`) for Agent and judge — `judge_model: ""` resolves to `agent_model` in code (`core.py`, `checks.py`); Agent temperature 0.2, judge temperature 0; 8192 max tokens; `agent_repeats: 1`; 5 judge attempts per trajectory (judge slots, **not** repeated runs); same task list for every strategy and version; request cap `max(10, 2 × Early tool count) + 1`; fresh fixtures, backend state and conversation per task; no retries, no judge top-up. Admission: at most 2 concurrent in-flight requests per account/model group, 0.2 s dispatch interval. No fine-tuning, no label changes.
+Same model (`glm-4-flash-250414`) for Agent and judge — `judge_model: ""` resolves to `agent_model` in code (`core.py`, `checks.py`); Agent temperature 0.2, judge temperature 0; 8192 max tokens; `agent_repeats: 3` in the formal run; 5 judge attempts per trajectory (judge slots, **not** repeated runs); same task list for every strategy and version; request cap `max(10, 2 × Early tool count) + 1`; fresh fixtures, backend state and conversation per task; no retries, no judge top-up. Admission: at most 2 concurrent in-flight requests per account/model group, 0.2 s dispatch interval; the formal profile ran one worker per account. No fine-tuning, no label changes.
+
+Formal run composition: 3 strategies × 3 stages × 17 tasks × 3 repeats = 459 logical conditions, of which Early is executed once and shared (102 references), leaving 357 actual Agent executions and 1,785 judge slots. Two conditions failed execution (`full_rewrite/iter5/9/0`, `selective_patch/iter5/278/0`) and are excluded with cause; 457 conditions carry valid scores.
 
 ## 5. Task selection
 ### 5.1 Gate: which tasks can run [FIXED by code]
@@ -53,37 +62,78 @@ All labels re-verified 2026-10-17 from live pilot catalogs; full table in `bench
 ### 5.4 Coverage and gaps
 Parameter and Description changes are present but co-occur on the same 4 tasks; no Parameter-only or Description-only case at Late (117 is DESC-only at Middle). Tool-level exists only as additions (24, 117); required-tool removal is unreachable inside the gate (candidates 72/90/430 need unreviewed external services). Imbalance 13 controls vs 4 changed; server family confounded with change status. Plan: prioritize 12306/commands/time catalog capture and preflight to enlarge the changed set, keep all 13 controls, and report remaining gaps explicitly with per-task values.
 
-## 6. Repeats and compute budget [PROPOSED]
-- Primary plan: **1 run per strategy** (`agent_repeats: 1`), 5 judge slots per trajectory; state "single run" on the report's first page. Three runs preferred by the assignment.
-- Observed (current two-strategy pilot, 5 tasks, 3 stages, 1 repeat): ≈ 50 min serial with 1 worker (≈100 s per trajectory incl. judging), ≈ 10 min with 4 workers (two API keys).
-- Formal projections (3 strategies, 17 tasks = 153 trajectories): ≈ 4.3 h serial; ≈ 50–70 min with 4 workers. Three repeats: ≈ 13 h serial / ≈ 2.5–3 h with 4 workers. Linear/constant-overhead estimates; re-estimate after the first formal block.
-- Max 2 concurrent workers per API key (official limit for this model); 4 workers need the second account key with the identical model/settings; key identities logged by number only, never written into documents or Git.
+## 6. Repeats and compute budget [FIXED 2026-10-29]
+- Executed: **3 repeats per strategy/stage/task** (`agent_repeats: 3`), 5 judge slots per trajectory. The assignment's "three runs preferred" is therefore satisfied, and the report reports repeat means rather than a single run.
+- Updates are counted once per episode transition, so the strategy cost is 2 transitions per strategy/task (Early→Middle, Middle→Late), not one per repeat. Recorded cost is thus per-episode and must be described that way.
+- Max 2 concurrent workers per API key (official limit for this model); the formal run used one worker per account. Key identities appear only as environment-variable names and quota groups, never in records, documents or Git.
+- Wall-clock: the run manifest retains per-trajectory timings; use them rather than the pilot projections in v0.4, which assumed 153 trajectories and one repeat.
 
-## 7. Metrics
-TF, PE (1–10) and ECS from the benchmark. **ECS follows the repo script (population standard deviation, divide by N=3)** and matched valid records across stages; paired strategy comparisons use matched identities (`paired_ecs`). Recovery/retention formulas: `benchmark_checklist.md` R1/R2 — freeze before any reported run; with 4 changed tasks, report per-task values, not only means. Update cost (tokens in/out, calls, wall-clock for the update step only, fixed worker count) comes from `records.json`, separated from evaluation cost; confirm full_rewrite update token usage (§3).
+## 7. Metrics and reported results [FIXED 2026-10-29]
+TF, PE (1–10) and ECS from the benchmark. **ECS follows the repo script (population standard deviation, divide by N=3)** over matched valid records across stages. Strategy comparison uses matched identities only (`paired_ecs`), never independent group means.
 
-## 8. Preflight (do before freeze, not after) [PROPOSED]
-1. `python -m custom.experiment validate --config config/experiment.json` then `check` on every teammate machine (`check --skip-models` for tool-only); record OS/Python/Node versions.
-2. `catalog-diff` for the eight extension servers (12306, mcp-server-commands, @guanxiong/mcp-server-time, original_from_tina, @driflyte, bazi-mcp; the other required servers are already covered); save the catalog evidence with the run.
-3. One no_update trajectory per candidate task on all three stages; a task passes only if it completes without environment/network errors. Explicit traffic-light row per task (12306 and driflyte are the expected network risks; uv/uvx entries and website-dependent content are known hazards).
-4. Freeze the ID list + SHA-256 only after step 3; record the three bundle archive checksums.
+Reported values from the formal run:
 
-## 9. Failure handling [FIXED]
-Execution/provider failures are excluded with cause and coverage counts; Agent operational mistakes stay scored; timeouts are never replayed; judge failures consume slots, means use valid scores with missing coverage explicit. Failures are classified under-update or over-update, each with one example trajectory from the selective_patch runs.
+| Quantity | Value |
+|---|---|
+| Paired ECS, 49 matched triples | Selective Patch 8.547 > No Update 8.371 > Full Rewrite 7.939 |
+| Update cost, No Update | 0 calls, 0 tokens, $0.00 |
+| Update cost, Selective Patch | 12 calls, ≈52K tokens, $0.0042 |
+| Update cost, Full Rewrite | 42 calls, ≈212K tokens, $0.0182 |
+| Stratified TF/PE | `compliance_checklist.md` §24 (Description+Parameter, Tool-addition, Retention rows) |
 
-## 10. Assumptions and limitations
-- Subset is gate-limited, not random; does not generalize to the benchmark; conclusions from the core are limited to task-management-style tools.
-- Only 5 servers have live-catalog evidence today; extension labels pending §8 step 2.
-- Snapshot comparison, not paper-overlay replication (§2.2); same model is Agent and judge, and the task-117 audit showed judge-validity limits that repeated slots do not remove.
-- Provider overload caused many excluded `execution_failed` records in early archived runs; upstream ran on Linux; web-dependent tasks may see changing content.
+Three reporting rules follow from the data:
+1. Report means **per cohort**, not pooled. Retention controls sit near 9.4/10, so pooling dilutes any adaptation effect toward zero.
+2. Report the **paired** delta next to every mean. The over-update cases are invisible in group means and only appear in trajectory-level pairing.
+3. State update cost as per-episode, not per-trajectory (see §6).
+
+## 8. Preflight [EXECUTED before the formal run]
+1. `validate` and `check` executed on the run machine; the manifest records Windows 11, Python 3.12.14, Node v24.21.0, and a hash for every local MCP config and tool entry (`fingerprints.local_config:*`, `fingerprints.tool_entry:*`).
+2. Catalog evidence for the 17 core tasks captured from live `tools/list` diffs; the eight extension servers were never captured and were excluded from the freeze rather than labelled from secondary evidence.
+3. Selection frozen with SHA-256 `fb5887bc…` **before** the formal run; the hash is recorded in the same manifest that carries the scores, so subset identity is bound to the results.
+4. **Not done:** the three bundle archive SHA-256 values are absent (`tool_bundles: missing` in the manifest). This is the one open preflight item and is tracked as gap #22 in the compliance checklist.
+
+## 9. Failure handling and taxonomy [FIXED 2026-10-29]
+Execution/provider failures are excluded with cause and coverage counts; Agent operational mistakes stay scored; timeouts are never replayed; judge failures consume slots; means use valid scores with missing coverage stated explicitly.
+
+Two failure classes are defined with numeric thresholds, so a case can be checked rather than argued:
+
+- **F1 under-update** — a changed required tool's knowledge is not updated and the task fails. Example: `no_update/iter5/416/0`, TF 1.0, with `splitDetails`, `priority` and `tags` absent from the knowledge the Agent reads.
+- **F2 over-update** — an unchanged tool's knowledge *is* modified and the paired No Update trajectory drops by at least 2.0 TF. Confirmed within the formal run: `iter5/389/0`, `iter5/403/0`, `iter5/410/1`, `iter5/278/2` (each 10.0 → 1.0), `iter5/274/2` (6.4 → 1.5), `iter3/394/2` (10.0 → 7.0), `iter5/394/2` (10.0 → 7.6).
+
+**Task 9 confirmation case** (`results/20261029T113248.805747Z_Kevin`). Ten groups × three conditions, 30 executions, zero Judge calls, zero updater calls, zero infrastructure failures. Restoring only the five rewritten-but-unchanged records for tools Task 9 cannot call moved workflow success from 3/10 to 10/10; an equal-length key-order control scored 0/10; the paired comparison produced seven discordant pairs with an exact two-sided p of 0.0156.
+
+Scope of that result must be stated exactly: it establishes that the **class** of over-update damage is real and causally tied to rebuilding records for tools the task never touches. It does **not** identify any individual harmful fact or phrase — the five restored records differ in wording, length and presentation together. Report the finding as "failure class confirmed, damaging unit not localised".
+
+## 10. Assumptions and limitations [UPDATED 2026-10-29]
+Design limits (cannot be removed without new benchmark content):
+- Subset is gate-limited, not random; results do not generalize to the benchmark, and the core exercises task-management-style tools.
+- The changed cohort is 4 tasks and its changes are Description+Parameter **jointly**; there is no Parameter-only, Description-only or Tool-only task. Tool-level change exists only as added tools (24, 117), and required-tool removal is unreachable inside the gate. Report this as a coverage limit, never as a measured ranking of change types.
+- Snapshot comparison, not paper-overlay replication (§2.2).
+- Same model serves as Agent and judge; the task-117 audit showed judge-validity limits that repeated slots do not remove.
+
+Measurement limits discovered during analysis:
+- **Ceiling effect.** Retention controls score near 9.4/10, so an over-update effect of roughly one point is swamped in cohort means. Only paired, per-trajectory screening surfaces the 10.0 → 1.0 cases. Any claim of "no damage" at mean level is unsupported.
+- **Localisation gap.** Task 9 confirms the failure class but not a damaging unit; no individual harmful fact or phrase has been identified.
+- **Tool-addition signal is small.** In the two Task-addition tasks, Selective Patch falls from 9.93 to 8.50 at Late while Full Rewrite stays at 9.80 — a 6-trajectory cell. Flag it as a lead to check, not a finding.
+
+Provenance limits (open items):
+- The formal run is `dirty_source: True` at revision `d7ddd29`; it cannot be rebuilt from a commit.
+- The three bundle archive SHA-256 values are absent from the manifest.
+- Update cost has no pricing date, so figures cannot be re-priced.
+- Provider overload caused many excluded `execution_failed` records in early archived runs; upstream ran on Linux while this project ran Windows 11; web-dependent tasks may see changing content.
 
 ## 11. Reproducibility requirements
 Python 3.11+ and Node.js 24; record OS, versions and model version; same environment type for all strategies. Commit code and config before any reported run (`dirty_source: False`); no edits to code, config, selection, inputs or generated local configs during a run; changed any of those → new experiment, never resume across them. Publish `config/experiment.json`, `selected_tasks.json` with SHA-256, run commands, raw `results/<id>/{experiment.json,records.json}`, and the three bundle archive names + SHA-256. Keep code and result commits separate; credentials and local configs stay out of Git.
 
-## 12. Pending items and owners
-| Item | Owner | Needed by |
+## 12. Status and residual items
+Closed: `selective_patch` registration; subset freeze with SHA-256; three-strategy × three-stage run at 3 repeats; TF/PE/ECS tables; recovery/retention aggregates; update cost; F1 and F2 failure cases; Task 9 confirmation case.
+
+| Item | Owner | Blocks |
 |---|---|---|
-| Register `selective_patch` via `adapters.register` + `strategy_plugins` | Role 1 | formal 3-strategy run |
-| Catalog capture for 8 extension servers; bundle SHA-256; preflight trajectories; clean-commit rerun (archived pilots are `dirty_source: True`) | Role 2 | subset freeze |
-| Freeze decision (controls, extensions, 1 vs 3 repeats), R1/R2 formula freeze | Role 3 + group | before formal run |
-| Final TF/PE/ECS tables, recovery/retention, costs, two failure cases | Role 4 | after formal run |
+| Clean-commit rerun with identical settings, or first-page disclosure of revision `d7ddd29` and the uncommitted delta | Group (run owner) | Requirement #14 |
+| SHA-256 of the three stage archives plus an extracted-tree manifest into the run manifest | Role 2 | Requirement #22 |
+| Pricing date and model/price-version for the update cost | Role 2 / run owner | Requirement #26 |
+| Discussion sections D1–D3 using the stratified table and the Task 9 case | Role 5 | Requirement #12 |
+| Judge-validity limitation restated on the report | Role 5 | Requirement #16 |
+
+Not closable within this project: Tool-level coverage (#6) and the eight extension tasks (#23). They require catalog capture for servers outside the reviewed gate. Document as scope, not as outcome.

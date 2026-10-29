@@ -1,31 +1,72 @@
-# Assignment Compliance Checklist (Draft v0.4)
+# Assignment Compliance Checklist (v0.5, 2026-10-29)
 
-Status: **Met** / **Partial** / **Not met** / **Pending** (owned by another role). Evidence paths refer to the team fork `Eliasxswl/PE6203-project`. v0.4: stage mapping verified (#5, #21); bundle availability verified, local checksums still due (#22); extension blockers reduced to catalog capture + preflight (#6, #20, #23); judge fallback confirmed in code (#2).
+Status: **Met** / **Partial** / **Not met** / **Pending** (owned by another role). Evidence paths refer to the team fork `Eliasxswl/PE6203-project`.
+
+Referenced runs: `results/20261026T084527.010290Z_Kevin` (formal three-strategy comparison, 17 tasks, 3 repeats), `results/20261019T234451.269257Z_Kevin` (catalog baseline), `results/20261029T113248.805747Z_Kevin` (Task 9 confirmation case).
+
+v0.5 changes: statuses re-verified against the formal run and the Task 9 case. Eight rows move from Partial/Pending to Met (#1, #5, #7, #8, #10, #11, #13, #18). New rows #24 (stratified metrics), #25 (failure-case resolve), #26 (pricing basis). Three residual gaps are now isolated and named: clean-source rerun (#14), bundle checksums (#22), pricing date (#26).
+
+## Requirement status
 
 | # | Requirement (assignment) | Status | Evidence / action |
 |---|---|---|---|
-| 1 | Three strategies compared: no update, full rewrite, selective patch | Partial | Baselines run; `selective_patch` not registered (`strategy_plugins` empty). Role 1; adding it starts a new frozen experiment. |
-| 2 | Base model, decoding and judge fixed across strategies | Met | `config/experiment.json`: one model glm-4-flash-250414; `judge_model: ""` falls back to agent model in `core.py`/`checks.py`; temps 0.2/0, 8192 tokens, 5 judge slots; same model on both API keys. |
-| 3 | No fine-tuning; no benchmark label changes | Met | Tasks/rubric unmodified; upstream data byte-identical to the fork; reference answers excluded from Agent input. |
-| 4 | MCPEvol-Bench; fixed documented subset, same for all strategies | Partial | Rule, gate and 17-task core written (protocol §5; task list v0.3); 25/201 candidates runnable; freeze one `selected_tasks.json` + SHA-256 after preflight, set matching `task_count`. |
-| 5 | Early, Middle, Late evaluated | Met (mapping); Partial (run coverage) | Mapping verified: paper §5.2 and Table 3 (original / 3 rounds / 5 rounds), upstream README, fork config — see #21. Baselines have run all three stages; selective_patch has not. |
-| 6 | Tool-, Parameter-, Description-level changes in selected tasks | Partial | Live catalogs: DESC+PARAM on required tools in 9/24/117/416 (117 DESC-only at Middle); Tool-level only as added tools for 24/117; no required-tool removal inside the runnable gate. Tasks 29/114 provably changed now; 102/107/114 may add PARAM-centric, non-taskmanager cases after 12306 catalog capture. Document any residual gap. |
-| 7 | Three runs preferred; single run must be stated | Partial | Plan: 1 run (5 judge slots are not repeats), stated on the report's first page. Three runs ≈ 13 h serial / ≈ 2.5–3 h with 4 workers; decide at freeze. |
-| 8 | Report TF, PE, ECS for method and both baselines | Pending | Pipeline computes them incl. `paired_ecs`; ECS uses repo definition (population SD). Needs the final run with all three strategies. |
-| 9 | Recovery and retention analysis | Partial | 13 verified control tasks + unchanged tools inside changed tasks; formulas R1/R2 drafted, must be frozen before running; imbalance 13 vs 4 and server confound to be reported; extension tasks may reduce the confound. |
-| 10 | Update cost per strategy | Partial | Pipeline records update usage/timings/calls; measure update step under fixed worker count, separate from evaluation; confirm full_rewrite token cost (protocol §3). |
-| 11 | Failure analysis: ≥2 types, ≥1 trajectory each | Pending | Definitions ready (F1/F2); needs selective_patch runs. |
-| 12 | Discussion: when patching helps/fails, hardest change type | Pending | Report authors (Role 5); stratified analysis plan in checklist §8. |
-| 13 | Codebase: pipeline, own selective method, two baselines | Partial | Pipeline + two baselines done (65 offline tests passing at 2026-10-15); own method pending. |
-| 14 | Reproduction material: configs, commands, raw logs | Partial | Present; archived runs have `dirty_source: True` — rerun from a clean commit; publish configs, frozen subset hash, bundle checksums, OS/version records. |
-| 15 | 10-min presentation + 5-min Q&A | Pending | Whole group. |
-| 16 | Judge validity concern documented | Partial | Task-117 audit (high TF with missing steps); same model as Agent and judge; state in limitations. |
-| 17 | Preflight before subset freeze | Pending | `validate`/`check` on each machine; `catalog-diff` on extension servers; one trajectory per candidate on all stages; failures/causes recorded; no post-freeze replacement. Probes 135/109/161/401/54/90/430/72 remain non-runnable. |
-| 18 | Same OS/environment type for all strategies | Pending | Upstream: Linux (CentOS 7.9); project: Windows tested, macOS/Linux pending; state the environment; run all strategies in one environment type. |
-| 19 | Compute plan and key usage | Partial | Max 2 workers/key; second key for 4 workers (already configured, stable account assignment); keys logged by number only; observed ≈50 min (serial) / ≈10 min (4 workers) for the 2-strategy 5-task pilot. |
-| 20 | Change types verified against real catalogs | Partial | Done independently for the 17 core tasks (server-level diff reproduced from pilot `judge_catalog`, 2026-10-17). Extension: 29/114 partly labeled from covered servers; remaining servers need `catalog-diff` (Role 2). |
-| 21 | (new) Early/Middle/Late mapping verified against primary sources | Met | Paper arXiv:2607.14642v1 §5.2 + Table 3 caption; upstream README at commit `888c779`; `stages` in `config/experiment.json`; protocol §2.1. iter5 = five-round server snapshot, not a fifth mutation layer; four HYBRID record levels feed only upstream `--step 4` overlays and are not applied (`mode: live`). |
-| 22 | (new) Stage bundles available and pinned | Met (public) / Partial (local) | HF dataset `anonymous2233/evol-servers` holds exactly original/iter3/iter5 zips (3,395,494,138 B); 167 servers per stage config; all three archives required. Role 2: record zip SHA-256 + extracted-tree manifest; official checksums are not published. |
-| 23 | (new) Extension tasks unblocked for labeling | Partial | Every server behind the 8 extension tasks already has a reviewed policy (4 built-in + 11 policies); no new source review needed. Remaining: catalog capture and network preflight (12306, driflyte). |
+| 1 | Three strategies compared: no update, full rewrite, selective patch | **Met** | `settings.strategies` lists all three; `strategy_plugins: ["custom.experiment.selective_patch"]`; all three executed on all three stages in `20261026T084527`. |
+| 2 | Base model, decoding and judge fixed across strategies | **Met** | One model `glm-4-flash-250414` for Agent and judge (`judge_model: ""` resolves to Agent model); temperatures 0.2/0, 8192 tokens, 5 judge attempts; identical in every strategy row of the run. |
+| 3 | No fine-tuning; no benchmark label changes | **Met** | No training code or weights in the repo; `src/custom/data/test_cases/test_cases.json` hash `1370d7f9...` recorded in `fingerprints.sources`; reference answers excluded from Agent input. |
+| 4 | MCPEvol-Bench; fixed documented subset, same for all strategies | **Met** | `config/subsets/selected_tasks.json`, SHA-256 `fb5887bc21829ab3a8c7b4da553cde1d75a2b79b016a23278106051b23368a07`, recorded in `fingerprints.sources` and identical across all strategies; `task_count: 17`. |
+| 5 | Early, Middle, Late evaluated | **Met** | `stages: ["original","iter3","iter5"]`; 357 actual executions plus 102 shared Early references; 459 logical conditions. |
+| 6 | Tool-, Parameter-, Description-level changes in selected tasks | **Partial** | Live catalogs: Description+Parameter on required tools in 9/24/117/416 (117 Description-only at Middle); Tool-level appears only as added tools (24, 117). No required-tool removal is reachable inside the gate. Residual gap documented in `benchmark_task_list.md`; not closable without unreviewed external services. |
+| 7 | Three runs preferred; single run must be stated | **Met** | `settings.agent_repeats: 3`; three independent Agent repeats per strategy/stage/task. The report may therefore state mean/interval rather than "single run". |
+| 8 | Report TF, PE, ECS for method and both baselines | **Met** | `aggregate.paired_ecs` over 49 matched task/repeat triples: Selective Patch 8.547, No Update 8.371, Full Rewrite 7.939. Per-stage TF/PE in #24. |
+| 9 | Recovery and retention analysis | **Met** | `aggregate.recovery_retention` uses confirmed labels relative to Early and same-version paired TF against No Update; per-transition and per-cohort values recorded. Imbalance 4 changed vs 13 controls reported. |
+| 10 | Update cost per strategy | **Met** | `aggregate.update_costs`: No Update 0 calls / $0.00; Selective Patch 12 calls / $0.0042; Full Rewrite 42 calls / $0.0182 (USD). Counted once per episode transition, separated from evaluation cost. |
+| 11 | Failure analysis: ≥2 types, ≥1 trajectory each | **Met** | F1 (under-update) and F2 (over-update) both defined and populated. Seven Full Rewrite retention trajectories meet the literal F2 criterion, four of them 10.0 → 1.0. Task 9 confirmation case supplies a controlled test: 3/10 → 10/10 after restoring five rewritten-but-unchanged records; exact paired p = 0.0156. See #25. |
+| 12 | Discussion: when patching helps/fails, hardest change type | **Partial** | Inputs now complete (#24, #25). Narrative ownership is Role 5. Hardest-type statement must be phrased as "no Tool-only case exists in the frozen subset", not as a measured ranking. |
+| 13 | Codebase: pipeline, own selective method, two baselines | **Met** | `custom.experiment` pipeline; baselines `no_update` and `full_rewrite`; own method `custom.experiment.selective_patch` plus the strategy-owned experience layer in `experience_state.py`; offline suite in `tests/`. |
+| 14 | Reproduction material: configs, commands, raw logs | **Partial** | Manifests, raw records, source ZIP and prompt hashes are retained per run. **Residual gap:** the formal run is `dirty_source: True` at revision `d7ddd29`. A clean-commit rerun, or an explicit disclosure in the report, remains required. |
+| 15 | 10-min presentation + 5-min Q&A | **Pending** | Whole group. |
+| 16 | Judge validity concern documented | **Partial** | Task-117 audit (high TF with missing steps); same model acts as Agent and judge; multiple slots do not remove this. Must be restated in the report's limitations. |
+| 17 | Preflight before subset freeze | **Met (as run)** | 17 selected tasks passed the applicable preflight checks; steps 1–3 of protocol §8 executed before freeze; non-runnable candidates recorded with causes and never replaced. |
+| 18 | Same OS/environment type for all strategies | **Met** | All strategies ran inside one manifest: Windows 11, Python 3.12.14, Node v24.21.0 (`experiment.json` → `environment`). Upstream ran Linux; state this difference in the report. |
+| 19 | Compute plan and key usage | **Met** | Per-account concurrency 1 in the formal profile; providers declared by environment-variable name and quota group; keys never written into records or documents. |
+| 20 | Change types verified against real catalogs | **Met** | All 17 core-task labels re-derived from live `tools/list` diffs on 2026-10-17; upstream mutation records explicitly rejected as a labelling source. |
+| 21 | Early/Middle/Late mapping verified against primary sources | **Met** | Paper arXiv:2607.14642v1 §5.2 and Table 3 caption; upstream README at `888c779`; protocol §2.1–§2.2. |
+| 22 | Stage bundles available and pinned | **Partial** | Bundles publicly available (HF `anonymous2233/evol-servers`, 3,395,494,138 B). **Residual gap:** the formal manifest records all three archives as `status: missing`, so no archive SHA-256 is bound to the run. Role 2. |
+| 23 | Extension tasks (8 runnable but catalog-uncaptured) | **Not met (by scope)** | Deliberately excluded from the frozen 17-task core; documented as a coverage gap (#6). No post-freeze replacement. |
+| 24 | (new) Metrics reported separately by change type | **Met** | Stratified TF/PE table below, computed from the formal run. |
+| 25 | (new) Over-update criterion put under a controlled test | **Met** | `results/20261029T113248.805747Z_Kevin/task-9-confirmation-review.json`: 10 groups × 3 conditions, 30 executions, no Judge or updater calls, 0 infrastructure failures. |
+| 26 | (new) Update cost carries a pricing basis and date | **Not met** | Price ceilings (`prompt_usd_per_million: 0.1`) are configured but neither a pricing date nor a provider price-version is recorded with the run. |
 
-**Open items for Role 3:** group decision on controls vs changed balance, extension inclusion and repeats (#4, #6, #7, #9); receive Role 2 catalog/preflight evidence and bundle checksums (#17, #22, #23); freeze the ID list and R1/R2 formulas; keep this table current through the formal run.
+## Stratified metrics by change type (#24)
+
+Computed from `results/20261026T084527.010290Z_Kevin/records.json`; cells are `TF / PE` with `n` in parentheses. Early is executed once and shared by all three strategies, so it has a single column.
+
+| Change group | Stage | No Update | Full Rewrite | Selective Patch |
+|---|---|---|---|---|
+| Description+Parameter, 4 tasks (9, 24, 117, 416) | Early | 8.67 / 10.00 (12) | shared | shared |
+| | Middle | 6.83 / 8.68 (12) | 9.00 / 9.98 (12) | 8.35 / 10.00 (12) |
+| | Late | 7.22 / 9.21 (12) | 8.58 / 9.33 (11) | 8.10 / 9.60 (12) |
+| Tool addition only, 2 tasks (24, 117) | Early | 9.80 / 10.00 (6) | shared | shared |
+| | Middle | 10.00 / 10.00 (6) | 10.00 / 10.00 (6) | 10.00 / 10.00 (6) |
+| | Late | 9.93 / 10.00 (6) | 9.80 / 10.00 (6) | 8.50 / 9.19 (6) |
+| Retention control, 13 tasks | Early | 9.90 / 9.98 (39) | shared | shared |
+| | Middle | 9.05 / 9.68 (39) | 9.07 / 9.88 (39) | 9.41 / 10.00 (39) |
+| | Late | 9.32 / 9.99 (39) | 8.14 / 9.57 (39) | 9.03 / 9.79 (38) |
+
+Reading notes: the changed cohort is Description+Parameter jointly, so no Parameter-only, Description-only or Tool-only row can be reported (#6). Missing cells are execution failures, not zero scores: `full_rewrite/iter5/9/0` and `selective_patch/iter5/278/0`.
+
+## Three residual gaps
+
+| Gap | Why it blocks a "Met" | Cheapest honest fix |
+|---|---|---|
+| #14 `dirty_source: True` | Assignment asks for reproducible material; a dirty-source run cannot be rebuilt from a commit | Clean-commit rerun with identical settings, or a first-page disclosure naming revision `d7ddd29` and the uncommitted delta |
+| #22 bundle checksums missing | Archive identity is unbound to the run, so extraction equivalence cannot be audited | Record SHA-256 of the three zips plus an extracted-tree manifest into the run manifest |
+| #26 no pricing date | Cost figures cannot be re-priced or checked against the provider's price history | Record pricing date and model/price-version alongside `update_costs` |
+
+Non-closable within this project: #6 Tool-level coverage and #23 extension tasks. Both require catalog capture for servers outside the reviewed gate, or benchmark content the gate rejects. They must be reported as scope limits, not as results.
+
+## Open items for Role 3
+
+1. Keep this table current through the report freeze; re-verify after any rerun.
+2. Hand #24 and #25 to Role 5 as the quantitative base for discussion sections D1–D3.
+3. Obtain Role 2 evidence for #22 and the pricing date for #26 before submission.
