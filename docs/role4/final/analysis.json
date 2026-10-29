@@ -1,0 +1,6131 @@
+{
+  "index": {
+    "catalog_baseline": "results/20261019T234451.269257Z_Kevin",
+    "knowledge_strategy_comparison": "results/20261026T084527.010290Z_Kevin",
+    "task9_over_update_case": "results/20261029T113248.805747Z_Kevin"
+  },
+  "formal_runs": {
+    "catalog_baseline": {
+      "path": "results/20261019T234451.269257Z_Kevin",
+      "protocol": "shared_early_json_v1",
+      "dirty_source": false,
+      "revision": "52f7d1dcfb855c410614960ce95e2fff73e773e3",
+      "agent_backend": "legacy",
+      "source_records_sha256": "80d1198386f4a8f0bbb1f51cce4fb4344afb938ca1dfded40ac3546777621872",
+      "source_records_semantic_sha256": "ceb10e8725cbf7062023e058c0e0bb7b8cf6dd9e8e1fd7956b122d868b4847f9",
+      "logical": 459,
+      "physical": 357,
+      "scored_physical": 357,
+      "shared_aliases": 102,
+      "status_counts": {
+        "completed": 357
+      },
+      "judge_statuses": {
+        "completed": 1769,
+        "failed": 14,
+        "outcome_unknown": 2
+      },
+      "paired_ecs_n": 51,
+      "main": [
+        {
+          "strategy": "no_update",
+          "stage": "original",
+          "paired_n": 51,
+          "paired_ecs": 8.135057308748875,
+          "task_fulfillment": 8.952941176470588,
+          "task_fulfillment_repeat_sd": 0.08882158159142027,
+          "planning_and_efficiency": 9.713725490196078,
+          "planning_and_efficiency_repeat_sd": 0.1901859710271712
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "paired_n": 51,
+          "paired_ecs": 8.135057308748875,
+          "task_fulfillment": 8.674509803921568,
+          "task_fulfillment_repeat_sd": 0.38489352022948886,
+          "planning_and_efficiency": 9.592156862745098,
+          "planning_and_efficiency_repeat_sd": 0.35398538341636865
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "paired_n": 51,
+          "paired_ecs": 8.135057308748875,
+          "task_fulfillment": 8.72549019607843,
+          "task_fulfillment_repeat_sd": 0.3799623607899473,
+          "planning_and_efficiency": 9.577777777777778,
+          "planning_and_efficiency_repeat_sd": 0.31973613047456334
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "original",
+          "paired_n": 51,
+          "paired_ecs": 8.161285179717503,
+          "task_fulfillment": 8.952941176470588,
+          "task_fulfillment_repeat_sd": 0.08882158159142027,
+          "planning_and_efficiency": 9.713725490196078,
+          "planning_and_efficiency_repeat_sd": 0.1901859710271712
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "paired_n": 51,
+          "paired_ecs": 8.161285179717503,
+          "task_fulfillment": 8.827450980392157,
+          "task_fulfillment_repeat_sd": 0.15666654396422122,
+          "planning_and_efficiency": 9.909803921568628,
+          "planning_and_efficiency_repeat_sd": 0.07833327198211022
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "paired_n": 51,
+          "paired_ecs": 8.161285179717503,
+          "task_fulfillment": 8.592156862745098,
+          "task_fulfillment_repeat_sd": 0.4650160295385495,
+          "planning_and_efficiency": 9.870588235294118,
+          "planning_and_efficiency_repeat_sd": 0.22414775156773728
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "original",
+          "paired_n": 51,
+          "paired_ecs": 8.233167964098419,
+          "task_fulfillment": 8.952941176470588,
+          "task_fulfillment_repeat_sd": 0.08882158159142027,
+          "planning_and_efficiency": 9.713725490196078,
+          "planning_and_efficiency_repeat_sd": 0.1901859710271712
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "paired_n": 51,
+          "paired_ecs": 8.233167964098419,
+          "task_fulfillment": 9.031372549019608,
+          "task_fulfillment_repeat_sd": 0.5718098908959276,
+          "planning_and_efficiency": 9.91764705882353,
+          "planning_and_efficiency_repeat_sd": 0.132581501995114
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "paired_n": 51,
+          "paired_ecs": 8.233167964098419,
+          "task_fulfillment": 8.742156862745098,
+          "task_fulfillment_repeat_sd": 0.13619690271482673,
+          "planning_and_efficiency": 9.980392156862745,
+          "planning_and_efficiency_repeat_sd": 0.01797088507825813
+        }
+      ],
+      "cohorts": [
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 1.1166666666666667
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": -0.14358974358974355
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 0.9333333333333332
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": -0.46153846153846156
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 1.5666666666666667
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": -0.015384615384615375
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 1.0166666666666666
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": -0.291025641025641
+        }
+      ],
+      "update_costs": [
+        {
+          "strategy": "no_update",
+          "updates": 6,
+          "api_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "api_cost": 0,
+          "elapsed_seconds": 0.005059999995864928
+        },
+        {
+          "strategy": "full_rewrite",
+          "updates": 6,
+          "api_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "api_cost": 0,
+          "elapsed_seconds": 0.0055558000021846965
+        },
+        {
+          "strategy": "selective_patch",
+          "updates": 6,
+          "api_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "api_cost": 0,
+          "elapsed_seconds": 0.01905579999584006
+        }
+      ],
+      "replicate_ecs": [
+        {
+          "strategy": "no_update",
+          "repeat": 0,
+          "n": 17,
+          "ecs": 8.144546709901453
+        },
+        {
+          "strategy": "no_update",
+          "repeat": 1,
+          "n": 17,
+          "ecs": 8.274031475997042
+        },
+        {
+          "strategy": "no_update",
+          "repeat": 2,
+          "n": 17,
+          "ecs": 7.986593740348127
+        },
+        {
+          "strategy": "full_rewrite",
+          "repeat": 0,
+          "n": 17,
+          "ecs": 7.93589143747398
+        },
+        {
+          "strategy": "full_rewrite",
+          "repeat": 1,
+          "n": 17,
+          "ecs": 7.900223327805028
+        },
+        {
+          "strategy": "full_rewrite",
+          "repeat": 2,
+          "n": 17,
+          "ecs": 8.647740773873503
+        },
+        {
+          "strategy": "selective_patch",
+          "repeat": 0,
+          "n": 17,
+          "ecs": 7.865597319591413
+        },
+        {
+          "strategy": "selective_patch",
+          "repeat": 1,
+          "n": 17,
+          "ecs": 8.248402833564901
+        },
+        {
+          "strategy": "selective_patch",
+          "repeat": 2,
+          "n": 17,
+          "ecs": 8.585503739138943
+        }
+      ],
+      "task_deltas": [
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 4.199999999999999
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": -1.2000000000000002
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 2.4
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 2.4
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 3.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 2.6
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": -3.2
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": -1.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": -4.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 1.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": -1.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 1.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.40000000000000036
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": -0.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": -3.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 1.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 3.5
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 2.5
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 6.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.40000000000000036
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": -5.999999999999999
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": -1.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 3.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.6000000000000014
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": -1.4000000000000004
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": -1.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": -7.199999999999999
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": -2.2
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": -1.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 2.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 1.8000000000000003
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 1.7999999999999998
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 4.2
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": -1.4000000000000004
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": -0.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": -1.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 1.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.40000000000000036
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": -2.4000000000000004
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": -0.20000000000000018
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 1.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 3.5
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 2.5
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 6.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": -4.200000000000001
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 6.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": -2.75
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": -1.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": -1.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 1.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 2.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 1.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 3.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": -7.199999999999999
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": -0.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        }
+      ],
+      "physical_inference_usage": [
+        {
+          "strategy": "no_update",
+          "role": "agent",
+          "reported_calls": 389,
+          "usd": null,
+          "prompt_tokens": 3433604,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 101401,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "no_update",
+          "role": "judge",
+          "reported_calls": 765,
+          "usd": null,
+          "prompt_tokens": 7785405,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 123364,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "full_rewrite",
+          "role": "agent",
+          "reported_calls": 249,
+          "usd": null,
+          "prompt_tokens": 2261452,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 67509,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "full_rewrite",
+          "role": "judge",
+          "reported_calls": 510,
+          "usd": null,
+          "prompt_tokens": 5221475,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 81480,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "selective_patch",
+          "role": "agent",
+          "reported_calls": 275,
+          "usd": null,
+          "prompt_tokens": 2541225,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 66356,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "selective_patch",
+          "role": "judge",
+          "reported_calls": 508,
+          "usd": null,
+          "prompt_tokens": 5236519,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 81452,
+          "completion_tokens_missing_calls": 0
+        }
+      ],
+      "judge_means_verified": 714,
+      "saved_ecs_verified": true,
+      "exclusions": []
+    },
+    "knowledge_strategy_comparison": {
+      "path": "results/20261026T084527.010290Z_Kevin",
+      "protocol": "experience_evolution_v1",
+      "dirty_source": true,
+      "revision": "d7ddd29f3a7111afc2327af4fbed1fb19a29229b",
+      "agent_backend": "langchain",
+      "source_records_sha256": "0daa558d54583fdd0b3cac8d44a1964dce8e4e9bb63b6a789fc008a3738fac3a",
+      "source_records_semantic_sha256": "451c8084c1b79e9d88984ded60e3bb071e1ac2c9034d9e9ea51bf8f19d5e784f",
+      "logical": 459,
+      "physical": 357,
+      "scored_physical": 355,
+      "shared_aliases": 102,
+      "status_counts": {
+        "completed": 355,
+        "execution_failed": 2
+      },
+      "judge_statuses": {
+        "completed": 1737,
+        "failed": 38,
+        "not_attempted": 10
+      },
+      "paired_ecs_n": 49,
+      "main": [
+        {
+          "strategy": "no_update",
+          "stage": "original",
+          "paired_n": 51,
+          "paired_ecs": 8.370799156800254,
+          "task_fulfillment": 9.611764705882353,
+          "task_fulfillment_repeat_sd": 0.23617482235158507,
+          "planning_and_efficiency": 9.984313725490196,
+          "planning_and_efficiency_repeat_sd": 0.02716942443245288
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "paired_n": 51,
+          "paired_ecs": 8.370799156800254,
+          "task_fulfillment": 8.530392156862746,
+          "task_fulfillment_repeat_sd": 0.1292222319744071,
+          "planning_and_efficiency": 9.444117647058823,
+          "planning_and_efficiency_repeat_sd": 0.3408340066208245
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "paired_n": 49,
+          "paired_ecs": 8.370799156800254,
+          "task_fulfillment": 8.775510204081632,
+          "task_fulfillment_repeat_sd": 0.6372359574861294,
+          "planning_and_efficiency": 9.796258503401361,
+          "planning_and_efficiency_repeat_sd": 0.14290746170797314
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "original",
+          "paired_n": 51,
+          "paired_ecs": 7.939085613431602,
+          "task_fulfillment": 9.611764705882353,
+          "task_fulfillment_repeat_sd": 0.23617482235158507,
+          "planning_and_efficiency": 9.984313725490196,
+          "planning_and_efficiency_repeat_sd": 0.02716942443245288
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "paired_n": 51,
+          "paired_ecs": 7.939085613431602,
+          "task_fulfillment": 9.054901960784314,
+          "task_fulfillment_repeat_sd": 0.25131717600018916,
+          "planning_and_efficiency": 9.901960784313726,
+          "planning_and_efficiency_repeat_sd": 0.10278699938887145
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "paired_n": 49,
+          "paired_ecs": 7.939085613431602,
+          "task_fulfillment": 8.20204081632653,
+          "task_fulfillment_repeat_sd": 0.8810823386053552,
+          "planning_and_efficiency": 9.504761904761905,
+          "planning_and_efficiency_repeat_sd": 0.5141040864087557
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "original",
+          "paired_n": 51,
+          "paired_ecs": 8.547139408964208,
+          "task_fulfillment": 9.611764705882353,
+          "task_fulfillment_repeat_sd": 0.23617482235158507,
+          "planning_and_efficiency": 9.984313725490196,
+          "planning_and_efficiency_repeat_sd": 0.02716942443245288
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "paired_n": 51,
+          "paired_ecs": 8.547139408964208,
+          "task_fulfillment": 9.16078431372549,
+          "task_fulfillment_repeat_sd": 0.32010667195517667,
+          "planning_and_efficiency": 10.0,
+          "planning_and_efficiency_repeat_sd": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "paired_n": 49,
+          "paired_ecs": 8.547139408964208,
+          "task_fulfillment": 8.783673469387756,
+          "task_fulfillment_repeat_sd": 0.2239418280042234,
+          "planning_and_efficiency": 9.736054421768708,
+          "planning_and_efficiency_repeat_sd": 0.27748793028629004
+        }
+      ],
+      "cohorts": [
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "n": 11,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "n": 38,
+          "mean_delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 2.1708333333333334
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": 0.01794871794871793
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "n": 11,
+          "mean_delta_tf": 1.6181818181818182
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "n": 38,
+          "mean_delta_tf": -1.2078947368421051
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "n": 12,
+          "mean_delta_tf": 1.5208333333333333
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "n": 39,
+          "mean_delta_tf": 0.35641025641025637
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "n": 11,
+          "mean_delta_tf": 0.9636363636363634
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "n": 38,
+          "mean_delta_tf": -0.26842105263157895
+        }
+      ],
+      "update_costs": [
+        {
+          "strategy": "no_update",
+          "updates": 6,
+          "api_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "api_cost": 0,
+          "elapsed_seconds": 0.015282099950127304
+        },
+        {
+          "strategy": "full_rewrite",
+          "updates": 6,
+          "api_calls": 42,
+          "input_tokens": 132853,
+          "output_tokens": 14955,
+          "api_cost": 0.018229775,
+          "elapsed_seconds": 229.4268129998818
+        },
+        {
+          "strategy": "selective_patch",
+          "updates": 6,
+          "api_calls": 12,
+          "input_tokens": 30041,
+          "output_tokens": 3944,
+          "api_cost": 0.00419339,
+          "elapsed_seconds": 76.26013059995603
+        }
+      ],
+      "replicate_ecs": [
+        {
+          "strategy": "no_update",
+          "repeat": 0,
+          "n": 15,
+          "ecs": 8.659160473332795
+        },
+        {
+          "strategy": "no_update",
+          "repeat": 1,
+          "n": 17,
+          "ecs": 8.54589024370811
+        },
+        {
+          "strategy": "no_update",
+          "repeat": 2,
+          "n": 17,
+          "ecs": 7.941271614128391
+        },
+        {
+          "strategy": "full_rewrite",
+          "repeat": 0,
+          "n": 15,
+          "ecs": 8.244792232345372
+        },
+        {
+          "strategy": "full_rewrite",
+          "repeat": 1,
+          "n": 17,
+          "ecs": 8.24799304659149
+        },
+        {
+          "strategy": "full_rewrite",
+          "repeat": 2,
+          "n": 17,
+          "ecs": 7.360437045936035
+        },
+        {
+          "strategy": "selective_patch",
+          "repeat": 0,
+          "n": 15,
+          "ecs": 8.408102722097757
+        },
+        {
+          "strategy": "selective_patch",
+          "repeat": 1,
+          "n": 17,
+          "ecs": 8.462865469129198
+        },
+        {
+          "strategy": "selective_patch",
+          "repeat": 2,
+          "n": 17,
+          "ecs": 8.754092778387262
+        }
+      ],
+      "task_deltas": [
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "no_update",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 4.8
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.25
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 6.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 6.6
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 7.800000000000001
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.6000000000000001
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": -1.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 0.9000000000000004
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 1.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.8000000000000007
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 1.200000000000001
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": -3.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": -1.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 3.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": -4.9
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": -0.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": -1.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": -1.1999999999999993
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": -2.4000000000000004
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": -1.4000000000000004
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "full_rewrite",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 0,
+          "delta_tf": 4.8
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.25
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 6.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 1.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 3.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 2.6
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 1.5
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 1.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": -2.4000000000000004
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": 0.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 9.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 1.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": 0.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": -0.40000000000000036
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 1.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter3",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 9,
+          "repeat": 2,
+          "delta_tf": 6.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 24,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 0,
+          "delta_tf": 0.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 1,
+          "delta_tf": -7.800000000000001
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 117,
+          "repeat": 2,
+          "delta_tf": -1.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 0,
+          "delta_tf": 4.8
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 1,
+          "delta_tf": 3.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "changed",
+          "task": 416,
+          "repeat": 2,
+          "delta_tf": 4.8
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 267,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 0,
+          "delta_tf": -1.8000000000000007
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 271,
+          "repeat": 2,
+          "delta_tf": 3.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 273,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 0,
+          "delta_tf": -3.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 274,
+          "repeat": 2,
+          "delta_tf": 3.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 278,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 0,
+          "delta_tf": 0.40000000000000036
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 1,
+          "delta_tf": -1.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 386,
+          "repeat": 2,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 0,
+          "delta_tf": -9.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 389,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 390,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 1,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 394,
+          "repeat": 2,
+          "delta_tf": -1.1999999999999993
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 403,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 410,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 1,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 411,
+          "repeat": 2,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 0,
+          "delta_tf": 0.0
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 1,
+          "delta_tf": -0.5999999999999996
+        },
+        {
+          "strategy": "selective_patch",
+          "stage": "iter5",
+          "cohort": "retention",
+          "task": 425,
+          "repeat": 2,
+          "delta_tf": 0.0
+        }
+      ],
+      "physical_inference_usage": [
+        {
+          "strategy": "no_update",
+          "role": "agent",
+          "reported_calls": 350,
+          "usd": null,
+          "prompt_tokens": 4438622,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 86041,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "no_update",
+          "role": "judge",
+          "reported_calls": 765,
+          "usd": null,
+          "prompt_tokens": 7710550,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 121981,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "full_rewrite",
+          "role": "agent",
+          "reported_calls": 245,
+          "usd": null,
+          "prompt_tokens": 3253872,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 62600,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "full_rewrite",
+          "role": "judge",
+          "reported_calls": 505,
+          "usd": null,
+          "prompt_tokens": 5194120,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 80517,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "selective_patch",
+          "role": "agent",
+          "reported_calls": 233,
+          "usd": null,
+          "prompt_tokens": 3043918,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 53621,
+          "completion_tokens_missing_calls": 0
+        },
+        {
+          "strategy": "selective_patch",
+          "role": "judge",
+          "reported_calls": 505,
+          "usd": null,
+          "prompt_tokens": 5126080,
+          "prompt_tokens_missing_calls": 0,
+          "completion_tokens": 81614,
+          "completion_tokens_missing_calls": 0
+        }
+      ],
+      "judge_means_verified": 710,
+      "saved_ecs_verified": true,
+      "exclusions": [
+        {
+          "identity": {
+            "strategy": "full_rewrite",
+            "stage": "iter5",
+            "task_id": 9,
+            "repeat": 0
+          },
+          "reason": "execution_failure"
+        },
+        {
+          "identity": {
+            "strategy": "selective_patch",
+            "stage": "iter5",
+            "task_id": 278,
+            "repeat": 0
+          },
+          "reason": "execution_failure"
+        }
+      ],
+      "update_ledger_verified": true,
+      "source_archive_verified": true
+    }
+  },
+  "task9": {
+    "path": "results/20261029T113248.805747Z_Kevin",
+    "summary": [
+      {
+        "arm": "fr_all",
+        "n": 10,
+        "read_successes": 3,
+        "rate": 0.3,
+        "wilson95": [
+          0.10779126740630099,
+          0.6032218525388546
+        ],
+        "plan_created": 3
+      },
+      {
+        "arm": "fr_changed_only",
+        "n": 10,
+        "read_successes": 10,
+        "rate": 1.0,
+        "wilson95": [
+          0.7224672001371107,
+          1
+        ],
+        "plan_created": 10
+      },
+      {
+        "arm": "fr_order_only",
+        "n": 10,
+        "read_successes": 0,
+        "rate": 0.0,
+        "wilson95": [
+          0,
+          0.2775327998628892
+        ],
+        "plan_created": 0
+      }
+    ],
+    "trials": [
+      {
+        "key": "fr_all/iter5/9/0",
+        "arm": "fr_all",
+        "repeat": 0,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193259670cee36ab7d47c0",
+          "20261029193302fa6f4cbbb7a64d70"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/0",
+        "arm": "fr_changed_only",
+        "repeat": 0,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919330939af7fbee1884d30",
+          "20261029193312773bbedd53df437c",
+          "20261029193315106c0ac2aa684396",
+          "20261029193320e33fbe308fdf4234",
+          "20261029193324e84ec440efb3403a"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/0",
+        "arm": "fr_order_only",
+        "repeat": 0,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "202610291933327d24a684e53e4c47",
+          "20261029193335878bbe099c4c4626"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/1",
+        "arm": "fr_all",
+        "repeat": 1,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "202610291934172ac2fc70bfa2471e",
+          "202610291934214a75ba24ee6a4c07"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/1",
+        "arm": "fr_changed_only",
+        "repeat": 1,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919334390f64091e6004bcf",
+          "20261029193346fb1f5b7bfc0f41f2",
+          "20261029193349037414e28d2e40b1",
+          "202610291933556fbb635e3c694554",
+          "20261029193357e88f0543f0754897"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/1",
+        "arm": "fr_order_only",
+        "repeat": 1,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193407f15652946c8d48c2",
+          "20261029193411563b4286b8e4412a"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/2",
+        "arm": "fr_all",
+        "repeat": 2,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193438953d07fed5314679",
+          "202610291934429689c0ec742f424b"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/2",
+        "arm": "fr_changed_only",
+        "repeat": 2,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919344989d2a346244b4e0a",
+          "20261029193453f9e50dee1e9c431e",
+          "202610291934564d4683c47c5d4ca5",
+          "2026102919350156817042cc954c92",
+          "20261029193504bacc3c83d2c34775"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/2",
+        "arm": "fr_order_only",
+        "repeat": 2,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193427d3b62d20b2f648ec",
+          "2026102919343112e164836fa54cc9"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/3",
+        "arm": "fr_all",
+        "repeat": 3,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193514eeebd2041acc410b",
+          "20261029193518b77771d3b852422b"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/3",
+        "arm": "fr_changed_only",
+        "repeat": 3,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919352607b6f8dc76e24e51",
+          "20261029193529e39a4eb9087d4aaa",
+          "2026102919353389a40fa8fb7e4686",
+          "20261029193538771b325044db44b8",
+          "2026102919354084692df20ac042f7"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/3",
+        "arm": "fr_order_only",
+        "repeat": 3,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193550609715364e9748a8",
+          "202610291935535eb1318d07ca4495"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/4",
+        "arm": "fr_all",
+        "repeat": 4,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193636b416ca9ba7564ab1",
+          "202610291936409ac5b43bd9734930"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/4",
+        "arm": "fr_changed_only",
+        "repeat": 4,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193600777d77ce5aae4a60",
+          "20261029193604aad30d7c4bd94513",
+          "202610291936091533753936124516",
+          "20261029193613d637fdc62efc4ac0",
+          "202610291936173c20c833dec746c8"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/4",
+        "arm": "fr_order_only",
+        "repeat": 4,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "202610291936257f66677933e14af2",
+          "2026102919362961806e9f93f9423a"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/5",
+        "arm": "fr_all",
+        "repeat": 5,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "202610291936587593c0073c79422c",
+          "2026102919370150e90ec9b7e0487f",
+          "20261029193705553d4d317b3943d6",
+          "2026102919371165587dc703da471e",
+          "20261029193713e7829d823c534b33"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/5",
+        "arm": "fr_changed_only",
+        "repeat": 5,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193723862ed921ac88496e",
+          "20261029193727148c8ec8c4b44868",
+          "202610291937313acff7dc9d694003",
+          "202610291937365f80fffadac24fe0",
+          "202610291937384da9d8b4c14249aa"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/5",
+        "arm": "fr_order_only",
+        "repeat": 5,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919364754091bcfa2404c28",
+          "20261029193651d7fa1f97e6e5479c"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/6",
+        "arm": "fr_all",
+        "repeat": 6,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919374832935a0f26634618",
+          "20261029193751d4b56ffc193546e6"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/6",
+        "arm": "fr_changed_only",
+        "repeat": 6,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193759f56bbb58358943c5",
+          "202610291938025a2dd414207547d6",
+          "2026102919380610da2bec0f07412c",
+          "20261029193812c200001691294932",
+          "20261029193814f5b2d828ecf14e39"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/6",
+        "arm": "fr_order_only",
+        "repeat": 6,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193824a14dd269a3b640ea",
+          "20261029193828a0ac66b0f9684647"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/7",
+        "arm": "fr_all",
+        "repeat": 7,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193912c58d14117fda431d",
+          "2026102919391693e5b1db75b74284"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/7",
+        "arm": "fr_changed_only",
+        "repeat": 7,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919383541f86c4a94904bb7",
+          "20261029193839cdfa6aebd6f3499f",
+          "20261029193843684b4edd71074980",
+          "20261029193848004c0ddd29bc423b",
+          "202610291938509f220672a79d42a5"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/7",
+        "arm": "fr_order_only",
+        "repeat": 7,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193902b151ab9a43aa4656",
+          "20261029193906926dcd69e69e4096"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/8",
+        "arm": "fr_all",
+        "repeat": 8,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "20261029193934929361232d834a4b",
+          "202610291939378205cc42e7ca4c63",
+          "20261029193940bae9038f857141ae",
+          "202610291939466b7c1b7563c74ff4",
+          "20261029193948f70e1ee26e394bf5"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/8",
+        "arm": "fr_changed_only",
+        "repeat": 8,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919400458ab766f6bf04edc",
+          "20261029194007c8ccfddb84a74988",
+          "20261029194011640ef59a03d44115",
+          "20261029194017ee4bb3d2dabf4537",
+          "202610291940204f5a2b2981824452"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/8",
+        "arm": "fr_order_only",
+        "repeat": 8,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "2026102919392283b054949c254255",
+          "202610291939261593c804b42140e9"
+        ]
+      },
+      {
+        "key": "fr_all/iter5/9/9",
+        "arm": "fr_all",
+        "repeat": 9,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "20261029194032234f35069fab4ba8",
+          "20261029194035b1963e5588d24ba4",
+          "202610291940387cdfb7fff1004f15",
+          "202610291940447b02eae9af6b4366",
+          "2026102919404649f233c0bb824c82"
+        ]
+      },
+      {
+        "key": "fr_changed_only/iter5/9/9",
+        "arm": "fr_changed_only",
+        "repeat": 9,
+        "agent_status": "completed",
+        "read_success": true,
+        "plan_created": true,
+        "patterns": [
+          "**/*yesterday*"
+        ],
+        "response_ids": [
+          "20261029194056acf295914a304e7c",
+          "20261029194100a174cb34d27740ee",
+          "20261029194104a0f56b16ddd8453c",
+          "20261029194109ce9fd386849e42ad",
+          "2026102919411212dcb047d34a4778"
+        ]
+      },
+      {
+        "key": "fr_order_only/iter5/9/9",
+        "arm": "fr_order_only",
+        "repeat": 9,
+        "agent_status": "completed",
+        "read_success": false,
+        "plan_created": false,
+        "patterns": [
+          "*yesterday*"
+        ],
+        "response_ids": [
+          "20261029194123d9c10043a04c4726",
+          "2026102919412617dd8707936d415f"
+        ]
+      }
+    ],
+    "restoration_only_success": 7,
+    "fr_only_success": 0,
+    "exact_p": 0.015625,
+    "source_semantic_hash_verified": true,
+    "shared_input_checks": 10,
+    "initial_state_reset_verified": true,
+    "unchanged_restored_from": "original K0, not Middle snapshot",
+    "presentation_control_verified": true,
+    "judge_calls": 0,
+    "new_update_calls": 0,
+    "selection_disclosure": "Task 9 and its source snapshot were selected after exploratory screening. The retained ten-group confirmation was fixed before dispatch. It is a local case study, not a random benchmark sample.",
+    "limitations": [
+      "Task9 and source snapshot were chosen after exploratory screening; this new thirty-execution batch was separately fixed before dispatch.",
+      "Ten independent private workspaces, but the same task, model alias and frozen source snapshot; inference does not extend automatically to other tasks or snapshots.",
+      "Five restored records differ in wording, presentation and length together; no individual harmful fact or phrase is identified.",
+      "Order-only control changes JSON object-key presentation in all FR records, including affected records; it tests format sensitivity, not only unrelated-record formatting.",
+      "Plan creation is a secondary observable. Original user wording can admit a textual plan, so this diagnostic substitutes no TF labels or historical scores."
+    ]
+  },
+  "validation": "All assertions passed; no model or MCP calls"
+}
