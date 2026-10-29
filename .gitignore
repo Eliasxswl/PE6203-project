@@ -10,6 +10,7 @@ results/baseline/
 __pycache__/
 .pytest_cache/
 *.pyc
+.idea/
 .env
 .env.*
 !.env.example

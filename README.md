@@ -46,7 +46,23 @@ Formal run `20261026T084527.010290Z_Kevin`. Actor and Judge `glm-4-flash-250414`
 
 TF and PE are means over Middle and Late only; Early is executed once and shared by all strategies, so pooling it would make the No Update row incomparable. ECS is the paired Evolutionary Competency Score over 49 matched task/repeat triples, using the repository definition (population standard deviation across the three stages). ΔTF is paired against No Update on identical task/stage/repeat cells, not a difference of the column means. Two cells are absent because two trajectories failed to execute (`full_rewrite/iter5/9/0`, `selective_patch/iter5/278/0`).
 
-The pooled means hide the mechanism. Split into the assignment's two questions — recovery on changed tasks, retention on tasks that should stay solvable — the trade-off becomes explicit.
+**Scope of the comparison.** Full Rewrite and Selective Patch hold byte-identical catalog knowledge: `knowledge_sha256` is equal in all 153 strategy pairs of the run, because both derive it from the same stage catalog. What differs is the experience layer — Full Rewrite asks the updater to rewrite every entry, Selective Patch rewrites only entries tied to changed tools (`experience_state_sha256` differs in 102 of 153 pairs). This study therefore compares **two experience-layer update policies, not two catalog-knowledge policies**. Wherever this document says "rewrites records for tools the task never touches", it means experience entries, never catalog entries.
+
+### Statistical evidence
+
+Paired bootstrap over the matched cells, 20,000 resamples, seed 20261029. Because deltas are per-cell, the interval describes spread across tasks, and the early-stage cells are excluded since they are shared rather than per-strategy.
+
+| Comparison | Δ | 95% CI | Cells won by the strategy | Separable from zero |
+|---|---|---|---|---|
+| Selective Patch − No Update, TF | +0.32 | [−0.09, +0.74] | 11/24 changed, 11/77 retention | No |
+| Full Rewrite − No Update, TF | −0.01 | [−0.53, +0.51] | 10/23 changed, 8/78 retention | No |
+| Selective Patch − No Update, ECS | +0.18 | [−0.29, +0.67] | 14/49 | No |
+| Full Rewrite − No Update, ECS | −0.43 | [−1.07, +0.17] | 12/49 | No |
+| Selective Patch − Full Rewrite, ECS | +0.61 | [+0.00, +1.27] | 19/49 | Marginal |
+
+Only the head-to-head Selective Patch versus Full Rewrite comparison is separable from zero, and it sits close to its lower bound. **Neither strategy is demonstrably better than No Update on this subset at this sample size.** The point estimates are reported because they are the pipeline's own output, but the ordering above should be read as an ordering of point estimates, not as established differences. The two strategies do separate clearly on the cohort split below, which is where the mechanism is visible.
+
+The pooled means hide that mechanism. Split into the assignment's two questions — recovery on changed tasks, retention on tasks that should stay solvable — the trade-off becomes explicit.
 
 ## Recovery and Retention
 
@@ -62,6 +78,8 @@ Paired TF change against No Update at the same task and repeat, relative to the 
 Both strategies recover on changed tasks, and Full Rewrite recovers more. The difference is what they do to tasks that did not change. Full Rewrite is neutral at Middle (+0.02) and loses 1.21 TF at Late, where its unnecessary rewrites have accumulated; Selective Patch loses 0.27 in the same transition, roughly four times less. One matched cell is missing at Late for each strategy (`9/0` full rewrite, `278/0` selective patch) because those trajectories failed to execute, so the Late rows use 11 and 38 pairs.
 
 This is the quantity the ECS ordering reflects: Full Rewrite buys a larger recovery and pays a larger retention loss, and the loss outweighs the gain by Late.
+
+These rows rest on 11–12 paired cells per transition across only 4 changed tasks. They describe this frozen subset; they do not estimate a benchmark-level recovery rate, and no per-transition interval is reported because the cells are too few to support one.
 
 ## Update Cost
 
@@ -90,9 +108,9 @@ Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Figures c
 
 **When selective patching helps.** On the four changed tasks Selective Patch recovers +1.52 TF at Middle and +0.96 at Late against No Update, because the field-level diff is complete on catalog content and it leaves every unchanged record untouched. Full Rewrite recovers more there (+2.17 and +1.62) but only by rewriting records for tools the task never touches, and that is exactly the mechanism the over-update cases implicate.
 
-**When it fails.** Not through under-update: the patch is exhaustive on catalog fields, so no changed argument can be missed. Its failures are residual rather than structural — the experience entries tied to changed tools are still rewritten, and those rewrites are the only place where Selective Patch can inherit the same contextual damage a full rewrite produces. That is why the Task 9 result matters, and it is the case where the two strategies differ least.
+**When it fails.** No under-update case was observed for Selective Patch: its field-level diff writes every differing catalog value, so an omission cannot happen by construction — the Task 416 case in [docs/case-under-update.md](docs/case-under-update.md) is a **No Update** trajectory for that reason, and the document says so. Selective Patch's losses are residual rather than structural: the experience entries tied to changed tools are still rewritten, and those rewrites are the only place where it can inherit the contextual damage a full rewrite produces. That is why the Task 9 result matters, and it is the case where the two strategies differ least.
 
-**Which change is hardest.** This subset cannot answer that. All four changed tasks change Description and Parameter jointly, and Tool-level change appears only as added tools, so a ranking of change levels has no support in the data and is reported as untested in [docs/subset-coverage.md](docs/subset-coverage.md).
+**Which change is hardest.** This subset cannot answer that. All four changed tasks change Description and Parameter jointly, and Tool-level change appears only as added tools, so a ranking of change levels has no support in the data. **Not assessed at all:** tool renaming and tool deletion, because no selected task contains them (candidates that would, such as 72, 90 and 430, launch external services the reviewed gate rejects). Reported as untested in [docs/subset-coverage.md](docs/subset-coverage.md), not as a finding.
 
 **Cost–benefit.** Selective Patch reaches a higher ECS at 23% of Full Rewrite's update cost. Full Rewrite's larger recovery on changed tasks does not convert into ECS, because the 1.21 TF retention loss at Late cancels it while the paired ECS also penalises stage-to-stage volatility.
 
@@ -100,7 +118,16 @@ Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Figures c
 
 ## Provenance status
 
-The retained formal run is `dirty_source: True` at revision `d7ddd29`, and the manifest records the three stage archives as `tool_bundles: missing`, so no archive checksum is bound to the run. Both are open items with owners in [docs/compliance_checklist.md](docs/compliance_checklist.md), together with the missing pricing date. They are disclosed here rather than left implicit.
+Three gaps remain open. They are listed here rather than left implicit, with owners in [docs/compliance_checklist.md](docs/compliance_checklist.md).
+
+1. **Dirty source.** The retained run is `dirty_source: True` at revision `d7ddd29`, so it cannot be rebuilt exactly from a commit. A clean-commit rerun is the only complete fix.
+2. **Archive identity.** The run manifest records `tool_bundles: missing` because the archives were not resolvable at run time. Their SHA-256 values have since been computed on the run machine and are recorded in [docs/bundle-checksums.md](docs/bundle-checksums.md); they fix archive identity for future runs but are not bound to this one.
+3. **Pricing basis.** Costs use the profile's configured price ceiling and carry no provider pricing date, so the dollar figures are order-of-magnitude estimates. Token counts and call counts are exact.
+
+Two measurement limits belong here as well, because they change how the scores should be read:
+
+- **Self-judging.** One model (`glm-4-flash-250414`) acts as both Actor and Judge. Five Judge attempts per trajectory reduce sampling noise but cannot remove a bias shared between generator and scorer, so the scores are a consistent internal ranking rather than an absolute capability measure.
+- **Platform.** All strategies ran on Windows 11 with Python 3.12.14 and Node v24.21.0. Upstream ran on Linux, and macOS/Linux tool-runtime validation is still pending, so cross-platform equivalence is assumed rather than demonstrated.
 
 ## Member interfaces
 
@@ -122,4 +149,4 @@ python -m custom.experiment counterfactual-check --source-experiment results/202
 
 The case command uses the normal agent loop, fresh state per execution and matched paths within each group. It writes a separate result and leaves historical scores intact.
 
-Tests: `python -m unittest discover -s tests -v`. Windows has been tested; real macOS/Linux tool-runtime validation remains pending. New maintained code and documentation are English; original benchmark data, frozen knowledge, tool-language matching and historical traces retain their original languages for reproducibility. Commit or push only when explicitly requested.
+Tests: `python -m unittest discover -s tests -v`. Windows has been tested; real macOS/Linux tool-runtime validation remains pending. New maintained code and documentation are English; original benchmark data, frozen knowledge, tool-language matching and historical traces retain their original languages for reproducibility.
