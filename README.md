@@ -46,14 +46,22 @@ Formal run `20261026T084527.010290Z_Kevin`. Actor and Judge `glm-4-flash-250414`
 
 TF and PE are means over Middle and Late only; Early is executed once and shared by all strategies, so pooling it would make the No Update row incomparable. ECS is the paired Evolutionary Competency Score over 49 matched task/repeat triples, using the repository definition (population standard deviation across the three stages). ΔTF is paired against No Update on identical task/stage/repeat cells, not a difference of the column means. Two cells are absent because two trajectories failed to execute (`full_rewrite/iter5/9/0`, `selective_patch/iter5/278/0`).
 
-The pooled means hide the mechanism, so the same comparison split by cohort:
+The pooled means hide the mechanism. Split into the assignment's two questions — recovery on changed tasks, retention on tasks that should stay solvable — the trade-off becomes explicit.
 
-| Cohort | Full Rewrite ΔTF | Selective Patch ΔTF |
-|---|---|---|
-| Changed tasks, 4 (n=23 / 24) | +1.91 | +1.20 |
-| Retention controls, 13 (n=78 / 77) | −0.58 | +0.05 |
+## Recovery and Retention
 
-Full Rewrite recovers more on tasks that changed and pays for it on tasks that did not; Selective Patch recovers less and leaves the controls alone. That trade-off, not the pooled mean, is what the ECS ordering reflects.
+Paired TF change against No Update at the same task and repeat, relative to the Early reference. These are the pipeline's own `aggregate.recovery_retention` values, computed per transition; No Update is the zero reference by definition.
+
+| Transition | Cohort | Matched | Full Rewrite | Selective Patch |
+|---|---|---|---|---|
+| Early→Middle | Changed, 4 tasks (recovery) | 12 | +2.17 | +1.52 |
+| Early→Middle | Retention, 13 tasks | 39 | +0.02 | +0.36 |
+| Middle→Late | Changed, 4 tasks (recovery) | 11 | +1.62 | +0.96 |
+| Middle→Late | Retention, 13 tasks | 38 | −1.21 | −0.27 |
+
+Both strategies recover on changed tasks, and Full Rewrite recovers more. The difference is what they do to tasks that did not change. Full Rewrite is neutral at Middle (+0.02) and loses 1.21 TF at Late, where its unnecessary rewrites have accumulated; Selective Patch loses 0.27 in the same transition, roughly four times less. One matched cell is missing at Late for each strategy (`9/0` full rewrite, `278/0` selective patch) because those trajectories failed to execute, so the Late rows use 11 and 38 pairs.
+
+This is the quantity the ECS ordering reflects: Full Rewrite buys a larger recovery and pays a larger retention loss, and the loss outweighs the gain by Late.
 
 ## Update Cost
 
@@ -80,15 +88,15 @@ Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Figures c
 
 ## Discussion
 
-**When selective patching helps.** On the four changed tasks Selective Patch recovers +1.20 TF against No Update, because the field-level diff is complete on catalog content and it leaves every unchanged record untouched. Full Rewrite recovers more there (+1.91) but only by rewriting records for tools the task never touches, and that is exactly the mechanism the over-update cases implicate.
+**When selective patching helps.** On the four changed tasks Selective Patch recovers +1.52 TF at Middle and +0.96 at Late against No Update, because the field-level diff is complete on catalog content and it leaves every unchanged record untouched. Full Rewrite recovers more there (+2.17 and +1.62) but only by rewriting records for tools the task never touches, and that is exactly the mechanism the over-update cases implicate.
 
 **When it fails.** Not through under-update: the patch is exhaustive on catalog fields, so no changed argument can be missed. Its failures are residual rather than structural — the experience entries tied to changed tools are still rewritten, and those rewrites are the only place where Selective Patch can inherit the same contextual damage a full rewrite produces. That is why the Task 9 result matters, and it is the case where the two strategies differ least.
 
 **Which change is hardest.** This subset cannot answer that. All four changed tasks change Description and Parameter jointly, and Tool-level change appears only as added tools, so a ranking of change levels has no support in the data and is reported as untested in [docs/subset-coverage.md](docs/subset-coverage.md).
 
-**Cost–benefit.** Selective Patch reaches a higher ECS at 23% of Full Rewrite's update cost. Full Rewrite's deeper recovery on changed tasks does not convert into ECS, because its retention losses and stage-to-stage volatility cancel the gain.
+**Cost–benefit.** Selective Patch reaches a higher ECS at 23% of Full Rewrite's update cost. Full Rewrite's larger recovery on changed tasks does not convert into ECS, because the 1.21 TF retention loss at Late cancels it while the paired ECS also penalises stage-to-stage volatility.
 
-**Lessons.** Cohort-level and paired reporting were necessary to see any of this; pooled means put No Update and Selective Patch within 0.01 TF of each other and would have hidden the entire effect.
+**Lessons.** Cohort-level and paired reporting were necessary to see any of this; the pooled TF means separate No Update and Full Rewrite by 0.03 and would have hidden the entire effect, while the retention table shows a 1.21 point loss for the same strategy.
 
 ## Provenance status
 
