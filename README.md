@@ -24,6 +24,76 @@ python -m custom.experiment run --config config/knowledge-evolution-formal.json 
 
 The formal knowledge profile uses **17 tasks, three versions, three Agent repeats and five Judge attempts per trajectory**. Shared Early outcomes give 459 logical conditions, 357 actual trajectories and 1,785 planned Judge slots. The catalog-only profile is `config/experiment.json`, using a separate `requirements-api.txt` environment. The upstream full environment remains in `requirements.txt`.
 
+### Reproducing the three strategies
+
+All three strategies live in one frozen profile, `config/knowledge-evolution-formal.json`, whose `strategies` field lists `["no_update","full_rewrite","selective_patch"]`. The strategy is a configuration field, not a CLI flag, so a single command produces the whole comparison and every strategy sees the same tasks, stages, repeats and models:
+
+```text
+python -m custom.experiment run --config config/knowledge-evolution-formal.json --parallel --workers 10
+```
+
+Each run writes `results/<run-id>/` with its manifest and raw records. The retained formal comparison is `results/20261026T084527.010290Z_Kevin`. Running the strategies as three separate invocations is not needed and would break the matched comparison.
+
+## Main Results
+
+Formal run `20261026T084527.010290Z_Kevin`. Actor and Judge `glm-4-flash-250414`, knowledge updater `openai/gpt-6-luna`, Agent temperature 0.2, 3 repeats, 5 Judge attempts.
+
+| Strategy | TF | PE | ECS | ΔTF vs No Update |
+|---|---|---|---|---|
+| No Update | 8.68 (n=102) | 9.62 | 8.371 | — |
+| Full Rewrite | 8.65 (n=101) | 9.71 | 7.939 | −0.01 |
+| Selective Patch | 8.99 (n=101) | 9.87 | 8.547 | +0.32 |
+
+TF and PE are means over Middle and Late only; Early is executed once and shared by all strategies, so pooling it would make the No Update row incomparable. ECS is the paired Evolutionary Competency Score over 49 matched task/repeat triples, using the repository definition (population standard deviation across the three stages). ΔTF is paired against No Update on identical task/stage/repeat cells, not a difference of the column means. Two cells are absent because two trajectories failed to execute (`full_rewrite/iter5/9/0`, `selective_patch/iter5/278/0`).
+
+The pooled means hide the mechanism, so the same comparison split by cohort:
+
+| Cohort | Full Rewrite ΔTF | Selective Patch ΔTF |
+|---|---|---|
+| Changed tasks, 4 (n=23 / 24) | +1.91 | +1.20 |
+| Retention controls, 13 (n=78 / 77) | −0.58 | +0.05 |
+
+Full Rewrite recovers more on tasks that changed and pays for it on tasks that did not; Selective Patch recovers less and leaves the controls alone. That trade-off, not the pooled mean, is what the ECS ordering reflects.
+
+## Update Cost
+
+Totals for the two transitions (Early→Middle, Middle→Late) per strategy — per episode, not per trajectory:
+
+| Strategy | Updater calls | Tokens in / out | Wall-clock | Cost |
+|---|---|---|---|---|
+| No Update | 0 | 0 / 0 | 0.0 s | $0.00 |
+| Full Rewrite | 42 | 132,853 / 14,955 | 229.4 s | $0.0182 |
+| Selective Patch | 12 | 30,041 / 3,944 | 76.3 s | $0.0042 |
+
+Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Figures come from the `aggregate.update_costs` block of the run manifest and use the configured price ceiling in the profile; **no provider pricing date is recorded with the run**, so the dollar values should be read as order-of-magnitude, not as billable amounts.
+
+## Method and subset
+
+- Method: [docs/method.md](docs/method.md) — the two knowledge layers, why Full Rewrite and Selective Patch hold byte-identical catalog knowledge (`knowledge_sha256` equal in 153/153 pairs), and what the comparison therefore does and does not test.
+- Subset coverage: [docs/subset-coverage.md](docs/subset-coverage.md) — three change levels, sample sizes, and the levels this subset cannot evaluate.
+- Implementation: `src/custom/experiment/selective_patch.py`; detailed algorithm in [docs/selective_patch.md](docs/selective_patch.md).
+
+## Representative failures
+
+- **Under-update:** [docs/case-under-update.md](docs/case-under-update.md) — Task 416 at Late, required arguments absent from Agent knowledge, TF 1.0 against 10.0 after an update.
+- **Over-update:** the Task 9 comparison below — unchanged-tool records rewritten, TF 3/10 against 10/10 after restoring them.
+
+## Discussion
+
+**When selective patching helps.** On the four changed tasks Selective Patch recovers +1.20 TF against No Update, because the field-level diff is complete on catalog content and it leaves every unchanged record untouched. Full Rewrite recovers more there (+1.91) but only by rewriting records for tools the task never touches, and that is exactly the mechanism the over-update cases implicate.
+
+**When it fails.** Not through under-update: the patch is exhaustive on catalog fields, so no changed argument can be missed. Its failures are residual rather than structural — the experience entries tied to changed tools are still rewritten, and those rewrites are the only place where Selective Patch can inherit the same contextual damage a full rewrite produces. That is why the Task 9 result matters, and it is the case where the two strategies differ least.
+
+**Which change is hardest.** This subset cannot answer that. All four changed tasks change Description and Parameter jointly, and Tool-level change appears only as added tools, so a ranking of change levels has no support in the data and is reported as untested in [docs/subset-coverage.md](docs/subset-coverage.md).
+
+**Cost–benefit.** Selective Patch reaches a higher ECS at 23% of Full Rewrite's update cost. Full Rewrite's deeper recovery on changed tasks does not convert into ECS, because its retention losses and stage-to-stage volatility cancel the gain.
+
+**Lessons.** Cohort-level and paired reporting were necessary to see any of this; pooled means put No Update and Selective Patch within 0.01 TF of each other and would have hidden the entire effect.
+
+## Provenance status
+
+The retained formal run is `dirty_source: True` at revision `d7ddd29`, and the manifest records the three stage archives as `tool_bundles: missing`, so no archive checksum is bound to the run. Both are open items with owners in [docs/compliance_checklist.md](docs/compliance_checklist.md), together with the missing pricing date. They are disclosed here rather than left implicit.
+
 ## Member interfaces
 
 - **Role 1:** catalog strategy plugin in `src/custom/experiment/selective_patch.py`; strategy-owned knowledge updates in `experience_state.py` use the same builder/validator for FR and SP.
