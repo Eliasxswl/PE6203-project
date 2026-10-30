@@ -4,7 +4,9 @@ Fork: [Octobrist/MCPEvol-Bench](https://github.com/Octobrist/MCPEvol-Bench), sta
 
 The runnable pipeline and the two baselines are implemented. Role 1 still supplies Selective Patch. Completed model-backed pilots are archived under `results/`, including provider-failure runs. Code and result publication remain separate. See [setup.md](setup.md) for installation and execution commands.
 
-## Current pilot
+> **Historical document.** The pilot settings below describe the five-task, two-strategy, single-repeat stage of the project and are kept as a protocol record. They are **not** the formal experiment. The reported comparison is the 17-task, three-strategy, three-repeat run `results/20261026T084527.010290Z_Kevin`, documented in [../REPORT.md](../REPORT.md) and [experimental_protocol.md](experimental_protocol.md).
+
+## Historical pilot (superseded)
 
 - The authority is `config/experiment.json`, with one ID list in `config/subsets/selected_tasks.json`.
 - Selected IDs: 9, 24, 117, 273, 403. These were screened for local dependencies, not sampled as a representative benchmark subset. Original task content, tool implementations, templates, fixtures, prompts, and rubric remain unchanged.
