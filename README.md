@@ -46,7 +46,7 @@ Formal run `20261026T084527.010290Z_Kevin`. Actor and Judge `glm-4-flash-250414`
 
 TF and PE are means over Middle and Late only; Early is executed once and shared by all strategies, so pooling it would make the No Update row incomparable. ECS is the paired Evolutionary Competency Score over 49 matched task/repeat triples, using the repository definition (population standard deviation across the three stages). ΔTF is paired against No Update on identical task/stage/repeat cells, not a difference of the column means. Two cells are absent because two trajectories failed to execute (`full_rewrite/iter5/9/0`, `selective_patch/iter5/278/0`).
 
-**Scope of the comparison.** Full Rewrite and Selective Patch hold byte-identical catalog knowledge: `knowledge_sha256` is equal in all 153 strategy pairs of the run, because both derive it from the same stage catalog. What differs is the experience layer — Full Rewrite asks the updater to rewrite every entry, Selective Patch rewrites only entries tied to changed tools (`experience_state_sha256` differs in 102 of 153 pairs). This study therefore compares **two experience-layer update policies, not two catalog-knowledge policies**. Wherever this document says "rewrites records for tools the task never touches", it means experience entries, never catalog entries.
+**Scope of the comparison.** Full Rewrite and Selective Patch hold byte-identical catalog knowledge: `knowledge_sha256` is equal in all 153 strategy pairs of the run, because both derive it from the same stage catalog. What differs is the experience layer — Full Rewrite asks the updater to rewrite every entry, Selective Patch rewrites only entries tied to changed tools (`experience_state_sha256` differs in 102 of 153 pairs). An experience entry lists several tools, so an unchanged tool sharing an entry with a changed one is rewritten anyway; that bundling is the mechanism behind the Selective Patch over-update cases below. This study therefore compares **two experience-layer update policies, not two catalog-knowledge policies**. Wherever this document says "rewrites records for tools the task never touches", it means experience entries, never catalog entries.
 
 ### Statistical evidence
 
@@ -60,7 +60,9 @@ Paired bootstrap over the matched cells, 20,000 resamples, seed 20261029. Becaus
 | Full Rewrite − No Update, ECS | −0.43 | [−1.07, +0.17] | 12/49 | No |
 | Selective Patch − Full Rewrite, ECS | +0.61 | [+0.00, +1.27] | 19/49 | Marginal |
 
-Only the head-to-head Selective Patch versus Full Rewrite comparison is separable from zero, and it sits close to its lower bound. **Neither strategy is demonstrably better than No Update on this subset at this sample size.** The point estimates are reported because they are the pipeline's own output, but the ordering above should be read as an ordering of point estimates, not as established differences. The two strategies do separate clearly on the cohort split below, which is where the mechanism is visible.
+Only the head-to-head Selective Patch versus Full Rewrite comparison is separable from zero, and it sits close to its lower bound. **Neither strategy is demonstrably better than No Update on this subset at this sample size.** The point estimates are reported because they are the pipeline's own output, but the ordering above should be read as an ordering of point estimates, not as established differences.
+
+**Sensitivity.** Repeating the bootstrap with task 416 excluded moves Selective Patch − No Update from +0.18 to +0.03 (CI [−0.42, +0.52]) and Full Rewrite − No Update from −0.43 to −0.65 (CI [−1.27, −0.12]), the latter now separable from zero on the wrong side. Excluding tasks 416 and 9 turns both deltas negative. The Selective Patch − Full Rewrite ordering is the only comparison that survives every exclusion (+0.61, +0.68 and +0.61 across the three samples). One task — 416, the under-update case below — carries the Selective Patch advantage over No Update; the robust finding is that Full Rewrite trails both.
 
 The pooled means hide that mechanism. Split into the assignment's two questions — recovery on changed tasks, retention on tasks that should stay solvable — the trade-off becomes explicit.
 
@@ -91,7 +93,7 @@ Totals for the two transitions (Early→Middle, Middle→Late) per strategy — 
 | Full Rewrite | 42 | 132,853 / 14,955 | 229.4 s | $0.0182 |
 | Selective Patch | 12 | 30,041 / 3,944 | 76.3 s | $0.0042 |
 
-Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Figures come from the `aggregate.update_costs` block of the run manifest and use the configured price ceiling in the profile; **no provider pricing date is recorded with the run**, so the dollar values should be read as order-of-magnitude, not as billable amounts.
+Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Dollar figures come from the `aggregate.update_costs` block of the run manifest and are the amounts **the provider reported with each update request** — the manifest's cost basis reads "Provider-reported update request costs" — not estimates derived from a price table. No pricing date is recorded with the run, so the figures cannot be re-priced against a later tariff; token and call counts are exact.
 
 ## Method and subset
 
@@ -101,18 +103,20 @@ Selective Patch issues 29% of Full Rewrite's calls at 23% of its cost. Figures c
 
 ## Representative failures
 
-- **Under-update:** [docs/case-under-update.md](docs/case-under-update.md) — Task 416 at Late, required arguments absent from Agent knowledge, TF 1.0 against 10.0 after an update.
-- **Over-update:** the Task 9 comparison below — unchanged-tool records rewritten, TF 3/10 against 10/10 after restoring them.
+- **Under-update:** [docs/case-under-update.md](docs/case-under-update.md) — Task 416 at Late, required arguments absent from Agent knowledge, TF 1.0 against 10.0 after an update. The failing trajectory is **No Update**'s, not Selective Patch's.
+- **Patched but partly recovered:** same document, same task — Selective Patch holds the identical updated catalog yet reaches only 5.8 / 4.6 / 5.8 at Late while Full Rewrite spans 10.0 / 10.0 / 1.0; the residual gap lives in the experience layer, and excluding task 416 removes most of Selective Patch's edge over No Update.
+- **Over-update (Full Rewrite):** the Task 9 comparison below — unchanged-tool records rewritten, TF 3/10 against 10/10 after restoring them; seven literal F2 trajectories in the formal run.
+- **Over-update (Selective Patch):** [docs/case-sp-over-update.md](docs/case-sp-over-update.md) — three literal F2 trajectories, led by Task 389 at Late (10.0 → 1.0), where rewritten guidance for unchanged tools ends in a `minLength` schema rejection, plus Task 117 at Late repeat 1 (2.0), where `tags` was passed into a schema that rejects it. Mechanism identified, not counterfactually confirmed.
 
 ## Discussion
 
-**When selective patching helps.** On the four changed tasks Selective Patch recovers +1.52 TF at Middle and +0.96 at Late against No Update, because the field-level diff is complete on catalog content and it leaves every unchanged record untouched. Full Rewrite recovers more there (+2.17 and +1.62) but only by rewriting records for tools the task never touches, and that is exactly the mechanism the over-update cases implicate.
+**When selective patching helps.** On the four changed tasks both updating strategies recover against No Update, and the recovery itself comes from holding current catalog knowledge — which Selective Patch and Full Rewrite share byte for byte. Selective Patch does not recover more than Full Rewrite (+1.52 vs +2.17 at Middle, +0.96 vs +1.62 at Late); its advantage is reaching a comparable recovery while leaving every unchanged-tool experience entry untouched, which is what the retention rows show. Full Rewrite's extra recovery is bought by rewriting entries for tools the task never touches, and that is exactly the mechanism the over-update cases implicate.
 
-**When it fails.** No under-update case was observed for Selective Patch: its field-level diff writes every differing catalog value, so an omission cannot happen by construction — the Task 416 case in [docs/case-under-update.md](docs/case-under-update.md) is a **No Update** trajectory for that reason, and the document says so. Selective Patch's losses are residual rather than structural: the experience entries tied to changed tools are still rewritten, and those rewrites are the only place where it can inherit the contextual damage a full rewrite produces. That is why the Task 9 result matters, and it is the case where the two strategies differ least.
+**When it fails.** Not through under-update: the patch writes every differing catalog value, so a missing argument cannot happen by construction — the Task 416 under-update case is a **No Update** trajectory for that reason. Selective Patch can, however, over-update. Its selectivity is per experience entry, and entries bundle several tools, so one changed tool rewrites the guidance of its unchanged siblings. Three literal F2 trajectories follow ([docs/case-sp-over-update.md](docs/case-sp-over-update.md)), led by Task 389 at Late (10.0 → 1.0), where the rewritten guidance tells the Agent to register a request with required tags and the run ends in a `minLength` schema rejection that No Update never hits; Task 117 at Late repeat 1 (2.0) shows the same damage direction on a changed tool, with the Judge attributing the failure to passing `tags` into a schema that does not accept it. All are mechanism-identified, not counterfactually confirmed. On the two tool-addition tasks at Late, Selective Patch also averages 8.50 against No Update's 9.93 (n=6) — an unexplained reversal on a six-cell sample, recorded as an observation rather than a finding.
 
 **Which change is hardest.** This subset cannot answer that. All four changed tasks change Description and Parameter jointly, and Tool-level change appears only as added tools, so a ranking of change levels has no support in the data. **Not assessed at all:** tool renaming and tool deletion, because no selected task contains them (candidates that would, such as 72, 90 and 430, launch external services the reviewed gate rejects). Reported as untested in [docs/subset-coverage.md](docs/subset-coverage.md), not as a finding.
 
-**Cost–benefit.** Selective Patch reaches a higher ECS at 23% of Full Rewrite's update cost. Full Rewrite's larger recovery on changed tasks does not convert into ECS, because the 1.21 TF retention loss at Late cancels it while the paired ECS also penalises stage-to-stage volatility.
+**Cost–benefit.** Selective Patch reaches a higher ECS at 23% of Full Rewrite's update cost. Full Rewrite's larger recovery on changed tasks does not convert into ECS, because the 1.21 TF retention loss at Late cancels it while the paired ECS also penalises stage-to-stage volatility. The advantage over No Update itself rests on task 416 (see Statistical evidence); the advantage over Full Rewrite survives every exclusion tested.
 
 **Lessons.** Cohort-level and paired reporting were necessary to see any of this; the pooled TF means separate No Update and Full Rewrite by 0.03 and would have hidden the entire effect, while the retention table shows a 1.21 point loss for the same strategy.
 
@@ -122,7 +126,7 @@ Three gaps remain open. They are listed here rather than left implicit, with own
 
 1. **Dirty source.** The retained run is `dirty_source: True` at revision `d7ddd29`, so it cannot be rebuilt exactly from a commit. A clean-commit rerun is the only complete fix.
 2. **Archive identity.** The run manifest records `tool_bundles: missing` because the archives were not resolvable at run time. Their SHA-256 values have since been computed on the run machine and are recorded in [docs/bundle-checksums.md](docs/bundle-checksums.md); they fix archive identity for future runs but are not bound to this one.
-3. **Pricing basis.** Costs use the profile's configured price ceiling and carry no provider pricing date, so the dollar figures are order-of-magnitude estimates. Token counts and call counts are exact.
+3. **Pricing date.** Dollar costs are the amounts the provider reported with each update request, recorded per request in the run records — not estimates from a price table. No pricing date is recorded, so the figures cannot be re-priced against a later tariff; token and call counts are exact.
 
 Two measurement limits belong here as well, because they change how the scores should be read:
 

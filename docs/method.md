@@ -44,6 +44,8 @@ change_type per affected tool = TOOL | PARAM | DESC | MIXED
 
 The comparison is exact equality on nested schema values. Dictionaries are traversed recursively so unrelated sibling fields survive; lists and scalars are replaced atomically. There is no embedding distance and no threshold, so the detector has no recall parameter to tune.
 
+One property of this selection matters for failure analysis: an experience entry references several tools (`tool_ids`), and the entry is selected when **any** of them changed. Selectivity is therefore at entry granularity — an unchanged tool whose guidance shares an entry with a changed tool is rewritten anyway. This bundling is the mechanism behind the Selective Patch over-update cases in [case-sp-over-update.md](case-sp-over-update.md).
+
 ## Controls used to make the comparison interpretable
 
 1. **Matched identities.** Scores are compared only on identical `task/stage/repeat` cells, never between independently aggregated groups.

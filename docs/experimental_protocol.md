@@ -79,6 +79,7 @@ Reported values from the formal run:
 | Update cost, No Update | 0 calls, 0 tokens, $0.00 |
 | Update cost, Selective Patch | 12 calls, ≈52K tokens, $0.0042 |
 | Update cost, Full Rewrite | 42 calls, ≈212K tokens, $0.0182 |
+| Sensitivity, task 416 excluded | SP−NU ECS +0.03 [−0.42, +0.52]; FR−NU −0.65 [−1.27, −0.12]; SP−FR +0.68 [−0.08, +1.34] |
 | Stratified TF/PE | `compliance_checklist.md` §24 (Description+Parameter, Tool-addition, Retention rows) |
 
 Three reporting rules follow from the data:
@@ -100,6 +101,8 @@ Two failure classes are defined with numeric thresholds, so a case can be checke
 - **F1 under-update** — a changed required tool's knowledge is not updated and the task fails. Example: `no_update/iter5/416/0`, TF 1.0, with `splitDetails`, `priority` and `tags` absent from the knowledge the Agent reads.
 - **F2 over-update** — an unchanged tool's knowledge *is* modified and the paired No Update trajectory drops by at least 2.0 TF. Confirmed within the formal run: `iter5/389/0`, `iter5/403/0`, `iter5/410/1`, `iter5/278/2` (each 10.0 → 1.0), `iter5/274/2` (6.4 → 1.5), `iter3/394/2` (10.0 → 7.0), `iter5/394/2` (10.0 → 7.6).
 
+Selective Patch contributes three literal F2 trajectories of its own under the same screen: `iter5/389/0` (10.0 → 1.0), `iter5/274/0` (10.0 → 7.0) and `iter3/274/2` (10.0 → 7.6). The catastrophic case is traced to rewritten guidance for unchanged tools that share an experience entry with changed tools — entry bundling, documented in `docs/case-sp-over-update.md` — but it is mechanism-identified, not counterfactually confirmed. Task 117 Late repeat 1 (Selective Patch 2.0, Judge attributing the failure to passing `tags` into a schema that rejects it) shows the same damage direction on a changed tool.
+
 **Task 9 confirmation case** (`results/20261029T113248.805747Z_Kevin`). Ten groups × three conditions, 30 executions, zero Judge calls, zero updater calls, zero infrastructure failures. Restoring only the five rewritten-but-unchanged records for tools Task 9 cannot call moved workflow success from 3/10 to 10/10; an equal-length key-order control scored 0/10; the paired comparison produced seven discordant pairs with an exact two-sided p of 0.0156.
 
 Scope of that result must be stated exactly: it establishes that the **class** of over-update damage is real and causally tied to rebuilding records for tools the task never touches. It does **not** identify any individual harmful fact or phrase — the five restored records differ in wording, length and presentation together. Report the finding as "failure class confirmed, damaging unit not localised".
@@ -119,7 +122,7 @@ Measurement limits discovered during analysis:
 Provenance limits (open items):
 - The formal run is `dirty_source: True` at revision `d7ddd29`; it cannot be rebuilt from a commit.
 - The three bundle archive SHA-256 values are absent from the manifest.
-- Update cost has no pricing date, so figures cannot be re-priced.
+- Update costs are provider-reported per-request amounts; no pricing date is recorded, so figures cannot be re-priced.
 - Provider overload caused many excluded `execution_failed` records in early archived runs; upstream ran on Linux while this project ran Windows 11; web-dependent tasks may see changing content.
 
 ## 11. Reproducibility requirements

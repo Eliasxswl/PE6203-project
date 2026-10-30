@@ -46,6 +46,20 @@ No Update is defined as discarding every environment change on both knowledge la
 
 This matters for how the two failure classes are represented. **Selective Patch cannot produce a catalog under-update**: its patch compares the full previous and current catalogs field by field and writes every differing value, so any required argument added or renamed at a stage is copied into the Agent knowledge. An under-update case therefore has to come from the No Update baseline. Claiming a "selective patch missed a change" case would misrepresent the implementation.
 
+## Selective Patch on the same task: patched but only partly recovered
+
+Selective Patch cannot reproduce this failure — its field-level diff writes every differing catalog value — but it does not fully repair the task either. All 18 scored trajectories for task 416:
+
+| Strategy | Middle (3 repeats) | Late (3 repeats) |
+|---|---|---|
+| No Update | 1.0 / 1.0 / 1.0 | 1.0 / 1.0 / 1.0 |
+| Full Rewrite | 7.6 / 8.8 / 1.6 | 10.0 / 10.0 / 1.0 |
+| Selective Patch | 2.0 / 4.6 / 3.6 | 5.8 / 4.6 / 5.8 |
+
+Full Rewrite and Selective Patch hold byte-identical catalog knowledge for this task, so the recovery gap between them can only come from the experience layer: Full Rewrite rewrites every entry, Selective Patch rewrites only entries tied to changed tools. Whether the missing context is the untouched entries themselves or per-repeat variance, this sample cannot separate — Full Rewrite's own repeats span 1.6 to 8.8 at Middle and 1.0 to 10.0 at Late. What the table establishes is that even with the catalog fully updated, recovery is partial and high-variance for both strategies, while No Update stays at 1.0 throughout.
+
+This case is also load-bearing for the comparison: excluding task 416 from the paired bootstrap moves Selective Patch − No Update from +0.18 to +0.03 (README, Statistical evidence). One task carries most of the selective-patching advantage over No Update.
+
 ## Limitation
 
 Single task, single repeat family, one snapshot pair. It establishes the mechanism (required argument absent from Agent knowledge → task failure) and ties it to a concrete score drop, but it does not estimate how often under-update costs points across the benchmark. The 13 retention controls exist precisely to show that a strategy can also fail in the opposite direction; see the over-update case for that side.
