@@ -1,0 +1,5400 @@
+{
+  "run": "20261026T084527.010290Z_Kevin",
+  "hashes": {
+    "results/20261026T084527.010290Z_Kevin/experiment.json": "268d79babeacb5d5bfd79385ce19f23565ba8be2e084dd381d8a02b3c08d00c9",
+    "results/20261026T084527.010290Z_Kevin/records.json": "0daa558d54583fdd0b3cac8d44a1964dce8e4e9bb63b6a789fc008a3738fac3a",
+    "results/20261026T084527.010290Z_Kevin/update-budget.json": "0cf8124fd406e3230ca8553fc27870ff8d69a67d10617bbb33fbdfbb541f5dc8",
+    "results/20261026T084527.010290Z_Kevin/inputs/source.zip": "fc2b93a867329574a29d25deb47d1a39ce3d5c8d2cbfeb60949e705bf0bb7ac5"
+  },
+  "dirty_source": true,
+  "revision": "d7ddd29f3a7111afc2327af4fbed1fb19a29229b",
+  "protocol": "experience_evolution_v1",
+  "purpose": "strategy_owned_catalog_and_experience_comparison",
+  "coverage": {
+    "logical_trajectories": 459,
+    "logical_scored": 457,
+    "physical_trajectories": 357,
+    "physical_scored": 355,
+    "shared_aliases": 102,
+    "physical_statuses": {
+      "completed": 355,
+      "execution_failed": 2
+    },
+    "judge_statuses": {
+      "completed": 1737,
+      "failed": 38,
+      "not_attempted": 10
+    },
+    "paired_ecs_n": 49,
+    "stage_matched_n": {
+      "original": 51,
+      "iter3": 51,
+      "iter5": 49
+    },
+    "excluded": [
+      {
+        "key": "full_rewrite/iter5/9/0",
+        "reason": "execution_failure",
+        "errors": [
+          {
+            "type": "ExecutionFailure",
+            "message": "MCP startup timeout (TimeoutError)",
+            "unknown_outcome": false
+          }
+        ]
+      },
+      {
+        "key": "selective_patch/iter5/278/0",
+        "reason": "execution_failure",
+        "errors": [
+          {
+            "type": "OpenAITimeoutError",
+            "message": "Request timed out.",
+            "unknown_outcome": true,
+            "cause": {
+              "type": "APITimeoutError",
+              "message": "Request timed out.",
+              "unknown_outcome": true,
+              "cause": {
+                "type": "ReadTimeout",
+                "message": "The read operation timed out",
+                "unknown_outcome": true,
+                "cause": {
+                  "type": "ReadTimeout",
+                  "message": "The read operation timed out",
+                  "unknown_outcome": false
+                }
+              }
+            }
+          },
+          {
+            "type": "ExecutionFailure",
+            "message": "Agent execution failed; see recorded request/transport error",
+            "unknown_outcome": false
+          }
+        ]
+      }
+    ]
+  },
+  "main_results": [
+    {
+      "strategy": "no_update",
+      "stage": "original",
+      "available": 51,
+      "planned": 51,
+      "matched": 51,
+      "paired_ecs": 8.370799156800254,
+      "task_fulfillment": 9.611764705882353,
+      "task_fulfillment_repeat_means": [
+        9.635294117647058,
+        9.364705882352942,
+        9.83529411764706
+      ],
+      "task_fulfillment_repeat_sd": 0.23617482235158507,
+      "planning_and_efficiency": 9.984313725490196,
+      "planning_and_efficiency_repeat_means": [
+        9.952941176470588,
+        10.0,
+        10.0
+      ],
+      "planning_and_efficiency_repeat_sd": 0.02716942443245288
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "available": 51,
+      "planned": 51,
+      "matched": 51,
+      "paired_ecs": 8.370799156800254,
+      "task_fulfillment": 8.530392156862746,
+      "task_fulfillment_repeat_means": [
+        8.588235294117647,
+        8.620588235294118,
+        8.382352941176471
+      ],
+      "task_fulfillment_repeat_sd": 0.1292222319744071,
+      "planning_and_efficiency": 9.444117647058823,
+      "planning_and_efficiency_repeat_means": [
+        9.070588235294117,
+        9.738235294117647,
+        9.523529411764706
+      ],
+      "planning_and_efficiency_repeat_sd": 0.3408340066208245
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "available": 51,
+      "planned": 51,
+      "matched": 49,
+      "paired_ecs": 8.370799156800254,
+      "task_fulfillment": 8.775510204081632,
+      "task_fulfillment_repeat_means": [
+        9.36,
+        8.929411764705883,
+        8.105882352941176
+      ],
+      "task_fulfillment_repeat_sd": 0.6372359574861294,
+      "planning_and_efficiency": 9.796258503401361,
+      "planning_and_efficiency_repeat_means": [
+        9.64,
+        9.805882352941177,
+        9.924509803921568
+      ],
+      "planning_and_efficiency_repeat_sd": 0.14290746170797314
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "original",
+      "available": 51,
+      "planned": 51,
+      "matched": 51,
+      "paired_ecs": 7.939085613431602,
+      "task_fulfillment": 9.611764705882353,
+      "task_fulfillment_repeat_means": [
+        9.635294117647058,
+        9.364705882352942,
+        9.83529411764706
+      ],
+      "task_fulfillment_repeat_sd": 0.23617482235158507,
+      "planning_and_efficiency": 9.984313725490196,
+      "planning_and_efficiency_repeat_means": [
+        9.952941176470588,
+        10.0,
+        10.0
+      ],
+      "planning_and_efficiency_repeat_sd": 0.02716942443245288
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "available": 51,
+      "planned": 51,
+      "matched": 51,
+      "paired_ecs": 7.939085613431602,
+      "task_fulfillment": 9.054901960784314,
+      "task_fulfillment_repeat_means": [
+        9.2,
+        9.2,
+        8.764705882352942
+      ],
+      "task_fulfillment_repeat_sd": 0.25131717600018916,
+      "planning_and_efficiency": 9.901960784313726,
+      "planning_and_efficiency_repeat_means": [
+        9.788235294117648,
+        9.929411764705883,
+        9.988235294117647
+      ],
+      "planning_and_efficiency_repeat_sd": 0.10278699938887145
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "available": 50,
+      "planned": 51,
+      "matched": 49,
+      "paired_ecs": 7.939085613431602,
+      "task_fulfillment": 8.20204081632653,
+      "task_fulfillment_repeat_means": [
+        8.653333333333334,
+        8.8,
+        7.205882352941177
+      ],
+      "task_fulfillment_repeat_sd": 0.8810823386053552,
+      "planning_and_efficiency": 9.504761904761905,
+      "planning_and_efficiency_repeat_means": [
+        9.82,
+        9.807843137254903,
+        8.923529411764706
+      ],
+      "planning_and_efficiency_repeat_sd": 0.5141040864087557
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "original",
+      "available": 51,
+      "planned": 51,
+      "matched": 51,
+      "paired_ecs": 8.547139408964208,
+      "task_fulfillment": 9.611764705882353,
+      "task_fulfillment_repeat_means": [
+        9.635294117647058,
+        9.364705882352942,
+        9.83529411764706
+      ],
+      "task_fulfillment_repeat_sd": 0.23617482235158507,
+      "planning_and_efficiency": 9.984313725490196,
+      "planning_and_efficiency_repeat_means": [
+        9.952941176470588,
+        10.0,
+        10.0
+      ],
+      "planning_and_efficiency_repeat_sd": 0.02716942443245288
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "available": 51,
+      "planned": 51,
+      "matched": 51,
+      "paired_ecs": 8.547139408964208,
+      "task_fulfillment": 9.16078431372549,
+      "task_fulfillment_repeat_means": [
+        9.0,
+        9.529411764705882,
+        8.952941176470588
+      ],
+      "task_fulfillment_repeat_sd": 0.32010667195517667,
+      "planning_and_efficiency": 10.0,
+      "planning_and_efficiency_repeat_means": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "planning_and_efficiency_repeat_sd": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "available": 50,
+      "planned": 51,
+      "matched": 49,
+      "paired_ecs": 8.547139408964208,
+      "task_fulfillment": 8.783673469387756,
+      "task_fulfillment_repeat_means": [
+        8.8,
+        8.552941176470588,
+        9.0
+      ],
+      "task_fulfillment_repeat_sd": 0.2239418280042234,
+      "planning_and_efficiency": 9.736054421768708,
+      "planning_and_efficiency_repeat_means": [
+        10.0,
+        9.45,
+        9.78921568627451
+      ],
+      "planning_and_efficiency_repeat_sd": 0.27748793028629004
+    }
+  ],
+  "replicate_ecs": [
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "n": 15,
+      "ecs": 8.659160473332795
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "n": 17,
+      "ecs": 8.54589024370811
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "n": 17,
+      "ecs": 7.941271614128391
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "n": 15,
+      "ecs": 8.244792232345372
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "n": 17,
+      "ecs": 8.24799304659149
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "n": 17,
+      "ecs": 7.360437045936035
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "n": 15,
+      "ecs": 8.408102722097757
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "n": 17,
+      "ecs": 8.462865469129198
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "n": 17,
+      "ecs": 8.754092778387262
+    }
+  ],
+  "cohorts": [
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "cohort": "changed",
+      "n": 12,
+      "mean_delta": 0.0,
+      "negative_pairs": 0,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "cohort": "control",
+      "n": 39,
+      "mean_delta": 0.0,
+      "negative_pairs": 0,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "cohort": "changed",
+      "n": 11,
+      "mean_delta": 0.0,
+      "negative_pairs": 0,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "cohort": "control",
+      "n": 38,
+      "mean_delta": 0.0,
+      "negative_pairs": 0,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "cohort": "changed",
+      "n": 12,
+      "mean_delta": 2.1708333333333334,
+      "negative_pairs": 0,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "cohort": "control",
+      "n": 39,
+      "mean_delta": 0.01794871794871793,
+      "negative_pairs": 5,
+      "drops_ge_2_diagnostic": 1
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "cohort": "changed",
+      "n": 11,
+      "mean_delta": 1.6181818181818182,
+      "negative_pairs": 2,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "cohort": "control",
+      "n": 38,
+      "mean_delta": -1.2078947368421051,
+      "negative_pairs": 12,
+      "drops_ge_2_diagnostic": 6
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "cohort": "changed",
+      "n": 12,
+      "mean_delta": 1.5208333333333333,
+      "negative_pairs": 0,
+      "drops_ge_2_diagnostic": 0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "cohort": "control",
+      "n": 39,
+      "mean_delta": 0.35641025641025637,
+      "negative_pairs": 2,
+      "drops_ge_2_diagnostic": 1
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "cohort": "changed",
+      "n": 11,
+      "mean_delta": 0.9636363636363634,
+      "negative_pairs": 2,
+      "drops_ge_2_diagnostic": 1
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "cohort": "control",
+      "n": 38,
+      "mean_delta": -0.26842105263157895,
+      "negative_pairs": 8,
+      "drops_ge_2_diagnostic": 2
+    }
+  ],
+  "paired_task_deltas": [
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 5.2,
+      "no_update_tf": 5.2,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 9.75,
+      "no_update_tf": 9.75,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 4.0,
+      "no_update_tf": 4.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 8.5,
+      "no_update_tf": 8.5,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.0,
+      "no_update_tf": 9.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 8.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 9.2,
+      "no_update_tf": 9.2,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 8.2,
+      "no_update_tf": 8.2,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 8.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 8.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 8.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 9,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 9,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 4.0,
+      "no_update_tf": 4.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 9.8,
+      "no_update_tf": 9.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 9.8,
+      "no_update_tf": 9.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 6.4,
+      "no_update_tf": 6.4,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 6.4,
+      "no_update_tf": 6.4,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 278,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 278,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 9.6,
+      "no_update_tf": 9.6,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 9.0,
+      "no_update_tf": 9.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "no_update",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 5.2,
+      "delta": 4.8
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 9.75,
+      "delta": 0.25
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 4.0,
+      "delta": 6.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 7.6,
+      "no_update_tf": 1.0,
+      "delta": 6.6
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 8.8,
+      "no_update_tf": 1.0,
+      "delta": 7.800000000000001
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 1.6,
+      "no_update_tf": 1.0,
+      "delta": 0.6000000000000001
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 8.2,
+      "no_update_tf": 10.0,
+      "delta": -1.8000000000000007
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 8.5,
+      "delta": 0.9000000000000004
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 9.6,
+      "no_update_tf": 10.0,
+      "delta": -0.40000000000000036
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 9.0,
+      "delta": 1.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 10.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.8,
+      "delta": 1.1999999999999993
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 9.2,
+      "delta": 0.8000000000000007
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 8.2,
+      "delta": 1.200000000000001
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 8.8,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 7.0,
+      "no_update_tf": 10.0,
+      "delta": -3.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.8,
+      "delta": 1.1999999999999993
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.8,
+      "delta": 1.1999999999999993
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.0,
+      "no_update_tf": 10.0,
+      "delta": -1.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 9,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 9,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 4.6,
+      "no_update_tf": 4.0,
+      "delta": 0.5999999999999996
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 9.8,
+      "delta": 0.1999999999999993
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 9.4,
+      "no_update_tf": 9.8,
+      "delta": -0.40000000000000036
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 9.4,
+      "no_update_tf": 10.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 1.0,
+      "delta": 9.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 1.0,
+      "delta": 9.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 10.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 6.4,
+      "delta": 3.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.5,
+      "no_update_tf": 6.4,
+      "delta": -4.9
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 278,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 278,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 10.0,
+      "delta": -9.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 9.6,
+      "delta": -0.1999999999999993
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 9.0,
+      "no_update_tf": 9.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 10.0,
+      "delta": -9.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 8.4,
+      "no_update_tf": 10.0,
+      "delta": -1.5999999999999996
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 10.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 10.0,
+      "delta": -1.1999999999999993
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 7.6,
+      "no_update_tf": 10.0,
+      "delta": -2.4000000000000004
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 10.0,
+      "delta": -9.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 10.0,
+      "delta": -9.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 8.6,
+      "no_update_tf": 10.0,
+      "delta": -1.4000000000000004
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "full_rewrite",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 5.2,
+      "delta": 4.8
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 9.75,
+      "delta": 0.25
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 9,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 4.0,
+      "delta": 6.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 24,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 117,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 2.0,
+      "no_update_tf": 1.0,
+      "delta": 1.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 4.6,
+      "no_update_tf": 1.0,
+      "delta": 3.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 416,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 3.6,
+      "no_update_tf": 1.0,
+      "delta": 2.6
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 267,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 271,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.5,
+      "delta": 1.5
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 9.0,
+      "delta": 1.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 273,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 274,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 7.6,
+      "no_update_tf": 10.0,
+      "delta": -2.4000000000000004
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 278,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.8,
+      "delta": 1.1999999999999993
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 386,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 9.2,
+      "delta": 0.8000000000000007
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 1.0,
+      "delta": 9.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 389,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.2,
+      "delta": 1.8000000000000007
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 390,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.0,
+      "no_update_tf": 8.8,
+      "delta": 0.1999999999999993
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 394,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 403,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 8.4,
+      "no_update_tf": 8.8,
+      "delta": -0.40000000000000036
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 410,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 8.8,
+      "delta": 1.1999999999999993
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 411,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter3",
+      "task": 425,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 9,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 9,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 4.0,
+      "delta": 6.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 24,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 10.0,
+      "no_update_tf": 9.8,
+      "delta": 0.1999999999999993
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 2.0,
+      "no_update_tf": 9.8,
+      "delta": -7.800000000000001
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 117,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 9.0,
+      "no_update_tf": 10.0,
+      "delta": -1.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 0,
+      "cohort": "changed",
+      "tf": 5.8,
+      "no_update_tf": 1.0,
+      "delta": 4.8
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 1,
+      "cohort": "changed",
+      "tf": 4.6,
+      "no_update_tf": 1.0,
+      "delta": 3.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 416,
+      "repeat": 2,
+      "cohort": "changed",
+      "tf": 5.8,
+      "no_update_tf": 1.0,
+      "delta": 4.8
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 267,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 8.2,
+      "no_update_tf": 10.0,
+      "delta": -1.8000000000000007
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 271,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 6.4,
+      "delta": 3.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 273,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 7.0,
+      "no_update_tf": 10.0,
+      "delta": -3.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 274,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 6.4,
+      "delta": 3.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 278,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 278,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 9.6,
+      "delta": 0.40000000000000036
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.0,
+      "no_update_tf": 10.0,
+      "delta": -1.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 386,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 8.4,
+      "no_update_tf": 9.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 10.0,
+      "delta": -9.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 389,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 1.0,
+      "no_update_tf": 1.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 390,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 10.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 394,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 8.8,
+      "no_update_tf": 10.0,
+      "delta": -1.1999999999999993
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 403,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 410,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 411,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 0,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 1,
+      "cohort": "control",
+      "tf": 9.4,
+      "no_update_tf": 10.0,
+      "delta": -0.5999999999999996
+    },
+    {
+      "strategy": "selective_patch",
+      "stage": "iter5",
+      "task": 425,
+      "repeat": 2,
+      "cohort": "control",
+      "tf": 10.0,
+      "no_update_tf": 10.0,
+      "delta": 0.0
+    }
+  ],
+  "cost_summary": [
+    {
+      "strategy": "no_update",
+      "transitions": 6,
+      "elapsed_seconds": 0.015282099950127304,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "currency": null
+    },
+    {
+      "strategy": "full_rewrite",
+      "transitions": 6,
+      "elapsed_seconds": 229.4268129998818,
+      "api_calls": 42,
+      "input_tokens": 132853,
+      "output_tokens": 14955,
+      "api_cost": 0.018229775,
+      "currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "transitions": 6,
+      "elapsed_seconds": 76.26013059995603,
+      "api_calls": 12,
+      "input_tokens": 30041,
+      "output_tokens": 3944,
+      "api_cost": 0.00419339,
+      "currency": "USD"
+    }
+  ],
+  "update_records": [
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "elapsed_seconds": 0.0027093999087810516,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "cost_currency": null
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "elapsed_seconds": 0.002443999983370304,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "cost_currency": null
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "elapsed_seconds": 0.0024636000161990523,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "cost_currency": null
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "elapsed_seconds": 0.002547999960370362,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "cost_currency": null
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "elapsed_seconds": 0.0024989000521600246,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "cost_currency": null
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "elapsed_seconds": 0.002618200029246509,
+      "api_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "api_cost": 0,
+      "cost_currency": null
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "elapsed_seconds": 35.14407979999669,
+      "api_calls": 7,
+      "input_tokens": 21618,
+      "output_tokens": 2415,
+      "api_cost": 0.003791465,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "elapsed_seconds": 31.7257976999972,
+      "api_calls": 7,
+      "input_tokens": 22626,
+      "output_tokens": 2478,
+      "api_cost": 0.003948965,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "elapsed_seconds": 39.34550789988134,
+      "api_calls": 7,
+      "input_tokens": 21618,
+      "output_tokens": 2478,
+      "api_cost": 0.00145707,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "elapsed_seconds": 43.48264459997881,
+      "api_calls": 7,
+      "input_tokens": 22690,
+      "output_tokens": 2645,
+      "api_cost": 0.00383404,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "elapsed_seconds": 42.072836700011976,
+      "api_calls": 7,
+      "input_tokens": 21618,
+      "output_tokens": 2471,
+      "api_cost": 0.00145357,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "elapsed_seconds": 37.655946300015785,
+      "api_calls": 7,
+      "input_tokens": 22683,
+      "output_tokens": 2468,
+      "api_cost": 0.0037446650000000003,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "elapsed_seconds": 10.866383699933067,
+      "api_calls": 2,
+      "input_tokens": 4449,
+      "output_tokens": 594,
+      "api_cost": 0.00034203,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "elapsed_seconds": 10.121966700069606,
+      "api_calls": 2,
+      "input_tokens": 5547,
+      "output_tokens": 668,
+      "api_cost": 0.001027225,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "elapsed_seconds": 13.317027700017206,
+      "api_calls": 2,
+      "input_tokens": 4449,
+      "output_tokens": 616,
+      "api_cost": 0.00035303,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "elapsed_seconds": 12.527912699966691,
+      "api_calls": 2,
+      "input_tokens": 5569,
+      "output_tokens": 739,
+      "api_cost": 0.001065475,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "elapsed_seconds": 15.134856199962087,
+      "api_calls": 2,
+      "input_tokens": 4449,
+      "output_tokens": 625,
+      "api_cost": 0.00035753,
+      "cost_currency": "USD"
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "elapsed_seconds": 14.29198360000737,
+      "api_calls": 2,
+      "input_tokens": 5578,
+      "output_tokens": 702,
+      "api_cost": 0.0010481000000000002,
+      "cost_currency": "USD"
+    }
+  ],
+  "inference_usage": [
+    {
+      "strategy": "no_update",
+      "role": "agent",
+      "usage_records": 350,
+      "prompt_tokens": 4438622,
+      "completion_tokens": 86041,
+      "cost_usd": null,
+      "cost_note": "GLM inference: no dollar cost inferred; shared Early charged once to no_update owner"
+    },
+    {
+      "strategy": "no_update",
+      "role": "judge",
+      "usage_records": 765,
+      "prompt_tokens": 7710550,
+      "completion_tokens": 121981,
+      "cost_usd": null,
+      "cost_note": "GLM inference: no dollar cost inferred; shared Early charged once to no_update owner"
+    },
+    {
+      "strategy": "full_rewrite",
+      "role": "agent",
+      "usage_records": 245,
+      "prompt_tokens": 3253872,
+      "completion_tokens": 62600,
+      "cost_usd": null,
+      "cost_note": "GLM inference: no dollar cost inferred; shared Early charged once to no_update owner"
+    },
+    {
+      "strategy": "full_rewrite",
+      "role": "judge",
+      "usage_records": 505,
+      "prompt_tokens": 5194120,
+      "completion_tokens": 80517,
+      "cost_usd": null,
+      "cost_note": "GLM inference: no dollar cost inferred; shared Early charged once to no_update owner"
+    },
+    {
+      "strategy": "selective_patch",
+      "role": "agent",
+      "usage_records": 233,
+      "prompt_tokens": 3043918,
+      "completion_tokens": 53621,
+      "cost_usd": null,
+      "cost_note": "GLM inference: no dollar cost inferred; shared Early charged once to no_update owner"
+    },
+    {
+      "strategy": "selective_patch",
+      "role": "judge",
+      "usage_records": 505,
+      "prompt_tokens": 5126080,
+      "completion_tokens": 81614,
+      "cost_usd": null,
+      "cost_note": "GLM inference: no dollar cost inferred; shared Early charged once to no_update owner"
+    }
+  ],
+  "memory_audit": [
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "no_update",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-tasks::tasks_setup",
+        "mcp-tasks::tasks_add"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@kazuph/mcp-taskmanager::get_next_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "full_rewrite",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@kazuph/mcp-taskmanager::get_next_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 0,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@kazuph/mcp-taskmanager::get_next_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 1,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::get_next_task",
+        "@kazuph/mcp-taskmanager::request_planning"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter3",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "aee4f1ad0f03afe64d0d659b",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@modelcontextprotocol/server-filesystem::search_files",
+        "@modelcontextprotocol/server-filesystem::read_text_file"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "3d22d2b1602bb8ad846879f9",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-tasks::tasks_add",
+        "mcp-tasks::tasks_setup"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "36ddedfe9c6be8a691b4fd40",
+      "affected": true,
+      "rebuilt": true,
+      "unchanged": false,
+      "tool_ids": [
+        "@kazuph/mcp-taskmanager::request_planning",
+        "@kazuph/mcp-taskmanager::get_next_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "ffd1b8e05692d9370b52ed48",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::analyze_task",
+        "mcp-shrimp-task-manager::reflect_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "7fbfc03420f5d2abfec229b5",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::get_task_detail",
+        "mcp-shrimp-task-manager::list_tasks",
+        "mcp-shrimp-task-manager::split_tasks",
+        "mcp-shrimp-task-manager::update_task"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "2f1905b241c99bb6930cbd70",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::split_tasks"
+      ]
+    },
+    {
+      "strategy": "selective_patch",
+      "repeat": 2,
+      "stage": "iter5",
+      "entry_id": "2322985788659b3487d3b0ff",
+      "affected": false,
+      "rebuilt": false,
+      "unchanged": true,
+      "tool_ids": [
+        "mcp-shrimp-task-manager::execute_task",
+        "mcp-shrimp-task-manager::get_task_detail"
+      ]
+    }
+  ],
+  "validation": {
+    "judge_metric_means_checked": 710,
+    "official_and_saved_ecs_match": true,
+    "budget_matches_updates": true,
+    "source_archive_verified": true,
+    "selective_decision_audit_passed": true
+  }
+}
