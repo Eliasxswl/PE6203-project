@@ -36,7 +36,11 @@ Each run writes `results/<run-id>/` with its manifest and raw records. The retai
 
 ## Main Results
 
+The assignment-facing write-up of these results, with the same figures and the full failure analysis, is [REPORT.md](REPORT.md); this section is the repository view of it.
+
 Formal run `20261026T084527.010290Z_Kevin`. Actor and Judge `glm-4-flash-250414`, knowledge updater `openai/gpt-6-luna`, Agent temperature 0.2, 3 repeats, 5 Judge attempts.
+
+The Actor/Judge models are fixed across all three strategies and share one prompt and temperature. The knowledge updater is a component of the adaptation method rather than of the Agent — it stands in for an external service that maintains tool knowledge — and it is identical for both updating strategies while `no_update` calls it zero times, so it cannot confound the comparison. Because it is a model, the experience layer is not deterministic given the same catalog; reproducibility rests on the recorded update outputs in the run records.
 
 | Strategy | TF | PE | ECS | ΔTF vs No Update |
 |---|---|---|---|---|
@@ -130,16 +134,11 @@ Three gaps remain open. They are listed here rather than left implicit, with own
 
 Two measurement limits belong here as well, because they change how the scores should be read:
 
-- **Self-judging.** One model (`glm-4-flash-250414`) acts as both Actor and Judge. Five Judge attempts per trajectory reduce sampling noise but cannot remove a bias shared between generator and scorer, so the scores are a consistent internal ranking rather than an absolute capability measure.
+- **Ceiling effect.** No Update already scores 8.68 TF and 9.62 PE, so mean-level headroom is roughly one point and an effect confined to a few tasks is invisible in pooled means. All comparisons in this document are paired per cell for that reason.
+- **Self-judging.** One model (`glm-4-flash-250414`) acts as both Actor and Judge — `judge_model` is empty in the profile and resolves to the Actor model. Five Judge attempts per trajectory reduce sampling noise but cannot remove a bias shared between generator and scorer, so the scores are a consistent internal ranking rather than an absolute capability measure.
 - **Platform.** All strategies ran on Windows 11 with Python 3.12.14 and Node v24.21.0. Upstream ran on Linux, and macOS/Linux tool-runtime validation is still pending, so cross-platform equivalence is assumed rather than demonstrated.
 
-## Member interfaces
-
-- **Role 1:** catalog strategy plugin in `src/custom/experiment/selective_patch.py`; strategy-owned knowledge updates in `experience_state.py` use the same builder/validator for FR and SP.
-- **Role 3:** select original IDs and maintain classifications in `config/subsets/selected_tasks.json`. Original tasks and 201 candidate IDs are in `src/custom/data/test_cases/`; fixture inputs are in `anotation_path/`. Do not rewrite task content.
-- **Experiment settings:** edit the selected `config/*.json` profile. Models, repeats, provider pools and isolation policies are configuration fields. Formal profiles use `glm-4-flash-250414` for Actor/Judge and `openai/gpt-6-luna` for knowledge updates.
-- **Tools:** `servers/{original,iter3,iter5}_servers/`; machine-specific routes are generated under `config/local/` and remain ignored.
-- **Results:** start with [results/index.json](results/index.json). Each retained run contains its manifest, raw records and provenance. Historical committed archives remain available; formal scores are unchanged.
+Code ownership and per-file interfaces: [docs/contributions.md](docs/contributions.md).
 
 ## Final case evidence
 
